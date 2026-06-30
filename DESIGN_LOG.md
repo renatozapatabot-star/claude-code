@@ -5,6 +5,45 @@ appends here every run.
 
 ---
 
+## 2026-06-30 · Slice 002 — Complete the whole front end (ultracode)
+
+**Surface audited:** the four placeholder surfaces (Pedimentos, Expedientes, Facturación, Clientes).
+**User + action:** every EVCO role (broker, accounting, ops) needs their real workspace — not a stub —
+to clear pedimentos, find documents, chase invoices, and read the book of business at a glance.
+
+**Method (ultracode):** ran a background **workflow** — 4 parallel `Explore` agents mined the real
+`design/reference/CRUZ.dc.html` package, each returning a structured, implementation-ready spec for its
+surface (faithful CRUZ substance mapped to the white+red canon). I then integrated all four coherently
+into the shared design system (cohesion kept in one hand) and verified the whole. (4 agents · ~247k tok.)
+
+**Changes made**
+- **Pedimentos** — clearance pipeline: KPIs (listos para firma / transmitidos / contribuciones MXN),
+  dense table (pedimento · clave A1/IN · 14/14 validaciones · semáforo · estado · contribuciones), and a
+  detail drawer with entry header, **duties IGI/DTA/IVA**, SAT validations, and **Firmar y transmitir al SAT**
+  → reuses the 5s-undo trust loop. (`data/pedimentos.js`)
+- **Expedientes** — Document Hub: COVE/Pedimento/Carta Porte/B-L per embarque, doc-state pills, value.
+- **Facturación** — honorarios MTD · desembolsado · cobrado % · vencidas; invoice table with overdue in
+  crimson and **e.conta EN VIVO / QuickBooks POR ACTIVAR** honest feed badges.
+- **Clientes** — cartera: KPIs + dense table (avatar · RFC/patente · cargas 30d · MVE color-coded ·
+  alertas · semáforo · valor) + client detail drawer (identity, compliance/risk, 30-day operation).
+- `data/surfaces.js` (deterministic, honest derivations), 6 new API endpoints, all bilingual ES/EN.
+
+**Screenshot / browser verification:** `node scripts/verify.mjs` → 15 shots desktop + 375px across all six
+surfaces + drawers. **VERIFY: CLEAN** — 0 console errors, 0 horizontal overflow at 375px.
+
+**Commands run:** `node --check` (server + data + app.js), `node scripts/verify.mjs`.
+
+**Proven vs subjective**
+- *Proven:* all six surfaces render real data from their endpoints; no console errors; no 375px overflow;
+  pedimento sign → transmit → ledger works; honest LIVE/STAGED badges present.
+- *Subjective:* per-surface visual refinement (e.g. Clientes mobile card height; audit-trail timeline on
+  pedimento drawer is described in the spec but not yet built).
+
+**Next smallest design move:** (founder feedback loop — see below) audit-trail timeline on the pedimento
+drawer · copilot state machine wired to navigation · KPI count-up + skeleton + error/retry states.
+
+---
+
 ## 2026-06-30 · Slice 001 — Canonical white+red foundation + the trust loop
 
 **Surface audited:** greenfield repo (empty). Built the CRUZ shell from the founder brief + the real

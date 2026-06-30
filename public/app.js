@@ -40,11 +40,25 @@ const DICT = {
     gateDeclared: 'Valor declarado', gateDuties: 'Contribuciones (MXN)', firmar: 'Firmar y avanzar', cancelar: 'Cancelar',
     toastSigned: 'firmado · programado a la ventana verde', toastTransmit: 'Transmitido al SAT · tú diste el juicio',
     // placeholder surfaces
-    ph_pedimentos: ['Pedimentos', 'Línea de despacho — clasificado, validado, costeado, listo para tu firma.'],
-    ph_expedientes: ['Expedientes', 'COVE, pedimento, Carta Porte, DODA y B/L — todo enlazado.'],
-    ph_facturacion: ['Facturación', 'Honorarios, desembolsos y cobranza por cliente.'],
-    ph_clientes: ['Clientes', 'Tu cartera — cada importador en una patente.'],
-    phBuilding: 'Superficie en construcción', phShares: 'Comparte el mismo sistema de diseño de CRUZ.',
+    exp_title: 'Expedientes', exp_sub: 'COVE, pedimento, Carta Porte y B/L — todo enlazado.',
+    exp_live: 'Documentos en vivo', exp_review: 'Por revisar', exp_valor: 'Valor en tránsito',
+    exp_tipo: 'Tipo de documento', exp_ref: 'Referencia', exp_fecha: 'Fecha', exp_doc: 'Documento', exp_linked: 'Enlazado a',
+    fac_title: 'Facturación', fac_sub: 'Honorarios RZ&Co, desembolsos y cobranza por cliente.',
+    fac_honorarios: 'Honorarios · Mes', fac_desembolsado: 'Desembolsado', fac_cobrado: 'Cobrado a tiempo', fac_vencido: 'Vencido',
+    fac_factura: 'Factura', fac_monto: 'Monto', fac_venc: 'Vencimiento', fac_dias: 'días', fac_facturas: 'facturas',
+    fac_total: 'Total facturado', fac_honor: 'Honorarios', fac_reemb: 'Reembolsos operativos', fac_ivaL: 'IVA (16%)', fac_integracion: 'Integración contable',
+    cli_title: 'Clientes', cli_sub: 'Tu cartera — cada importador en una patente.',
+    cli_activos: 'Clientes activos', cli_mve: 'Exposición MVE', cli_cargas: 'Carga total · mes', cli_valor: 'Valor en cartera',
+    cli_rfc: 'RFC / Patente', cli_cargas30: 'Cargas 30d', cli_alertas: 'Alertas', cli_valorMes: 'Valor mes',
+    cli_identidad: 'Identidad y patente', cli_cumpl: 'Cumplimiento y riesgo', cli_op: 'Operación · 30 días',
+    cli_razon: 'Razón social', cli_patente: 'Patente', cli_agente: 'Agente aduanal', cli_activosOp: 'Embarques activos',
+    ped_title: 'Pedimentos', ped_sub: 'Línea de despacho — clasificado, validado, costeado, listo para tu firma.',
+    ped_preparados: 'Listos para firma', ped_transmitidos: 'Transmitidos al SAT', ped_dutiesK: 'Contribuciones · Mes',
+    ped_clave: 'Clave', ped_regimen: 'Régimen', ped_validaciones: 'Validaciones', ped_estado: 'Estado',
+    ped_duties: 'Contribuciones MXN', ped_preparado: 'Listo para firma', ped_transmitido: 'Transmitido',
+    p_entryHeader: 'Encabezado del pedimento', p_duties: 'Contribuciones e impuestos', p_validation: 'Validación',
+    p_transmit: 'Firmar y transmitir al SAT', ped_valorAduana: 'Valor aduana', ped_igi: 'IGI', ped_dta: 'DTA', ped_iva: 'IVA', ped_total: 'Total',
+    ped_satOk: 'validaciones SAT aprobadas', ped_mercancia: 'Mercancía', ped_satToast: 'Transmitido al SAT · tú diste el juicio',
   },
   en: {
     brandSub: 'EVCO · Patente 3801', nInicio: 'Home', grpOps: 'Operations', nShip: 'Shipments',
@@ -71,18 +85,33 @@ const DICT = {
     gateEyebrow: 'Signature gate', gateNote: 'Nothing transmits until you sign — then 5s to cancel.',
     gateDeclared: 'Declared value', gateDuties: 'Duties (MXN)', firmar: 'Sign & advance', cancelar: 'Cancel',
     toastSigned: 'signed · scheduled to the green window', toastTransmit: 'Transmitted to SAT · you made the judgment',
-    ph_pedimentos: ['Pedimentos', 'Clearance pipeline — classified, validated, costed, ready for your signature.'],
-    ph_expedientes: ['Files', 'COVE, pedimento, Carta Porte, DODA & B/L — all linked.'],
-    ph_facturacion: ['Billing', 'Honorarios, disbursements and per-client collection.'],
-    ph_clientes: ['Clients', 'Your book of business — every importer on one patente.'],
-    phBuilding: 'Surface under construction', phShares: 'Shares the same CRUZ design system.',
+    exp_title: 'Files', exp_sub: 'COVE, pedimento, Carta Porte & B/L — all linked.',
+    exp_live: 'Documents live', exp_review: 'To review', exp_valor: 'Value in transit',
+    exp_tipo: 'Document type', exp_ref: 'Reference', exp_fecha: 'Date', exp_doc: 'Document', exp_linked: 'Linked to',
+    fac_title: 'Billing', fac_sub: 'Honorarios RZ&Co, disbursements and per-client collection.',
+    fac_honorarios: 'Honorarios · MTD', fac_desembolsado: 'Disbursed', fac_cobrado: 'Collected on time', fac_vencido: 'Overdue',
+    fac_factura: 'Invoice', fac_monto: 'Amount', fac_venc: 'Due', fac_dias: 'days', fac_facturas: 'invoices',
+    fac_total: 'Total billed', fac_honor: 'Honorarios', fac_reemb: 'Operating disbursements', fac_ivaL: 'IVA (16%)', fac_integracion: 'Accounting integration',
+    cli_title: 'Clients', cli_sub: 'Your book of business — every importer on one patente.',
+    cli_activos: 'Active clients', cli_mve: 'MVE exposure', cli_cargas: 'Total loads · MTD', cli_valor: 'Book value',
+    cli_rfc: 'RFC / Patente', cli_cargas30: 'Loads 30d', cli_alertas: 'Alerts', cli_valorMes: 'Value MTD',
+    cli_identidad: 'Identity & patente', cli_cumpl: 'Compliance & risk', cli_op: 'Operation · 30 days',
+    cli_razon: 'Legal name', cli_patente: 'Patente', cli_agente: 'Customs broker', cli_activosOp: 'Active shipments',
+    ped_title: 'Pedimentos', ped_sub: 'Clearance pipeline — classified, validated, costed, ready for your signature.',
+    ped_preparados: 'Ready to sign', ped_transmitidos: 'Transmitted to SAT', ped_dutiesK: 'Duties · MTD',
+    ped_clave: 'Code', ped_regimen: 'Regime', ped_validaciones: 'Validations', ped_estado: 'Status',
+    ped_duties: 'Duties MXN', ped_preparado: 'Ready to sign', ped_transmitido: 'Transmitted',
+    p_entryHeader: 'Entry header', p_duties: 'Duties & taxes', p_validation: 'Validation',
+    p_transmit: 'Sign & transmit to SAT', ped_valorAduana: 'Customs value', ped_igi: 'IGI', ped_dta: 'DTA', ped_iva: 'IVA', ped_total: 'Total',
+    ped_satOk: 'SAT validations passed', ped_mercancia: 'Goods', ped_satToast: 'Transmitted to SAT · you made the judgment',
   },
 };
 let LANG = (() => { try { return localStorage.getItem('cruz.lang') || 'es'; } catch { return 'es'; } })();
 const t = (k) => (DICT[LANG][k] ?? DICT.es[k] ?? k);
 
-const state = { embarques: [], summary: null, decisions: [], sources: [], copilot: null, filter: '', view: 'inicio', assist: 'sup', ledger: [] };
+const state = { embarques: [], summary: null, decisions: [], sources: [], copilot: null, pedimentos: [], pediSummary: null, expedientes: null, clientes: null, facturacion: null, filter: '', view: 'inicio', assist: 'sup', ledger: [] };
 let undoTimer = null;
+const fmtMxn = (n) => 'MXN ' + Math.round(n).toLocaleString('en-US');
 
 async function api(path) {
   const r = await fetch(path, { headers: { Accept: 'application/json' } });
@@ -93,14 +122,17 @@ async function api(path) {
 /* ---- Boot ----------------------------------------------------------------- */
 async function boot() {
   try {
-    const [emb, sum, dec, src, co] = await Promise.all([
+    const [emb, sum, dec, src, co, ped, exp, cli, fac] = await Promise.all([
       api('/api/embarques'), api('/api/summary'), api('/api/decisions'), api('/api/sources'), api('/api/copilot?view=inicio'),
+      api('/api/pedimentos'), api('/api/expedientes'), api('/api/clientes'), api('/api/facturacion'),
     ]);
     state.embarques = emb.results; state.summary = sum; state.decisions = dec.results;
     state.sources = src.results; state.copilot = co; state.ledger = co.ledger.slice();
+    state.pedimentos = ped.results; state.pediSummary = ped.summary;
+    state.expedientes = exp; state.clientes = cli; state.facturacion = fac;
   } catch (e) { console.error('CRUZ: backend no disponible', e); }
   applyI18n();
-  renderNavCounts(); renderHome(); renderEmbarques(); renderPlaceholders(); renderCopilot();
+  renderNavCounts(); renderHome(); renderEmbarques(); renderPedimentos(); renderSurfaces(); renderCopilot();
   wireNav(); wireCommand(); wireMobile(); wireDrawer(); wireLang(); wireCopilot(); wireGate();
 }
 
@@ -114,7 +146,7 @@ function applyI18n() {
 function wireLang() {
   $$('.lang button').forEach((b) => b.addEventListener('click', () => {
     LANG = b.dataset.lang; try { localStorage.setItem('cruz.lang', LANG); } catch {}
-    applyI18n(); renderHome(); renderEmbarques(); renderPlaceholders(); renderCopilot(); renderNavCounts();
+    applyI18n(); renderHome(); renderEmbarques(); renderPedimentos(); renderSurfaces(); renderCopilot(); renderNavCounts();
   }));
 }
 
@@ -429,17 +461,212 @@ function wireCopilot() {
   $('#co-scrim').addEventListener('click', closeCopilot);
 }
 
-/* ---- Placeholder surfaces ------------------------------------------------- */
-function renderPlaceholders() {
-  for (const k of ['pedimentos', 'expedientes', 'facturacion', 'clientes']) {
-    const [title, sub] = t('ph_' + k);
-    $(`#view-${k}`).innerHTML = `
-      <div class="page-head"><div><h1 class="page-title">${esc(title)}</h1><div class="page-sub">${esc(sub)}</div></div></div>
-      <div class="tablewrap"><div class="empty"><svg class="mark"><use href="#i-box"/></svg>
-        <div style="font-weight:560;color:var(--ink-2)">${t('phBuilding')}</div>
-        <div style="margin-top:4px">${t('phShares')}</div></div></div>`;
-  }
+/* ---- Pedimentos (clearance workspace) ------------------------------------- */
+function pediEstadoPill(p) {
+  return p.estado === 'transmitido'
+    ? `<span class="pill done">${t('ped_transmitido')}</span>`
+    : `<span class="pill warn">${t('ped_preparado')}</span>`;
 }
+function renderPedimentos() {
+  const s = state.pediSummary;
+  const kpis = s ? [
+    stat('i-stamp', t('ped_preparados'), s.preparados, '', s.preparados > 0),
+    stat('i-check', t('ped_transmitidos'), s.transmitidos, ''),
+    stat('i-coin', t('ped_dutiesK'), '$' + (s.dutiesMxn / 1e6).toFixed(2), 'M MXN'),
+  ].join('') : '';
+  $('#view-pedimentos').innerHTML = `
+    <div class="page-head"><div><h1 class="page-title">${t('ped_title')}</h1><div class="page-sub">${t('ped_sub')}</div></div></div>
+    <div class="inicio-stats" style="margin:0 0 var(--sp-5)">${kpis}</div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th>${t('tc_pedimento')}</th><th>${t('sl_client')}</th><th>${t('ped_clave')}</th>
+          <th>${t('ped_validaciones')}</th><th>${t('thSem')}</th><th>${t('ped_estado')}</th><th class="r">${t('ped_duties')}</th>
+        </tr></thead>
+        <tbody id="ped-rows">${state.pedimentos.map(pediRow).join('')}</tbody>
+      </table>
+    </div>`;
+  $$('#ped-rows tr[data-num]').forEach((tr) => tr.addEventListener('click', () => openPedimento(tr.dataset.num)));
+}
+function pediRow(p) {
+  const v = p.validaciones;
+  return `<tr data-num="${esc(p.numero)}">
+    <td data-l="${t('tc_pedimento')}"><span class="cell-ped">${esc(p.numero)}</span></td>
+    <td data-l="${t('sl_client')}"><span class="cell-cli">${esc(p.cliente)}</span></td>
+    <td data-l="${t('ped_clave')}"><span class="mono">${esc(p.clave)}</span></td>
+    <td data-l="${t('ped_validaciones')}"><span class="mono" style="color:var(--ok)">${v.pasadas}/${v.total}</span></td>
+    <td data-l="${t('thSem')}"><span class="sem ${p.semaforo.tone}">${esc(p.semaforo.label)}</span></td>
+    <td data-l="${t('ped_estado')}"><span class="cell-pill-wrap">${pediEstadoPill(p)}</span></td>
+    <td class="r" data-l="${t('ped_duties')}"><span class="cell-val">${fmtMxn(p.totalMxn).replace('MXN ', '')}</span></td></tr>`;
+}
+async function openPedimento(num) {
+  let p = state.pedimentos.find((x) => x.numero === num);
+  try { p = await api('/api/pedimentos/' + encodeURIComponent(num)); } catch {}
+  if (!p) return;
+  const v = p.validaciones;
+  const d = $('#drawer');
+  d.innerHTML = `
+    <div class="drawer-head">
+      <div><div class="drawer-id">${t('tc_pedimento')} · ${esc(p.clave)}</div>
+        <div class="drawer-cli mono" style="font-size:16px">${esc(p.numero)}</div>
+        ${pediEstadoPill(p)} <span class="sem ${p.semaforo.tone}" style="margin-left:8px">${esc(p.semaforo.label)}</span></div>
+      <button class="iconbtn x" id="drawer-x" aria-label="Cerrar"><svg><use href="#i-x"/></svg></button>
+    </div>
+    <div class="drawer-body">
+      <div class="section-h">${t('p_entryHeader')}</div>
+      <div class="kv">
+        <div><div class="k">${t('sl_client')}</div><div class="v">${esc(p.cliente)}</div></div>
+        <div><div class="k">Aduana</div><div class="v">${esc(p.aduana)}</div></div>
+        <div><div class="k">${t('ped_clave')}</div><div class="v mono">${esc(p.clave)} · ${esc(p.regimen)}</div></div>
+        <div><div class="k">Agente aduanal</div><div class="v">${esc(p.agente)}</div></div>
+        <div><div class="k">${t('ped_valorAduana')}</div><div class="v">${fmtUsd(p.valorAduanaUsd)} <span style="color:var(--ink-3)">USD</span></div></div>
+        <div><div class="k">${t('ped_mercancia')}</div><div class="v">${esc(p.mercancia)}</div></div>
+      </div>
+      <div class="section-h">${t('p_duties')}</div>
+      <div class="kv">
+        <div><div class="k">${t('ped_igi')}</div><div class="v mono">${fmtMxn(p.igiMxn)}</div></div>
+        <div><div class="k">${t('ped_dta')}</div><div class="v mono">${fmtMxn(p.dtaMxn)}</div></div>
+        <div><div class="k">${t('ped_iva')}</div><div class="v mono">${fmtMxn(p.ivaMxn)}</div></div>
+        <div><div class="k">${t('ped_total')}</div><div class="v mono" style="color:var(--cruz-press)">${fmtMxn(p.totalMxn)}</div></div>
+      </div>
+      <div class="section-h">${t('p_validation')}</div>
+      <div class="co-card" style="display:flex;align-items:center;gap:10px;margin-top:0">
+        <span class="ck" style="color:var(--ok)"><svg style="width:18px;height:18px"><use href="#i-check"/></svg></span>
+        <div><b class="mono">${v.pasadas}/${v.total}</b> ${t('ped_satOk')}</div>
+      </div>
+      ${p.estado === 'preparado' ? `<button class="btn btn-primary" id="ped-sign" style="width:100%;justify-content:center;height:46px;margin-top:var(--sp-4)"><svg class="ico"><use href="#i-stamp"/></svg>${t('p_transmit')}</button>
+      <div class="gate-note" style="margin-top:8px">${t('gateNote')}</div>` : ''}
+    </div>`;
+  d.setAttribute('aria-hidden', 'false'); d.classList.add('open'); $('#scrim').classList.add('open');
+  $('#drawer-x').addEventListener('click', closeDrawer);
+  const sign = $('#ped-sign');
+  if (sign) sign.addEventListener('click', () => {
+    closeDrawer();
+    showToast(`<b>${esc(p.numero)}</b> · ${t('ped_satToast')}`, null, () => {
+      state.ledger.unshift({ id: 'L-' + Date.now(), texto: `${t('p_transmit')}: ${p.cliente} · ${p.numero}`, meta: t('ped_satToast') });
+    });
+  });
+}
+
+/* ---- Expedientes (Document Hub) ------------------------------------------- */
+function renderSurfaces() { renderExpedientes(); renderFacturacion(); renderClientes(); }
+function kpiRow(items) { return `<div class="inicio-stats" style="margin:0 0 var(--sp-5)">${items.join('')}</div>`; }
+
+function renderExpedientes() {
+  const s = state.expedientes && state.expedientes.summary;
+  const rows = (state.expedientes && state.expedientes.results) || [];
+  const kpis = s ? kpiRow([
+    stat('i-doc', t('exp_live'), s.live, ''),
+    stat('i-warn', t('exp_review'), s.review, '', s.review > 0),
+    stat('i-coin', t('exp_valor'), '$' + (s.valorUsd / 1e6).toFixed(2), 'M USD'),
+  ]) : '';
+  $('#view-expedientes').innerHTML = `
+    <div class="page-head"><div><h1 class="page-title">${t('exp_title')}</h1><div class="page-sub">${t('exp_sub')}</div></div></div>
+    ${kpis}
+    <div class="tablewrap"><table>
+      <thead><tr><th>${t('exp_tipo')}</th><th>${t('exp_ref')}</th><th>${t('thEmb')}</th><th>${t('sl_client')}</th><th>${t('exp_fecha')}</th><th>${t('w_status')}</th><th class="r">${t('thVal')}</th></tr></thead>
+      <tbody>${rows.map((d) => `
+        <tr>
+          <td data-l="${t('exp_tipo')}"><span class="cell-cli">${esc(d.docType)}</span></td>
+          <td data-l="${t('exp_ref')}"><span class="cell-ped">${esc(d.referencia)}</span></td>
+          <td data-l="${t('thEmb')}"><span class="cell-id">${esc(d.embarque)}</span></td>
+          <td data-l="${t('sl_client')}">${esc(d.cliente)}</td>
+          <td data-l="${t('exp_fecha')}">${fmtDate(d.fechaEmision)}</td>
+          <td data-l="${t('w_status')}"><span class="cell-pill-wrap"><span class="pill ${d.estado.tone}">${esc(d.estado.label)}</span></span></td>
+          <td class="r" data-l="${t('thVal')}"><span class="cell-val">${fmtUsd(d.valorUsd)}</span></td>
+        </tr>`).join('')}</tbody>
+    </table></div>`;
+}
+
+/* ---- Facturación (Billing) ------------------------------------------------ */
+function renderFacturacion() {
+  const s = state.facturacion && state.facturacion.summary;
+  const rows = (state.facturacion && state.facturacion.results) || [];
+  const kpis = s ? kpiRow([
+    stat('i-coin', t('fac_honorarios'), '$' + (s.honorariosMxn / 1e6).toFixed(2), 'M MXN'),
+    stat('i-coin', t('fac_desembolsado'), '$' + (s.desembolsadoMxn / 1e6).toFixed(2), 'M MXN'),
+    stat('i-check', t('fac_cobrado'), s.cobradoPct + '%', ''),
+    stat('i-warn', t('fac_vencido'), s.vencidasN, t('fac_facturas'), s.vencidasN > 0),
+  ]) : '';
+  $('#view-facturacion').innerHTML = `
+    <div class="page-head"><div><h1 class="page-title">${t('fac_title')}</h1><div class="page-sub">${t('fac_sub')}</div></div></div>
+    ${kpis}
+    <div class="tablewrap"><table>
+      <thead><tr><th>${t('fac_factura')}</th><th>${t('sl_client')}</th><th class="r">${t('fac_monto')}</th><th>${t('w_status')}</th><th>${t('fac_venc')}</th><th>e.conta</th></tr></thead>
+      <tbody>${rows.map((f) => `
+        <tr>
+          <td data-l="${t('fac_factura')}"><span class="cell-ped">${esc(f.folio)}</span></td>
+          <td data-l="${t('sl_client')}"><span class="cell-cli">${esc(f.cliente)}</span></td>
+          <td class="r" data-l="${t('fac_monto')}"><span class="cell-val">${fmtMxn(f.totalMxn)}</span></td>
+          <td data-l="${t('w_status')}"><span class="cell-pill-wrap"><span class="pill ${f.status.tone}">${esc(f.status.label)}</span></span></td>
+          <td data-l="${t('fac_venc')}"><span class="${f.diasVenc < 0 ? '' : ''}" style="color:${f.diasVenc < 0 ? 'var(--alert)' : 'var(--ink-2)'}">${f.diasVenc < 0 ? Math.abs(f.diasVenc) + ' ' + t('fac_dias') + ' ●' : '+' + f.diasVenc + ' ' + t('fac_dias')}</span></td>
+          <td data-l="e.conta"><span class="badge-feed ${f.fuente === 'live' ? 'live' : 'staged'}">${f.fuente === 'live' ? t('live') : t('staged')}</span></td>
+        </tr>`).join('')}</tbody>
+    </table></div>`;
+}
+
+/* ---- Clientes (Cartera) --------------------------------------------------- */
+function renderClientes() {
+  const s = state.clientes && state.clientes.summary;
+  const rows = (state.clientes && state.clientes.results) || [];
+  const kpis = s ? kpiRow([
+    stat('i-users', t('cli_activos'), s.activos, ''),
+    stat('i-shield', t('cli_mve'), s.mve + '%', ''),
+    stat('i-truck', t('cli_cargas'), s.cargas, ''),
+    stat('i-coin', t('cli_valor'), '$' + (s.valorUsd / 1e6).toFixed(1), 'M USD'),
+  ]) : '';
+  $('#view-clientes').innerHTML = `
+    <div class="page-head"><div><h1 class="page-title">${t('cli_title')}</h1><div class="page-sub">${t('cli_sub')}</div></div></div>
+    ${kpis}
+    <div class="tablewrap"><table>
+      <thead><tr><th>${t('sl_client')}</th><th>${t('cli_rfc')}</th><th class="r">${t('cli_cargas30')}</th><th class="r">MVE</th><th class="r">${t('cli_alertas')}</th><th>${t('thSem')}</th><th class="r">${t('cli_valorMes')}</th></tr></thead>
+      <tbody>${rows.map((c) => `
+        <tr data-cli="${esc(c.nombre)}">
+          <td data-l="${t('sl_client')}"><div style="display:flex;align-items:center;gap:10px"><span class="dec-av" style="width:30px;height:30px;border-radius:8px;font-size:11px;background:${avatarColor(c.nombre)}">${esc(initials(c.nombre))}</span><span class="cell-cli">${esc(c.nombre)}</span></div></td>
+          <td data-l="${t('cli_rfc')}"><span class="cell-ped">${esc(c.rfc)}</span> <span style="color:var(--ink-4)">· ${esc(c.patente)}</span></td>
+          <td class="r" data-l="${t('cli_cargas30')}"><span class="num">${c.cargas30d}</span></td>
+          <td class="r" data-l="MVE"><span class="num" style="color:${c.mve >= 90 ? 'var(--ok)' : 'var(--warn)'}">${c.mve}%</span></td>
+          <td class="r" data-l="${t('cli_alertas')}"><span class="num" style="color:${c.alertas > 0 ? 'var(--alert)' : 'var(--ink-4)'}">${c.alertas}</span></td>
+          <td data-l="${t('thSem')}"><span class="sem ${c.semaforo.tone}">${esc(c.semaforo.label)}</span></td>
+          <td class="r" data-l="${t('cli_valorMes')}"><span class="cell-val">${fmtUsd(c.valorMesUsd)}</span></td>
+        </tr>`).join('')}</tbody>
+    </table></div>`;
+  $$('#view-clientes tr[data-cli]').forEach((tr) => tr.addEventListener('click', () => openCliente(tr.dataset.cli)));
+}
+function openCliente(name) {
+  const c = (state.clientes.results || []).find((x) => x.nombre === name); if (!c) return;
+  const d = $('#drawer');
+  d.innerHTML = `
+    <div class="drawer-head">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="dec-av" style="width:42px;height:42px;border-radius:10px;font-size:15px;background:${avatarColor(c.nombre)}">${esc(initials(c.nombre))}</span>
+        <div><div class="drawer-cli" style="margin:0">${esc(c.nombre)}</div><div class="drawer-id mono">${esc(c.rfc)}</div></div>
+      </div>
+      <button class="iconbtn x" id="drawer-x" aria-label="Cerrar"><svg><use href="#i-x"/></svg></button>
+    </div>
+    <div class="drawer-body">
+      <div class="section-h">${t('cli_identidad')}</div>
+      <div class="kv">
+        <div><div class="k">${t('cli_patente')}</div><div class="v mono">${esc(c.patente)}</div></div>
+        <div><div class="k">${t('cli_agente')}</div><div class="v">${esc(c.agente)}</div></div>
+        <div><div class="k">${t('thSem')}</div><div class="v"><span class="sem ${c.semaforo.tone}">${esc(c.semaforo.label)}</span></div></div>
+        <div><div class="k">${t('cli_alertas')}</div><div class="v" style="color:${c.alertas > 0 ? 'var(--alert)' : 'var(--ink)'}">${c.alertas}</div></div>
+      </div>
+      <div class="section-h">${t('cli_cumpl')}</div>
+      <div class="kv">
+        <div><div class="k">${t('cli_mve')}</div><div class="v" style="color:${c.mve >= 90 ? 'var(--ok)' : 'var(--warn)'}">${c.mve}%</div></div>
+        <div><div class="k">${t('cli_cargas30')}</div><div class="v num">${c.cargas30d}</div></div>
+      </div>
+      <div class="section-h">${t('cli_op')}</div>
+      <div class="kv">
+        <div><div class="k">${t('cli_activosOp')}</div><div class="v num">${c.activos}</div></div>
+        <div><div class="k">${t('cli_valorMes')}</div><div class="v">${fmtUsd(c.valorMesUsd)} <span style="color:var(--ink-3)">USD</span></div></div>
+      </div>
+    </div>`;
+  d.setAttribute('aria-hidden', 'false'); d.classList.add('open'); $('#scrim').classList.add('open');
+  $('#drawer-x').addEventListener('click', closeDrawer);
+}
+function fmtDate(iso) { try { return new Date(iso).toLocaleDateString(LANG === 'es' ? 'es-MX' : 'en-US', { day: '2-digit', month: 'short', year: 'numeric' }); } catch { return iso; } }
 
 /* ---- Mobile sidebar ------------------------------------------------------- */
 function wireMobile() {

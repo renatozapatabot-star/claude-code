@@ -35,7 +35,19 @@ persistent copilot, honest-data, bilingual ES/EN).
 - Honest data: `DATOS DEMO`, EN VIVO / POR ACTIVAR, "Pendiente de sincronización." Never fabricate.
 - Preserve auth/tenant/compliance invariants. Do not touch a production DB.
 
+## Cadence (every pass — the 100/100 loop)
+**Plan → Execute → Verify → Feedback → Output.**
+- **Plan:** state the slice (user · action · confusion deleted · kill condition) before touching code.
+- **Execute:** smallest coherent slice, max effort, white+red canon, real CRUZ substance.
+- **Verify:** real browser at desktop + 375px; read the screenshots; check overflow/contrast/empty states.
+- **Feedback:** end every pass by asking the founder what to do next (plan the next slice with them).
+- **Output:** append to `DESIGN_LOG.md`, commit, push.
+
+For big sweeps ("complete the whole front end", "ultracode"), fan out parallel agents to mine
+`design/reference/` per surface and return specs, then integrate coherently in one hand (cohesion is a
+score axis) and verify the whole. Deep-research best-in-class operational UI when a surface is novel.
+
 ## Stop condition
 Stop only when the current slice is verified, documented, and pushed — and either no safe visual
-improvement remains in this surface, or the next move requires founder judgment (then queue it
-in `DESIGN_LOG.md` under "Needs founder").
+improvement remains in this surface, or the next move requires founder judgment (then ask the founder
+what's next, and queue any open calls in `DESIGN_LOG.md` under "Needs founder").

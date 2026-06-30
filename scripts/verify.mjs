@@ -45,6 +45,41 @@ await page.waitForTimeout(400);
 await page.screenshot({ path: `${OUT}/03-drawer-desktop.png` });
 shots.push('03-drawer-desktop');
 
+// Desktop — Pedimentos surface + pedimento drawer
+await page.goto(BASE, { waitUntil: 'networkidle' });
+await page.setViewportSize({ width: 1440, height: 900 });
+await page.click('.nav-item[data-view="pedimentos"]');
+await page.waitForTimeout(300);
+await page.screenshot({ path: `${OUT}/09-pedimentos-desktop.png` });
+shots.push('09-pedimentos-desktop');
+await page.click('#ped-rows tr[data-num]');
+await page.waitForTimeout(400);
+await page.screenshot({ path: `${OUT}/10-pedimento-drawer.png` });
+shots.push('10-pedimento-drawer');
+
+// Desktop — Expedientes / Facturación / Clientes (the completed front end)
+for (const [view, n] of [['expedientes', '11'], ['facturacion', '12'], ['clientes', '13']]) {
+  await page.goto(BASE, { waitUntil: 'networkidle' });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.click(`.nav-item[data-view="${view}"]`);
+  await page.waitForTimeout(280);
+  await page.screenshot({ path: `${OUT}/${n}-${view}-desktop.png` });
+  shots.push(`${n}-${view}-desktop`);
+}
+// Clientes detail drawer
+await page.click('#view-clientes tr[data-cli]');
+await page.waitForTimeout(380);
+await page.screenshot({ path: `${OUT}/14-cliente-drawer.png` });
+shots.push('14-cliente-drawer');
+
+// Mobile 375 — Clientes (stacked cards)
+await page.setViewportSize({ width: 375, height: 812 });
+await page.goto(BASE, { waitUntil: 'networkidle' });
+await page.click('#hamburger'); await page.waitForTimeout(180);
+await page.click('.nav-item[data-view="clientes"]'); await page.waitForTimeout(280);
+await page.screenshot({ path: `${OUT}/15-clientes-375.png`, fullPage: true });
+shots.push('15-clientes-375');
+
 // Desktop — Copilot drawer (the persistent agent)
 await page.goto(BASE, { waitUntil: 'networkidle' });
 await page.setViewportSize({ width: 1440, height: 900 });

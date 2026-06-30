@@ -7,6 +7,8 @@ const fs = require('fs');
 const path = require('path');
 const { EMBARQUES, PIPELINE, summary } = require('./data/embarques');
 const { DECISIONS, SOURCES, CREW, COPILOT, ledgerSeed } = require('./data/cruz');
+const { PEDIMENTOS, pediSummary } = require('./data/pedimentos');
+const { EXPEDIENTES, expedientesSummary, CLIENTES, clientesSummary, FACTURAS, facturacionSummary } = require('./data/surfaces');
 
 const PORT = process.env.PORT || 4317; // 43-17 -> "CRUZ" on a phone keypad.
 const PUBLIC = path.join(__dirname, 'public');
@@ -75,6 +77,15 @@ const server = http.createServer((req, res) => {
 
   if (url.pathname === '/api/pipeline') return json(res, 200, PIPELINE);
 
+  if (url.pathname === '/api/pedimentos') return json(res, 200, { results: PEDIMENTOS, summary: pediSummary() });
+  if (url.pathname.match(/^\/api\/pedimentos\/(.+)$/)) {
+    const num = decodeURIComponent(url.pathname.split('/api/pedimentos/')[1]);
+    const p = PEDIMENTOS.find((x) => x.numero === num || x.embarque.toLowerCase() === num.toLowerCase());
+    return p ? json(res, 200, p) : json(res, 404, { error: 'pedimento no encontrado' });
+  }
+  if (url.pathname === '/api/expedientes') return json(res, 200, { results: EXPEDIENTES, summary: expedientesSummary() });
+  if (url.pathname === '/api/clientes') return json(res, 200, { results: CLIENTES, summary: clientesSummary() });
+  if (url.pathname === '/api/facturacion') return json(res, 200, { results: FACTURAS, summary: facturacionSummary() });
   if (url.pathname === '/api/decisions') return json(res, 200, { results: DECISIONS });
   if (url.pathname === '/api/sources') return json(res, 200, { results: SOURCES });
   if (url.pathname === '/api/copilot') {
