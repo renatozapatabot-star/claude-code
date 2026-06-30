@@ -585,13 +585,20 @@ tbody tr:hover { background: var(--hover); }
 .co-scrim.open { opacity: 1; pointer-events: auto; }
 
 @media (max-width: 560px) {
-  .co-pill { right: 14px; bottom: 14px; }
+  .co-pill { right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); padding: 11px; }
   .co-pill .who, .co-pill .st { display: none; }
-  .co-pill { padding: 11px; }
   .co-pill .orb { width: 30px; height: 30px; }
   .dec { grid-template-columns: 34px 1fr; }
   .dec-right { grid-column: 1 / -1; justify-content: space-between; padding-left: 46px; }
-  .dec-cta { width: 100%; }
+  /* Field mode — one-thumb ops, big targets, full-screen sheets, safe areas */
+  .co-drawer { width: 100vw; }
+  .gate-scrim { align-items: end; padding: 0; }
+  .gate { width: 100vw; max-width: 100vw; border-radius: var(--r-lg) var(--r-lg) 0 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .btn-primary { min-height: 48px; }
+  .gate-foot .btn-primary, #ped-sign, #gate-sign { min-height: 56px; }
+  .dec-cta { width: 100%; min-height: 46px; }
+  .toast { bottom: calc(20px + env(safe-area-inset-bottom, 0px)); left: 12px; right: 12px; transform: translateY(120px); min-width: 0; }
+  .toast.show { transform: none; }
 }
 
 /* Skeleton shimmer — honest loading state (empty != zero, loading != error) */

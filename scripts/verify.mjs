@@ -132,6 +132,18 @@ const overflow = await page.evaluate(() => {
   return { docW, scrollW: document.documentElement.scrollWidth, bad: [...new Set(bad)].slice(0, 10) };
 });
 
+// Mobile field mode — full-screen copilot sheet + bottom-sheet signature gate
+await page.setViewportSize({ width: 375, height: 812 });
+await page.goto(BASE, { waitUntil: 'networkidle' });
+await page.click('#co-pill'); await page.waitForTimeout(380);
+await page.screenshot({ path: `${OUT}/18-copilot-375.png` });
+shots.push('18-copilot-375');
+await page.goto(BASE, { waitUntil: 'networkidle' });
+await page.waitForTimeout(250);
+await page.click('#queue-rows .dec .btn-primary'); await page.waitForTimeout(380);
+await page.screenshot({ path: `${OUT}/19-gate-375.png` });
+shots.push('19-gate-375');
+
 // Login front door (brand panel + living globe) — desktop + mobile
 await page.setViewportSize({ width: 1440, height: 900 });
 await page.goto(BASE + '/login', { waitUntil: 'networkidle' });

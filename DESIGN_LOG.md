@@ -5,6 +5,32 @@ appends here every run.
 
 ---
 
+## 2026-06-30 · Slice 008 — Mobile field mode (usable at the dock at 3 AM)
+
+**Surface audited:** the mobile (375px) experience of the trust loop's primary actions.
+**User + action:** a warehouse/border operator on a phone needs one-thumb GO targets and full-screen
+sheets — no precise tapping, no cramped modals.
+
+**Change made** (`public/styles.css`, responsive only — no new components)
+- **Signature gate → bottom sheet** on phones: full-width, rounded top, safe-area padding; "Firmar y
+  avanzar" is a **56px** target.
+- **Copilot → full-screen sheet** (100vw) on phones; "Pregunta o comanda a CRUZ…" reachable one-thumb.
+- Bigger touch targets: primary buttons ≥48px, GO/sign ≥56px, decision CTAs ≥46px.
+- Safe-area insets on the copilot pill and the undo toast (toast spans the width on phones).
+
+**Screenshot / browser verification:** `node scripts/verify.mjs` → shots 18 (copilot 375) + 19 (gate 375
+bottom sheet). **VERIFY: CLEAN** — 0 console errors, 0 overflow.
+
+**Commands run:** `node scripts/verify.mjs`.
+
+**Proven vs subjective:** *proven* — full-screen sheets + 56px targets render, no overflow. *Subjective* —
+a fully bespoke field view (ambient agent strip, scan CTA) is still a larger future slice for the loop.
+
+**Next smallest design move:** bespoke MobileField view + scan CTA · live `window.claude.complete` copilot —
+carried by the nightly 06:01 loop with the critic gate.
+
+---
+
 ## 2026-06-30 · Slice 007 — Pedimento depth: AI classification reasoning + citations
 
 **Surface audited:** the Pedimento drawer (the legally-serious customs centerpiece for dad/EVCO).
