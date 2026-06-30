@@ -48,6 +48,7 @@ function searchEmbarques(q) {
 function serveStatic(req, res) {
   let rel = decodeURIComponent(req.url.split('?')[0]);
   if (rel === '/') rel = '/index.html';
+  if (rel === '/login' || rel === '/login/') rel = '/login.html';
   const filePath = path.normalize(path.join(PUBLIC, rel));
   if (!filePath.startsWith(PUBLIC)) return json(res, 403, { error: 'forbidden' });
   fs.readFile(filePath, (err, buf) => {

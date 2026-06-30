@@ -5,6 +5,37 @@ appends here every run.
 
 ---
 
+## 2026-06-30 · Slice 004 — Brand front door (Login + living globe)
+
+**Surface audited:** none existed — the app had no entry point. Built the CRUZ Login at `/login`.
+**User + action:** first impression. A new EVCO user lands and instantly feels the brand: serious,
+global, alive — "the operating system of the crossing" — then signs in.
+
+**Change made**
+- Split front door: **dark space brand panel** (the one place dark is justified — it's space) with the
+  real **living globe** (`public/globe.js`, the reference dot-globe: Fibonacci sphere, land mask, US–MX
+  corridor dots, starfield, drag-to-spin) + a red brand glow, the CRUZ mark, and the headline
+  "Una sola pregunta: ¿dónde está mi carga ahora mismo?" + live border wait-times.
+- **White form side** in canon: Entrar (red), email/password, SSO (Google/Microsoft), e.firma del SAT.
+- Bilingual ES/EN (shares `localStorage cruz.lang` with the app); `/login` routed in `server.js`.
+- Disabled the external NASA texture fetch (CDN egress-blocked) — the dot-globe is our canonical look,
+  so it's offline-first and console-clean.
+
+**Screenshot / browser verification:** `node scripts/verify.mjs` → shots 16/17 (login desktop + 375px).
+**VERIFY: CLEAN** — 0 console errors, 0 overflow. Globe paints; form + globe stack cleanly on mobile.
+
+**Commands run:** `node --check server.js`, `node scripts/verify.mjs`.
+
+**Proven vs subjective**
+- *Proven:* login renders, globe animates without console errors, bilingual works, mobile stacks clean.
+- *Subjective / needs founder:* the dot-globe's atmosphere reads **teal/cyan** (reference default) rather
+  than red — beautiful and earth-like, with a red brand glow tying it in, but a cohesion call: tint the
+  globe/corridor arcs red to be strictly white+red, or keep teal earth as "the planet." → Needs founder.
+
+**Next smallest design move:** founder call on globe tint · deepen Pedimento classify reasoning · mobile field mode.
+
+---
+
 ## 2026-06-30 · Slice 003 — Polish to 100/100 (alive & premium)
 
 **Surface audited:** all six surfaces + the persistent copilot (founder chose "polish everything to 100/100").

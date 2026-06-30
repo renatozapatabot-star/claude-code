@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d0f13" />
+  <title>CRUZ — Entrar</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    /* Login front door — the brand's first impression. Dark globe panel + white form. */
+    .login { display: grid; grid-template-columns: 1.05fr .95fr; min-height: 100vh; }
+    .brandpanel { position: relative; background: radial-gradient(120% 100% at 30% 10%, #1a1d24, #0b0d11 60%, #07080b); overflow: hidden; color: #fff; display: flex; flex-direction: column; }
+    cruz-globe { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .bp-grad { position: absolute; inset: 0; background: radial-gradient(80% 60% at 70% 80%, color-mix(in srgb, var(--cruz) 22%, transparent), transparent 70%); pointer-events: none; }
+    .bp-top { position: relative; padding: 32px 40px; display: flex; align-items: center; gap: 12px; }
+    .bp-top .mark { width: 30px; height: 30px; }
+    .bp-top .word { font-weight: 680; letter-spacing: .16em; font-size: 19px; }
+    .bp-top .word b { color: var(--cruz); }
+    .bp-foot { position: relative; margin-top: auto; padding: 40px; max-width: 520px; }
+    .bp-foot h2 { font-size: clamp(26px, 3.4vw, 40px); font-weight: 680; letter-spacing: -.01em; line-height: 1.08; margin: 0 0 14px; }
+    .bp-foot h2 b { color: var(--cruz); font-weight: 680; }
+    .bp-foot p { color: rgba(255,255,255,.66); font-size: 15px; line-height: 1.6; margin: 0; }
+    .bp-ports { position: relative; display: flex; gap: 22px; padding: 0 40px 40px; flex-wrap: wrap; }
+    .bp-port { display: flex; flex-direction: column; gap: 2px; }
+    .bp-port .n { font-family: var(--mono); font-size: 13px; font-weight: 600; }
+    .bp-port .s { font-size: 11px; color: rgba(255,255,255,.5); }
+    .bp-port .s b { color: #34d399; font-weight: 600; }
+
+    .formside { display: flex; flex-direction: column; justify-content: center; padding: 48px clamp(28px, 6vw, 88px); position: relative; }
+    .formside .lang { position: absolute; top: 28px; right: 32px; }
+    .form-wrap { width: 100%; max-width: 380px; margin: 0 auto; }
+    .form-wrap .eyebrow { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+    .form-wrap h1 { font-size: 27px; font-weight: 660; letter-spacing: -.01em; margin: 8px 0 4px; }
+    .form-wrap .sub { color: var(--ink-3); font-size: 14px; margin-bottom: 28px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 12px; font-weight: 600; color: var(--ink-2); margin-bottom: 6px; }
+    .field input { width: 100%; height: 46px; border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--surface); padding: 0 14px; font-size: 14px; color: var(--ink); transition: border-color .12s var(--ease), box-shadow .12s var(--ease); }
+    .field input:focus { outline: none; border-color: var(--cruz); box-shadow: 0 0 0 3px var(--cruz-wash); }
+    .form-wrap .submit { width: 100%; height: 48px; justify-content: center; font-size: 15px; margin-top: 8px; }
+    .form-row { display: flex; align-items: center; justify-content: space-between; margin: 4px 0 8px; font-size: 12.5px; }
+    .form-row a { color: var(--cruz-press); font-weight: 550; }
+    .sso { display: grid; gap: 10px; margin: 18px 0; }
+    .sso .btn { height: 46px; justify-content: center; }
+    .divider { display: flex; align-items: center; gap: 12px; color: var(--ink-4); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin: 20px 0; }
+    .divider::before, .divider::after { content: ""; height: 1px; background: var(--line); flex: 1; }
+    .efirma { display: flex; align-items: center; gap: 8px; justify-content: center; font-size: 12px; color: var(--ink-3); margin-top: 18px; }
+    .efirma svg { width: 15px; height: 15px; color: var(--ok); }
+
+    @media (max-width: 880px) {
+      .login { grid-template-columns: 1fr; }
+      .brandpanel { min-height: 300px; }
+      .bp-foot { padding: 24px; } .bp-foot h2 { font-size: 24px; } .bp-ports { display: none; }
+      .formside { padding: 36px 22px 48px; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <symbol id="i-mark" viewBox="0 0 32 32"><rect x="2" y="2" width="28" height="28" rx="7" fill="currentColor"/><path d="M16 7.5v17M9 13.2h14" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="16" cy="16" r="2.4" fill="#fff"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v6c0 4 3 6.5 7 9 4-2.5 7-5 7-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  </defs></svg>
+
+  <div class="login">
+    <section class="brandpanel">
+      <cruz-globe dim="0.95"></cruz-globe>
+      <div class="bp-grad"></div>
+      <div class="bp-top">
+        <svg class="mark" style="color:var(--cruz)"><use href="#i-mark"/></svg>
+        <span class="word">C<b>R</b>UZ</span>
+      </div>
+      <div class="bp-foot">
+        <h2 data-i18n="loginH">Una sola pregunta:<br><b>¿dónde está mi carga ahora mismo?</b></h2>
+        <p data-i18n="loginP">El sistema operativo del cruce. CRUZ prepara cada pedimento — clasificado, validado y costeado. La firma legal es siempre tuya.</p>
+      </div>
+      <div class="bp-ports">
+        <div class="bp-port"><span class="n">Nuevo Laredo</span><span class="s"><b>38 min</b> · 74% verde</span></div>
+        <div class="bp-port"><span class="n">El Paso</span><span class="s"><b>22 min</b> · 81% verde</span></div>
+        <div class="bp-port"><span class="n">Otay Mesa</span><span class="s">51 min · 60% verde</span></div>
+      </div>
+    </section>
+
+    <section class="formside">
+      <div class="lang" role="group" aria-label="Idioma">
+        <button data-lang="es" class="on">ES</button><button data-lang="en">EN</button>
+      </div>
+      <div class="form-wrap">
+        <div class="eyebrow" data-i18n="tagline">El Sistema Operativo Transfronterizo</div>
+        <h1 data-i18n="loginTitle">Entrar</h1>
+        <div class="sub" data-i18n="loginSub">Accede a la operación de EVCO · Patente 3801.</div>
+        <form id="login-form" autocomplete="on">
+          <div class="field">
+            <label for="email" data-i18n="loginEmail">Correo</label>
+            <input id="email" type="email" value="operaciones@evco.mx" autocomplete="username" />
+          </div>
+          <div class="field">
+            <label for="pass" data-i18n="loginPass">Contraseña</label>
+            <input id="pass" type="password" value="cruz-demo" autocomplete="current-password" />
+          </div>
+          <div class="form-row">
+            <span></span><a href="#" data-i18n="loginForgot">¿Olvidaste tu contraseña?</a>
+          </div>
+          <button class="btn btn-primary submit" type="submit"><span data-i18n="loginEnter">Entrar</span><svg class="ico"><use href="#i-arrow"/></svg></button>
+        </form>
+        <div class="divider" data-i18n="loginOr">o continúa con</div>
+        <div class="sso">
+          <button class="btn" id="sso-g"><span data-i18n="loginGoogle">Continuar con Google</span></button>
+          <button class="btn" id="sso-m"><span data-i18n="loginMs">Continuar con Microsoft</span></button>
+        </div>
+        <div class="efirma"><svg><use href="#i-shield"/></svg> <span data-i18n="loginEfirma">e.firma del SAT · verificada</span></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="/globe.js"></script>
+  <script>
+    // Minimal bilingual + enter-the-app wiring. Persists language for the app.
+    const DICT = {
+      es: { loginH: 'Una sola pregunta:<br><b>¿dónde está mi carga ahora mismo?</b>', loginP: 'El sistema operativo del cruce. CRUZ prepara cada pedimento — clasificado, validado y costeado. La firma legal es siempre tuya.', tagline: 'El Sistema Operativo Transfronterizo', loginTitle: 'Entrar', loginSub: 'Accede a la operación de EVCO · Patente 3801.', loginEmail: 'Correo', loginPass: 'Contraseña', loginForgot: '¿Olvidaste tu contraseña?', loginEnter: 'Entrar', loginOr: 'o continúa con', loginGoogle: 'Continuar con Google', loginMs: 'Continuar con Microsoft', loginEfirma: 'e.firma del SAT · verificada' },
+      en: { loginH: 'One question:<br><b>where is my cargo right now?</b>', loginP: 'The operating system of the crossing. CRUZ prepares every pedimento — classified, validated, costed. The legal signature is always yours.', tagline: 'The Cross-Border Operating System', loginTitle: 'Sign in', loginSub: 'Access the EVCO operation · Patente 3801.', loginEmail: 'Email', loginPass: 'Password', loginForgot: 'Forgot your password?', loginEnter: 'Sign in', loginOr: 'or continue with', loginGoogle: 'Continue with Google', loginMs: 'Continue with Microsoft', loginEfirma: 'SAT e.firma · verified' },
+    };
+    let LANG = (() => { try { return localStorage.getItem('cruz.lang') || 'es'; } catch { return 'es'; } })();
+    function apply() {
+      document.documentElement.lang = LANG;
+      document.querySelectorAll('[data-i18n]').forEach((el) => { el.innerHTML = DICT[LANG][el.dataset.i18n] ?? el.innerHTML; });
+      document.querySelectorAll('.lang button').forEach((b) => b.classList.toggle('on', b.dataset.lang === LANG));
+    }
+    document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('click', () => { LANG = b.dataset.lang; try { localStorage.setItem('cruz.lang', LANG); } catch {} apply(); }));
+    const enter = (e) => { e && e.preventDefault(); window.location.href = '/'; };
+    document.getElementById('login-form').addEventListener('submit', enter);
+    document.getElementById('sso-g').addEventListener('click', enter);
+    document.getElementById('sso-m').addEventListener('click', enter);
+    apply();
+  </script>
+</body>
+</html>

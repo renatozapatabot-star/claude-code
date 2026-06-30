@@ -132,6 +132,18 @@ const overflow = await page.evaluate(() => {
   return { docW, scrollW: document.documentElement.scrollWidth, bad: [...new Set(bad)].slice(0, 10) };
 });
 
+// Login front door (brand panel + living globe) — desktop + mobile
+await page.setViewportSize({ width: 1440, height: 900 });
+await page.goto(BASE + '/login', { waitUntil: 'networkidle' });
+await page.waitForTimeout(900); // let the globe paint a few frames
+await page.screenshot({ path: `${OUT}/16-login-desktop.png` });
+shots.push('16-login-desktop');
+await page.setViewportSize({ width: 375, height: 812 });
+await page.goto(BASE + '/login', { waitUntil: 'networkidle' });
+await page.waitForTimeout(700);
+await page.screenshot({ path: `${OUT}/17-login-375.png`, fullPage: true });
+shots.push('17-login-375');
+
 await browser.close();
 server.close();
 console.log('SHOTS:', shots.join(', '));
