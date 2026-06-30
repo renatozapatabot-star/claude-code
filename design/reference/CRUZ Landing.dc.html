@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  h1,h2,h3{font-family:'Archivo','Hanken Grotesk',sans-serif;letter-spacing:-.02em;}
+  :root{
+    --bg:#F1F4F9;--surface:#FFFFFF;--surface2:#EFF3F8;--line:#E2E8F0;--line2:#D3DCE7;
+    --ink:#0C1925;--ink2:#2C4053;--muted:#64758A;--muted2:#8A99A9;
+    --cyan:#0E7490;--green:#047857;
+    --hero:#06090E;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+  ::selection{background:rgba(34,211,238,.25);}
+  a{text-decoration:none;color:inherit;}
+  ::-webkit-scrollbar{width:9px;}::-webkit-scrollbar-thumb{background:#cdd8e3;border-radius:5px;}
+  @keyframes dotBlink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes rise{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .l-hero{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center;}
+  .l-two{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;}
+  .l-wl{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+  .l-feat{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;grid-auto-rows:minmax(148px,auto);}
+  .l-feat > a{grid-column:span 2;}
+  .l-feat > a:nth-child(1),.l-feat > a:nth-child(4),.l-feat > a:nth-child(6){grid-column:span 4;}
+  @media (max-width:860px){
+    .l-hero,.l-two,.l-wl{grid-template-columns:1fr !important;}
+    .l-feat{grid-template-columns:1fr !important;}
+    .l-feat > a{grid-column:auto !important;}
+    .l-navlinks{display:none !important;}
+    .l-hero h1{font-size:42px !important;}
+    .l-globe{height:320px !important;}
+    .l-sec{padding-left:22px !important;padding-right:22px !important;}
+    .l-hero{padding:40px 22px 50px !important;}
+  }
+</style>
+</helmet>
+<div style="min-height:100vh;background:var(--bg);">
+
+  <!-- ===== NAV ===== -->
+  <nav style="position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:18px;padding:16px 40px;background:rgba(241,244,249,.8);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);">
+    <a href="CRUZ%20Landing.dc.html" style="display:flex;align-items:center;gap:11px;">
+      <svg width="34" height="34" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="cz2" x1="7" y1="9" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#22D3EE"/><stop offset=".5" stop-color="#0891B2"/><stop offset="1" stop-color="#0E7490"/></linearGradient></defs><path d="M34 10.5 A16.5 16.5 0 1 0 34 37.5" stroke="url(#cz2)" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M14 30 L20.5 23.5 L25 28 L32.5 16" stroke="url(#cz2)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M26.5 15.5 L33.5 14.5 L32.8 21.5" stroke="url(#cz2)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      <span style="font-size:20px;font-weight:800;letter-spacing:-.02em;">CRUZ</span>
+    </a>
+    <div class="l-navlinks" style="display:flex;align-items:center;gap:28px;margin-left:26px;">
+      <span style="font-size:13.5px;font-weight:500;color:var(--muted);cursor:pointer;" style-hover="color:var(--ink)">{{ t.nav1 }}</span>
+      <span style="font-size:13.5px;font-weight:500;color:var(--muted);cursor:pointer;" style-hover="color:var(--ink)">{{ t.nav2 }}</span>
+      <span style="font-size:13.5px;font-weight:500;color:var(--muted);cursor:pointer;" style-hover="color:var(--ink)">{{ t.nav3 }}</span>
+      <span style="font-size:13.5px;font-weight:500;color:var(--muted);cursor:pointer;" style-hover="color:var(--ink)">{{ t.nav4 }}</span>
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
+      <div style="display:flex;gap:3px;padding:3px;border-radius:9px;background:var(--surface2);border:1px solid var(--line);"><button onClick="{{ setEn }}" style="border:none;border-radius:6px;padding:4px 9px;font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;background:{{ enBg }};color:{{ enColor }};">EN</button><button onClick="{{ setEs }}" style="border:none;border-radius:6px;padding:4px 9px;font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;background:{{ esBg }};color:{{ esColor }};">ES</button></div><a href="CRUZ%20Login.dc.html" style="font-size:13.5px;font-weight:600;color:var(--ink);padding:9px 8px;">{{ t.login }}</a>
+      <a href="CRUZ%20Login.dc.html" style="font-size:13.5px;font-weight:700;color:#fff;background:#0C1925;padding:10px 18px;border-radius:11px;box-shadow:0 8px 22px rgba(8,116,144,.25);" style-hover="opacity:.92">{{ t.request }}</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO (dark) ===== -->
+  <section style="position:relative;background:radial-gradient(120% 90% at 80% 10%,#0B1622,#06090E 70%);color:#E6EDF3;overflow:hidden;">
+    <div class="l-hero" style="max-width:1280px;margin:0 auto;padding:70px 40px 80px;">
+      <!-- copy -->
+      <div style="animation:rise .7s ease both;">
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:999px;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.2);">
+          <span style="width:6px;height:6px;border-radius:50%;background:#34D399;animation:dotBlink 1.6s infinite;"></span>
+          <span style="font-size:12px;font-weight:600;color:#7DD3E8;letter-spacing:.01em;">{{ t.pill }}</span>
+        </div>
+        <h1 style="font-size:60px;line-height:1.02;font-weight:900;letter-spacing:-.03em;margin:22px 0 0;">{{ t.heroA }}<br>{{ t.heroB }}<span style="background:linear-gradient(120deg,#22D3EE,#34D399);-webkit-background-clip:text;background-clip:text;color:transparent;">{{ t.heroC }}</span></h1>
+        <p style="font-size:18px;line-height:1.6;color:#9fb1c2;max-width:540px;margin:22px 0 0;">{{ t.heroSub }}</p>
+        <div style="display:flex;align-items:center;gap:14px;margin-top:34px;">
+          <a href="CRUZ.dc.html" style="display:inline-flex;align-items:center;gap:9px;font-size:15px;font-weight:700;color:#04070b;background:linear-gradient(135deg,#22D3EE,#34D399);padding:15px 26px;border-radius:13px;box-shadow:0 14px 40px rgba(34,211,238,.28);" style-hover="opacity:.94">{{ t.ctaEnter }}<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <button onClick="{{ openDemo }}" style="display:inline-flex;align-items:center;gap:9px;font-size:15px;font-weight:600;color:#cdd8e3;padding:15px 22px;border-radius:13px;border:1px solid #1d2c3a;background:transparent;cursor:pointer;font-family:inherit;" style-hover="border-color:#2a3f52"><svg width="15" height="15" viewBox="0 0 24 24" fill="#22D3EE" stroke="none"><path d="M8 5v14l11-7z"/></svg>{{ t.ctaWatch }}</button>
+        </div>
+        <div style="display:flex;gap:30px;margin-top:42px;">
+          <div><div style="font-family:'Space Mono',monospace;font-size:26px;font-weight:700;">100%</div><div style="font-size:12.5px;color:#6f8093;margin-top:2px;">{{ t.stat1 }}</div></div>
+          <div style="width:1px;background:#16222d;"></div>
+          <div><div style="font-family:'Space Mono',monospace;font-size:26px;font-weight:700;">0</div><div style="font-size:12.5px;color:#6f8093;margin-top:2px;">{{ t.stat2 }}</div></div>
+          <div style="width:1px;background:#16222d;"></div>
+          <div><div style="font-family:'Space Mono',monospace;font-size:26px;font-weight:700;color:#34D399;">5-yr</div><div style="font-size:12.5px;color:#6f8093;margin-top:2px;">{{ t.stat3 }}</div></div>
+        </div>
+      </div>
+      <!-- globe -->
+      <div class="l-globe" style="position:relative;height:520px;animation:rise .9s ease both;">
+        <canvas ref="{{ setGlobe }}" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+        <div style="position:absolute;top:24px;left:8px;display:flex;align-items:center;gap:9px;padding:11px 15px;border-radius:14px;background:rgba(8,12,18,.66);border:1px solid #16222d;backdrop-filter:blur(8px);animation:floaty 6s ease-in-out infinite;">
+          <span style="width:8px;height:8px;border-radius:50%;background:#34D399;box-shadow:0 0 10px #34D399;"></span>
+          <div><div style="font-size:9.5px;font-weight:700;letter-spacing:.1em;color:#6f8093;text-transform:uppercase;">{{ t.idxLabel }}</div><div style="display:flex;align-items:baseline;gap:6px;"><span style="font-family:'Space Mono',monospace;font-size:20px;font-weight:700;">{{ crossIndex }}</span><span style="font-size:11px;color:#34D399;">{{ crossDelta }}</span></div></div>
+        </div>
+        <div style="position:absolute;bottom:118px;right:14px;width:290px;padding:16px 18px;border-radius:16px;background:rgba(8,12,18,.74);border:1px solid #1b2a38;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 24px 60px rgba(0,0,0,.5);animation:floaty 7s ease-in-out infinite .4s;">
+          <div style="font-size:9.5px;font-weight:700;letter-spacing:.14em;color:#6f8093;text-transform:uppercase;">CRUZ Command Center</div>
+          <div style="display:flex;align-items:center;gap:9px;margin-top:6px;"><span style="width:16px;height:2px;background:#22D3EE;border-radius:2px;"></span><span style="font-family:'Archivo',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.01em;color:#EAF4F8;">Global Hub</span></div>
+          <div style="font-size:11.5px;color:#9fb1c2;line-height:1.5;margin-top:9px;">Live trade lanes across six corridors — CRUZ watches every crossing and surfaces the few that need you.</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:13px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08);">
+            <div style="display:flex;align-items:center;gap:9px;"><span style="width:8px;height:8px;border-radius:50%;background:#34D399;box-shadow:0 0 8px #34D399;flex:0 0 8px;"></span><span style="font-size:11.5px;color:#C2D2DF;">AI-optimized routes</span></div>
+            <div style="display:flex;align-items:center;gap:9px;"><span style="width:16px;height:2px;border-radius:2px;background:linear-gradient(90deg,#22D3EE,#FBBF24);flex:0 0 16px;"></span><span style="font-size:11.5px;color:#C2D2DF;">Predicted delays <span style="color:#7d8ea0;">(teal → amber)</span></span></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:40px;right:0px;display:flex;align-items:center;gap:9px;padding:11px 15px;border-radius:14px;background:rgba(8,12,18,.66);border:1px solid #16222d;backdrop-filter:blur(8px);animation:floaty 6s ease-in-out infinite .8s;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="1.8"><path d="M12 3a9 9 0 1 0 9 9"/><circle cx="12" cy="12" r="2.4" fill="#22D3EE" stroke="none"/></svg>
+          <div><div style="font-size:9.5px;font-weight:700;letter-spacing:.1em;color:#6f8093;text-transform:uppercase;">{{ t.clearedToday }}</div><div style="font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:#22D3EE;">{{ cleared }}</div></div>
+        </div>
+      </div>
+    </div>
+    <!-- logos strip -->
+    <div style="border-top:1px solid #11181f;">
+      <div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:34px;padding:20px 40px;flex-wrap:wrap;">
+        <span style="font-size:11.5px;font-weight:600;letter-spacing:.08em;color:#56657a;text-transform:uppercase;">{{ t.rails }}</span>
+        <span style="font-family:'Space Mono',monospace;font-size:14px;font-weight:600;color:#7a8b9c;">SAT</span>
+        <span style="font-family:'Space Mono',monospace;font-size:14px;font-weight:600;color:#7a8b9c;">VUCEM</span>
+        <span style="font-family:'Space Mono',monospace;font-size:14px;font-weight:600;color:#7a8b9c;">CBP&nbsp;ACE</span>
+        <span style="font-family:'Space Mono',monospace;font-size:14px;font-weight:600;color:#7a8b9c;">Ventanilla&nbsp;Única</span>
+        <span style="font-family:'Space Mono',monospace;font-size:14px;font-weight:600;color:#7a8b9c;">DOF</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AGENTIC STORY ===== -->
+  <section style="max-width:1280px;margin:0 auto;padding:96px 40px;">
+    <div style="text-align:center;max-width:720px;margin:0 auto 56px;">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase;">{{ t.agentKi }}</div>
+      <h2 style="font-size:42px;font-weight:800;letter-spacing:-.02em;margin:14px 0 0;line-height:1.1;">{{ t.agentH }}</h2>
+      <p style="font-size:17px;line-height:1.6;color:var(--muted);margin:18px 0 0;">{{ t.agentSub }}</p>
+    </div>
+    <div class="l-two" style="gap:32px;">
+      <!-- run visual -->
+      <div style="background:#0C1925;border-radius:22px;padding:28px 30px;color:#E6EDF3;box-shadow:0 30px 70px rgba(12,25,37,.2);">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:20px;"><span style="width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,#0891B2,#059669);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3a9 9 0 1 0 9 9"/><circle cx="12" cy="12" r="2.2" fill="#fff" stroke="none"/></svg></span><div><div style="font-size:13px;font-weight:700;">{{ t.clearing }}</div><div style="font-size:11px;color:#6f8093;">{{ t.autonomous }}</div></div></div>
+        <sc-for list="{{ runSteps }}" as="s" hint-placeholder-count="6">
+          <div style="display:flex;align-items:center;gap:13px;padding:9px 0;">
+            <span style="width:22px;height:22px;border-radius:50%;background:{{ s.bg }};border:2px solid {{ s.bd }};display:flex;align-items:center;justify-content:center;">{{ s.ic }}</span>
+            <span style="flex:1;font-size:13.5px;font-weight:500;color:{{ s.tc }};">{{ s.label }}</span>
+            <span style="font-family:'Space Mono',monospace;font-size:11px;color:#6f8093;">{{ s.meta }}</span>
+          </div>
+        </sc-for>
+        <div style="margin-top:14px;padding:14px;border-radius:14px;border:1.5px solid rgba(34,211,238,.35);background:rgba(34,211,238,.06);">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:.06em;color:#7DD3E8;text-transform:uppercase;">{{ t.judgment }}</div>
+          <div style="font-size:13px;color:#cdd8e3;line-height:1.5;margin-top:6px;">{{ t.gate }}</div>
+        </div>
+      </div>
+      <!-- principles -->
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div style="display:flex;gap:15px;"><span style="width:42px;height:42px;border-radius:12px;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:0 0 42px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7490" stroke-width="1.8"><path d="M4 7h16M4 12h10M4 17h7"/><circle cx="18" cy="16" r="3"/></svg></span><div><div style="font-size:16px;font-weight:700;">{{ t.p1t }}</div><div style="font-size:14px;color:var(--muted);line-height:1.55;margin-top:3px;">{{ t.p1d }}</div></div></div>
+        <div style="display:flex;gap:15px;"><span style="width:42px;height:42px;border-radius:12px;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:0 0 42px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7490" stroke-width="1.8"><path d="M20 6L9 17l-5-5"/></svg></span><div><div style="font-size:16px;font-weight:700;">{{ t.p2t }}</div><div style="font-size:14px;color:var(--muted);line-height:1.55;margin-top:3px;">{{ t.p2d }}</div></div></div>
+        <div style="display:flex;gap:15px;"><span style="width:42px;height:42px;border-radius:12px;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:0 0 42px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7490" stroke-width="1.8"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15"/></svg></span><div><div style="font-size:16px;font-weight:700;">{{ t.p3t }}</div><div style="font-size:14px;color:var(--muted);line-height:1.55;margin-top:3px;">{{ t.p3d }}</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURE GRID ===== -->
+  <section style="background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+    <div style="max-width:1280px;margin:0 auto;padding:80px 40px;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:44px;flex-wrap:wrap;">
+        <div><div style="font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase;">{{ t.railKi }}</div><h2 style="font-size:38px;font-weight:800;letter-spacing:-.02em;margin:12px 0 0;">{{ t.railH }}</h2></div>
+        <a href="CRUZ.dc.html" style="font-size:14px;font-weight:600;color:var(--cyan);display:inline-flex;align-items:center;gap:6px;">{{ t.explore }}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="l-feat">
+        <sc-for list="{{ features }}" as="f" hint-placeholder-count="6">
+          <a href="CRUZ.dc.html" style="display:block;padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--bg);transition:all .2s;" style-hover="border-color:var(--cyan);background:#fff">
+            <span style="width:44px;height:44px;border-radius:13px;background:{{ f.tint }};display:flex;align-items:center;justify-content:center;">{{ f.icon }}</span>
+            <div style="font-size:17px;font-weight:700;margin-top:16px;letter-spacing:-.01em;">{{ f.title }}</div>
+            <div style="font-size:13.5px;color:var(--muted);line-height:1.55;margin-top:7px;">{{ f.desc }}</div>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRUST (oversight) ===== -->
+  <section style="background:var(--surface);border-top:1px solid var(--line);">
+    <div style="max-width:1280px;margin:0 auto;padding:80px 40px;">
+      <div style="max-width:680px;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase;">{{ trustKi }}</div>
+        <h2 style="font-size:34px;font-weight:800;letter-spacing:-.02em;margin:12px 0 0;line-height:1.12;">{{ trustH }}</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:34px;">
+        <sc-for list="{{ trust }}" as="c" hint-placeholder-count="4">
+          <div style="border:1px solid var(--line);border-radius:18px;background:var(--bg);padding:22px;">
+            <span style="width:40px;height:40px;border-radius:12px;background:rgba(8,116,144,.08);border:1px solid rgba(8,116,144,.2);display:flex;align-items:center;justify-content:center;" dangerouslySetInnerHTML="{{ c.icon }}"></span>
+            <div style="font-size:16px;font-weight:800;letter-spacing:-.01em;margin-top:14px;">{{ c.h }}</div>
+            <div style="font-size:13.5px;color:var(--muted);line-height:1.55;margin-top:7px;">{{ c.b }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VS THE OLD WAY ===== -->
+  <section style="background:radial-gradient(120% 100% at 20% 0%,#0B1622,#06090E 72%);color:#E6EDF3;border-top:1px solid #11181f;">
+    <div style="max-width:1280px;margin:0 auto;padding:92px 40px;">
+      <div style="text-align:center;max-width:760px;margin:0 auto 46px;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.16em;color:#7DD3E8;text-transform:uppercase;">{{ cmp.ki }}</div>
+        <h2 style="font-size:42px;font-weight:800;letter-spacing:-.02em;margin:14px 0 0;line-height:1.1;">{{ cmp.h }}</h2>
+      </div>
+      <div style="max-width:1000px;margin:0 auto;border:1px solid #1a2733;border-radius:20px;overflow:hidden;background:rgba(8,12,18,.5);">
+        <div style="display:grid;grid-template-columns:1.1fr 1fr 1fr;border-bottom:1px solid #1a2733;">
+          <div style="padding:18px 22px;"></div>
+          <div style="padding:18px 22px;border-left:1px solid #1a2733;"><div style="font-size:13px;font-weight:700;color:#8295a8;">{{ cmp.old }}</div><div style="font-family:'Space Mono',monospace;font-size:10px;color:#56657a;margin-top:4px;">{{ cmp.oldName }}</div></div>
+          <div style="padding:18px 22px;border-left:1px solid rgba(34,211,238,.3);background:rgba(34,211,238,.05);"><div style="display:flex;align-items:center;gap:8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="1.9"><path d="M12 3a9 9 0 1 0 9 9"/><circle cx="12" cy="12" r="2.4" fill="#22D3EE" stroke="none"/></svg><span style="font-size:14px;font-weight:800;color:#67E8F9;">{{ cmp.neu }}</span></div></div>
+        </div>
+        <sc-for list="{{ cmp.rows }}" as="r" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:1.1fr 1fr 1fr;border-top:1px solid #131e28;">
+            <div style="padding:17px 22px;font-size:13px;font-weight:700;color:#cdd8e3;display:flex;align-items:center;">{{ r.l }}</div>
+            <div style="padding:17px 22px;border-left:1px solid #131e28;font-size:12.5px;color:#7a8b9c;display:flex;align-items:flex-start;gap:9px;line-height:1.45;"><span style="color:#516074;font-weight:700;flex:0 0 auto;margin-top:1px;">✕</span><span>{{ r.o }}</span></div>
+            <div style="padding:17px 22px;border-left:1px solid rgba(34,211,238,.18);background:rgba(34,211,238,.03);font-size:12.5px;color:#E6EDF3;display:flex;align-items:flex-start;gap:9px;line-height:1.45;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2.6" style="flex:0 0 15px;margin-top:1px;"><path d="M20 6L9 17l-5-5"/></svg><span>{{ r.n }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DUAL AUDIENCE ===== -->
+  <section style="max-width:1280px;margin:0 auto;padding:92px 40px;">
+    <div style="text-align:center;max-width:700px;margin:0 auto 46px;">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase;">{{ aud.ki }}</div>
+      <h2 style="font-size:38px;font-weight:800;letter-spacing:-.02em;margin:14px 0 0;line-height:1.1;">{{ aud.h }}</h2>
+    </div>
+    <div class="l-two" style="gap:24px;">
+      <div style="position:relative;overflow:hidden;background:radial-gradient(120% 140% at 100% 0%,#13243a,#0b1622 72%);border-radius:22px;padding:36px;color:#E6EDF3;box-shadow:0 30px 70px rgba(12,25,37,.22);">
+        <span style="position:absolute;top:28px;right:30px;width:44px;height:44px;border-radius:13px;background:rgba(34,211,238,.1);display:flex;align-items:center;justify-content:center;color:#67E8F9;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3"/></svg></span>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.12em;color:#7DD3E8;text-transform:uppercase;">{{ aud.bTag }}</div>
+        <h3 style="font-size:26px;font-weight:800;letter-spacing:-.02em;margin:12px 0 0;line-height:1.14;max-width:340px;">{{ aud.bH }}</h3>
+        <p style="font-size:14.5px;color:#9fb1c2;line-height:1.6;margin:14px 0 0;">{{ aud.bSub }}</p>
+        <a href="CRUZ.dc.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-size:14px;font-weight:700;color:#04070b;background:linear-gradient(135deg,#22D3EE,#34D399);padding:13px 22px;border-radius:12px;" style-hover="opacity:.93">{{ aud.bCta }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div style="position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:36px;box-shadow:0 30px 70px rgba(40,60,90,.08);">
+        <span style="position:absolute;top:28px;right:30px;width:44px;height:44px;border-radius:13px;background:rgba(8,116,144,.09);display:flex;align-items:center;justify-content:center;color:#0E7490;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase;">{{ aud.sTag }}</div>
+        <h3 style="font-size:26px;font-weight:800;letter-spacing:-.02em;margin:12px 0 0;line-height:1.14;color:var(--ink);max-width:360px;">{{ aud.sH }}</h3>
+        <p style="font-size:14.5px;color:var(--muted);line-height:1.6;margin:14px 0 0;">{{ aud.sSub }}</p>
+        <a href="CRUZ.dc.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-size:14px;font-weight:700;color:#fff;background:#0C1925;padding:13px 22px;border-radius:12px;" style-hover="opacity:.93">{{ aud.sCta }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHITE LABEL ===== -->
+  <section class="l-wl l-sec" style="max-width:1280px;margin:0 auto;padding:90px 40px;gap:48px;">
+    <div>
+      <div style="font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase;">{{ t.wlKi }}</div>
+      <h2 style="font-size:38px;font-weight:800;letter-spacing:-.02em;margin:12px 0 0;line-height:1.12;">{{ t.wlH1 }}<br>{{ t.wlH2 }}</h2>
+      <p style="font-size:16px;line-height:1.65;color:var(--muted);margin:18px 0 0;max-width:480px;">{{ t.wlSub }}</p>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:26px;">
+        <div style="display:flex;align-items:center;gap:11px;font-size:14.5px;color:var(--ink2);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>{{ t.wl1 }}</div>
+        <div style="display:flex;align-items:center;gap:11px;font-size:14.5px;color:var(--ink2);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>{{ t.wl2 }}</div>
+        <div style="display:flex;align-items:center;gap:11px;font-size:14.5px;color:var(--ink2);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>{{ t.wl3 }}</div>
+      </div>
+      <a href="CRUZ.dc.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:30px;font-size:14.5px;font-weight:700;color:#fff;background:#0C1925;padding:13px 22px;border-radius:12px;" style-hover="opacity:.93">{{ t.wlCta }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div style="position:relative;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 30px 70px rgba(40,60,90,.1);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;"><div style="width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#6366F1,#22D3EE);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;">F</div><div><div style="font-size:14px;font-weight:700;">Frontera Brokers</div><div style="font-size:10.5px;color:var(--muted);">Powered by CRUZ</div></div><span style="margin-left:auto;font-size:10px;font-weight:700;color:#047857;background:rgba(16,185,129,.12);border-radius:6px;padding:3px 8px;">LIVE</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;">
+        <div style="padding:14px;border-radius:13px;background:var(--bg);border:1px solid var(--line);"><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">{{ t.active }}</div><div style="font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:#6366F1;margin-top:5px;">1,247</div></div>
+        <div style="padding:14px;border-radius:13px;background:var(--bg);border:1px solid var(--line);"><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">{{ t.clearedT }}</div><div style="font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:#047857;margin-top:5px;">{{ cleared }}</div></div>
+      </div>
+      <div style="margin-top:11px;padding:14px;border-radius:13px;background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.2);"><div style="font-size:11px;font-weight:600;color:#4F46E5;">CRUZ AI · for Frontera</div><div style="font-size:13px;color:var(--ink2);margin-top:4px;line-height:1.45;">{{ t.wlAi }}</div></div>
+    </div>
+  </section>
+
+  <!-- ===== ROI CALCULATOR (closer) ===== -->
+  <section style="background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+    <div class="l-wl l-sec" style="max-width:1280px;margin:0 auto;padding:80px 40px;gap:48px;display:grid;grid-template-columns:1fr 1fr;align-items:center;">
+      <div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase;">{{ t.roiKi }}</div>
+        <h2 style="font-size:38px;font-weight:800;letter-spacing:-.02em;margin:12px 0 0;line-height:1.12;">{{ t.roiH }}</h2>
+        <p style="font-size:16px;line-height:1.65;color:var(--muted);margin:16px 0 0;max-width:460px;">{{ t.roiSub }}</p>
+        <div style="margin-top:26px;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;"><span style="font-size:13px;font-weight:600;color:var(--ink2);">{{ t.roiVol }}</span><span style="font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:var(--cyan);">{{ roiVol }}</span></div>
+          <input type="range" min="50" max="3000" step="50" value="{{ roiRaw }}" onInput="{{ onRoi }}" style="width:100%;margin-top:10px;accent-color:#0E7490;" aria-label="{{ t.roiVol }}" />
+        </div>
+      </div>
+      <div style="background:radial-gradient(120% 100% at 50% 0%,#0B1622,#06090E);border-radius:20px;padding:30px;color:#E6EDF3;box-shadow:0 30px 70px rgba(12,25,37,.18);">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.1em;color:#6f8093;text-transform:uppercase;">{{ t.roiYour }}</div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-top:10px;"><span style="font-family:'Space Mono',monospace;font-size:44px;font-weight:800;background:linear-gradient(120deg,#22D3EE,#34D399);-webkit-background-clip:text;background-clip:text;color:transparent;">{{ roiSaved }}</span><span style="font-size:14px;color:#9fb1c2;">/{{ t.roiYr }}</span></div>
+        <div style="font-size:13px;color:#9fb1c2;margin-top:4px;">{{ t.roiRecovered }}</div>
+        <div style="height:1px;background:#16222d;margin:22px 0;"></div>
+        <div style="display:flex;flex-direction:column;gap:13px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:13px;color:#9fb1c2;">{{ t.roiHours }}</span><span style="font-family:'Space Mono',monospace;font-size:18px;font-weight:700;">{{ roiHours }}</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:13px;color:#9fb1c2;">{{ t.roiAuto }}</span><span style="font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:#34D399;">{{ roiAuto }}</span></div>
+        </div>
+        <a href="CRUZ%20Login.dc.html" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:24px;font-size:14px;font-weight:700;color:#04070b;background:linear-gradient(135deg,#22D3EE,#34D399);padding:14px;border-radius:12px;">{{ t.roiCta }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section style="background:radial-gradient(120% 120% at 50% 0%,#0B1622,#06090E);color:#E6EDF3;">
+    <div style="max-width:900px;margin:0 auto;padding:96px 40px;text-align:center;">
+      <h2 style="font-size:48px;font-weight:900;letter-spacing:-.03em;line-height:1.05;">{{ t.ctaH }}</h2>
+      <p style="font-size:18px;color:#9fb1c2;line-height:1.6;margin:20px auto 0;max-width:560px;">{{ t.ctaSub }}</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-top:36px;">
+        <a href="CRUZ%20Login.dc.html" style="display:inline-flex;align-items:center;gap:9px;font-size:15px;font-weight:700;color:#04070b;background:linear-gradient(135deg,#22D3EE,#34D399);padding:16px 28px;border-radius:13px;box-shadow:0 14px 40px rgba(34,211,238,.28);">{{ t.request }}<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a href="CRUZ.dc.html" style="font-size:15px;font-weight:600;color:#cdd8e3;padding:16px 24px;border-radius:13px;border:1px solid #1d2c3a;">{{ t.ctaEnter }}</a>
+      </div>
+    </div>
+    <div style="border-top:1px solid #11181f;">
+      <div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:26px 40px;flex-wrap:wrap;gap:16px;">
+        <div style="display:flex;align-items:center;gap:10px;"><svg width="24" height="24" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="cz3" x1="7" y1="9" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#22D3EE"/><stop offset=".5" stop-color="#0891B2"/><stop offset="1" stop-color="#0E7490"/></linearGradient></defs><path d="M34 10.5 A16.5 16.5 0 1 0 34 37.5" stroke="url(#cz3)" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M14 30 L20.5 23.5 L25 28 L32.5 16" stroke="url(#cz3)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M26.5 15.5 L33.5 14.5 L32.8 21.5" stroke="url(#cz3)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span style="font-size:15px;font-weight:800;">CRUZ</span><span style="font-size:12px;color:#56657a;margin-left:6px;">{{ t.footTag }}</span></div>
+        <span style="font-size:12px;color:#56657a;">{{ t.foot }}</span>
+      </div>
+    </div>
+  </section>
+  <sc-if value="{{ demoOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeDemo }}" style="position:fixed;inset:0;z-index:80;background:rgba(4,7,11,.74);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:24px;animation:rise .3s ease both;">
+    <div onClick="{{ stopProp }}" style="width:560px;max-width:100%;background:linear-gradient(168deg,#101D2C,#0A1320);border:1px solid rgba(255,255,255,.1);border-radius:24px;box-shadow:0 40px 110px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06);overflow:hidden;">
+      <div style="height:4px;background:linear-gradient(90deg,#22D3EE,#34D399 60%,#22D3EE);"></div>
+      <div style="padding:24px 30px 12px;display:flex;align-items:flex-start;gap:14px;">
+        <span style="width:36px;height:36px;border-radius:11px;background:radial-gradient(135% 135% at 30% 22%,#143552,#0a1622 70%);border:1px solid rgba(34,211,238,.45);display:flex;align-items:center;justify-content:center;flex:0 0 36px;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#5FD9F2" stroke-width="2"><path d="M12 3a9 9 0 1 0 9 9c0-.5 0-1-.1-1.5"/><circle cx="12" cy="12" r="3" fill="#5FD9F2" stroke="none"/></svg></span>
+        <div style="flex:1;min-width:0;"><div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:16px;color:#EAF4F8;">{{ demoTitle }}</div><div style="font-size:12px;color:#7da7bd;margin-top:2px;">{{ demoSub }}</div></div>
+        <button onClick="{{ closeDemo }}" aria-label="Close" style="width:28px;height:28px;border:none;border-radius:8px;background:rgba(255,255,255,.06);color:#7da7bd;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:0 0 28px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div style="padding:6px 30px 16px;display:flex;flex-direction:column;gap:1px;">
+        <sc-for list="{{ demoSteps }}" as="s" hint-placeholder-count="6">
+          <div style="display:flex;align-items:center;gap:13px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);opacity:{{ s.opacity }};transition:opacity .3s;">
+            <span style="width:22px;height:22px;flex:0 0 22px;border-radius:7px;background:{{ s.bg }};border:1px solid {{ s.border }};display:flex;align-items:center;justify-content:center;">{{ s.icon }}</span>
+            <span style="flex:1;font-size:13.5px;color:{{ s.textColor }};">{{ s.label }}</span>
+            <span style="font-family:'Space Mono',monospace;font-size:11px;color:#5FD9F2;">{{ s.meta }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:14px 30px 24px;">
+        <sc-if value="{{ demoDone }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:12px;padding:15px 17px;border-radius:14px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.32);animation:rise .35s ease both;">
+          <span style="width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:radial-gradient(130% 130% at 32% 24%,#123a2c,#0a2018 72%);border:1.5px solid rgba(52,211,153,.6);display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg></span>
+          <div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:700;color:#34D399;">{{ demoDoneTitle }}</div><div style="font-size:11.5px;color:#9fb1c2;margin-top:2px;line-height:1.4;">{{ demoDoneSub }}</div></div>
+          <a href="CRUZ.dc.html" style="font-size:13px;font-weight:700;color:#04070b;background:linear-gradient(135deg,#22D3EE,#34D399);padding:10px 16px;border-radius:10px;white-space:nowrap;flex:0 0 auto;">{{ ctaEnter2 }}</a>
+        </div>
+        </sc-if>
+        <sc-if value="{{ demoRunning }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;align-items:center;gap:9px;font-size:12.5px;color:#7da7bd;"><span style="width:7px;height:7px;border-radius:50%;background:#22D3EE;box-shadow:0 0 8px #22D3EE;animation:floaty 1.1s ease-in-out infinite;"></span>{{ demoRunningLabel }}</div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+  <a href="CRUZ.dc.html" title="CRUZ" aria-label="Enter CRUZ" style="position:fixed;right:22px;bottom:22px;z-index:60;display:flex;align-items:center;gap:12px;padding:11px 17px 11px 12px;border-radius:16px;background:rgba(8,12,18,.88);backdrop-filter:blur(12px);border:1px solid #1d2c3a;box-shadow:0 18px 50px rgba(4,7,11,.5);" style-hover="border-color:#2a4a5a">
+    <span style="position:relative;width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#0891B2,#059669);display:flex;align-items:center;justify-content:center;flex:0 0 38px;box-shadow:0 6px 16px rgba(8,116,144,.4);"><span style="position:absolute;inset:-3px;border-radius:14px;border:1.5px solid rgba(34,211,238,.45);animation:dotBlink 2s infinite;"></span><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9"><path d="M12 3a9 9 0 1 0 9 9"/><circle cx="12" cy="12" r="2.4" fill="#fff" stroke="none"/></svg></span>
+    <span style="display:flex;flex-direction:column;line-height:1.25;"><span style="font-size:9px;font-weight:800;letter-spacing:.12em;color:#67E8F9;text-transform:uppercase;">CRUZ</span><span style="font-size:13px;font-weight:700;color:#E6EDF3;">{{ t.ctaEnter }}</span></span>
+  </a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { tick:0, cleared:312, lang:'es', roi:600, demoOpen:false, demoStep:0 };
+  onRoi=(e)=>this.setState({roi:+e.target.value});
+  openDemo=()=>{ clearInterval(this._demoI); this.setState({demoOpen:true,demoStep:0}); this._demoI=setInterval(()=>{ this.setState(s=>{ if(s.demoStep>=6){ clearInterval(this._demoI); return {demoStep:6}; } return {demoStep:s.demoStep+1}; }); },780); };
+  closeDemo=()=>{ clearInterval(this._demoI); this.setState({demoOpen:false}); };
+
+  DICT={
+    en:{ nav1:'Platform',nav2:'Agent',nav3:'White-label',nav4:'Crossing Index',login:'Log in',request:'Request access',
+      pill:'Live on the US–Mexico corridor', heroA:'The operating system', heroB:'beneath cross-', heroC:'border trade.',
+      heroSub:'CRUZ prepares the entire entry — documents, classification, compliance, duties, the pedimento — and hands you only the judgment that carries a signature. The machine does the labor. You make the call.',
+      ctaEnter:'Enter the command center', ctaWatch:'Watch it clear a shipment',
+      stat1:'human-signed, every entry', stat2:'filed without your sign-off', stat3:'audit trail, every pedimento',
+      idxLabel:'Laredo Crossing Index', clearedToday:'CRUZ cleared today', rails:'Plugs into the rails you already run',
+      agentKi:'The autonomous agent', agentH:"It does the work. It doesn't just help.",
+      agentSub:'CRUZ runs the entire entry the moment documents land — and stops only at the one thing the law says a licensed human must give.',
+      clearing:'Clearing SHP-44102', autonomous:'autonomous · 6.1s elapsed', judgment:'Your judgment required',
+      gate:"Pedimento 24 38 5602 ready. CRUZ can't sign — that's yours.",
+      p1t:'Reads every document instantly', p1d:'Invoice, packing list, certificate of origin — parsed and cross-matched the moment they arrive. No typing, ever.',
+      p2t:'Every number cites its source', p2d:'Classification, valuation, duty — each figure shows exactly where it came from. The record holds under any audit.',
+      p3t:'You set the autonomy line', p3d:'Decide what CRUZ clears unattended and what waits for your signature. Trust, dialed exactly where you want it.',
+      railKi:'One calm rail', railH:'Everything the operation needs.', explore:'Explore the platform',
+      f1t:'Global Command Center',f1d:'Live border intelligence — every shipment, every crossing, the few that need you.',
+      f2t:'Shipment Digital Twin',f2d:'A living workspace per shipment — documents, timeline, costs, risk, all in one view.',
+      f3t:'AI Classification',f3d:'HS codes with confidence, reasoning, comparables and legal references. No black box.',
+      f4t:'Pedimento Workspace',f4d:'The most beautiful customs entry ever built. Every field explainable, audit-proof.',
+      f5t:'Customer Portal',f5d:'Where is my cargo, when does it clear, what does it cost. Four answers, no jargon.',
+      f6t:'White-Label Platform',f6d:'Launch a fully-branded brokerage operating system in minutes, on the same quiet rail.',
+      wlKi:'White-label', wlH1:'A small house that', wlH2:'operates like a giant.',
+      wlSub:'Any agencia runs its whole operation on CRUZ — under its own brand, its own clients walled off and private. You pay for cleared shipments, not seats. It costs less than the staff and software it replaces.',
+      wl1:'Your logo, your domain, your patente — live in minutes', wl2:'Priced per cleared shipment — never per seat', wl3:'Plugs into the government rails — nothing to rip out',
+      wlCta:'Launch your brokerage', active:'Active', clearedT:'Cleared today', wlAi:'Duty-recovery opportunities surface here as CRUZ runs — honestly, only when they’re real.',
+      ctaH:'The corridor runs on CRUZ.', ctaSub:'Join the rail beneath North American trade. One calm screen, one signature — and CRUZ prepares everything up to it.',
+      roiKi:'The numbers', roiH:'See what CRUZ recovers.', roiSub:'Drag your monthly shipment volume. CRUZ recovers duty through USMCA preference, reclassification and error elimination — and clears most of it unattended.', roiVol:'Shipments / month', roiYour:'Your recovery', roiYr:'yr', roiRecovered:'Duty recovered + errors eliminated', roiHours:'Labor hours saved / yr', roiAuto:'Cleared autonomously', roiCta:'Start recovering', footTag:'The Cross-Border Operating System', foot:'© 2026 CRUZ · Built for the busiest land border on Earth' },
+    es:{ nav1:'Plataforma',nav2:'Agente',nav3:'Marca blanca',nav4:'Índice de Cruce',login:'Iniciar sesión',request:'Solicitar acceso',
+      pill:'En vivo en el corredor MX–EE.UU.', heroA:'El sistema operativo', heroB:'del comercio', heroC:'transfronterizo.',
+      heroSub:'CRUZ prepara todo el pedimento — documentos, clasificación, cumplimiento, contribuciones, el pedimento — y te entrega solo el juicio que requiere una firma. La máquina hace la labor. Tú decides.',
+      ctaEnter:'Entrar al centro de mando', ctaWatch:'Verlo despachar un embarque',
+      stat1:'firmado por un humano, cada pedimento', stat2:'presentados sin tu firma', stat3:'rastro auditable, cada pedimento',
+      idxLabel:'Índice de Cruce de Laredo', clearedToday:'CRUZ despachó hoy', rails:'Se conecta a los sistemas que ya usas',
+      agentKi:'El agente autónomo', agentH:'Hace el trabajo. No solo ayuda.',
+      agentSub:'CRUZ ejecuta todo el pedimento en cuanto llegan los documentos — y se detiene solo en lo único que la ley exige que firme una persona autorizada.',
+      clearing:'Despachando SHP-44102', autonomous:'autónomo · 6.1s transcurridos', judgment:'Se requiere tu juicio',
+      gate:'Pedimento 24 38 5602 listo. CRUZ no puede firmar — eso es tuyo.',
+      p1t:'Lee cada documento al instante', p1d:'Factura, lista de empaque, certificado de origen — analizados y cotejados en cuanto llegan. Sin teclear, nunca.',
+      p2t:'Cada cifra cita su fuente', p2d:'Clasificación, valoración, contribución — cada cifra muestra de dónde viene. El registro resiste cualquier auditoría.',
+      p3t:'Tú defines la línea de autonomía', p3d:'Decide qué despacha CRUZ sin supervisión y qué espera tu firma. La confianza, justo donde la quieres.',
+      railKi:'Un solo riel tranquilo', railH:'Todo lo que la operación necesita.', explore:'Explorar la plataforma',
+      f1t:'Centro de Mando Global',f1d:'Inteligencia fronteriza en vivo — cada embarque, cada cruce, los pocos que te necesitan.',
+      f2t:'Gemelo Digital del Embarque',f2d:'Un espacio vivo por embarque — documentos, línea de tiempo, costos, riesgo, todo en una vista.',
+      f3t:'Clasificación con IA',f3d:'Fracciones con confianza, razonamiento, comparables y referencias legales. Sin caja negra.',
+      f4t:'Espacio de Pedimentos',f4d:'El pedimento más hermoso jamás hecho. Cada campo explicable, a prueba de auditoría.',
+      f5t:'Portal del Cliente',f5d:'Dónde está mi carga, cuándo despacha, cuánto cuesta. Cuatro respuestas, sin tecnicismos.',
+      f6t:'Plataforma de Marca Blanca',f6d:'Lanza un sistema operativo de agencia con tu marca en minutos, sobre el mismo riel.',
+      wlKi:'Marca blanca', wlH1:'Una agencia pequeña que', wlH2:'opera como un gigante.',
+      wlSub:'Cualquier agencia opera todo en CRUZ — con su propia marca, sus clientes aislados y privados. Pagas por embarques despachados, no por licencias. Cuesta menos que el personal y software que reemplaza.',
+      wl1:'Tu logo, tu dominio, tu patente — en vivo en minutos', wl2:'Precio por embarque despachado — nunca por licencia', wl3:'Se conecta a los sistemas de gobierno — nada que reemplazar',
+      wlCta:'Lanza tu agencia', active:'Activos', clearedT:'Despachados hoy', wlAi:'Las oportunidades de recuperación aparecen aquí conforme CRUZ trabaja — con honestidad, solo cuando son reales.',
+      ctaH:'El corredor opera en CRUZ.', ctaSub:'Únete al riel del comercio norteamericano. Una pantalla tranquila, una firma — y CRUZ prepara todo hasta ella.',
+      roiKi:'Los números', roiH:'Mira lo que CRUZ recupera.', roiSub:'Arrastra tu volumen mensual. CRUZ recupera contribuciones por preferencia T-MEC, reclasificación y eliminación de errores — y despacha la mayoría sin supervisión.', roiVol:'Embarques / mes', roiYour:'Tu recuperación', roiYr:'año', roiRecovered:'Contribuciones recuperadas + errores eliminados', roiHours:'Horas de labor ahorradas / año', roiAuto:'Despachado autónomamente', roiCta:'Empezar a recuperar', footTag:'El Sistema Operativo Transfronterizo', foot:'© 2026 CRUZ · Hecho para la frontera terrestre más transitada del mundo' },
+  };
+  setEn=()=>{ this.setState({lang:'en'}); try{localStorage.setItem('cruz.lang','en');}catch(e){} };
+  setEs=()=>{ this.setState({lang:'es'}); try{localStorage.setItem('cruz.lang','es');}catch(e){} };
+
+  cities = { mty:[25.7,-100.3], lar:[27.5,-99.5], dal:[32.8,-96.8], la:[34.0,-118.2], mex:[19.4,-99.1], hou:[29.8,-95.4], gdl:[20.7,-103.3], elp:[31.8,-106.5], tij:[32.5,-117.0] };
+  cityInfo = { mty:['Monterrey','centro de carga'], lar:['Laredo','38 min · 74% verde'], dal:['Dallas','destino'], la:['Los Ángeles','destino'], mex:['CDMX','centro de carga'], hou:['Houston','destino'], gdl:['Guadalajara','centro de carga'], elp:['El Paso','22 min · 81% verde'], tij:['Tijuana','51 min · 60% verde'] };
+  arcs = [ ['mty','dal'], ['gdl','la'], ['mex','hou'], ['mty','elp'], ['gdl','tij'], ['mex','dal'] ];
+  ll(lat,lon){ const la=lat*Math.PI/180, lo=lon*Math.PI/180; return [Math.cos(la)*Math.sin(lo), Math.sin(la), Math.cos(la)*Math.cos(lo)]; }
+  rot(p,a,tilt){ let [x,y,z]=p; let x1=x*Math.cos(a)+z*Math.sin(a), z1=-x*Math.sin(a)+z*Math.cos(a); let y2=y*Math.cos(tilt)-z1*Math.sin(tilt), z2=y*Math.sin(tilt)+z1*Math.cos(tilt); return [x1,y2,z2]; }
+  initGlobe(){
+    if(this._raf) return;
+    try{
+    // coarse continent model (ellipses in lon/lat) — enough to read as Earth in dots
+    const cont=[
+      [-100,50,30,20],[-83,42,14,14],[-112,34,15,12],[-100,62,42,12],[-150,63,14,9],
+      [-92,17,12,9],[-42,72,11,9],
+      [-63,-15,17,20],[-58,-33,9,13],[-49,-8,10,10],
+      [12,52,20,11],[30,45,15,9],
+      [18,4,21,27],[26,-22,12,11],
+      [86,52,50,20],[100,33,30,15],[78,23,9,11],[112,11,13,11],[140,58,18,12],
+      [134,-25,15,9]
+    ];
+    const landAt=(lat,lon)=>{ if(lat<-63) return true; for(const e of cont){ const dl=(((lon-e[0]+540)%360)-180)/e[2]; const db=(lat-e[1])/e[3]; if(dl*dl+db*db<=1) return true; } return false; };
+    this.dots=[]; const N=11000;
+    for(let i=0;i<N;i++){ const y=1-(i/(N-1))*2; const r=Math.sqrt(1-y*y); const phi=i*2.399963; const x=Math.cos(phi)*r, z=Math.sin(phi)*r;
+      const lat=Math.asin(Math.max(-1,Math.min(1,y)))*180/Math.PI, lon=Math.atan2(x,z)*180/Math.PI;
+      // reveal threshold: dots sweep in from the north pole down during the entrance
+      this.dots.push({x,y,z,land:landAt(lat,lon), rev:(90-lat)/180}); }
+    // metros that light up on the night side (warm city lights)
+    this.nightCities=[[25.7,-100.3],[19.4,-99.1],[20.7,-103.3],[32.8,-96.8],[29.8,-95.4],[34.0,-118.2],[40.7,-74.0],[41.9,-87.6],[19.0,-98.2],[25.8,-80.2]];
+    // global data network — Palantir-style nodes everywhere [lat,lon,hub]
+    this.worldNodes=[[31,121,1],[1.3,103.8,1],[35.6,139.7,1],[22.3,114.2,1],[19,72.8,1],[25.2,55.3,1],[51.9,4.5,1],[53.5,10,0],[51.5,-0.1,1],[51.2,4.4,0],[40.7,-74,1],[34,-118.2,1],[33.8,-118.2,0],[29.8,-95.4,0],[-23.9,-46.3,1],[-34.6,-58.4,0],[-33,-71.6,0],[-29.9,31,0],[6.5,3.4,0],[-33.9,18.4,0],[-33.9,151.2,1],[-37.8,144.9,0],[35.1,129,0],[22.6,120.3,0],[14.6,121,0],[-6.2,106.8,1],[6.9,79.8,0],[21.5,39.2,0],[41,28.9,0],[37.9,23.6,0],[44.4,8.9,0],[41.4,2.2,0],[52,1.3,0],[49.3,-123.1,0],[47.6,-122.3,0],[37.8,-122.3,0],[9,-79.5,1],[10.4,-75.5,0],[19.2,-96.1,0],[19,-104.3,0],[45.5,-73.6,0],[32,-81.1,0],[25.8,-80.2,0],[36.9,-76.3,0],[17,54,0],[30,31.2,0]];
+    // global trade lanes [[lat,lon],[lat,lon]]
+    this.worldArcs=[[[31,121],[34,-118.2]],[[31,121],[51.9,4.5]],[[1.3,103.8],[51.9,4.5]],[[1.3,103.8],[25.2,55.3]],[[25.2,55.3],[51.9,4.5]],[[35.6,139.7],[33.8,-118.2]],[[35.1,129],[37.8,-122.3]],[[22.3,114.2],[34,-118.2]],[[31,121],[9,-79.5]],[[9,-79.5],[40.7,-74]],[[40.7,-74],[51.9,4.5]],[[-23.9,-46.3],[51.9,4.5]],[[-23.9,-46.3],[31,121]],[[-33.9,151.2],[1.3,103.8]],[[19,72.8],[25.2,55.3]],[[6.5,3.4],[51.9,4.5]],[[-29.9,31],[1.3,103.8]],[[19,-104.3],[31,121]]];
+    // port names for hover (honest: name + region, no fabricated numbers)
+    this.worldNames=[['Shanghái','Asia'],['Singapur','Asia'],['Tokio','Asia'],['Hong Kong','Asia'],['Bombay','Asia'],['Dubái','Medio Oriente'],['Róterdam','Europa'],['Hamburgo','Europa'],['Londres','Europa'],['Amberes','Europa'],['Nueva York','Norteamérica'],['Los Ángeles','Norteamérica'],['Long Beach','Norteamérica'],['Houston','Norteamérica'],['Santos','Sudamérica'],['Buenos Aires','Sudamérica'],['Valparaíso','Sudamérica'],['Durban','África'],['Lagos','África'],['Ciudad del Cabo','África'],['Sídney','Oceanía'],['Melbourne','Oceanía'],['Busán','Asia'],['Kaohsiung','Asia'],['Manila','Asia'],['Yakarta','Asia'],['Colombo','Asia'],['Yeda','Medio Oriente'],['Estambul','Europa'],['El Pireo','Europa'],['Génova','Europa'],['Barcelona','Europa'],['Felixstowe','Europa'],['Vancouver','Norteamérica'],['Seattle','Norteamérica'],['Oakland','Norteamérica'],['Panamá','Centroamérica'],['Cartagena','Sudamérica'],['Veracruz','México'],['Manzanillo','México'],['Montreal','Norteamérica'],['Savannah','Norteamérica'],['Miami','Norteamérica'],['Norfolk','Norteamérica'],['Salalah','Medio Oriente'],['Suez','Medio Oriente']];
+    const resize=()=>{ const c=this.canvas; if(!c)return; const r=c.getBoundingClientRect(); this.w=r.width; this.h=r.height; const dpr=Math.min(window.devicePixelRatio||1,2); c.width=Math.max(2,r.width*dpr); c.height=Math.max(2,r.height*dpr); this.ctx=c.getContext('2d'); this.ctx.setTransform(dpr,0,0,dpr,0,0); };
+    this._resize=resize; resize(); window.addEventListener('resize',resize);
+    // parallax starfield (screen-space, twinkles)
+    this.stars=[]; for(let i=0;i<90;i++){ this.stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.0+0.3,p:Math.random()*6.283,sp:0.6+Math.random()*1.8}); }
+    // ---- interaction: drag to spin (with inertia) · cursor-tracked light · hoverable crossings ----
+    this.userA=0; this.userTilt=0; this.va=0; this.vt=0; this.drag=null; this.hover=null; this.pointer={x:null,y:null};
+    const c=this.canvas; c.style.cursor='grab'; c.style.touchAction='none';
+    const xy=(e)=>{ const r=c.getBoundingClientRect(); return [ e.clientX-r.left, e.clientY-r.top ]; };
+    this._down=(e)=>{ const [x,y]=xy(e); this.drag={x,y}; this.va=0; this.vt=0; c.style.cursor='grabbing'; if(c.setPointerCapture&&e.pointerId!=null){ try{c.setPointerCapture(e.pointerId);}catch(_){} } };
+    this._move=(e)=>{ const [x,y]=xy(e); this.pointer={x,y};
+      if(this.drag){ const dx=x-this.drag.x, dy=y-this.drag.y; this.drag={x,y};
+        this.userA+=dx*0.0062; this.userTilt=Math.max(-0.85,Math.min(0.85,this.userTilt-dy*0.005));
+        this.va=dx*0.0062; this.vt=-dy*0.005; } };
+    this._up=()=>{ if(this.drag){ this.drag=null; if(this.canvas) this.canvas.style.cursor='grab'; } };
+    this._leave=()=>{ if(!this.drag) this.pointer={x:null,y:null}; };
+    c.addEventListener('pointerdown',this._down); window.addEventListener('pointermove',this._move);
+    window.addEventListener('pointerup',this._up); c.addEventListener('pointerleave',this._leave);
+    this.zoom=1; this._wheel=(e)=>{ e.preventDefault(); this.zoom=Math.max(0.85,Math.min(2.4,(this.zoom||1)*(e.deltaY<0?1.08:0.926))); }; c.addEventListener('wheel',this._wheel,{passive:false});
+    // ---- framing + entrance ----
+    this.baseA=1.62;  // frames the US–MX corridor (lon ~ -100°) at the front of the sphere
+    this._reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this._t0 = (window.performance&&performance.now)?performance.now():Date.now();
+    // ---- photoreal textures (NASA blue-marble day + city-lights night). Falls back to the dot globe if they can't load (CORS/offline). ----
+    this.tex={}; this.texReady=false;
+    const loadTex=(key,url)=>{ const img=new Image(); img.crossOrigin='anonymous';
+      img.onload=()=>{ try{ const oc=document.createElement('canvas'); oc.width=img.naturalWidth; oc.height=img.naturalHeight; const o=oc.getContext('2d'); o.drawImage(img,0,0); this.tex[key]={data:o.getImageData(0,0,oc.width,oc.height).data,w:oc.width,h:oc.height}; if(this.tex.day&&this.tex.night) this.texReady=true; }catch(e){} };
+      img.src=url; };
+    loadTex('day','https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-blue-marble.jpg');
+    loadTex('night','https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-night.jpg');
+    this.gt=0; const loop=()=>{ try{ this.drawGlobe(); }catch(e){ if(!this._le){ this._le=1; console.error('GLOBE_ERR', e && (e.stack||e.message)); } } this._raf=requestAnimationFrame(loop); }; this._raf=requestAnimationFrame(loop);
+    }catch(ie){ console.error('GLOBE_INIT_ERR', ie && (ie.stack||ie.message)); }
+  }
+  easeOut(t){ return 1-Math.pow(1-Math.max(0,Math.min(1,t)),3); }
+  drawTexturedSphere(ctx,cx,cy,R,a,tilt,L,intro){
+    const day=this.tex.day, night=this.tex.night; if(!day||!night) return;
+    const dispS=Math.ceil(R*2); if(dispS<2) return;
+    const S=Math.max(2,Math.ceil(dispS*0.82)), Rr=S/2;   // render at 0.82x then upscale (perf vs crispness)
+    if(!this._oc){ this._oc=document.createElement('canvas'); }
+    const oc=this._oc; if(oc.width!==S||oc.height!==S){ oc.width=S; oc.height=S; this._ocx=oc.getContext('2d'); this._ocImg=this._ocx.createImageData(S,S); }
+    const out=this._ocImg.data;
+    const ca=Math.cos(a),sa=Math.sin(a),ct=Math.cos(tilt),st=Math.sin(tilt);
+    const dW=day.w,dH=day.h,dD=day.data, nW=night.w,nH=night.h,nD=night.data;
+    const Lx=L[0],Ly=L[1],Lz=L[2], PI=Math.PI, A=Math.max(0,Math.min(1,intro))*255;
+    for(let py=0;py<S;py++){ const ny=1-(py+0.5)/Rr;
+      for(let px=0;px<S;px++){ const nx=(px+0.5)/Rr-1; const rr=nx*nx+ny*ny; const o=(py*S+px)<<2;
+        if(rr>1){ out[o+3]=0; continue; }
+        const nz=Math.sqrt(1-rr);
+        const gy=ny*ct+nz*st, z1=-ny*st+nz*ct, x1=nx;        // inverse-rotate camera point → globe
+        const gx=x1*ca-z1*sa, gz=x1*sa+z1*ca;
+        const lat=Math.asin(gy<-1?-1:gy>1?1:gy), lon=Math.atan2(gx,gz);
+        const uf=(lon/PI)*0.5+0.5, vf=0.5-lat/PI;
+        let dui=(uf*dW)|0; if(dui<0)dui=0; else if(dui>=dW)dui=dW-1;
+        let dvi=(vf*dH)|0; if(dvi<0)dvi=0; else if(dvi>=dH)dvi=dH-1; const ti=(dvi*dW+dui)<<2;
+        let nui=(uf*nW)|0; if(nui<0)nui=0; else if(nui>=nW)nui=nW-1;
+        let nvi=(vf*nH)|0; if(nvi<0)nvi=0; else if(nvi>=nH)nvi=nH-1; const ni=(nvi*nW+nui)<<2;
+        const lam=nx*Lx+ny*Ly+nz*Lz;
+        const t=lam<-0.1?0:(lam>0.32?1:(lam+0.1)/0.42);   // soft terminator: night→day
+        const shade=0.32+0.78*(lam>0?lam:0), edge=1-rr*rr*0.45;
+        out[o]  =(nD[ni]*(1-t)*0.92   + dD[ti]*shade*t)*edge;
+        out[o+1]=(nD[ni+1]*(1-t)*0.92 + dD[ti+1]*shade*t)*edge;
+        out[o+2]=(nD[ni+2]*(1-t)*0.92 + dD[ti+2]*shade*t)*edge;
+        out[o+3]=A;
+      }
+    }
+    this._ocx.putImageData(this._ocImg,0,0);
+    ctx.imageSmoothingEnabled=true; ctx.drawImage(oc,cx-R,cy-R,R*2,R*2);
+    // ocean sun-glint near the sub-solar point
+    const gx=cx+L[0]*R*0.5, gyy=cy-L[1]*R*0.5;
+    ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.clip(); ctx.globalCompositeOperation='lighter';
+    let gl=ctx.createRadialGradient(gx,gyy,0,gx,gyy,R*0.6); gl.addColorStop(0,'rgba(150,210,255,'+(0.12*intro)+')'); gl.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=gl; ctx.fillRect(cx-R,cy-R,R*2,R*2); ctx.restore();
+  }
+  drawGlobe(){
+    // ensure the backing buffer matches the CSS box (resize() can run before layout on first paint)
+    const cvs=this.canvas; if(cvs && this._resize){ const rect=cvs.getBoundingClientRect(); const dpr=Math.min(window.devicePixelRatio||1,2); const want=Math.max(2,Math.round(rect.width*dpr)); if(rect.width>1 && Math.abs(cvs.width-want)>1){ this._resize(); } }
+    const ctx=this.ctx; if(!ctx)return; const w=this.w,h=this.h;
+    // auto-spin when idle; while dragging the user drives it; on release inertia decays back to the drift
+    if(!this.drag){ this.gt+=0.0032; this.userA=(this.userA||0)+(this.va||0); this.userTilt=Math.max(-0.85,Math.min(0.85,(this.userTilt||0)+(this.vt||0))); this.va=(this.va||0)*0.93; this.vt=(this.vt||0)*0.93; }
+    ctx.clearRect(0,0,w,h);
+    const now=(window.performance&&performance.now)?performance.now():Date.now();
+    const intro=this._reduce?1:this.easeOut((now-(this._t0||now))/1400); this.intro=intro;
+    const arcOn = intro>=1?1:Math.max(0,Math.min(1,(intro-0.45)/0.5));
+    const nodeOn = intro>=1?1:Math.max(0,Math.min(1,(intro-0.82)/0.18));
+    const cx=w*0.5, cy=h*0.5, R=Math.min(w,h)*0.37*(0.92+0.08*intro)*(this.zoom||1);
+    // start framed on the US–MX corridor, then rotate continuously like a real globe
+    const a=(this.baseA||1.62) + this.gt + (1-intro)*0.7 + (this.userA||0);
+    const tilt=-0.42 + Math.sin(this.gt*0.22)*0.05*intro + (this.userTilt||0);
+    // camera-space light tracks the cursor → the day/night terminator follows your pointer
+    const px=(this.pointer&&this.pointer.x!=null)?(this.pointer.x/w-0.5):0;
+    const py=(this.pointer&&this.pointer.y!=null)?(this.pointer.y/h-0.5):0;
+    let L=[-0.40+px*0.55,0.48-py*0.55,0.78]; const Lm=Math.hypot(L[0],L[1],L[2]); L=[L[0]/Lm,L[1]/Lm,L[2]/Lm];
+    const lx=cx+L[0]*R*0.55, ly=cy-L[1]*R*0.55;
+    // starfield (subtle parallax twinkle)
+    for(const s of this.stars){ const tw=0.35+0.65*(0.5+0.5*Math.sin(this.gt*s.sp*4+s.p)); ctx.fillStyle='rgba(180,205,228,'+(0.45*tw*(s.r/1.3))+')'; ctx.beginPath(); ctx.arc(s.x*w,s.y*h,s.r,0,7); ctx.fill(); }
+    // outer atmosphere bloom
+    let atm=ctx.createRadialGradient(cx,cy,R*0.6,cx,cy,R*1.75); atm.addColorStop(0,'rgba(34,211,238,0.13)'); atm.addColorStop(0.5,'rgba(8,116,144,0.06)'); atm.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=atm; ctx.beginPath(); ctx.arc(cx,cy,R*1.75,0,7); ctx.fill();
+    // sphere body — photoreal textured Earth, with the dot globe as fallback until textures load
+    if(this.texReady){ this.drawTexturedSphere(ctx,cx,cy,R,a,tilt,L,intro); }
+    else {
+    let sg=ctx.createRadialGradient(lx,ly,R*0.04,cx,cy,R); sg.addColorStop(0,'#1b3a54'); sg.addColorStop(0.55,'#0c1c2c'); sg.addColorStop(1,'#050d15'); ctx.fillStyle=sg; ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.fill();
+    ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.clip();
+    // graticule (faint)
+    ctx.strokeStyle='rgba(90,140,170,0.07)'; ctx.lineWidth=1;
+    for(let lat=-60;lat<=60;lat+=30){ ctx.beginPath(); let st=false; for(let lon=-180;lon<=180;lon+=6){ const [x,y,z]=this.rot(this.ll(lat,lon),a,tilt); if(z<=0){st=false;continue;} const sx=cx+x*R, sy=cy-y*R; if(!st){ctx.moveTo(sx,sy);st=true;}else ctx.lineTo(sx,sy);} ctx.stroke(); }
+    for(let lon=-150;lon<=180;lon+=30){ ctx.beginPath(); let st=false; for(let lat=-90;lat<=90;lat+=6){ const [x,y,z]=this.rot(this.ll(lat,lon),a,tilt); if(z<=0){st=false;continue;} const sx=cx+x*R, sy=cy-y*R; if(!st){ctx.moveTo(sx,sy);st=true;}else ctx.lineTo(sx,sy);} ctx.stroke(); }
+    // dots with Lambert day/night shading + latitude-sweep entrance
+    for(const p of this.dots){
+      const rv = intro>=1 ? 1 : Math.max(0, Math.min(1,(intro*1.18 - p.rev)/0.14)); if(rv<=0) continue;
+      const [x,y,z]=this.rot([p.x,p.y,p.z],a,tilt); if(z<=0)continue; const sx=cx+x*R, sy=cy-y*R;
+      const lam=Math.max(0, x*L[0]+y*L[1]+z*L[2]); const lit=0.10+0.90*lam;
+      if(p.land){ const b=lit; ctx.fillStyle='rgba('+Math.round(96+96*b)+','+Math.round(178+62*b)+','+Math.round(198+52*b)+','+((0.22+0.72*b)*Math.min(1,0.35+z)*rv)+')'; ctx.beginPath(); ctx.arc(sx,sy,(0.56+z*0.8)*(0.6+0.4*rv),0,7); ctx.fill(); }
+      else { ctx.fillStyle='rgba(64,116,146,'+((0.05+0.15*lam)*Math.min(1,0.4+z)*rv)+')'; ctx.beginPath(); ctx.arc(sx,sy,0.42+z*0.46,0,7); ctx.fill(); }
+    }
+    // night-side city lights — warm metros glow only where they sit in shadow
+    for(const nc of this.nightCities){ const [x,y,z]=this.rot(this.ll(nc[0],nc[1]),a,tilt); if(z<=0)continue;
+      const lam=Math.max(0,x*L[0]+y*L[1]+z*L[2]); const night=Math.max(0,0.34-lam)/0.34; if(night<=0.02)continue;
+      const sx=cx+x*R, sy=cy-y*R; const tw=0.7+0.3*Math.sin(this.gt*5+x*9+y*7); const a1=night*tw*Math.min(1,0.4+z)*intro;
+      const g=ctx.createRadialGradient(sx,sy,0,sx,sy,3.6); g.addColorStop(0,'rgba(255,206,140,'+(0.9*a1)+')'); g.addColorStop(1,'rgba(255,170,90,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(sx,sy,3.6,0,7); ctx.fill();
+      ctx.fillStyle='rgba(255,226,180,'+(0.95*a1)+')'; ctx.beginPath(); ctx.arc(sx,sy,0.95,0,7); ctx.fill();
+    }
+    // specular hotspot near the light
+    let sp=ctx.createRadialGradient(lx,ly,0,lx,ly,R*0.85); sp.addColorStop(0,'rgba(150,228,248,0.18)'); sp.addColorStop(0.6,'rgba(60,150,180,0.05)'); sp.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=sp; ctx.fillRect(cx-R,cy-R,R*2,R*2);
+    ctx.restore();
+    }
+    // ---- global trade lanes (live worldwide shipment beads) ----
+    if(arcOn>0) for(let wi=0;wi<this.worldArcs.length;wi++){ const W=this.worldArcs[wi];
+      const pa=this.rot(this.ll(W[0][0],W[0][1]),a,tilt), pb=this.rot(this.ll(W[1][0],W[1][1]),a,tilt);
+      const pts=[]; for(let i=0;i<=44;i++){ const tt=i/44; let x=pa[0]*(1-tt)+pb[0]*tt,y=pa[1]*(1-tt)+pb[1]*tt,z=pa[2]*(1-tt)+pb[2]*tt; const m=Math.hypot(x,y,z)||1; x/=m;y/=m;z/=m; const lift=1+0.18*Math.sin(Math.PI*tt); pts.push([cx+x*lift*R, cy-y*lift*R, z]); }
+      const nD=Math.max(1,Math.ceil(44*arcOn));
+      ctx.beginPath(); let s2=false; ctx.strokeStyle='rgba(96,184,222,'+(0.13*arcOn)+')'; ctx.lineWidth=0.85;
+      for(let i=0;i<=nD && i<pts.length;i++){ const p=pts[i]; if(p[2]<-0.15){s2=false;continue;} if(!s2){ctx.moveTo(p[0],p[1]);s2=true;}else ctx.lineTo(p[0],p[1]); }
+      ctx.stroke();
+      if(arcOn>=1){ const fi=((this.gt*0.4+wi*0.37)%1)*44; ctx.save(); ctx.globalCompositeOperation='lighter'; ctx.shadowColor='rgba(130,215,245,0.8)';
+        for(let k=0;k<7;k++){ const idx=Math.floor(fi-k); if(idx<0||idx>44)continue; const pp=pts[idx]; if(!pp||pp[2]<-0.1)continue; const al=(1-k/7)*0.62; const rad=(1-k/7)*1.8+0.4; ctx.shadowBlur=(k===0?7:0); ctx.fillStyle='rgba(160,228,250,'+al+')'; ctx.beginPath(); ctx.arc(pp[0],pp[1],rad,0,7); ctx.fill(); }
+        ctx.restore(); }
+    }
+    // corridor arcs + comet trails
+    for(let ai=0;ai<this.arcs.length;ai++){ const [A,B]=this.arcs[ai];
+      const pa=this.rot(this.ll(this.cities[A][0],this.cities[A][1]),a,tilt);
+      const pb=this.rot(this.ll(this.cities[B][0],this.cities[B][1]),a,tilt);
+      const pts=[]; for(let i=0;i<=46;i++){ const tt=i/46; let x=pa[0]*(1-tt)+pb[0]*tt,y=pa[1]*(1-tt)+pb[1]*tt,z=pa[2]*(1-tt)+pb[2]*tt; const m=Math.sqrt(x*x+y*y+z*z); x/=m;y/=m;z/=m; const lift=1+0.24*Math.sin(Math.PI*tt); pts.push([cx+x*lift*R, cy-y*lift*R, z]); }
+      const border=(A==='lar'||A==='elp'||B==='lar'||B==='elp'); const col=border?'52,211,153':'34,211,238';
+      if(arcOn<=0) continue;
+      const nDraw=Math.max(1,Math.ceil(46*arcOn));
+      ctx.beginPath(); let st=false; ctx.strokeStyle='rgba('+col+','+(0.30*arcOn)+')'; ctx.lineWidth=1.2;
+      for(let i=0;i<=nDraw && i<pts.length;i++){ const p=pts[i]; if(p[2]<-0.2){st=false;continue;} if(!st){ctx.moveTo(p[0],p[1]);st=true;}else ctx.lineTo(p[0],p[1]); }
+      ctx.stroke();
+      if(arcOn>=1){
+        const fi=((this.gt*0.55+ai*0.27)%1)*46;
+        ctx.save(); ctx.globalCompositeOperation='lighter'; ctx.shadowColor='rgba('+col+',0.9)';
+        for(let k=0;k<10;k++){ const idx=Math.floor(fi-k); if(idx<0||idx>46)continue; const pp=pts[idx]; if(!pp||pp[2]<-0.1)continue; const al=(1-k/10)*0.85; const rad=(1-k/10)*3.0+0.5; ctx.shadowBlur=(k===0?11:0); ctx.fillStyle='rgba('+col+','+al+')'; ctx.beginPath(); ctx.arc(pp[0],pp[1],rad,0,7); ctx.fill(); }
+        ctx.restore();
+      }
+    }
+    // ---- global data nodes (cyan network points across every continent) ----
+    this._wHov=null; let _wd=14;
+    if(nodeOn>0){ ctx.save(); ctx.globalCompositeOperation='lighter';
+      for(let wn=0;wn<this.worldNodes.length;wn++){ const nd=this.worldNodes[wn]; const [x,y,z]=this.rot(this.ll(nd[0],nd[1]),a,tilt); if(z<=0)continue; const sx=cx+x*R, sy=cy-y*R;
+        if(!this.drag && intro>=1 && this.pointer&&this.pointer.x!=null){ const d=Math.hypot(sx-this.pointer.x,sy-this.pointer.y); if(d<_wd){ _wd=d; this._wHov={sx,sy,idx:wn}; } }
+        const lam=Math.max(0,x*L[0]+y*L[1]+z*L[2]); const tw=0.6+0.4*Math.sin(this.gt*2.4+x*7+y*5); const hub=nd[2];
+        const al=(0.3+0.45*(1-lam*0.55))*tw*Math.min(1,0.4+z)*nodeOn; const rad=(hub?1.7:1.05);
+        const gg=ctx.createRadialGradient(sx,sy,0,sx,sy,rad*3.6); gg.addColorStop(0,'rgba(120,225,248,'+(0.5*al)+')'); gg.addColorStop(1,'rgba(34,160,210,0)'); ctx.fillStyle=gg; ctx.beginPath(); ctx.arc(sx,sy,rad*3.6,0,7); ctx.fill();
+        ctx.fillStyle='rgba(196,242,255,'+Math.min(1,al*1.3)+')'; ctx.beginPath(); ctx.arc(sx,sy,rad,0,7); ctx.fill();
+      }
+      ctx.restore();
+      if(this._wHov){ ctx.save(); ctx.strokeStyle='rgba(255,255,255,0.85)'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.arc(this._wHov.sx,this._wHov.sy,5.5,0,7); ctx.stroke(); ctx.restore(); }
+    }
+    // city nodes + pulsing rings on crossings — with hover detection
+    const vis=[]; let hov=null, hovd=22;
+    for(const c in this.cities){ const [x,y,z]=this.rot(this.ll(this.cities[c][0],this.cities[c][1]),a,tilt); if(z<=0)continue; const sx=cx+x*R, sy=cy-y*R;
+      if(this.pointer&&this.pointer.x!=null){ const d=Math.hypot(sx-this.pointer.x,sy-this.pointer.y); if(d<hovd){ hovd=d; hov=c; } }
+      vis.push({c,sx,sy,x,z,border:(c==='lar'||c==='elp'||c==='tij')}); }
+    this.hover = (this.drag||intro<1)? null : hov;
+    if(this.canvas) this.canvas.style.cursor = this.drag?'grabbing':((this.hover||this._wHov)?'pointer':'grab');
+    if(nodeOn>0) for(const v of vis){ const {c,sx,sy,x,z,border}=v; const col=border?'52,211,153':'34,211,238'; const isH=this.hover===c; const ns=nodeOn*(isH?1.5:1);
+      if(border && nodeOn>=1){ const pulse=(((this.gt*0.7+x*2)%1)+1)%1; const rr=4+pulse*16; ctx.strokeStyle='rgba('+col+','+((1-pulse)*0.5*Math.min(1,0.3+z))+')'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.arc(sx,sy,rr,0,7); ctx.stroke(); }
+      const pr=(border?(7+Math.sin(this.gt*3+x*4)*1.4):5)*ns;
+      const g=ctx.createRadialGradient(sx,sy,0,sx,sy,pr*2); g.addColorStop(0,'rgba('+col+','+((isH?0.6:0.4)*nodeOn)+')'); g.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(sx,sy,pr*2,0,7); ctx.fill();
+      ctx.fillStyle='rgba('+col+','+nodeOn+')'; ctx.beginPath(); ctx.arc(sx,sy,(border?2.6:1.9)*ns,0,7); ctx.fill();
+      if(isH){ ctx.strokeStyle='rgba(255,255,255,0.85)'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.arc(sx,sy,pr+3,0,7); ctx.stroke(); }
+    }
+    // hover tooltip — name + (for crossings) live wait
+    if(this.hover){ const v=vis.find(o=>o.c===this.hover);
+      if(v){ const info=this.cityInfo[this.hover]||[this.hover,'']; const name=info[0], sub=info[1];
+        ctx.font='600 12px "Inter Tight",sans-serif'; const nw=ctx.measureText(name).width;
+        ctx.font='500 10px "JetBrains Mono",monospace'; const sw=sub?ctx.measureText(sub).width:0;
+        const tw=Math.max(nw,sw)+20, th=sub?40:26; let tx=v.sx+14, ty=v.sy-th-8;
+        if(tx+tw>w-6) tx=v.sx-tw-14; if(ty<6) ty=v.sy+12;
+        ctx.fillStyle='rgba(7,11,17,0.94)';
+        if(ctx.roundRect){ ctx.beginPath(); ctx.roundRect(tx,ty,tw,th,9); ctx.fill(); ctx.strokeStyle=(v.border?'rgba(52,211,153,0.55)':'rgba(34,211,238,0.55)'); ctx.lineWidth=1; ctx.stroke(); }
+        else { ctx.fillRect(tx,ty,tw,th); }
+        ctx.textBaseline='top'; ctx.fillStyle='#EAF4F8'; ctx.font='600 12px "Inter Tight",sans-serif'; ctx.fillText(name,tx+11,ty+8);
+        if(sub){ ctx.fillStyle=(v.border?'#34D399':'#7DD3E8'); ctx.font='500 10px "JetBrains Mono",monospace'; ctx.fillText(sub,tx+11,ty+24); }
+        ctx.textBaseline='alphabetic';
+      }
+    }
+    if(!this.hover && this._wHov){ const nm=this.worldNames[this._wHov.idx]||['','']; const name=nm[0], sub=nm[1]; const vx=this._wHov.sx, vy=this._wHov.sy;
+      ctx.font='600 12px "Inter Tight",sans-serif'; const nw=ctx.measureText(name).width; ctx.font='500 10px "JetBrains Mono",monospace'; const sw=sub?ctx.measureText(sub).width:0;
+      const tw=Math.max(nw,sw)+20, th=sub?40:26; let tx=vx+14, ty=vy-th-8; if(tx+tw>w-6) tx=vx-tw-14; if(ty<6) ty=vy+12;
+      ctx.fillStyle='rgba(7,11,17,0.94)'; if(ctx.roundRect){ ctx.beginPath(); ctx.roundRect(tx,ty,tw,th,9); ctx.fill(); ctx.strokeStyle='rgba(34,211,238,0.5)'; ctx.lineWidth=1; ctx.stroke(); } else { ctx.fillRect(tx,ty,tw,th); }
+      ctx.textBaseline='top'; ctx.fillStyle='#EAF4F8'; ctx.font='600 12px "Inter Tight",sans-serif'; ctx.fillText(name,tx+11,ty+8);
+      if(sub){ ctx.fillStyle='#7DD3E8'; ctx.font='500 10px "JetBrains Mono",monospace'; ctx.fillText(sub,tx+11,ty+24); } ctx.textBaseline='alphabetic';
+    }
+    // atmospheric scattering — soft additive halo around the limb
+    ctx.save(); ctx.globalCompositeOperation='lighter';
+    let halo=ctx.createRadialGradient(cx,cy,R*0.93,cx,cy,R*1.32);
+    halo.addColorStop(0,'rgba(34,211,238,0)'); halo.addColorStop(0.42,'rgba(80,200,235,'+(0.24*intro)+')'); halo.addColorStop(0.72,'rgba(34,150,195,'+(0.10*intro)+')'); halo.addColorStop(1,'rgba(8,40,70,0)');
+    ctx.fillStyle=halo; ctx.beginPath(); ctx.arc(cx,cy,R*1.32,0,7); ctx.fill();
+    ctx.restore();
+    // limb glow — warm on the lit edge, cool blue on the dark side
+    let rim=ctx.createLinearGradient(lx-R,ly-R,cx*2-lx+R,cy*2-ly+R);
+    rim.addColorStop(0,'rgba(186,236,255,'+(0.6*intro)+')'); rim.addColorStop(0.45,'rgba(34,211,238,'+(0.22*intro)+')'); rim.addColorStop(1,'rgba(40,90,150,'+(0.10*intro)+')');
+    ctx.strokeStyle=rim; ctx.lineWidth=1.8; ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.stroke();
+    ctx.strokeStyle='rgba(150,220,245,'+(0.10*intro)+')'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(cx,cy,R+3,0,7); ctx.stroke();
+  }
+
+  setGlobe = (el)=>{ this.canvas=el; if(el) this.initGlobe(); };
+
+  componentDidMount(){
+    try{ const l=localStorage.getItem('cruz.lang'); if(l) this.setState({lang:l}); }catch(e){}
+    this._met=setInterval(()=>this.setState(s=>({tick:s.tick+1, cleared: s.cleared + (Math.random()<0.5?1:0)})),1600);
+  }
+  componentWillUnmount(){ if(this._raf)cancelAnimationFrame(this._raf); clearInterval(this._met); if(this._resize)window.removeEventListener('resize',this._resize); }
+
+  renderVals(){
+    const t=this.state.tick; const h=React.createElement;
+    const check=h('svg',{width:12,height:12,viewBox:'0 0 24 24',fill:'none',stroke:'#fff',strokeWidth:3},h('path',{d:'M20 6L9 17l-5-5'}));
+    const D=(label,meta)=>({label,meta,bg:'#059669',bd:'#059669',ic:check,tc:'#cdd8e3'});
+    const RL = this.state.lang==='es'
+      ? ['Leer 5 documentos','Extraer 22 partidas','Clasificar todo · 96%','Validar origen y T-MEC','Calcular contribuciones','Generar pedimento 24 38 5602']
+      : ['Read 5 documents','Extract 22 line items','Classify all goods · 96%','Validate origin & T-MEC','Calculate duties & taxes','Draft pedimento 24 38 5602'];
+    const RM=['0.8s','1.2s','2.1s','0.6s','0.4s','1.0s'];
+    const runSteps=RL.map((l,i)=>D(l,RM[i]));
+    const tint=(c)=>c+'14';
+    const ic=(d,c)=>h('svg',{width:21,height:21,viewBox:'0 0 24 24',fill:'none',stroke:c,strokeWidth:1.8}, ...d.map(p=>h('path',{d:p})));
+    const dd=this.DICT[this.state.lang];
+    const features=[
+      {title:dd.f1t,desc:dd.f1d,tint:tint('#0E7490'),icon:ic(['M12 3v3M12 18v3M3 12h3M18 12h3'],'#0E7490')},
+      {title:dd.f2t,desc:dd.f2d,tint:tint('#0E7490'),icon:ic(['M3 8l9-5 9 5v8l-9 5-9-5z','M3 8l9 5 9-5'],'#0E7490')},
+      {title:dd.f3t,desc:dd.f3d,tint:tint('#059669'),icon:ic(['M4 7h16M4 12h10M4 17h7'],'#047857')},
+      {title:dd.f4t,desc:dd.f4d,tint:tint('#059669'),icon:ic(['M5 3h14v18H5zM9 8h6M9 12h6'],'#047857')},
+      {title:dd.f5t,desc:dd.f5d,tint:tint('#6366F1'),icon:ic(['M12 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 4-6 8-6s8 2 8 6'],'#4F46E5')},
+      {title:dd.f6t,desc:dd.f6d,tint:tint('#6366F1'),icon:ic(['M3 4h18v14H3zM3 9h18M8 21h8'],'#4F46E5')},
+    ];
+    const lang=this.state.lang, d=this.DICT[lang];
+    const roiN=this.state.roi||600;
+    const fmtMoney=(n)=>'$'+Math.round(n).toLocaleString(lang==='es'?'es-MX':'en-US');
+    const savedYr=roiN*12*340; // avg duty saved per shipment
+    const hoursYr=roiN*12*0.9;
+    const cmp = (lang==='es') ? {
+      ki:'Frente a lo de hoy', h:'Deja atrás el sistema que peleas cada día.',
+      old:'El método de hoy', oldName:'Aduanet · VUCEM · Global PC Net · Excel', neu:'Con CRUZ',
+      rows:[
+        {l:'Captura de documentos', o:'Reteclear cada campo a mano', n:'Leídos y cotejados en cuanto llegan'},
+        {l:'Clasificación', o:'Buscar la fracción y rezar', n:'Fracción con razonamiento + 41 comparables, a prueba de auditoría'},
+        {l:'Entre sistemas', o:'Saltar entre Aduanet, VUCEM, COVE, correo y Excel', n:'Un solo riel, cada sistema por debajo'},
+        {l:'Defensa ante el SAT', o:'Cazar el rastro de papel', n:'Cada cifra cita su fuente · expediente a 5 años listo'},
+        {l:'Capacidad', o:'Un ejecutivo ≈ unos pocos pedimentos al día', n:'CRUZ ejecuta el pedimento; tú firmas — 10× el volumen'},
+        {l:'Precio', o:'Por licencia y por módulo', n:'Por embarque despachado'},
+      ] } : {
+      ki:'Versus the old way', h:'Leave behind the system you fight every day.',
+      old:'The way it works today', oldName:'Aduanet · VUCEM · Global PC Net · Excel', neu:'With CRUZ',
+      rows:[
+        {l:'Document entry', o:'Re-key every field by hand', n:'Read and cross-matched the instant they land'},
+        {l:'Classification', o:'Look it up and hope it holds', n:'HS code with reasoning + 41 comparables, audit-proof'},
+        {l:'Across systems', o:'Juggle Aduanet, VUCEM, COVE, email and Excel', n:'One rail, every system underneath'},
+        {l:'SAT audit defense', o:'Hunt for the paper trail', n:'Every figure cites its source · 5-year record ready'},
+        {l:'Capacity', o:'One operator ≈ a few entries a day', n:'CRUZ runs the entry; you sign — 10× the throughput'},
+        {l:'Pricing', o:'Per seat, per module', n:'Per cleared shipment'},
+      ] };
+    const aud = (lang==='es') ? {
+      ki:'Para ambos lados del pedimento', h:'Para quien despacha y para quien embarca.',
+      bTag:'Para agencias y agentes', bH:'10× tu capacidad, con la misma patente.', bSub:'Atiende más clientes sin más personal. CRUZ hace la labor; tú conservas la firma y la patente. Reemplaza Global PC Net, el SAAI y las hojas de cálculo — y cuesta menos.', bCta:'Ver capacidad de agencia',
+      sTag:'Para importadores y exportadores', sH:'Ve tu carga como nunca — y pídeselo a tu agente.', sSub:'Dónde está, cuándo despacha y cuánto cuesta, en vivo. Si tu agencia aún no usa CRUZ, mándales el enlace: tus embarques merecen este riel.', sCta:'Compartir con tu agente' }
+      : {
+      ki:'For both sides of the entry', h:'Built for who clears and who ships.',
+      bTag:'For brokerages & agents', bH:'10× your capacity, on the same patente.', bSub:'Serve more clients without more headcount. CRUZ does the labor; you keep the signature and the license. It replaces Global PC Net, SAAI and spreadsheets — and costs less.', bCta:'See brokerage capacity',
+      sTag:'For importers & exporters', sH:'See your cargo like never before — then tell your broker.', sSub:'Where it is, when it clears, what it costs — live. If your brokerage isn\u2019t on CRUZ yet, send them the link: your shipments deserve this rail.', sCta:'Share with your broker' };
+    const trust=(lang==='es')?[
+      {h:'Trazable', b:'Mira cada paso. Cada cifra cita su fuente.', icon:{__html:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0E7490" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>'}},
+      {h:'Gobernanza', b:'Tú fijas la autonomía: Supervisado, Co-piloto o Pausado.', icon:{__html:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0E7490" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>'}},
+      {h:'Límites de fallo', b:'5 segundos para cancelar cualquier acción irreversible. Nada se presenta, paga ni envía solo.', icon:{__html:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0E7490" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 6v6c0 5 4 8 9 10 5-2 9-5 9-10V6z"/><path d="M9 12l2 2 4-4"/></svg>'}},
+      {h:'La única firma', b:'Presentar el pedimento es siempre la pluma de un humano con patente.', icon:{__html:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0E7490" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg>'}},
+    ]:[
+      {h:'Reviewable', b:'Watch every step. Every figure cites its source.', icon:{__html:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0E7490" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>'}},
+      {h:'Governed', b:'You set the autonomy — Supervised, Co-pilot, or Paused.', icon:{__html:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0E7490" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>'}},
+      {h:'Failure-bounded', b:'A 5-second cancel on anything irreversible. Nothing files, pays, or emails on its own.', icon:{__html:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0E7490" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 6v6c0 5 4 8 9 10 5-2 9-5 9-10V6z"/><path d="M9 12l2 2 4-4"/></svg>'}},
+      {h:'One signature', b:'Filing the pedimento is always a licensed human’s pen.', icon:{__html:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0E7490" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg>'}},
+    ];
+    const trustKi=lang==='es'?'Construido para la supervisión':'Built for oversight';
+    const trustH=lang==='es'?'Velocidad que de verdad puedes firmar.':'Speed you can actually sign off on.';
+    return {
+      setGlobe:this.setGlobe, t:d, cmp, aud, trust, trustKi, trustH, setEn:this.setEn, setEs:this.setEs,
+      roiRaw:String(roiN), onRoi:this.onRoi,
+      roiVol:roiN.toLocaleString(lang==='es'?'es-MX':'en-US')+'/'+(lang==='es'?'mes':'mo'),
+      roiSaved:savedYr>=1e6?('$'+(savedYr/1e6).toFixed(1)+'M'):fmtMoney(savedYr),
+      roiHours:Math.round(hoursYr).toLocaleString(lang==='es'?'es-MX':'en-US')+' '+(lang==='es'?'h':'h'),
+      roiAuto:'71%',
+      enBg:lang==='en'?'var(--ink)':'transparent', enColor:lang==='en'?'#fff':'var(--muted)',
+      esBg:lang==='es'?'var(--ink)':'transparent', esColor:lang==='es'?'#fff':'var(--muted)',
+      crossIndex:String(118+Math.round(Math.sin(t*0.4)*6)), crossDelta:(t%2?'+3':'−2'),
+      cleared:String(this.state.cleared),
+      runSteps, features,
+      ...(function(self){var L=self.state.lang;var A=function(en,es){return L==='es'?es:en;};var h=React.createElement;var ds=self.state.demoStep;var labels=L==='es'?['Leer 5 documentos','Extraer 22 partidas','Clasificar todo · 96%','Validar origen y T-MEC','Calcular contribuciones','Generar pedimento 24 38 5678']:['Read 5 documents','Extract 22 line items','Classify all goods · 96%','Validate origin & T-MEC','Calculate duties & taxes','Draft pedimento 24 38 5678'];var meta=['0.8s','1.2s','2.1s','0.6s','0.4s','1.0s'];var check=h('svg',{width:12,height:12,viewBox:'0 0 24 24',fill:'none',stroke:'#34D399',strokeWidth:3},h('path',{d:'M20 6L9 17l-5-5'}));var mkdot=function(c){return h('span',{style:{width:'6px',height:'6px',borderRadius:'50%',background:c,display:'block'}});};var steps=labels.map(function(label,i){var done=ds>i,active=ds===i;return {label:label,meta:meta[i],icon:done?check:mkdot(active?'#22D3EE':'#3a4a5c'),bg:done?'rgba(52,211,153,.13)':(active?'rgba(34,211,238,.12)':'rgba(255,255,255,.03)'),border:done?'rgba(52,211,153,.3)':(active?'rgba(34,211,238,.3)':'rgba(255,255,255,.07)'),textColor:done?'#C2D2DF':(active?'#EAF4F8':'#62768B'),opacity:ds>=i?'1':'0.45'};});return {demoOpen:self.state.demoOpen,demoStep:ds,demoSteps:steps,demoDone:ds>=6,demoRunning:ds<6,openDemo:self.openDemo,closeDemo:self.closeDemo,stopProp:function(e){try{e.stopPropagation();}catch(_){}},demoTitle:'SHP-44210 · '+A('Auto parts','Autopartes'),demoSub:A('Monterrey → Dallas · new supplier','Monterrey → Dallas · proveedor nuevo'),demoDoneTitle:A('Cleared · green light','Despachado · semáforo verde'),demoDoneSub:A('14/14 SAT validations · only your signature remains','14/14 validaciones SAT · solo falta tu firma'),demoRunningLabel:A('CRUZ is doing the labor…','CRUZ hace la labor…'),ctaEnter2:A('Enter','Entrar')};})(this),
+    };
+  }
+}
+</script>
+</body>
+</html>

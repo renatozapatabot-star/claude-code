@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --app-bg:#0B1622; --surface:#0D1722; --surface-raised:#13212E; --surface-sunken:#0A1019;
+    --border:rgba(255,255,255,.07); --border-strong:rgba(255,255,255,.14); --text-strong:#E9F1F7; --text:#CDD8E3; --text-muted:#8295A8;
+    --accent:#22D3EE; --accent-text:#5FD8EC; --accent-solid:#0E7490; --success:#34D399; --success-bg:rgba(52,211,153,.12); --success-line:rgba(52,211,153,.3);
+    --warning:#FBBF24; --warning-bg:rgba(245,158,11,.13); --warning-line:rgba(245,158,11,.3); --danger:#FB7185; --danger-bg:rgba(244,63,94,.13); --danger-line:rgba(244,63,94,.3);
+    --mono:'Space Mono',monospace; --sans:'Hanken Grotesk',system-ui,sans-serif; --display:'Archivo',sans-serif; }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  :focus-visible{outline:none;box-shadow:0 0 0 2px var(--app-bg),0 0 0 4px var(--accent);border-radius:8px;transition:box-shadow .15s ease;}
+  @keyframes au_rise{from{transform:translateY(10px);}to{transform:none;}}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;}}
+</style>
+</helmet>
+<div style="min-height:100vh;background:var(--app-bg);color:var(--text);font-family:var(--sans);padding:30px 20px 60px;">
+  <div style="max-width:820px;margin:0 auto;">
+
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+      <span style="width:30px;height:30px;border-radius:8px;background:var(--accent-solid);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;color:#fff;">C</span>
+      <span style="font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-text);font-family:var(--mono);">{{ t.eyebrow }}</span>
+      <div style="margin-left:auto;display:flex;gap:2px;padding:3px;border-radius:9px;background:var(--surface-sunken);border:1px solid var(--border);">
+        <button onClick="{{ setEs }}" style="border:none;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;background:{{ esBg }};color:{{ esColor }};font-family:var(--sans);">ES</button>
+        <button onClick="{{ setEn }}" style="border:none;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;background:{{ enBg }};color:{{ enColor }};font-family:var(--sans);">EN</button>
+      </div>
+    </div>
+    <h1 style="font-family:var(--display);font-weight:800;letter-spacing:-.02em;font-size:26px;line-height:1.15;color:var(--text-strong);margin:0 0 6px;">{{ t.title }}</h1>
+    <div style="font-size:13.5px;color:var(--text-muted);line-height:1.5;margin-bottom:24px;">{{ t.sub }}</div>
+
+    <!-- THE DIAL: per action-type tier -->
+    <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:11px;">{{ t.dialTitle }}</div>
+    <div style="display:flex;flex-direction:column;gap:8px;animation:au_rise .4s ease both;">
+      <sc-for list="{{ actions }}" as="a" hint-placeholder-count="6">
+        <div style="display:flex;align-items:center;gap:14px;padding:13px 15px;border:1px solid {{ a.rowLine }};border-radius:13px;background:{{ a.rowBg }};">
+          <span style="flex:1;min-width:0;"><span style="display:block;font-size:13.5px;font-weight:600;color:var(--text-strong);">{{ a.label }}</span><span style="display:block;font-size:11.5px;color:var(--text-muted);margin-top:1px;">{{ a.note }}</span></span>
+          <sc-if value="{{ a.locked }}" hint-placeholder-val="{{ false }}">
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:9px;background:var(--danger-bg);border:1px solid var(--danger-line);font-size:11px;font-weight:800;color:var(--danger);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>{{ t.hardGate }}</span>
+          </sc-if>
+          <sc-if value="{{ a.settable }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;gap:2px;padding:3px;border-radius:10px;background:var(--surface-sunken);border:1px solid var(--border);flex:0 0 auto;">
+            <sc-for list="{{ a.tiers }}" as="ti" hint-placeholder-count="3">
+              <button onClick="{{ ti.pick }}" title="{{ ti.full }}" style="border:none;border-radius:7px;padding:7px 11px;font-family:var(--sans);font-size:11px;font-weight:700;cursor:pointer;background:{{ ti.bg }};color:{{ ti.color }};white-space:nowrap;">{{ ti.short }}</button>
+            </sc-for>
+          </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- CAPABILITY REGISTRY -->
+    <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin:26px 0 11px;">{{ t.regTitle }}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;animation:au_rise .5s ease both;">
+      <sc-for list="{{ skills }}" as="s" hint-placeholder-count="6">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:15px;padding:16px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;">
+            <span style="flex:1;font-size:13px;font-weight:600;color:var(--text-strong);">{{ s.name }}</span>
+            <span style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:{{ s.stColor }};background:{{ s.stBg }};border:1px solid {{ s.stLine }};border-radius:6px;padding:2px 7px;text-transform:uppercase;">{{ s.state }}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:9px;">
+            <div style="flex:1;height:6px;border-radius:3px;background:var(--surface-sunken);overflow:hidden;"><div style="height:100%;width:{{ s.pct }};background:{{ s.barColor }};"></div></div>
+            <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text-strong);">{{ s.pct }}</span>
+          </div>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:6px;font-family:var(--mono);">{{ s.denom }}</div>
+          <sc-if value="{{ s.canPromote }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ s.promote }}" style="width:100%;margin-top:11px;height:34px;border:1px solid var(--success-line);border-radius:9px;background:var(--success-bg);color:var(--success);font-family:var(--sans);font-size:11.5px;font-weight:700;cursor:pointer;">{{ t.promote }}</button>
+          </sc-if>
+          <sc-if value="{{ s.belowBar }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:11px;font-size:10.5px;color:var(--text-muted);line-height:1.4;">{{ s.gateNote }}</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- WHERE MINUTES ARE GOING -->
+    <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin:26px 0 11px;">{{ t.minTitle }}</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;animation:au_rise .55s ease both;">
+      <div style="font-size:12.5px;color:var(--text-muted);line-height:1.5;margin-bottom:14px;">{{ t.minSub }}</div>
+      <div style="display:flex;flex-direction:column;gap:11px;">
+        <sc-for list="{{ minutes }}" as="m" hint-placeholder-count="5">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="flex:0 0 168px;font-size:12.5px;color:var(--text);">{{ m.step }}</span>
+            <div style="flex:1;height:10px;border-radius:5px;background:var(--surface-sunken);overflow:hidden;"><div style="height:100%;width:{{ m.w }};background:linear-gradient(90deg,var(--accent-solid),var(--accent));"></div></div>
+            <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text-strong);flex:0 0 auto;">{{ m.min }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:13px;background:var(--surface-sunken);border:1px solid var(--border);">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" style="flex:0 0 16px;margin-top:1px;"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 8v4M12 16h.01"/></svg>
+      <span style="font-size:12.5px;color:var(--text);line-height:1.55;">{{ t.honest }}</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:860,&quot;height&quot;:960}}">
+class Component extends DCLogic {
+  state = { lang:'es', tiers:{ extract:'auto', classify:'propose', origin:'propose', duty:'auto', draft:'propose', chase:'propose' }, promoted:{} };
+  componentDidMount(){ try{ const l=localStorage.getItem('cruz.lang'); if(l)this.setState({lang:l}); }catch(e){} }
+  setEs=()=>{ try{localStorage.setItem('cruz.lang','es');}catch(e){} this.setState({lang:'es'}); };
+  setEn=()=>{ try{localStorage.setItem('cruz.lang','en');}catch(e){} this.setState({lang:'en'}); };
+  setTier=(id,tier)=>this.setState(s=>({tiers:Object.assign({},s.tiers,{[id]:tier})}));
+  promote=(id)=>this.setState(s=>({promoted:Object.assign({},s.promoted,{[id]:true})}));
+  renderVals(){
+    const es=this.state.lang!=='en'; const A=(en,e)=>es?e:en;
+    const seg=(on)=>({bg:on?'var(--surface)':'transparent',color:on?'var(--accent-text)':'var(--text-muted)'});
+    const e=seg(es), n=seg(!es);
+    const TIERS=[['auto',A('Auto','Auto'),A('Auto-run · logged for review','Auto-ejecuta · registrado')],['propose',A('Propose','Propón'),A('Propose, then you approve','Propone, luego apruebas')],['gate',A('Gate','Compuerta'),A('Hard-gate · always ask','Compuerta · siempre pregunta')]];
+    const mkTiers=(id)=>TIERS.map(([v,short,full])=>{ const on=this.state.tiers[id]===v; return {short,full,pick:()=>this.setTier(id,v), bg:on?'var(--accent-solid)':'transparent', color:on?'#fff':'var(--text-muted)'}; });
+    const act=(id,label,note)=>({label,note,settable:true,locked:false,tiers:mkTiers(id),rowBg:'var(--surface)',rowLine:'var(--border)'});
+    const actions=[
+      act('extract',A('Read & extract documents','Leer y extraer documentos'),A('Invoice, packing list, B/L','Factura, lista de empaque, B/L')),
+      act('classify',A('Classify tariff fracción','Clasificar fracción arancelaria'),A('HS + NICO proposal','Propuesta HS + NICO')),
+      act('origin',A('Validate origin (T-MEC)','Validar origen (T-MEC)'),A('Tariff-shift / RVC rule','Regla cambio arancelario / RVC')),
+      act('duty',A('Calculate duties & taxes','Calcular contribuciones'),A('IGI · DTA · IVA base','IGI · DTA · base IVA')),
+      act('draft',A('Draft the pedimento','Redactar el pedimento'),A('Up to — but not including — signature','Hasta — sin incluir — la firma')),
+      act('chase',A('Request docs from supplier','Solicitar docs al proveedor'),A('Drafts the email; you send','Redacta el correo; tú envías')),
+      {label:A('File / sign the pedimento','Presentar / firmar el pedimento'),note:A('Licensed, irreversible — reserved for the human broker','Con patente, irreversible — reservado al agente humano'),settable:false,locked:true,tiers:[],rowBg:'var(--danger-bg)',rowLine:'var(--danger-line)'},
+    ];
+    const THRESH=97;
+    const sk=(id,name,state,rate)=>{ const promoted=!!this.state.promoted[id]; const st=promoted?'auto':state;
+      const map={shadow:[A('shadow','sombra'),'var(--text-muted)','var(--surface-sunken)','var(--border)'],suggest:[A('suggest','sugiere'),'var(--warning)','var(--warning-bg)','var(--warning-line)'],auto:[A('auto','auto'),'var(--success)','var(--success-bg)','var(--success-line)']};
+      const m=map[st]; const can=rate>=THRESH && st!=='auto';
+      return {name,state:m[0],stColor:m[1],stBg:m[2],stLine:m[3],pct:rate.toFixed(1)+'%',barColor:rate>=THRESH?'var(--success)':'var(--warning)',
+        denom:A('pass-rate · n=','tasa · n=')+(900+Math.round(rate*7)), canPromote:can, belowBar:rate<THRESH && st!=='auto',
+        gateNote:A('Promotes to auto at \u2265'+THRESH+'% measured.','Sube a auto al \u2265'+THRESH+'% medido.'), promote:()=>this.promote(id)};
+    };
+    const skills=[ sk('s1',A('Document extraction','Extracción de documentos'),'auto',99.1), sk('s2',A('HS classification','Clasificación HS'),'suggest',96.4),
+      sk('s3',A('Origin validation','Validación de origen'),'suggest',94.0), sk('s4',A('Duty calculation','Cálculo de contribuciones'),'auto',99.6),
+      sk('s5',A('Supplier doc-chase','Gestión de docs proveedor'),'shadow',88.2), sk('s6',A('Anexo 24 reconcile','Conciliación Anexo 24'),'shadow',91.5) ];
+    const minutes=[ {step:A('Classification','Clasificación'),min:'14m',w:'100%'},{step:A('Document extraction','Extracción'),min:'9m',w:'64%'},
+      {step:A('Duty calculation','Cálculo contrib.'),min:'6m',w:'43%'},{step:A('Origin validation','Validación origen'),min:'4m',w:'29%'},{step:A('Doc-chase drafting','Redacción solicitudes'),min:'3m',w:'21%'} ];
+    const t={
+      eyebrow:A('Autonomy · risk-tiered','Autonomía · por riesgo'),
+      title:A('Autonomy is a dial, set per action — never a single switch.','La autonomía es un dial, por acción — nunca un solo interruptor.'),
+      sub:A('Low-stakes prep runs free; the irreversible signature is hard-gated by law. You set the line; CRUZ shows its work and rolls back on demand.','La preparación de bajo riesgo corre libre; la firma irreversible está bloqueada por ley. Tú pones la línea; CRUZ muestra su trabajo y revierte cuando pidas.'),
+      dialTitle:A('Per-action autonomy','Autonomía por acción'),
+      hardGate:A('Hard-gate','Compuerta'),
+      regTitle:A('Capability registry · graduates on evidence','Registro de capacidades · gradúa por evidencia'),
+      promote:A('Promote to auto','Subir a auto'),
+      minTitle:A('Where the minutes are going','A dónde van los minutos'),
+      minSub:A('Human-minutes removed per load, by step — the map of what to automate next.','Minutos-humano ahorrados por embarque, por paso — el mapa de qué automatizar después.'),
+      honest:A('A capability climbs shadow → suggest → auto only after a measured pass-rate, with instant fallback if metrics drop. Promotion is gated by the published denominator — never default-on.','Una capacidad sube sombra → sugiere → auto solo tras una tasa medida, con regreso inmediato si baja. La promoción está condicionada al denominador publicado — nunca activa por defecto.'),
+    };
+    return { t, actions, skills, minutes, setEs:this.setEs, setEn:this.setEn, esBg:e.bg,esColor:e.color, enBg:n.bg,enColor:n.color };
+  }
+}
+</script>
+</body>
+</html>

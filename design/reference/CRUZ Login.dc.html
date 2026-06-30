@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  h1,h2,h3{font-family:'Archivo','Hanken Grotesk',sans-serif;letter-spacing:-.02em;}
+  :root{--bg:#F1F4F9;--surface:#FFFFFF;--surface2:#EFF3F8;--line:#E2E8F0;--line2:#D3DCE7;--ink:#0C1925;--ink2:#2C4053;--muted:#64758A;--muted2:#8A99A9;--cyan:#0E7490;--green:#047857;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+  input{font-family:inherit;}
+  a{text-decoration:none;color:inherit;}
+  @keyframes dotBlink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes cruzPulse{0%,100%{opacity:.35;transform:scale(1);}50%{opacity:1;transform:scale(1.06);}}
+  @keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(34,211,238,.5);}50%{box-shadow:0 0 0 5px rgba(34,211,238,0);}}
+  @keyframes sheen{0%{transform:translateX(-130%) rotate(8deg);}100%{transform:translateX(240%) rotate(8deg);}}
+  @keyframes bubbleIn{from{opacity:0;transform:translateY(8px) scale(.98);}to{opacity:1;transform:none;}}
+  @keyframes stepIn{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:none;}}
+  @keyframes caretBlink{0%,100%{opacity:1;}50%{opacity:0;}}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @keyframes riseStagger{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+  @keyframes globeHintFade{0%{opacity:0;}14%{opacity:1;}72%{opacity:1;}100%{opacity:0;visibility:hidden;}}
+  .cruz-globe-hint{opacity:0;animation:globeHintFade 6s ease 1.6s forwards;}
+  .cz-field{transition:border-color .18s, box-shadow .18s, background .18s;}
+  .cz-field:focus-within{border-color:var(--cyan) !important;box-shadow:0 0 0 4px rgba(14,116,144,.12);background:#fff !important;}
+  .cz-signin{position:relative;overflow:hidden;transition:transform .16s, box-shadow .16s, opacity .16s;}
+  .cz-signin:hover{transform:translateY(-2px);box-shadow:0 20px 44px rgba(8,116,144,.36) !important;}
+  .cz-signin:active{transform:translateY(0);}
+  .cz-signin::after{content:"";position:absolute;top:-40%;left:0;width:38%;height:180%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-130%) rotate(8deg);animation:sheen 4.4s ease-in-out 1.2s infinite;}
+  .cz-sso{transition:border-color .15s, background .15s, transform .15s;}
+  .cz-sso:hover{transform:translateY(-1px);}
+  .cz-eye{transition:color .15s;}
+  .cz-eye:hover{color:var(--cyan) !important;}
+  .cz-chip{transition:all .15s;}
+  .cz-chip:hover{transform:translateY(-1px);}
+  .cz-st{opacity:0;animation:riseStagger .6s cubic-bezier(.2,.9,.3,1) both;}
+  @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;}}
+  .cruz-grid{display:grid;grid-template-columns:1.05fr .95fr;min-height:100vh;}
+  .cruz-brand{padding:44px 48px;min-height:100vh;}
+  .cruz-form{padding:40px;}
+  @media (max-width:920px){
+    .cruz-grid{grid-template-columns:1fr;}
+    .cruz-brand{min-height:auto;padding:26px 22px 30px;}
+    .cruz-brand-foot{margin-top:26px !important;}
+    .cruz-globe{opacity:.45;}
+    .cruz-form{padding:28px 22px 40px;}
+    .cruz-hero-h{font-size:23px !important;}
+  }
+</style>
+</helmet>
+<div class="cruz-grid" style="background:var(--bg);">
+
+  <!-- ===== BRAND / VISUAL (dark) ===== -->
+  <div class="cruz-brand" style="position:relative;background:radial-gradient(120% 90% at 72% 16%,#0C1A28,#060A11 74%);color:#E6EDF3;overflow:hidden;display:flex;flex-direction:column;">
+    <canvas ref="{{ setGlobe }}" class="cruz-globe" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;"></canvas>
+    <div style="position:absolute;inset:0;z-index:1;background:radial-gradient(80% 50% at 50% 110%,rgba(8,116,144,.18),transparent 70%);pointer-events:none;"></div>
+    <div class="cruz-globe-hint" style="position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);z-index:1;display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;background:rgba(8,13,19,.5);border:1px solid rgba(34,211,238,.22);backdrop-filter:blur(6px);font-size:11px;font-weight:600;color:#9fc7d6;pointer-events:none;white-space:nowrap;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="1.9"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>
+      {{ t.globeHint }}
+    </div>
+
+    <div class="cz-st" style="animation-delay:.05s;position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;">
+      <a href="CRUZ%20Landing.dc.html" style="display:flex;align-items:center;gap:11px;">
+        <svg width="34" height="34" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="cz4" x1="7" y1="9" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#22D3EE"/><stop offset=".5" stop-color="#0891B2"/><stop offset="1" stop-color="#0E7490"/></linearGradient></defs><path d="M34 10.5 A16.5 16.5 0 1 0 34 37.5" stroke="url(#cz4)" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M14 30 L20.5 23.5 L25 28 L32.5 16" stroke="url(#cz4)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M26.5 15.5 L33.5 14.5 L32.8 21.5" stroke="url(#cz4)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        <span style="font-size:20px;font-weight:800;letter-spacing:-.02em;">CRUZ</span>
+      </a>
+      <div style="display:flex;gap:3px;padding:3px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid #1d2c3a;">
+        <button onClick="{{ setEn }}" style="border:none;border-radius:7px;padding:5px 11px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;background:{{ enBg }};color:{{ enColor }};">EN</button>
+        <button onClick="{{ setEs }}" style="border:none;border-radius:7px;padding:5px 11px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;background:{{ esBg }};color:{{ esColor }};">ES</button>
+      </div>
+    </div>
+
+    <!-- AI companion — auto-playing agentic demo (driven imperatively via refs) -->
+    <div class="cz-st" style="animation-delay:.16s;position:relative;z-index:2;margin-top:32px;max-width:436px;width:100%;border:1px solid #16242f;border-radius:22px;background:rgba(8,13,19,.74);backdrop-filter:blur(14px);box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;">
+      <div style="display:flex;align-items:center;gap:11px;padding:15px 17px;border-bottom:1px solid #14202b;">
+        <span style="position:relative;width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#0891B2,#059669);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(8,116,144,.35);"><span style="position:absolute;inset:-3px;border-radius:15px;border:1.5px solid rgba(34,211,238,.45);animation:cruzPulse 2.4s infinite;"></span><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9"><path d="M12 3a9 9 0 1 0 9 9"/><circle cx="12" cy="12" r="2.4" fill="#fff" stroke="none"/></svg></span>
+        <div style="flex:1;"><div style="font-size:14.5px;font-weight:700;letter-spacing:-.01em;">CRUZ AI</div><div style="font-size:11px;color:#6f8093;">{{ t.demoTag }}</div></div>
+        <span style="display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;color:#34D399;"><span style="width:6px;height:6px;border-radius:50%;background:#34D399;animation:dotBlink 1.5s infinite;"></span>{{ t.live }}</span>
+      </div>
+
+      <div style="padding:15px 17px 4px;min-height:188px;display:flex;flex-direction:column;gap:10px;">
+        <div ref="{{ setQwrap }}" style="display:none;align-self:flex-end;max-width:86%;padding:9px 13px;border-radius:13px 13px 4px 13px;background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.22);font-size:13px;line-height:1.5;color:#cfe9f2;animation:bubbleIn .3s ease both;"><span ref="{{ setQtext }}"></span></div>
+        <div style="align-self:flex-start;max-width:92%;padding:11px 14px;border-radius:13px 13px 13px 4px;background:rgba(255,255,255,.04);border:1px solid #1a2935;font-size:13.5px;line-height:1.6;color:#dbe6ef;animation:bubbleIn .3s ease both;"><span ref="{{ setAtext }}"></span><span ref="{{ setCaret }}" style="color:#34D399;display:none;animation:caretBlink 1s steps(1) infinite;">▍</span></div>
+        <div ref="{{ setSteps }}" style="display:none;flex-direction:column;gap:7px;padding:4px 2px 2px;"></div>
+        <div ref="{{ setGate }}" style="display:none;align-items:center;gap:9px;margin-top:2px;padding:10px 13px;border-radius:12px;background:linear-gradient(135deg,rgba(8,116,144,.16),rgba(5,150,105,.1));border:1px solid rgba(34,211,238,.28);animation:bubbleIn .35s ease both;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
+          <span style="font-size:12.5px;font-weight:600;color:#bfeede;">{{ t.gate }}</span>
+        </div>
+      </div>
+
+      <div ref="{{ setChips }}" style="display:flex;flex-wrap:wrap;gap:8px;padding:10px 17px 16px;border-top:1px solid #11202b;margin-top:6px;">
+        <sc-for list="{{ chips }}" as="c" hint-placeholder-count="3">
+          <button onClick="{{ c.pick }}" class="cz-chip" style="font-family:inherit;font-size:12px;font-weight:600;white-space:nowrap;color:#7DD3E8;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.22);border-radius:999px;padding:7px 13px;cursor:pointer;">{{ c.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div class="cruz-brand-foot cz-st" style="animation-delay:.28s;margin-top:auto;position:relative;z-index:2;max-width:452px;">
+      <div class="cruz-hero-h" style="font-size:28px;font-weight:800;letter-spacing:-.025em;line-height:1.16;">{{ t.thesis }}</div>
+      <div style="display:flex;gap:28px;margin-top:22px;">
+        <div><div ref="{{ setCleared }}" style="font-family:'Space Mono',monospace;font-size:21px;font-weight:700;">{{ cleared }}</div><div style="font-size:11.5px;color:#6f8093;margin-top:2px;">{{ t.clearedToday }}</div></div>
+        <div style="width:1px;background:#16222d;"></div>
+        <div><div style="font-family:'Space Mono',monospace;font-size:21px;font-weight:700;color:#34D399;">100%</div><div style="font-size:11.5px;color:#6f8093;margin-top:2px;">{{ t.success }}</div></div>
+        <div style="width:1px;background:#16222d;"></div>
+        <div><div ref="{{ setCross }}" style="font-family:'Space Mono',monospace;font-size:21px;font-weight:700;color:#22D3EE;">{{ crossIndex }}</div><div style="font-size:11.5px;color:#6f8093;margin-top:2px;">{{ t.indexLabel }}</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FORM ===== -->
+  <div class="cruz-form" style="display:flex;align-items:center;justify-content:center;">
+    <div style="width:100%;max-width:392px;">
+      <div class="cz-st" style="animation-delay:.1s;font-size:28px;font-weight:800;letter-spacing:-.025em;">{{ t.welcome }}</div>
+      <div class="cz-st" style="animation-delay:.16s;font-size:14.5px;color:var(--muted);margin-top:6px;">{{ t.subtitle }}</div>
+
+      <div class="cz-st" style="animation-delay:.22s;display:flex;flex-direction:column;gap:10px;margin-top:28px;">
+        <button onClick="{{ submit }}" class="cz-sso" style="display:flex;align-items:center;justify-content:center;gap:10px;height:48px;border:1px solid var(--line2);border-radius:13px;background:var(--surface);font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;" style-hover="border-color:var(--muted2);background:var(--surface2)">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.5 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.9a5 5 0 0 1-2.2 3.3v2.700h3.5c2-1.9 3.3-4.7 3.3-8z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.5-2.7c-1 .7-2.3 1.1-3.8 1.1-2.9 0-5.4-2-6.3-4.6H2v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.7 14.1a6.6 6.6 0 0 1 0-4.2V7.1H2a11 11 0 0 0 0 9.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3 .6 4.2 1.6l3.1-3.1A11 11 0 0 0 2 7.1l3.7 2.8C6.6 7.4 9.1 5.4 12 5.4z"/></svg>
+          {{ t.google }}
+        </button>
+        <button onClick="{{ submit }}" class="cz-sso" style="display:flex;align-items:center;justify-content:center;gap:10px;height:48px;border:1px solid var(--line2);border-radius:13px;background:var(--surface);font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;" style-hover="border-color:var(--muted2);background:var(--surface2)">
+          <span style="display:flex;width:16px;height:16px;flex-wrap:wrap;"><span style="width:7px;height:7px;background:#F25022;"></span><span style="width:7px;height:7px;background:#7FBA00;margin-left:2px;"></span><span style="width:7px;height:7px;background:#00A4EF;margin-top:2px;"></span><span style="width:7px;height:7px;background:#FFB900;margin-left:2px;margin-top:2px;"></span></span>
+          {{ t.microsoft }}
+        </button>
+      </div>
+
+      <div class="cz-st" style="animation-delay:.28s;display:flex;align-items:center;gap:14px;margin:22px 0;"><div style="flex:1;height:1px;background:var(--line);"></div><span style="font-size:12px;color:var(--muted2);">{{ t.or }}</span><div style="flex:1;height:1px;background:var(--line);"></div></div>
+
+      <div class="cz-st" style="animation-delay:.34s;">
+        <label style="font-size:12px;font-weight:600;color:var(--ink2);">{{ t.email }}</label>
+        <div class="cz-field" style="display:flex;align-items:center;gap:9px;height:48px;padding:0 14px;border:1px solid var(--line2);border-radius:13px;background:var(--surface);margin-top:7px;" style-hover="border-color:var(--muted2)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted2)" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          <input ref="{{ setEmail }}" onInput="{{ onEmail }}" onKeyDown="{{ onKey }}" placeholder="mariana@fronterabrokers.com" style="flex:1;border:none;outline:none;background:transparent;font-size:14px;color:var(--ink);" />
+          <svg ref="{{ setEmailCheck }}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.4" style="opacity:0;transition:opacity .2s;"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+      </div>
+
+      <div class="cz-st" style="animation-delay:.4s;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;"><label style="font-size:12px;font-weight:600;color:var(--ink2);">{{ t.password }}</label><span style="font-size:12px;font-weight:600;color:var(--cyan);cursor:pointer;">{{ t.forgot }}</span></div>
+        <div class="cz-field" style="display:flex;align-items:center;gap:9px;height:48px;padding:0 14px;border:1px solid var(--line2);border-radius:13px;background:var(--surface);margin-top:7px;" style-hover="border-color:var(--muted2)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted2)" stroke-width="1.8"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <input ref="{{ setPwd }}" type="password" onKeyDown="{{ onKey }}" placeholder="••••••••••" style="flex:1;border:none;outline:none;background:transparent;font-size:14px;color:var(--ink);letter-spacing:.06em;" />
+          <button ref="{{ setEye }}" onClick="{{ togglePwd }}" class="cz-eye" aria-label="{{ t.showPwd }}" style="border:none;background:transparent;color:var(--muted2);cursor:pointer;display:flex;padding:2px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        </div>
+      </div>
+
+      <button ref="{{ setSignin }}" onClick="{{ submit }}" class="cz-signin cz-st" style="animation-delay:.46s;width:100%;height:50px;margin-top:22px;border:none;border-radius:13px;background:linear-gradient(135deg,#0891B2,#059669);color:#fff;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 12px 32px rgba(8,116,144,.25);">{{ t.signin }}<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+
+      <div class="cz-st" style="animation-delay:.52s;display:flex;align-items:center;gap:8px;margin-top:18px;padding:11px 13px;border-radius:11px;background:var(--surface2);border:1px solid var(--line);">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.9"><path d="M12 3l8 4v6c0 5-3.4 7.6-8 8-4.6-.4-8-3-8-8V7z"/><path d="M9 12l2 2 4-4"/></svg>
+        <span style="font-size:11.5px;color:var(--muted);">{{ t.secured }}</span>
+      </div>
+
+      <div class="cz-st" style="animation-delay:.58s;text-align:center;font-size:13.5px;color:var(--muted);margin-top:24px;">{{ t.newbroker }} <a href="CRUZ%20Landing.dc.html" style="color:var(--cyan);font-weight:700;">{{ t.request }}</a></div>
+    </div>
+  </div>
+
+  <a href="CRUZ%20Landing.dc.html" style="position:fixed;right:24px;bottom:24px;z-index:30;display:flex;align-items:center;gap:9px;padding:13px 20px;border-radius:14px;background:linear-gradient(135deg,#0891B2,#059669);color:#fff;text-decoration:none;font-size:14px;font-weight:700;box-shadow:0 16px 40px rgba(12,25,37,.28);transition:transform .18s;" style-hover="transform:translateY(-2px)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>{{ t.about }}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  // Only `lang` lives in React state — everything dynamic (demo loop, metrics, form
+  // micro-interactions) is driven imperatively via refs so the component renders once
+  // and the CSS entrance-stagger completes instead of being restarted every tick.
+  state = { lang:'es' };
+  _cleared = 312;
+  _mt = 0;
+
+  DICT = {
+    en:{ demoTag:'Watch it work before you sign in', live:'Live', welcome:'Welcome back', subtitle:'Sign in to continue to CRUZ.',
+      google:'Continue with Google', microsoft:'Continue with Microsoft', or:'or', email:'Work email', password:'Password',
+      forgot:'Forgot?', signin:'Sign in', verifying:'Verifying…', showPwd:'Show password', about:'About',
+      secured:'Secured with SAT e.firma', newbroker:'New brokerage?',
+      request:'Request access', indexLabel:'Crossing Index', clearedToday:'cleared today', success:'human-signed',
+      globeHint:'Drag to spin · hover a crossing',
+      thesis:'CRUZ prepares the entry. You sign what matters.',
+      gate:'The labor is done — you give the signature.',
+      scenes:[
+        { chip:'Classify a line', q:'Classify: aluminum control arms, origin MX',
+          a:'HS 8708.99.05 — suspension parts. 96% confidence, cross-checked against 41 prior entries. Qualifies USMCA with a valid origin cert → 0% duty.',
+          steps:[['Read invoice & spec sheet','0.7s'],['Cross-check 41 prior entries','1.1s'],['Assign 8708.99.05 · 96%','1.6s']], gate:false },
+        { chip:'Clear a shipment end-to-end', q:'Clear SHP-44210 from start to finish',
+          a:'Done. I read the documents, classified, validated origin and calculated the duties. Pedimento 24 38 5678 passed all 14 SAT validations — only your e.firma is left.',
+          steps:[['Read 6 documents','0.7s'],['Classify 14 line items','1.6s'],['Validate USMCA origin','0.5s'],['Calculate duties & taxes','0.4s'],['Draft pedimento 24 38 5678','0.9s'],['Ready for your signature','']], gate:true },
+        { chip:'Laredo waits right now', q:'How is Laredo crossing right now?',
+          a:'Laredo is flowing — 38 min wait, 74% green-light. Your best crossing window is in ~2 h; I\u2019ll time the shipment for then.',
+          steps:[['Query live crossing sensors','0.5s'],['Compute optimal window','0.8s']], gate:false } ] },
+    es:{ demoTag:'Míralo trabajar antes de iniciar sesión', live:'En vivo', welcome:'Bienvenida de nuevo', subtitle:'Inicia sesión para continuar en CRUZ.',
+      google:'Continuar con Google', microsoft:'Continuar con Microsoft', or:'o', email:'Correo de trabajo', password:'Contraseña',
+      forgot:'¿Olvidaste?', signin:'Iniciar sesión', verifying:'Verificando…', showPwd:'Mostrar contraseña', about:'Conócenos',
+      secured:'Protegido con e.firma del SAT', newbroker:'¿Nueva agencia?',
+      request:'Solicitar acceso', indexLabel:'Índice de Cruce', clearedToday:'despachados hoy', success:'firmado por un humano',
+      globeHint:'Arrastra para girar · pasa sobre un cruce',
+      thesis:'CRUZ prepara el pedimento. Tú firmas lo que importa.',
+      gate:'La labor está hecha — tú das la firma.',
+      scenes:[
+        { chip:'Clasificar una línea', q:'Clasifica: brazos de control de aluminio, origen MX',
+          a:'Fracción 8708.99.05 — partes de suspensión. 96% de confianza, cotejada contra 41 entradas previas. Califica T-MEC con certificado de origen válido → arancel 0%.',
+          steps:[['Leer factura y ficha técnica','0.7s'],['Cotejar 41 entradas previas','1.1s'],['Asignar 8708.99.05 · 96%','1.6s']], gate:false },
+        { chip:'Despachar un embarque completo', q:'Despacha el SHP-44210 de principio a fin',
+          a:'Listo. Leí los documentos, clasifiqué, validé origen y calculé las contribuciones. El pedimento 24 38 5678 pasó las 14 validaciones del SAT — solo falta tu e.firma.',
+          steps:[['Leer 6 documentos','0.7s'],['Clasificar 14 partidas','1.6s'],['Validar origen T-MEC','0.5s'],['Calcular contribuciones','0.4s'],['Generar pedimento 24 38 5678','0.9s'],['Listo para tu firma','']], gate:true },
+        { chip:'Tiempos de Laredo ahora', q:'¿Cómo está el cruce de Laredo en este momento?',
+          a:'Laredo fluye — 38 min de espera, 74% luz verde. Tu mejor ventana de cruce es en ~2 h; programo el embarque para entonces.',
+          steps:[['Consultar sensores de cruce','0.5s'],['Calcular ventana óptima','0.8s']], gate:false } ] },
+  };
+  scenes(){ return this.DICT[this.state.lang].scenes; }
+
+  // ---- refs ----
+  setGlobe=(el)=>{ this.canvas=el; if(el) this.initGlobe(); };
+  setQwrap=(el)=>this.qWrap=el;  setQtext=(el)=>this.qText=el;
+  setAtext=(el)=>this.aText=el;  setCaret=(el)=>this.caret=el;
+  setSteps=(el)=>this.stepsWrap=el; setGate=(el)=>this.gateEl=el; setChips=(el)=>this.chipsWrap=el;
+  setCleared=(el)=>this.clearedEl=el; setCross=(el)=>this.crossEl=el;
+  setEmail=(el)=>this.emailInput=el; setEmailCheck=(el)=>this.emailCheck=el;
+  setPwd=(el)=>this.pwdInput=el; setEye=(el)=>this.eyeBtn=el; setSignin=(el)=>this.signinBtn=el;
+
+  // ---- auth ----
+  go = ()=>{ const e=((this.emailInput&&this.emailInput.value)||'').toLowerCase(); let r='cliente';
+    if(/oper|trafic/.test(e))r='operador'; else if(/conta|tesor|account|cobr/.test(e))r='contabilidad';
+    else if(/bodega|wms|almac|warehouse/.test(e))r='bodega'; else if(/admin|broker|owner|renato|tito|patente/.test(e))r='admin';
+    try{localStorage.setItem('cruz.role',r);}catch(_){}
+    // route by role to the right role-app · client/finance/warehouse stay in the CRUZ shipper app
+    let dest='CRUZ.dc.html';
+    if(r==='admin') dest='CRUZ Broker Console.dc.html';
+    else if(r==='operador') dest='CRUZ Operator Cockpit.dc.html';
+    window.location.href=encodeURI(dest); };
+  submit = ()=>{ if(this._submitting) return; this._submitting=true;
+    if(this.signinBtn){ this.signinBtn.innerHTML='<span style="width:18px;height:18px;border-radius:50%;border:2.2px solid rgba(255,255,255,.4);border-top-color:#fff;display:inline-block;animation:spin .7s linear infinite;"></span><span style="margin-left:4px;">'+this.DICT[this.state.lang].verifying+'</span>'; }
+    clearTimeout(this._sub); this._sub=setTimeout(()=>this.go(), 950); };
+  onKey = (e)=>{ if(e.key==='Enter'){ e.preventDefault(); this.submit(); } };
+  onEmail = ()=>{ const ok=/.+@.+\..+/.test((this.emailInput&&this.emailInput.value)||''); if(this.emailCheck) this.emailCheck.style.opacity= ok?'1':'0'; };
+  togglePwd = ()=>{ if(!this.pwdInput) return; const hidden=this.pwdInput.type==='password'; this.pwdInput.type=hidden?'text':'password';
+    if(this.eyeBtn) this.eyeBtn.innerHTML = hidden
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/><path d="M3 3l18 18"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>'; };
+
+  // ---- language (the one re-render; demo restarts after) ----
+  setEn = ()=>{ if(this.state.lang!=='en') this.setState({lang:'en'}); };
+  setEs = ()=>{ if(this.state.lang!=='es') this.setState({lang:'es'}); };
+
+  // ---- agentic demo loop (imperative; no setState) ----
+  clearDemo(){ clearInterval(this._type); clearInterval(this._step); clearTimeout(this._t1); clearTimeout(this._loop); }
+  typeInto(node, full, speed, done){
+    clearInterval(this._type); let i=0; if(node) node.textContent='';
+    this._type=setInterval(()=>{ i++; if(node) node.textContent=full.slice(0,i); if(i>=full.length){ clearInterval(this._type); this._t1=setTimeout(done, 480); } }, speed);
+  }
+  rowHTML(label, meta, state){
+    const done=state==='done', active=state==='active';
+    const bg=done?'#34D399':(active?'transparent':'rgba(255,255,255,.03)');
+    const border=done?'#34D399':(active?'#22D3EE':'#243643');
+    const color=(done||active)?'#dbe6ef':'#5d6e80';
+    const pulse=active?'animation:pulseDot 1.2s infinite;':'';
+    const mark=done?'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#06241f" stroke-width="3.2"><path d="M20 6L9 17l-5-5"/></svg>'
+      :(active?'<span style="width:9px;height:9px;border-radius:50%;border:1.6px solid rgba(34,211,238,.3);border-top-color:#22D3EE;display:inline-block;animation:spin .7s linear infinite;"></span>':'');
+    return '<div style="display:flex;align-items:center;gap:10px;animation:stepIn .3s ease both;">'
+      +'<span style="width:18px;height:18px;border-radius:50%;flex:0 0 18px;display:flex;align-items:center;justify-content:center;background:'+bg+';border:1.5px solid '+border+';'+pulse+'">'+mark+'</span>'
+      +'<span style="font-size:12.5px;font-weight:500;color:'+color+';">'+label+'</span>'
+      +'<span style="margin-left:auto;font-family:\'JetBrains Mono\',monospace;font-size:10px;color:#5d6e80;">'+(meta||'')+'</span></div>';
+  }
+  updateChips(idx){ if(!this.chipsWrap) return; const btns=this.chipsWrap.querySelectorAll('button');
+    btns.forEach((b,i)=>{ const on=i===idx; b.style.color=on?'#0C1925':'#7DD3E8'; b.style.background=on?'#22D3EE':'rgba(34,211,238,.08)'; b.style.borderColor=on?'#22D3EE':'rgba(34,211,238,.22)'; }); }
+  playScene(idx){
+    this.clearDemo();
+    const sc=this.scenes()[idx]; if(!sc) return; this._scene=idx; this.updateChips(idx);
+    if(this.qWrap) this.qWrap.style.display='none'; if(this.qText) this.qText.textContent='';
+    if(this.aText) this.aText.textContent=''; if(this.caret) this.caret.style.display='none';
+    if(this.stepsWrap){ this.stepsWrap.style.display='none'; this.stepsWrap.innerHTML=''; }
+    if(this.gateEl) this.gateEl.style.display='none';
+    // 1) type the question (you)
+    if(this.qWrap) this.qWrap.style.display='flex';
+    this.typeInto(this.qText, sc.q, 26, ()=>{
+      if(this.caret) this.caret.style.display='inline';
+      // 2) type CRUZ's answer
+      this.typeInto(this.aText, sc.a, 17, ()=>{
+        if(this.caret) this.caret.style.display='none';
+        // 3) step through the working rail
+        if(!this.stepsWrap) return;
+        this.stepsWrap.style.display='flex'; let s=0;
+        const render=(allDone)=>{ this.stepsWrap.innerHTML = sc.steps.slice(0, allDone?sc.steps.length:s+1)
+          .map((st,i)=>this.rowHTML(st[0], st[1], allDone?'done':(i<s?'done':'active'))).join(''); };
+        render(false);
+        this._step=setInterval(()=>{ s++;
+          if(s>=sc.steps.length){ clearInterval(this._step); render(true);
+            if(sc.gate && this.gateEl) this.gateEl.style.display='flex';
+            this._loop=setTimeout(()=>this.playScene((idx+1)%this.scenes().length), 2800);
+          } else { render(false); }
+        }, 600);
+      });
+    });
+  }
+
+  // ---- living globe ----
+  cities = { mty:[25.7,-100.3], lar:[27.5,-99.5], dal:[32.8,-96.8], la:[34.0,-118.2], mex:[19.4,-99.1], hou:[29.8,-95.4], gdl:[20.7,-103.3], elp:[31.8,-106.5], tij:[32.5,-117.0] };
+  cityInfo = { mty:['Monterrey','centro de carga'], lar:['Laredo','38 min · 74% verde'], dal:['Dallas','destino'], la:['Los Ángeles','destino'], mex:['CDMX','centro de carga'], hou:['Houston','destino'], gdl:['Guadalajara','centro de carga'], elp:['El Paso','22 min · 81% verde'], tij:['Tijuana','51 min · 60% verde'] };
+  arcs = [ ['mty','dal'], ['gdl','la'], ['mex','hou'], ['mty','elp'], ['gdl','tij'], ['mex','dal'] ];
+  ll(lat,lon){ const la=lat*Math.PI/180, lo=lon*Math.PI/180; return [Math.cos(la)*Math.sin(lo), Math.sin(la), Math.cos(la)*Math.cos(lo)]; }
+  rot(p,a,tilt){ let [x,y,z]=p; let x1=x*Math.cos(a)+z*Math.sin(a), z1=-x*Math.sin(a)+z*Math.cos(a); let y2=y*Math.cos(tilt)-z1*Math.sin(tilt), z2=y*Math.sin(tilt)+z1*Math.cos(tilt); return [x1,y2,z2]; }
+  initGlobe(){
+    if(this._raf) return;
+    // coarse continent model (ellipses in lon/lat) — enough to read as Earth in dots
+    const cont=[
+      [-100,50,30,20],[-83,42,14,14],[-112,34,15,12],[-100,62,42,12],[-150,63,14,9],
+      [-92,17,12,9],[-42,72,11,9],
+      [-63,-15,17,20],[-58,-33,9,13],[-49,-8,10,10],
+      [12,52,20,11],[30,45,15,9],
+      [18,4,21,27],[26,-22,12,11],
+      [86,52,50,20],[100,33,30,15],[78,23,9,11],[112,11,13,11],[140,58,18,12],
+      [134,-25,15,9]
+    ];
+    const landAt=(lat,lon)=>{ if(lat<-63) return true; for(const e of cont){ const dl=(((lon-e[0]+540)%360)-180)/e[2]; const db=(lat-e[1])/e[3]; if(dl*dl+db*db<=1) return true; } return false; };
+    this.dots=[]; const N=11000;
+    for(let i=0;i<N;i++){ const y=1-(i/(N-1))*2; const r=Math.sqrt(1-y*y); const phi=i*2.399963; const x=Math.cos(phi)*r, z=Math.sin(phi)*r;
+      const lat=Math.asin(Math.max(-1,Math.min(1,y)))*180/Math.PI, lon=Math.atan2(x,z)*180/Math.PI;
+      // reveal threshold: dots sweep in from the north pole down during the entrance
+      this.dots.push({x,y,z,land:landAt(lat,lon), rev:(90-lat)/180}); }
+    // metros that light up on the night side (warm city lights)
+    this.nightCities=[[25.7,-100.3],[19.4,-99.1],[20.7,-103.3],[32.8,-96.8],[29.8,-95.4],[34.0,-118.2],[40.7,-74.0],[41.9,-87.6],[19.0,-98.2],[25.8,-80.2]];
+    // global data network — Palantir-style nodes everywhere [lat,lon,hub]
+    this.worldNodes=[[31,121,1],[1.3,103.8,1],[35.6,139.7,1],[22.3,114.2,1],[19,72.8,1],[25.2,55.3,1],[51.9,4.5,1],[53.5,10,0],[51.5,-0.1,1],[51.2,4.4,0],[40.7,-74,1],[34,-118.2,1],[33.8,-118.2,0],[29.8,-95.4,0],[-23.9,-46.3,1],[-34.6,-58.4,0],[-33,-71.6,0],[-29.9,31,0],[6.5,3.4,0],[-33.9,18.4,0],[-33.9,151.2,1],[-37.8,144.9,0],[35.1,129,0],[22.6,120.3,0],[14.6,121,0],[-6.2,106.8,1],[6.9,79.8,0],[21.5,39.2,0],[41,28.9,0],[37.9,23.6,0],[44.4,8.9,0],[41.4,2.2,0],[52,1.3,0],[49.3,-123.1,0],[47.6,-122.3,0],[37.8,-122.3,0],[9,-79.5,1],[10.4,-75.5,0],[19.2,-96.1,0],[19,-104.3,0],[45.5,-73.6,0],[32,-81.1,0],[25.8,-80.2,0],[36.9,-76.3,0],[17,54,0],[30,31.2,0]];
+    // global trade lanes [[lat,lon],[lat,lon]]
+    this.worldArcs=[[[31,121],[34,-118.2]],[[31,121],[51.9,4.5]],[[1.3,103.8],[51.9,4.5]],[[1.3,103.8],[25.2,55.3]],[[25.2,55.3],[51.9,4.5]],[[35.6,139.7],[33.8,-118.2]],[[35.1,129],[37.8,-122.3]],[[22.3,114.2],[34,-118.2]],[[31,121],[9,-79.5]],[[9,-79.5],[40.7,-74]],[[40.7,-74],[51.9,4.5]],[[-23.9,-46.3],[51.9,4.5]],[[-23.9,-46.3],[31,121]],[[-33.9,151.2],[1.3,103.8]],[[19,72.8],[25.2,55.3]],[[6.5,3.4],[51.9,4.5]],[[-29.9,31],[1.3,103.8]],[[19,-104.3],[31,121]]];
+    // port names for hover (honest: name + region, no fabricated numbers)
+    this.worldNames=[['Shanghái','Asia'],['Singapur','Asia'],['Tokio','Asia'],['Hong Kong','Asia'],['Bombay','Asia'],['Dubái','Medio Oriente'],['Róterdam','Europa'],['Hamburgo','Europa'],['Londres','Europa'],['Amberes','Europa'],['Nueva York','Norteamérica'],['Los Ángeles','Norteamérica'],['Long Beach','Norteamérica'],['Houston','Norteamérica'],['Santos','Sudamérica'],['Buenos Aires','Sudamérica'],['Valparaíso','Sudamérica'],['Durban','África'],['Lagos','África'],['Ciudad del Cabo','África'],['Sídney','Oceanía'],['Melbourne','Oceanía'],['Busán','Asia'],['Kaohsiung','Asia'],['Manila','Asia'],['Yakarta','Asia'],['Colombo','Asia'],['Yeda','Medio Oriente'],['Estambul','Europa'],['El Pireo','Europa'],['Génova','Europa'],['Barcelona','Europa'],['Felixstowe','Europa'],['Vancouver','Norteamérica'],['Seattle','Norteamérica'],['Oakland','Norteamérica'],['Panamá','Centroamérica'],['Cartagena','Sudamérica'],['Veracruz','México'],['Manzanillo','México'],['Montreal','Norteamérica'],['Savannah','Norteamérica'],['Miami','Norteamérica'],['Norfolk','Norteamérica'],['Salalah','Medio Oriente'],['Suez','Medio Oriente']];
+    const resize=()=>{ const c=this.canvas; if(!c)return; const r=c.getBoundingClientRect(); this.w=r.width; this.h=r.height; const dpr=Math.min(window.devicePixelRatio||1,2); c.width=Math.max(2,r.width*dpr); c.height=Math.max(2,r.height*dpr); this.ctx=c.getContext('2d'); this.ctx.setTransform(dpr,0,0,dpr,0,0); };
+    this._resize=resize; resize(); window.addEventListener('resize',resize);
+    // parallax starfield (screen-space, twinkles)
+    this.stars=[]; for(let i=0;i<90;i++){ this.stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.0+0.3,p:Math.random()*6.283,sp:0.6+Math.random()*1.8}); }
+    // ---- interaction: drag to spin (with inertia) · cursor-tracked light · hoverable crossings ----
+    this.userA=0; this.userTilt=0; this.va=0; this.vt=0; this.drag=null; this.hover=null; this.pointer={x:null,y:null};
+    const c=this.canvas; c.style.cursor='grab'; c.style.touchAction='none';
+    const xy=(e)=>{ const r=c.getBoundingClientRect(); return [ e.clientX-r.left, e.clientY-r.top ]; };
+    this._down=(e)=>{ const [x,y]=xy(e); this.drag={x,y}; this.va=0; this.vt=0; c.style.cursor='grabbing'; if(c.setPointerCapture&&e.pointerId!=null){ try{c.setPointerCapture(e.pointerId);}catch(_){} } };
+    this._move=(e)=>{ const [x,y]=xy(e); this.pointer={x,y};
+      if(this.drag){ const dx=x-this.drag.x, dy=y-this.drag.y; this.drag={x,y};
+        this.userA+=dx*0.0062; this.userTilt=Math.max(-0.85,Math.min(0.85,this.userTilt-dy*0.005));
+        this.va=dx*0.0062; this.vt=-dy*0.005; } };
+    this._up=()=>{ if(this.drag){ this.drag=null; if(this.canvas) this.canvas.style.cursor='grab'; } };
+    this._leave=()=>{ if(!this.drag) this.pointer={x:null,y:null}; };
+    c.addEventListener('pointerdown',this._down); window.addEventListener('pointermove',this._move);
+    window.addEventListener('pointerup',this._up); c.addEventListener('pointerleave',this._leave);
+    this.zoom=1; this._wheel=(e)=>{ e.preventDefault(); this.zoom=Math.max(0.85,Math.min(2.4,(this.zoom||1)*(e.deltaY<0?1.08:0.926))); }; c.addEventListener('wheel',this._wheel,{passive:false});
+    // ---- framing + entrance ----
+    this.baseA=1.62;  // frames the US–MX corridor (lon ~ -100°) at the front of the sphere
+    this._reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this._t0 = (window.performance&&performance.now)?performance.now():Date.now();
+    // ---- photoreal textures (NASA blue-marble day + city-lights night). Falls back to the dot globe if they can't load (CORS/offline). ----
+    this.tex={}; this.texReady=false;
+    const loadTex=(key,url)=>{ const img=new Image(); img.crossOrigin='anonymous';
+      img.onload=()=>{ try{ const oc=document.createElement('canvas'); oc.width=img.naturalWidth; oc.height=img.naturalHeight; const o=oc.getContext('2d'); o.drawImage(img,0,0); this.tex[key]={data:o.getImageData(0,0,oc.width,oc.height).data,w:oc.width,h:oc.height}; if(this.tex.day&&this.tex.night) this.texReady=true; }catch(e){} };
+      img.src=url; };
+    loadTex('day','https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-blue-marble.jpg');
+    loadTex('night','https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-night.jpg');
+    this.gt=0; const loop=()=>{ this.drawGlobe(); this._raf=requestAnimationFrame(loop); }; this._raf=requestAnimationFrame(loop);
+  }
+  easeOut(t){ return 1-Math.pow(1-Math.max(0,Math.min(1,t)),3); }
+  drawTexturedSphere(ctx,cx,cy,R,a,tilt,L,intro){
+    const day=this.tex.day, night=this.tex.night; if(!day||!night) return;
+    const dispS=Math.ceil(R*2); if(dispS<2) return;
+    const S=Math.max(2,Math.ceil(dispS*0.82)), Rr=S/2;   // render at 0.82x then upscale (perf vs crispness)
+    if(!this._oc){ this._oc=document.createElement('canvas'); }
+    const oc=this._oc; if(oc.width!==S||oc.height!==S){ oc.width=S; oc.height=S; this._ocx=oc.getContext('2d'); this._ocImg=this._ocx.createImageData(S,S); }
+    const out=this._ocImg.data;
+    const ca=Math.cos(a),sa=Math.sin(a),ct=Math.cos(tilt),st=Math.sin(tilt);
+    const dW=day.w,dH=day.h,dD=day.data, nW=night.w,nH=night.h,nD=night.data;
+    const Lx=L[0],Ly=L[1],Lz=L[2], PI=Math.PI, A=Math.max(0,Math.min(1,intro))*255;
+    for(let py=0;py<S;py++){ const ny=1-(py+0.5)/Rr;
+      for(let px=0;px<S;px++){ const nx=(px+0.5)/Rr-1; const rr=nx*nx+ny*ny; const o=(py*S+px)<<2;
+        if(rr>1){ out[o+3]=0; continue; }
+        const nz=Math.sqrt(1-rr);
+        const gy=ny*ct+nz*st, z1=-ny*st+nz*ct, x1=nx;        // inverse-rotate camera point → globe
+        const gx=x1*ca-z1*sa, gz=x1*sa+z1*ca;
+        const lat=Math.asin(gy<-1?-1:gy>1?1:gy), lon=Math.atan2(gx,gz);
+        const uf=(lon/PI)*0.5+0.5, vf=0.5-lat/PI;
+        let dui=(uf*dW)|0; if(dui<0)dui=0; else if(dui>=dW)dui=dW-1;
+        let dvi=(vf*dH)|0; if(dvi<0)dvi=0; else if(dvi>=dH)dvi=dH-1; const ti=(dvi*dW+dui)<<2;
+        let nui=(uf*nW)|0; if(nui<0)nui=0; else if(nui>=nW)nui=nW-1;
+        let nvi=(vf*nH)|0; if(nvi<0)nvi=0; else if(nvi>=nH)nvi=nH-1; const ni=(nvi*nW+nui)<<2;
+        const lam=nx*Lx+ny*Ly+nz*Lz;
+        const t=lam<-0.1?0:(lam>0.32?1:(lam+0.1)/0.42);   // soft terminator: night→day
+        const shade=0.32+0.78*(lam>0?lam:0), edge=1-rr*rr*0.45;
+        out[o]  =(nD[ni]*(1-t)*0.92   + dD[ti]*shade*t)*edge;
+        out[o+1]=(nD[ni+1]*(1-t)*0.92 + dD[ti+1]*shade*t)*edge;
+        out[o+2]=(nD[ni+2]*(1-t)*0.92 + dD[ti+2]*shade*t)*edge;
+        out[o+3]=A;
+      }
+    }
+    this._ocx.putImageData(this._ocImg,0,0);
+    ctx.imageSmoothingEnabled=true; ctx.drawImage(oc,cx-R,cy-R,R*2,R*2);
+    // ocean sun-glint near the sub-solar point
+    const gx=cx+L[0]*R*0.5, gyy=cy-L[1]*R*0.5;
+    ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.clip(); ctx.globalCompositeOperation='lighter';
+    let gl=ctx.createRadialGradient(gx,gyy,0,gx,gyy,R*0.6); gl.addColorStop(0,'rgba(150,210,255,'+(0.12*intro)+')'); gl.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=gl; ctx.fillRect(cx-R,cy-R,R*2,R*2); ctx.restore();
+  }
+  drawGlobe(){
+    // ensure the backing buffer matches the CSS box (resize() can run before layout on first paint)
+    const cvs=this.canvas; if(cvs && this._resize){ const rect=cvs.getBoundingClientRect(); const dpr=Math.min(window.devicePixelRatio||1,2); const want=Math.max(2,Math.round(rect.width*dpr)); if(rect.width>1 && Math.abs(cvs.width-want)>1){ this._resize(); } }
+    const ctx=this.ctx; if(!ctx)return; const w=this.w,h=this.h;
+    // auto-spin when idle; while dragging the user drives it; on release inertia decays back to the drift
+    if(!this.drag){ this.gt+=0.0032; this.userA=(this.userA||0)+(this.va||0); this.userTilt=Math.max(-0.85,Math.min(0.85,(this.userTilt||0)+(this.vt||0))); this.va=(this.va||0)*0.93; this.vt=(this.vt||0)*0.93; }
+    ctx.clearRect(0,0,w,h);
+    const now=(window.performance&&performance.now)?performance.now():Date.now();
+    const intro=this._reduce?1:this.easeOut((now-(this._t0||now))/1400); this.intro=intro;
+    const arcOn = intro>=1?1:Math.max(0,Math.min(1,(intro-0.45)/0.5));
+    const nodeOn = intro>=1?1:Math.max(0,Math.min(1,(intro-0.82)/0.18));
+    const cx=w*0.64, cy=h*0.40, R=Math.min(w,h)*0.455*(0.92+0.08*intro)*(this.zoom||1);
+    // start framed on the US–MX corridor, then rotate continuously like a real globe
+    const a=(this.baseA||1.62) + this.gt + (1-intro)*0.7 + (this.userA||0);
+    const tilt=-0.42 + Math.sin(this.gt*0.22)*0.05*intro + (this.userTilt||0);
+    // camera-space light tracks the cursor → the day/night terminator follows your pointer
+    const px=(this.pointer&&this.pointer.x!=null)?(this.pointer.x/w-0.5):0;
+    const py=(this.pointer&&this.pointer.y!=null)?(this.pointer.y/h-0.5):0;
+    let L=[-0.40+px*0.55,0.48-py*0.55,0.78]; const Lm=Math.hypot(L[0],L[1],L[2]); L=[L[0]/Lm,L[1]/Lm,L[2]/Lm];
+    const lx=cx+L[0]*R*0.55, ly=cy-L[1]*R*0.55;
+    // starfield (subtle parallax twinkle)
+    for(const s of this.stars){ const tw=0.35+0.65*(0.5+0.5*Math.sin(this.gt*s.sp*4+s.p)); ctx.fillStyle='rgba(180,205,228,'+(0.45*tw*(s.r/1.3))+')'; ctx.beginPath(); ctx.arc(s.x*w,s.y*h,s.r,0,7); ctx.fill(); }
+    // outer atmosphere bloom
+    let atm=ctx.createRadialGradient(cx,cy,R*0.6,cx,cy,R*1.75); atm.addColorStop(0,'rgba(34,211,238,0.13)'); atm.addColorStop(0.5,'rgba(8,116,144,0.06)'); atm.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=atm; ctx.beginPath(); ctx.arc(cx,cy,R*1.75,0,7); ctx.fill();
+    // sphere body — photoreal textured Earth, with the dot globe as fallback until textures load
+    if(this.texReady){ this.drawTexturedSphere(ctx,cx,cy,R,a,tilt,L,intro); }
+    else {
+    let sg=ctx.createRadialGradient(lx,ly,R*0.04,cx,cy,R); sg.addColorStop(0,'#1b3a54'); sg.addColorStop(0.55,'#0c1c2c'); sg.addColorStop(1,'#050d15'); ctx.fillStyle=sg; ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.fill();
+    ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.clip();
+    // graticule (faint)
+    ctx.strokeStyle='rgba(90,140,170,0.07)'; ctx.lineWidth=1;
+    for(let lat=-60;lat<=60;lat+=30){ ctx.beginPath(); let st=false; for(let lon=-180;lon<=180;lon+=6){ const [x,y,z]=this.rot(this.ll(lat,lon),a,tilt); if(z<=0){st=false;continue;} const sx=cx+x*R, sy=cy-y*R; if(!st){ctx.moveTo(sx,sy);st=true;}else ctx.lineTo(sx,sy);} ctx.stroke(); }
+    for(let lon=-150;lon<=180;lon+=30){ ctx.beginPath(); let st=false; for(let lat=-90;lat<=90;lat+=6){ const [x,y,z]=this.rot(this.ll(lat,lon),a,tilt); if(z<=0){st=false;continue;} const sx=cx+x*R, sy=cy-y*R; if(!st){ctx.moveTo(sx,sy);st=true;}else ctx.lineTo(sx,sy);} ctx.stroke(); }
+    // dots with Lambert day/night shading + latitude-sweep entrance
+    for(const p of this.dots){
+      const rv = intro>=1 ? 1 : Math.max(0, Math.min(1,(intro*1.18 - p.rev)/0.14)); if(rv<=0) continue;
+      const [x,y,z]=this.rot([p.x,p.y,p.z],a,tilt); if(z<=0)continue; const sx=cx+x*R, sy=cy-y*R;
+      const lam=Math.max(0, x*L[0]+y*L[1]+z*L[2]); const lit=0.10+0.90*lam;
+      if(p.land){ const b=lit; ctx.fillStyle='rgba('+Math.round(96+96*b)+','+Math.round(178+62*b)+','+Math.round(198+52*b)+','+((0.22+0.72*b)*Math.min(1,0.35+z)*rv)+')'; ctx.beginPath(); ctx.arc(sx,sy,(0.56+z*0.8)*(0.6+0.4*rv),0,7); ctx.fill(); }
+      else { ctx.fillStyle='rgba(64,116,146,'+((0.05+0.15*lam)*Math.min(1,0.4+z)*rv)+')'; ctx.beginPath(); ctx.arc(sx,sy,0.42+z*0.46,0,7); ctx.fill(); }
+    }
+    // night-side city lights — warm metros glow only where they sit in shadow
+    for(const nc of this.nightCities){ const [x,y,z]=this.rot(this.ll(nc[0],nc[1]),a,tilt); if(z<=0)continue;
+      const lam=Math.max(0,x*L[0]+y*L[1]+z*L[2]); const night=Math.max(0,0.34-lam)/0.34; if(night<=0.02)continue;
+      const sx=cx+x*R, sy=cy-y*R; const tw=0.7+0.3*Math.sin(this.gt*5+x*9+y*7); const a1=night*tw*Math.min(1,0.4+z)*intro;
+      const g=ctx.createRadialGradient(sx,sy,0,sx,sy,3.6); g.addColorStop(0,'rgba(255,206,140,'+(0.9*a1)+')'); g.addColorStop(1,'rgba(255,170,90,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(sx,sy,3.6,0,7); ctx.fill();
+      ctx.fillStyle='rgba(255,226,180,'+(0.95*a1)+')'; ctx.beginPath(); ctx.arc(sx,sy,0.95,0,7); ctx.fill();
+    }
+    // specular hotspot near the light
+    let sp=ctx.createRadialGradient(lx,ly,0,lx,ly,R*0.85); sp.addColorStop(0,'rgba(150,228,248,0.18)'); sp.addColorStop(0.6,'rgba(60,150,180,0.05)'); sp.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=sp; ctx.fillRect(cx-R,cy-R,R*2,R*2);
+    ctx.restore();
+    }
+    // ---- global trade lanes (live worldwide shipment beads) ----
+    if(arcOn>0) for(let wi=0;wi<this.worldArcs.length;wi++){ const W=this.worldArcs[wi];
+      const pa=this.rot(this.ll(W[0][0],W[0][1]),a,tilt), pb=this.rot(this.ll(W[1][0],W[1][1]),a,tilt);
+      const pts=[]; for(let i=0;i<=44;i++){ const tt=i/44; let x=pa[0]*(1-tt)+pb[0]*tt,y=pa[1]*(1-tt)+pb[1]*tt,z=pa[2]*(1-tt)+pb[2]*tt; const m=Math.hypot(x,y,z)||1; x/=m;y/=m;z/=m; const lift=1+0.18*Math.sin(Math.PI*tt); pts.push([cx+x*lift*R, cy-y*lift*R, z]); }
+      const nD=Math.max(1,Math.ceil(44*arcOn));
+      ctx.beginPath(); let s2=false; ctx.strokeStyle='rgba(96,184,222,'+(0.13*arcOn)+')'; ctx.lineWidth=0.85;
+      for(let i=0;i<=nD && i<pts.length;i++){ const p=pts[i]; if(p[2]<-0.15){s2=false;continue;} if(!s2){ctx.moveTo(p[0],p[1]);s2=true;}else ctx.lineTo(p[0],p[1]); }
+      ctx.stroke();
+      if(arcOn>=1){ const fi=((this.gt*0.4+wi*0.37)%1)*44; ctx.save(); ctx.globalCompositeOperation='lighter'; ctx.shadowColor='rgba(130,215,245,0.8)';
+        for(let k=0;k<7;k++){ const idx=Math.floor(fi-k); if(idx<0||idx>44)continue; const pp=pts[idx]; if(!pp||pp[2]<-0.1)continue; const al=(1-k/7)*0.62; const rad=(1-k/7)*1.8+0.4; ctx.shadowBlur=(k===0?7:0); ctx.fillStyle='rgba(160,228,250,'+al+')'; ctx.beginPath(); ctx.arc(pp[0],pp[1],rad,0,7); ctx.fill(); }
+        ctx.restore(); }
+    }
+    // corridor arcs + comet trails
+    for(let ai=0;ai<this.arcs.length;ai++){ const [A,B]=this.arcs[ai];
+      const pa=this.rot(this.ll(this.cities[A][0],this.cities[A][1]),a,tilt);
+      const pb=this.rot(this.ll(this.cities[B][0],this.cities[B][1]),a,tilt);
+      const pts=[]; for(let i=0;i<=46;i++){ const tt=i/46; let x=pa[0]*(1-tt)+pb[0]*tt,y=pa[1]*(1-tt)+pb[1]*tt,z=pa[2]*(1-tt)+pb[2]*tt; const m=Math.sqrt(x*x+y*y+z*z); x/=m;y/=m;z/=m; const lift=1+0.24*Math.sin(Math.PI*tt); pts.push([cx+x*lift*R, cy-y*lift*R, z]); }
+      const border=(A==='lar'||A==='elp'||B==='lar'||B==='elp'); const col=border?'52,211,153':'34,211,238';
+      if(arcOn<=0) continue;
+      const nDraw=Math.max(1,Math.ceil(46*arcOn));
+      ctx.beginPath(); let st=false; ctx.strokeStyle='rgba('+col+','+(0.30*arcOn)+')'; ctx.lineWidth=1.2;
+      for(let i=0;i<=nDraw && i<pts.length;i++){ const p=pts[i]; if(p[2]<-0.2){st=false;continue;} if(!st){ctx.moveTo(p[0],p[1]);st=true;}else ctx.lineTo(p[0],p[1]); }
+      ctx.stroke();
+      if(arcOn>=1){
+        const fi=((this.gt*0.55+ai*0.27)%1)*46;
+        ctx.save(); ctx.globalCompositeOperation='lighter'; ctx.shadowColor='rgba('+col+',0.9)';
+        for(let k=0;k<10;k++){ const idx=Math.floor(fi-k); if(idx<0||idx>46)continue; const pp=pts[idx]; if(!pp||pp[2]<-0.1)continue; const al=(1-k/10)*0.85; const rad=(1-k/10)*3.0+0.5; ctx.shadowBlur=(k===0?11:0); ctx.fillStyle='rgba('+col+','+al+')'; ctx.beginPath(); ctx.arc(pp[0],pp[1],rad,0,7); ctx.fill(); }
+        ctx.restore();
+      }
+    }
+    // ---- global data nodes (cyan network points across every continent) ----
+    this._wHov=null; let _wd=14;
+    if(nodeOn>0){ ctx.save(); ctx.globalCompositeOperation='lighter';
+      for(let wn=0;wn<this.worldNodes.length;wn++){ const nd=this.worldNodes[wn]; const [x,y,z]=this.rot(this.ll(nd[0],nd[1]),a,tilt); if(z<=0)continue; const sx=cx+x*R, sy=cy-y*R;
+        if(!this.drag && intro>=1 && this.pointer&&this.pointer.x!=null){ const d=Math.hypot(sx-this.pointer.x,sy-this.pointer.y); if(d<_wd){ _wd=d; this._wHov={sx,sy,idx:wn}; } }
+        const lam=Math.max(0,x*L[0]+y*L[1]+z*L[2]); const tw=0.6+0.4*Math.sin(this.gt*2.4+x*7+y*5); const hub=nd[2];
+        const al=(0.3+0.45*(1-lam*0.55))*tw*Math.min(1,0.4+z)*nodeOn; const rad=(hub?1.7:1.05);
+        const gg=ctx.createRadialGradient(sx,sy,0,sx,sy,rad*3.6); gg.addColorStop(0,'rgba(120,225,248,'+(0.5*al)+')'); gg.addColorStop(1,'rgba(34,160,210,0)'); ctx.fillStyle=gg; ctx.beginPath(); ctx.arc(sx,sy,rad*3.6,0,7); ctx.fill();
+        ctx.fillStyle='rgba(196,242,255,'+Math.min(1,al*1.3)+')'; ctx.beginPath(); ctx.arc(sx,sy,rad,0,7); ctx.fill();
+      }
+      ctx.restore();
+      if(this._wHov){ ctx.save(); ctx.strokeStyle='rgba(255,255,255,0.85)'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.arc(this._wHov.sx,this._wHov.sy,5.5,0,7); ctx.stroke(); ctx.restore(); }
+    }
+    // city nodes + pulsing rings on crossings — with hover detection
+    const vis=[]; let hov=null, hovd=22;
+    for(const c in this.cities){ const [x,y,z]=this.rot(this.ll(this.cities[c][0],this.cities[c][1]),a,tilt); if(z<=0)continue; const sx=cx+x*R, sy=cy-y*R;
+      if(this.pointer&&this.pointer.x!=null){ const d=Math.hypot(sx-this.pointer.x,sy-this.pointer.y); if(d<hovd){ hovd=d; hov=c; } }
+      vis.push({c,sx,sy,x,z,border:(c==='lar'||c==='elp'||c==='tij')}); }
+    this.hover = (this.drag||intro<1)? null : hov;
+    if(this.canvas) this.canvas.style.cursor = this.drag?'grabbing':((this.hover||this._wHov)?'pointer':'grab');
+    if(nodeOn>0) for(const v of vis){ const {c,sx,sy,x,z,border}=v; const col=border?'52,211,153':'34,211,238'; const isH=this.hover===c; const ns=nodeOn*(isH?1.5:1);
+      if(border && nodeOn>=1){ const pulse=(((this.gt*0.7+x*2)%1)+1)%1; const rr=4+pulse*16; ctx.strokeStyle='rgba('+col+','+((1-pulse)*0.5*Math.min(1,0.3+z))+')'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.arc(sx,sy,rr,0,7); ctx.stroke(); }
+      const pr=(border?(7+Math.sin(this.gt*3+x*4)*1.4):5)*ns;
+      const g=ctx.createRadialGradient(sx,sy,0,sx,sy,pr*2); g.addColorStop(0,'rgba('+col+','+((isH?0.6:0.4)*nodeOn)+')'); g.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(sx,sy,pr*2,0,7); ctx.fill();
+      ctx.fillStyle='rgba('+col+','+nodeOn+')'; ctx.beginPath(); ctx.arc(sx,sy,(border?2.6:1.9)*ns,0,7); ctx.fill();
+      if(isH){ ctx.strokeStyle='rgba(255,255,255,0.85)'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.arc(sx,sy,pr+3,0,7); ctx.stroke(); }
+    }
+    // hover tooltip — name + (for crossings) live wait
+    if(this.hover){ const v=vis.find(o=>o.c===this.hover);
+      if(v){ const info=this.cityInfo[this.hover]||[this.hover,'']; const name=info[0], sub=info[1];
+        ctx.font='600 12px "Inter Tight",sans-serif'; const nw=ctx.measureText(name).width;
+        ctx.font='500 10px "JetBrains Mono",monospace'; const sw=sub?ctx.measureText(sub).width:0;
+        const tw=Math.max(nw,sw)+20, th=sub?40:26; let tx=v.sx+14, ty=v.sy-th-8;
+        if(tx+tw>w-6) tx=v.sx-tw-14; if(ty<6) ty=v.sy+12;
+        ctx.fillStyle='rgba(7,11,17,0.94)';
+        if(ctx.roundRect){ ctx.beginPath(); ctx.roundRect(tx,ty,tw,th,9); ctx.fill(); ctx.strokeStyle=(v.border?'rgba(52,211,153,0.55)':'rgba(34,211,238,0.55)'); ctx.lineWidth=1; ctx.stroke(); }
+        else { ctx.fillRect(tx,ty,tw,th); }
+        ctx.textBaseline='top'; ctx.fillStyle='#EAF4F8'; ctx.font='600 12px "Inter Tight",sans-serif'; ctx.fillText(name,tx+11,ty+8);
+        if(sub){ ctx.fillStyle=(v.border?'#34D399':'#7DD3E8'); ctx.font='500 10px "JetBrains Mono",monospace'; ctx.fillText(sub,tx+11,ty+24); }
+        ctx.textBaseline='alphabetic';
+      }
+    }
+    if(!this.hover && this._wHov){ const nm=this.worldNames[this._wHov.idx]||['','']; const name=nm[0], sub=nm[1]; const vx=this._wHov.sx, vy=this._wHov.sy;
+      ctx.font='600 12px "Inter Tight",sans-serif'; const nw=ctx.measureText(name).width; ctx.font='500 10px "JetBrains Mono",monospace'; const sw=sub?ctx.measureText(sub).width:0;
+      const tw=Math.max(nw,sw)+20, th=sub?40:26; let tx=vx+14, ty=vy-th-8; if(tx+tw>w-6) tx=vx-tw-14; if(ty<6) ty=vy+12;
+      ctx.fillStyle='rgba(7,11,17,0.94)'; if(ctx.roundRect){ ctx.beginPath(); ctx.roundRect(tx,ty,tw,th,9); ctx.fill(); ctx.strokeStyle='rgba(34,211,238,0.5)'; ctx.lineWidth=1; ctx.stroke(); } else { ctx.fillRect(tx,ty,tw,th); }
+      ctx.textBaseline='top'; ctx.fillStyle='#EAF4F8'; ctx.font='600 12px "Inter Tight",sans-serif'; ctx.fillText(name,tx+11,ty+8);
+      if(sub){ ctx.fillStyle='#7DD3E8'; ctx.font='500 10px "JetBrains Mono",monospace'; ctx.fillText(sub,tx+11,ty+24); } ctx.textBaseline='alphabetic';
+    }
+    // atmospheric scattering — soft additive halo around the limb
+    ctx.save(); ctx.globalCompositeOperation='lighter';
+    let halo=ctx.createRadialGradient(cx,cy,R*0.93,cx,cy,R*1.32);
+    halo.addColorStop(0,'rgba(34,211,238,0)'); halo.addColorStop(0.42,'rgba(80,200,235,'+(0.24*intro)+')'); halo.addColorStop(0.72,'rgba(34,150,195,'+(0.10*intro)+')'); halo.addColorStop(1,'rgba(8,40,70,0)');
+    ctx.fillStyle=halo; ctx.beginPath(); ctx.arc(cx,cy,R*1.32,0,7); ctx.fill();
+    ctx.restore();
+    // limb glow — warm on the lit edge, cool blue on the dark side
+    let rim=ctx.createLinearGradient(lx-R,ly-R,cx*2-lx+R,cy*2-ly+R);
+    rim.addColorStop(0,'rgba(186,236,255,'+(0.6*intro)+')'); rim.addColorStop(0.45,'rgba(34,211,238,'+(0.22*intro)+')'); rim.addColorStop(1,'rgba(40,90,150,'+(0.10*intro)+')');
+    ctx.strokeStyle=rim; ctx.lineWidth=1.8; ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.stroke();
+    ctx.strokeStyle='rgba(150,220,245,'+(0.10*intro)+')'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(cx,cy,R+3,0,7); ctx.stroke();
+  }
+
+  revealAll(){ try{ (this._root||document).querySelectorAll('.cz-st').forEach(el=>{ el.style.animation='none'; el.style.opacity='1'; el.style.transform='none'; }); }catch(e){} }
+  componentDidMount(){
+    try{ const l=localStorage.getItem('cruz.lang'); if(l && l!==this.state.lang){ this.setState({lang:l}); } }catch(e){}
+    try{ this._root=(this.canvas&&this.canvas.getRootNode&&this.canvas.getRootNode())||document; }catch(e){ this._root=document; }
+    clearTimeout(this._reveal); this._reveal=setTimeout(()=>this.revealAll(), 1250);
+    setTimeout(()=>this.playScene(0), 60);
+    this._met=setInterval(()=>{ this._cleared+=(Math.random()<0.5?1:0); this._mt++;
+      if(this.clearedEl) this.clearedEl.textContent=String(this._cleared);
+      if(this.crossEl) this.crossEl.textContent=String(118+Math.round(Math.sin(this._mt*0.4)*6)); },1600);
+  }
+  componentDidUpdate(_,prev){ if(prev && prev.lang!==this.state.lang){ try{localStorage.setItem('cruz.lang',this.state.lang);}catch(e){} clearTimeout(this._reveal); this._reveal=setTimeout(()=>this.revealAll(), 1250); setTimeout(()=>this.playScene(0), 40); } }
+  componentWillUnmount(){ if(this._raf)cancelAnimationFrame(this._raf); clearInterval(this._met); this.clearDemo(); clearTimeout(this._sub); if(this._resize)window.removeEventListener('resize',this._resize); if(this._move)window.removeEventListener('pointermove',this._move); if(this._up)window.removeEventListener('pointerup',this._up); }
+
+  renderVals(){
+    const lang=this.state.lang, d=this.DICT[lang];
+    const chips=d.scenes.map((s,i)=>({ label:s.chip, pick:()=>this.playScene(i) }));
+    return {
+      setGlobe:this.setGlobe, setQwrap:this.setQwrap, setQtext:this.setQtext, setAtext:this.setAtext, setCaret:this.setCaret,
+      setSteps:this.setSteps, setGate:this.setGate, setChips:this.setChips, setCleared:this.setCleared, setCross:this.setCross,
+      setEmail:this.setEmail, setEmailCheck:this.setEmailCheck, setPwd:this.setPwd, setEye:this.setEye, setSignin:this.setSignin,
+      submit:this.submit, onEmail:this.onEmail, onKey:this.onKey, togglePwd:this.togglePwd, setEn:this.setEn, setEs:this.setEs,
+      t:d, chips,
+      enBg:lang==='en'?'#fff':'transparent', enColor:lang==='en'?'#06241f':'#8aa0b2',
+      esBg:lang==='es'?'#fff':'transparent', esColor:lang==='es'?'#06241f':'#8aa0b2',
+      crossIndex:'118', cleared:String(this._cleared),
+    };
+  }
+}
+</script>
+</body>
+</html>

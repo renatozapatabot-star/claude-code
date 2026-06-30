@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== TOKEN SPINE · primitive → semantic, re-aliased per [data-register] ===== */
+  :root{
+    /* ALMANAC (light/calm) is the default register */
+    --app-bg:#F1F4F9; --surface:#FFFFFF; --surface-raised:#FBFCFE; --surface-sunken:#EFF3F8;
+    --border:rgba(15,30,55,.08); --border-strong:rgba(15,30,55,.14);
+    --text-strong:#0C1925; --text:#2C4053; --text-muted:#64758A;
+    --accent:#0E7490; --accent-solid:#0891B2; --accent-text:#0E7490;
+    --success:#047857; --success-bg:rgba(16,185,129,.10); --success-line:rgba(16,185,129,.30);
+    --danger:#BE123C; --danger-bg:rgba(244,63,94,.08); --danger-line:rgba(244,63,94,.28);
+    --warning:#B45309; --warning-bg:rgba(245,158,11,.10); --warning-line:rgba(245,158,11,.30);
+    --focus:#0891B2; --shadow:0 1px 2px rgba(20,40,70,.04),0 4px 12px rgba(20,40,70,.05),0 20px 48px rgba(20,40,70,.09);
+    --mono:'Space Mono',monospace; --sans:'Hanken Grotesk',system-ui,sans-serif; --display:'Archivo',sans-serif;
+  }
+  [data-register="almanac"]{
+    --app-bg:#F1F4F9; --surface:#FFFFFF; --surface-raised:#FBFCFE; --surface-sunken:#EFF3F8;
+    --border:rgba(15,30,55,.08); --border-strong:rgba(15,30,55,.14);
+    --text-strong:#0C1925; --text:#2C4053; --text-muted:#64758A;
+    --accent:#0E7490; --accent-solid:#0891B2; --accent-text:#0E7490;
+    --success:#047857; --success-bg:rgba(16,185,129,.10); --success-line:rgba(16,185,129,.30);
+    --danger:#BE123C; --danger-bg:rgba(244,63,94,.08); --danger-line:rgba(244,63,94,.28);
+    --warning:#B45309; --warning-bg:rgba(245,158,11,.10); --warning-line:rgba(245,158,11,.30);
+    --focus:#0891B2; --shadow:0 1px 2px rgba(20,40,70,.04),0 4px 12px rgba(20,40,70,.05),0 20px 48px rgba(20,40,70,.09);
+  }
+  [data-register="terminal"]{
+    --app-bg:#0B1622; --surface:#0D1722; --surface-raised:#13212E; --surface-sunken:#0A1019;
+    --border:rgba(255,255,255,.07); --border-strong:rgba(255,255,255,.14);
+    --text-strong:#E9F1F7; --text:#CDD8E3; --text-muted:#8295A8;
+    --accent:#22D3EE; --accent-solid:#0E7490; --accent-text:#5FD8EC;
+    --success:#34D399; --success-bg:rgba(52,211,153,.12); --success-line:rgba(52,211,153,.30);
+    --danger:#FB7185; --danger-bg:rgba(244,63,94,.14); --danger-line:rgba(244,63,94,.34);
+    --warning:#FBBF24; --warning-bg:rgba(245,158,11,.14); --warning-line:rgba(245,158,11,.32);
+    --focus:#22D3EE; --shadow:0 1px 2px rgba(0,0,0,.24),0 4px 12px rgba(0,0,0,.22),0 24px 56px rgba(0,0,0,.40);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  :focus-visible{outline:none;box-shadow:0 0 0 2px var(--app-bg),0 0 0 4px var(--focus);border-radius:8px;transition:box-shadow .15s ease;}
+  @keyframes ag_rise{from{transform:translateY(10px);}to{transform:none;}}
+  @keyframes ag_pop{from{transform:scale(.96);}to{transform:none;}}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important;}}
+</style>
+</helmet>
+<div data-register="{{ register }}" style="min-height:100vh;background:var(--app-bg);color:var(--text);font-family:var(--sans);transition:background .25s ease,color .25s ease;">
+
+  <!-- top bar: register + language proof that one spine drives two moods -->
+  <div style="display:flex;align-items:center;gap:14px;padding:16px 22px;border-bottom:1px solid var(--border);">
+    <span style="width:30px;height:30px;border-radius:8px;background:var(--accent-solid);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;color:#fff;font-size:15px;">C</span>
+    <span style="font-family:var(--display);font-weight:800;letter-spacing:-.01em;color:var(--text-strong);font-size:15px;">CRUZ</span>
+    <span style="font-size:11px;color:var(--text-muted);font-family:var(--mono);">{{ t.registerLabel }}</span>
+    <div style="margin-left:auto;display:flex;gap:6px;">
+      <div style="display:flex;gap:2px;padding:3px;border-radius:9px;background:var(--surface-sunken);border:1px solid var(--border);">
+        <button onClick="{{ setTerminal }}" style="border:none;border-radius:7px;padding:6px 12px;font-family:var(--sans);font-size:11.5px;font-weight:700;cursor:pointer;background:{{ termBg }};color:{{ termColor }};">TERMINAL</button>
+        <button onClick="{{ setAlmanac }}" style="border:none;border-radius:7px;padding:6px 12px;font-family:var(--sans);font-size:11.5px;font-weight:700;cursor:pointer;background:{{ almBg }};color:{{ almColor }};">ALMANAC</button>
+      </div>
+      <div style="display:flex;gap:2px;padding:3px;border-radius:9px;background:var(--surface-sunken);border:1px solid var(--border);">
+        <button onClick="{{ setEs }}" style="border:none;border-radius:7px;padding:6px 10px;font-size:11.5px;font-weight:700;cursor:pointer;background:{{ esBg }};color:{{ esColor }};font-family:var(--sans);">ES</button>
+        <button onClick="{{ setEn }}" style="border:none;border-radius:7px;padding:6px 10px;font-size:11.5px;font-weight:700;cursor:pointer;background:{{ enBg }};color:{{ enColor }};font-family:var(--sans);">EN</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:720px;margin:0 auto;padding:30px 20px 60px;">
+    <div style="font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-text);margin-bottom:8px;font-family:var(--mono);">{{ t.eyebrow }}</div>
+    <h1 style="font-family:var(--display);font-weight:800;letter-spacing:-.02em;font-size:27px;line-height:1.15;color:var(--text-strong);margin:0 0 6px;">{{ t.title }}</h1>
+    <div style="font-size:14px;color:var(--text-muted);line-height:1.5;margin-bottom:24px;">{{ t.sub }}</div>
+
+    <!-- THE GATE CARD -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;animation:ag_rise .4s ease both;">
+
+      <!-- load header -->
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);">{{ t.pedLabel }}</div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text-strong);margin-top:3px;letter-spacing:.02em;">26 24 3596 6500441</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);">{{ t.semaforo }}</div>
+          <span style="display:inline-flex;align-items:center;gap:6px;margin-top:5px;padding:4px 11px;border-radius:999px;background:var(--success-bg);border:1px solid var(--success-line);font-size:11.5px;font-weight:700;color:var(--success);"><span style="width:7px;height:7px;border-radius:50%;background:var(--success);"></span>{{ t.verde }}</span>
+        </div>
+      </div>
+
+      <!-- STAGE 1: cognitive forcing function (verdict hidden) -->
+      <sc-if value="{{ stageForming }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:20px 22px;">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span style="font-family:var(--display);font-weight:700;font-size:15px;color:var(--text-strong);">{{ t.formTitle }}</span>
+        </div>
+        <div style="font-size:12.5px;color:var(--text-muted);line-height:1.5;margin-bottom:16px;">{{ t.formSub }}</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <sc-for list="{{ checklist }}" as="c" hint-placeholder-count="5">
+            <button onClick="{{ c.toggle }}" style="display:flex;align-items:flex-start;gap:12px;padding:13px 15px;border:1px solid {{ c.border }};border-radius:13px;background:{{ c.bg }};cursor:pointer;text-align:left;font-family:var(--sans);transition:background .15s,border-color .15s;">
+              <span style="width:22px;height:22px;flex:0 0 22px;border-radius:7px;border:2px solid {{ c.boxBorder }};background:{{ c.boxBg }};display:flex;align-items:center;justify-content:center;margin-top:1px;">{{ c.check }}</span>
+              <span style="flex:1;min-width:0;"><span style="display:block;font-size:13.5px;font-weight:600;color:var(--text-strong);">{{ c.label }}</span><span style="display:block;font-size:12px;color:var(--text-muted);line-height:1.45;margin-top:2px;">{{ c.detail }}</span></span>
+            </button>
+          </sc-for>
+        </div>
+        <button onClick="{{ commitJudgment }}" disabled="{{ commitDisabled }}" style="width:100%;margin-top:18px;height:50px;border:none;border-radius:13px;background:{{ commitBg }};color:{{ commitColor }};font-family:var(--display);font-size:15px;font-weight:800;letter-spacing:.01em;cursor:{{ commitCursor }};opacity:{{ commitOpacity }};transition:opacity .2s;">{{ t.commitBtn }}</button>
+        <div style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:10px;">{{ commitHint }}</div>
+      </div>
+      </sc-if>
+
+      <!-- STAGE 2: verdict revealed (only after judgment committed) -->
+      <sc-if value="{{ stageRevealed }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:20px 22px;animation:ag_pop .3s ease both;">
+        <div style="display:flex;align-items:center;gap:10px;padding:13px 15px;border-radius:13px;background:var(--success-bg);border:1px solid var(--success-line);margin-bottom:16px;">
+          <span style="width:34px;height:34px;border-radius:10px;background:var(--success);display:flex;align-items:center;justify-content:center;flex:0 0 34px;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg></span>
+          <div><div style="font-family:var(--display);font-weight:800;font-size:16px;color:var(--success);">{{ t.verdictTitle }}</div><div style="font-size:12px;color:var(--text-muted);">{{ t.verdictSub }}</div></div>
+        </div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin:4px 0 9px;">{{ t.citedTitle }}</div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <sc-for list="{{ assertions }}" as="a" hint-placeholder-count="4">
+            <div style="display:flex;gap:11px;padding:11px 13px;border-radius:11px;background:var(--surface-sunken);border:1px solid var(--border);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.4" style="flex:0 0 14px;margin-top:2px;"><path d="M20 6L9 17l-5-5"/></svg>
+              <span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;color:var(--text-strong);font-weight:600;">{{ a.claim }}</span><span style="display:block;font-size:11px;color:var(--accent-text);font-family:var(--mono);margin-top:2px;">{{ a.cite }}</span></span>
+            </div>
+          </sc-for>
+        </div>
+        <!-- duties: IVA base = customs value + IGI + DTA (never invoice×0.16) -->
+        <div style="margin-top:14px;border:1px solid var(--border);border-radius:13px;overflow:hidden;">
+          <div style="padding:9px 14px;background:var(--surface-sunken);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);">{{ t.dutiesTitle }}</div>
+          <sc-for list="{{ duties }}" as="d" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-top:1px solid var(--border);">
+              <span style="flex:1;font-size:12.5px;color:var(--text);">{{ d.label }}</span>
+              <span style="font-size:10.5px;color:var(--text-muted);font-family:var(--mono);">{{ d.basis }}</span>
+              <span style="font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--text-strong);min-width:96px;text-align:right;">{{ d.amount }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;margin-top:16px;padding:13px 15px;border-radius:12px;background:var(--warning-bg);border:1px solid var(--warning-line);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2" style="flex:0 0 16px;margin-top:1px;"><path d="M12 9v4M12 17h.01M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+          <span style="font-size:12.5px;color:var(--text);line-height:1.5;">{{ t.liability }}</span>
+        </div>
+        <button onClick="{{ sign }}" style="width:100%;margin-top:16px;height:52px;border:none;border-radius:13px;background:var(--accent-solid);color:#fff;font-family:var(--display);font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg>{{ t.signBtn }}</button>
+        <div style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:9px;">{{ t.signNote }}</div>
+      </div>
+      </sc-if>
+
+      <!-- STAGE 3: severity-scaled cancel window -->
+      <sc-if value="{{ stageCountdown }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:26px 22px;text-align:center;animation:ag_pop .3s ease both;">
+        <div style="font-family:var(--mono);font-size:44px;font-weight:700;color:var(--accent-text);">{{ countdown }}</div>
+        <div style="font-size:13.5px;color:var(--text);margin-top:6px;line-height:1.5;">{{ t.countdownBody }}</div>
+        <button onClick="{{ cancel }}" style="margin-top:16px;height:44px;padding:0 24px;border:1px solid var(--danger-line);border-radius:12px;background:var(--danger-bg);color:var(--danger);font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;">{{ t.cancelBtn }}</button>
+      </div>
+      </sc-if>
+
+      <!-- STAGE 4: transmitted -->
+      <sc-if value="{{ stageDone }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:30px 22px;text-align:center;animation:ag_pop .3s ease both;">
+        <span style="width:54px;height:54px;border-radius:16px;background:var(--success-bg);border:1px solid var(--success-line);display:inline-flex;align-items:center;justify-content:center;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></span>
+        <div style="font-family:var(--display);font-weight:800;font-size:18px;color:var(--text-strong);margin-top:14px;">{{ t.doneTitle }}</div>
+        <div style="font-size:13px;color:var(--text-muted);margin-top:5px;line-height:1.5;max-width:420px;margin-left:auto;margin-right:auto;">{{ t.doneBody }}</div>
+        <div style="margin-top:16px;font-family:var(--mono);font-size:11px;color:var(--text-muted);padding:10px 14px;border-radius:10px;background:var(--surface-sunken);border:1px solid var(--border);display:inline-block;">{{ t.auditLine }}</div>
+        <div><button onClick="{{ reset }}" style="margin-top:18px;height:40px;padding:0 20px;border:1px solid var(--border-strong);border-radius:11px;background:var(--surface);color:var(--text-strong);font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;">{{ t.resetBtn }}</button></div>
+      </div>
+      </sc-if>
+    </div>
+
+    <div style="margin-top:16px;font-size:11px;color:var(--text-muted);text-align:center;line-height:1.5;">{{ t.footnote }}</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:760,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { register:'terminal', lang:'es', checks:{}, stage:'forming', countdown:8 };
+  componentDidMount(){ try{ const l=localStorage.getItem('cruz.lang'); if(l)this.setState({lang:l}); }catch(e){} }
+  componentWillUnmount(){ clearInterval(this._cd); }
+  setTerminal=()=>this.setState({register:'terminal'});
+  setAlmanac=()=>this.setState({register:'almanac'});
+  setEs=()=>{ try{localStorage.setItem('cruz.lang','es');}catch(e){} this.setState({lang:'es'}); };
+  setEn=()=>{ try{localStorage.setItem('cruz.lang','en');}catch(e){} this.setState({lang:'en'}); };
+  toggleCheck=(id)=>this.setState(s=>({checks:Object.assign({},s.checks,{[id]:!s.checks[id]})}));
+  commitJudgment=()=>{ if(this._allChecked()) this.setState({stage:'revealed'}); };
+  _allChecked(){ return this._ids().every(id=>this.state.checks[id]); }
+  _ids(){ return ['intent','lineage','basis','blast','rollback']; }
+  sign=()=>{ this.setState({stage:'countdown',countdown:8}); clearInterval(this._cd); this._cd=setInterval(()=>{ this.setState(s=>{ if(s.countdown<=1){ clearInterval(this._cd); return {stage:'done',countdown:0}; } return {countdown:s.countdown-1}; }); },1000); };
+  cancel=()=>{ clearInterval(this._cd); this.setState({stage:'revealed',countdown:8}); };
+  reset=()=>this.setState({checks:{},stage:'forming',countdown:8});
+
+  renderVals(){
+    const es=this.state.lang!=='en'; const A=(en,e)=>es?e:en;
+    const reg=this.state.register;
+    const seg=(on)=>({bg:on?'var(--surface)':'transparent', color:on?'var(--accent-text)':'var(--text-muted)'});
+    const tm=seg(reg==='terminal'), al=seg(reg==='almanac'), e=seg(es), n=seg(!es);
+    const checkMark=React.createElement('svg',{width:13,height:13,viewBox:'0 0 24 24',fill:'none',stroke:'#fff',strokeWidth:3.2},React.createElement('path',{d:'M20 6L9 17l-5-5'}));
+    const cl=[
+      ['intent', A('Declared intent','Intención declarada'), A('Auto parts, definitive import, A1 regime — matches the invoice & purchase order.','Autopartes, importación definitiva, régimen A1 — coincide con factura y orden de compra.')],
+      ['lineage', A('Data lineage','Trazabilidad de datos'), A('Every field traces to an ingested source document, not an estimate.','Cada campo proviene de un documento fuente, no de una estimación.')],
+      ['basis', A('IGI / IVA / DTA basis','Base IGI / IVA / DTA'), A('IVA base = customs value + IGI + DTA. Verified, not invoice × 0.16.','Base IVA = valor en aduana + IGI + DTA. Verificado, no factura × 0.16.')],
+      ['blast', A('Blast radius','Alcance del impacto'), A('One pedimento, one importer, USD 41,040 declared value. Reversible until transmit.','Un pedimento, un importador, valor declarado USD 41,040. Reversible hasta transmitir.')],
+      ['rollback', A('Rollback path','Ruta de reversión'), A('Cancellable for 8s after signing; rectificación available post-filing.','Cancelable 8s tras firmar; rectificación disponible tras presentar.')],
+    ];
+    const checklist=cl.map(([id,label,detail])=>{ const on=!!this.state.checks[id]; return {label,detail,toggle:()=>this.toggleCheck(id),
+      bg:on?'var(--success-bg)':'var(--surface-sunken)', border:on?'var(--success-line)':'var(--border)',
+      boxBg:on?'var(--success)':'transparent', boxBorder:on?'var(--success)':'var(--border-strong)', check:on?checkMark:'' }; });
+    const allChecked=this._allChecked();
+    const assertions=[
+      {claim:A('Tariff fracción 8708.99.05 qualifies under T-MEC (tariff-shift).','La fracción 8708.99.05 califica bajo T-MEC (cambio arancelario).'), cite:'TIGIE · 8708.99.05 · T-MEC Art 4.2'},
+      {claim:A('Customs value reconciles to the commercial invoice within DOF FX.','Valor en aduana reconcilia con la factura comercial al tipo DOF.'), cite:A('DOF rate 17.18 MXN/USD · 12 Jun 2026','Tipo DOF 17.18 MXN/USD · 12 jun 2026')},
+      {claim:A('No NOM / permit applies to this fracción.','No aplica NOM ni permiso a esta fracción.'), cite:'RGCE 1.4 · system_config:nom_required=false'},
+      {claim:A('Origin certification on file with 5-year retention.','Certificación de origen en expediente, retención 5 años.'), cite:A('Anexo · CofO-44210 · until 2031','Anexo · CofO-44210 · hasta 2031')},
+    ];
+    const duties=[
+      {label:A('Customs value','Valor en aduana'), basis:'DOF 17.18', amount:'MXN 705,067'},
+      {label:'IGI', basis:A('value × rate','valor × tasa'), amount:'MXN 0'},
+      {label:'DTA', basis:'0.008', amount:'MXN 5,640'},
+      {label:A('IVA base','Base IVA'), basis:A('value + IGI + DTA','valor + IGI + DTA'), amount:'MXN 710,707'},
+      {label:'IVA 16%', basis:A('base × 0.16','base × 0.16'), amount:'MXN 113,713'},
+    ];
+    const t={
+      registerLabel: reg==='terminal'?A('Terminal · operator','Terminal · operador'):A('Almanac · client','Almanac · cliente'),
+      eyebrow: A('Broker approval gate · the one human touch','Firma del agente · el único toque humano'),
+      title: A('You sign. CRUZ prepared everything else.','Tú firmas. CRUZ preparó todo lo demás.'),
+      sub: A('The pedimento signature is the one irreversible, licensed step the law reserves for you. Form your judgment first — then see the verdict.','La firma del pedimento es el único paso irreversible que la ley te reserva. Forma tu juicio primero — luego ve el dictamen.'),
+      pedLabel:A('Pedimento','Pedimento'), semaforo:A('Semáforo','Semáforo'), verde:A('Verde','Verde'),
+      formTitle:A('Confirm your judgment','Confirma tu juicio'),
+      formSub:A('Acknowledge each point from your own review. The AI verdict stays hidden until you commit — so you decide, not the machine.','Reconoce cada punto desde tu propia revisión. El dictamen de la IA permanece oculto hasta que confirmes — así decides tú, no la máquina.'),
+      commitBtn: allChecked?A('Reveal verdict & continue','Revelar dictamen y continuar'):A('Acknowledge all points to continue','Reconoce todos los puntos para continuar'),
+      verdictTitle:A('Verde — clear to file','Verde — listo para presentar'),
+      verdictSub:A('Your judgment matched CRUZ on every checked point.','Tu juicio coincidió con CRUZ en cada punto.'),
+      citedTitle:A('Every assertion, cited','Cada afirmación, citada'),
+      dutiesTitle:A('Duties & taxes — each line explains its basis','Contribuciones — cada línea explica su base'),
+      liability:A('Under the 2026 reform you are solidarily liable for the veracity of this data. CRUZ prepared it; the e.firma — and the responsibility — are yours.','Bajo la reforma 2026 eres solidariamente responsable de la veracidad de estos datos. CRUZ los preparó; la e.firma — y la responsabilidad — son tuyas.'),
+      signBtn:A('Sign with e.firma','Firmar con e.firma'),
+      signNote:A('Nothing transmits until you sign — and even then, an 8-second cancel window.','Nada se transmite hasta que firmes — y aun así, 8 segundos para cancelar.'),
+      countdownBody:A('Signed. Transmitting to SAT — cancel now if anything is off.','Firmado. Transmitiendo al SAT — cancela ahora si algo no cuadra.'),
+      cancelBtn:A('Cancel transmission','Cancelar transmisión'),
+      doneTitle:A('Transmitted to SAT','Transmitido al SAT'),
+      doneBody:A('Pedimento 26 24 3596 6500441 filed under your e.firma. The full reasoning trail is in the append-only audit.','Pedimento 26 24 3596 6500441 presentado con tu e.firma. El rastro de razonamiento queda en la bitácora append-only.'),
+      auditLine:'26 24 3596 6500441 · '+A('signed by broker · ','firmado por agente · ')+'14:'+(20+this.state.countdown)+' CST',
+      resetBtn:A('Run another','Otro pedimento'),
+      footnote:A('CRUZ prepared the entry up to this gate. Automating this signature is regulated customs business requiring a licensed human (CBP, 2025).','CRUZ preparó el pedimento hasta esta firma. Automatizarla es actividad aduanal regulada que requiere un humano con patente (CBP, 2025).'),
+    };
+    return {
+      register:reg, termBg:tm.bg,termColor:tm.color, almBg:al.bg,almColor:al.color, esBg:e.bg,esColor:e.color, enBg:n.bg,enColor:n.color,
+      setTerminal:this.setTerminal,setAlmanac:this.setAlmanac,setEs:this.setEs,setEn:this.setEn,
+      t, checklist, assertions, duties,
+      stageForming:this.state.stage==='forming', stageRevealed:this.state.stage==='revealed', stageCountdown:this.state.stage==='countdown', stageDone:this.state.stage==='done',
+      commitJudgment:this.commitJudgment, sign:this.sign, cancel:this.cancel, reset:this.reset,
+      commitDisabled: allChecked?'':'true', commitBg: allChecked?'var(--accent-solid)':'var(--surface-sunken)', commitColor: allChecked?'#fff':'var(--text-muted)',
+      commitCursor: allChecked?'pointer':'not-allowed', commitOpacity: allChecked?'1':'.7',
+      commitHint: allChecked?A('The verdict is ready.','El dictamen está listo.'):A('The AI verdict is hidden until you commit your own judgment.','El dictamen de la IA está oculto hasta que confirmes tu propio juicio.'),
+      countdown:this.state.countdown,
+    };
+  }
+}
+</script>
+</body>
+</html>

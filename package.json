@@ -1,0 +1,14 @@
+{
+  "name": "cruz",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CRUZ — el sistema operativo del cruce. Cross-border trade OS for EVCO.",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "verify": "node scripts/verify.mjs",
+    "check": "node --check server.js && node --check data/embarques.js"
+  },
+  "engines": { "node": ">=18" }
+}

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --app-bg:#0B1622; --surface:#0D1722; --surface-raised:#13212E; --surface-sunken:#0A1019;
+    --border:rgba(255,255,255,.07); --border-strong:rgba(255,255,255,.14);
+    --text-strong:#E9F1F7; --text:#CDD8E3; --text-muted:#8295A8;
+    --accent:#22D3EE; --accent-solid:#0E7490; --accent-text:#5FD8EC;
+    --success:#34D399; --success-bg:rgba(52,211,153,.12); --success-line:rgba(52,211,153,.30);
+    --warning:#FBBF24; --warning-bg:rgba(245,158,11,.14); --warning-line:rgba(245,158,11,.32);
+    --danger:#FB7185; --danger-bg:rgba(244,63,94,.14); --danger-line:rgba(244,63,94,.34);
+    --violet:#A78BFA; --violet-bg:rgba(167,139,250,.13); --violet-line:rgba(167,139,250,.34);
+    --focus:#22D3EE; --shadow:0 1px 2px rgba(0,0,0,.24),0 4px 12px rgba(0,0,0,.22),0 24px 56px rgba(0,0,0,.40);
+    --mono:'Space Mono',monospace; --sans:'Hanken Grotesk',system-ui,sans-serif; --display:'Archivo',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#0B1622;}
+  :focus-visible{outline:none;box-shadow:0 0 0 2px var(--app-bg),0 0 0 4px var(--focus);border-radius:8px;transition:box-shadow .15s ease;}
+  ::-webkit-scrollbar{width:10px;height:10px;} ::-webkit-scrollbar-thumb{background:#243140;border-radius:9px;border:2px solid #0B1622;}
+  @keyframes bc_rise{from{transform:translateY(10px);}to{transform:none;}}
+  @keyframes bc_blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+  @keyframes bc_shim{from{transform:translateX(-100%);}to{transform:translateX(100%);}}
+  @keyframes orbAura{0%,100%{transform:scale(1);opacity:.85;}50%{transform:scale(1.12);opacity:1;}}
+  @keyframes orbHalo{to{transform:rotate(360deg);}}
+  @keyframes orbHaloR{to{transform:rotate(-360deg);}}
+  @keyframes orbBreathe{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}}
+  @media (max-width:760px){
+    .bc-app{flex-direction:column;}
+    .bc-rail{flex:0 0 auto!important;width:auto!important;height:auto!important;position:sticky!important;top:auto!important;bottom:0;order:2;z-index:45;flex-direction:row!important;justify-content:space-around;overflow-x:auto;border-right:none!important;border-top:1px solid var(--border);padding:6px 2px!important;gap:0!important;}
+    .bc-rail > span:first-child,.bc-rail > div:last-child{display:none!important;}
+    .cz-orb{bottom:74px!important;}
+  }
+</style>
+</helmet>
+<div class="bc-app" style="min-height:100vh;background:var(--app-bg);color:var(--text);font-family:var(--sans);display:flex;">
+
+  <!-- ===== NAV RAIL ===== -->
+  <nav class="bc-rail" style="flex:0 0 64px;background:var(--surface-sunken);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:14px 0;gap:4px;position:sticky;top:0;height:100vh;">
+    <span style="width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#22D3EE,#0891B2,#0E7490);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:900;color:#04161c;font-size:17px;margin-bottom:10px;">C</span>
+    <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="8">
+      <button onClick="{{ n.pick }}" title="{{ n.label }}" aria-label="{{ n.label }}" style="position:relative;width:44px;height:44px;border:none;border-radius:13px;background:{{ n.bg }};color:{{ n.color }};cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s;">
+        <sc-if value="{{ n.active }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:-14px;top:11px;width:3px;height:22px;border-radius:3px;background:var(--accent);box-shadow:0 0 9px var(--accent);"></span></sc-if>
+        <span style="display:inline-flex;width:20px;height:20px;" dangerouslySetInnerHTML="{{ n.icon }}"></span>
+      </button>
+    </sc-for>
+    <div style="margin-top:auto;width:34px;height:34px;border-radius:50%;background:#1f3340;border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent-text);">RR</div>
+  </nav>
+
+  <!-- ===== BODY ===== -->
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+
+    <!-- HEADER -->
+    <header style="display:flex;align-items:center;gap:16px;padding:16px 24px;border-bottom:1px solid var(--border);background:var(--surface-sunken);flex-wrap:wrap;">
+      <div style="min-width:0;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <h1 style="font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-.01em;color:var(--text-strong);margin:0;">{{ t.title }}</h1>
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--success-bg);border:1px solid var(--success-line);"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 7px var(--success);animation:bc_blink 1.6s infinite;"></span><span style="font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.08em;color:var(--success);">LIVE</span></span>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">{{ t.sub }}</div>
+      </div>
+
+      <!-- tenant switcher -->
+      <div style="position:relative;">
+        <button onClick="{{ toggleTenant }}" style="display:flex;align-items:center;gap:9px;height:40px;padding:0 13px;border:1px solid var(--border-strong);border-radius:12px;background:var(--surface);color:var(--text-strong);cursor:pointer;font-family:var(--sans);">
+          <span style="width:24px;height:24px;border-radius:7px;background:{{ tenantColor }};display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;color:#04161c;">{{ tenantInitial }}</span>
+          <span style="text-align:left;line-height:1.1;"><span style="display:block;font-size:8px;font-weight:700;letter-spacing:.08em;color:var(--text-muted);text-transform:uppercase;">{{ t.book }}</span><span style="display:block;font-size:13px;font-weight:600;">{{ tenantName }}</span></span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:2px;"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <sc-if value="{{ tenantOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;top:48px;left:0;width:260px;background:var(--surface);border:1px solid var(--border-strong);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;z-index:40;padding:6px;">
+          <sc-for list="{{ tenantOpts }}" as="o" hint-placeholder-count="6">
+            <button onClick="{{ o.pick }}" style="width:100%;display:flex;align-items:center;gap:10px;padding:9px 10px;border:none;border-radius:10px;background:{{ o.bg }};cursor:pointer;text-align:left;font-family:var(--sans);">
+              <span style="width:26px;height:26px;border-radius:8px;background:{{ o.color }};display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;color:#04161c;flex:0 0 26px;">{{ o.initial }}</span>
+              <span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:600;color:var(--text-strong);">{{ o.name }}</span><span style="display:block;font-size:10.5px;color:var(--text-muted);font-family:var(--mono);">{{ o.rfc }}</span></span>
+            </button>
+          </sc-for>
+        </div>
+        </sc-if>
+      </div>
+
+      <button onClick="{{ openCmdk }}" style="flex:1;max-width:420px;min-width:130px;display:flex;align-items:center;gap:10px;height:40px;padding:0 14px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text-muted);cursor:pointer;font-family:var(--sans);">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <span style="flex:1;text-align:left;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ t.cmdkPh }}</span>
+        <kbd style="font-family:var(--mono);font-size:10px;color:var(--text-muted);border:1px solid var(--border-strong);border-radius:5px;padding:1px 6px;">⌘K</kbd>
+      </button>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+        <span title="{{ t.demoTitle }}" style="display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;background:var(--warning-bg);border:1px solid var(--warning-line);"><span style="width:5px;height:5px;border-radius:50%;background:var(--warning);"></span><span style="font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.07em;color:var(--warning);">{{ t.demo }}</span></span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);">{{ t.clock }}</span>
+        <!-- state harness -->
+        <div style="display:flex;gap:2px;padding:3px;border-radius:10px;background:var(--surface);border:1px solid var(--border);">
+          <sc-for list="{{ harnessOpts }}" as="h" hint-placeholder-count="4">
+            <button onClick="{{ h.pick }}" title="{{ h.title }}" style="border:none;border-radius:7px;padding:6px 9px;font-family:var(--mono);font-size:10px;font-weight:700;cursor:pointer;background:{{ h.bg }};color:{{ h.color }};">{{ h.label }}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:2px;padding:3px;border-radius:10px;background:var(--surface);border:1px solid var(--border);">
+          <button onClick="{{ setEs }}" style="border:none;border-radius:7px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;background:{{ esBg }};color:{{ esColor }};font-family:var(--sans);">ES</button>
+          <button onClick="{{ setEn }}" style="border:none;border-radius:7px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;background:{{ enBg }};color:{{ enColor }};font-family:var(--sans);">EN</button>
+        </div>
+        <button title="{{ t.notifs }}" aria-label="{{ t.notifs }}" style="position:relative;width:36px;height:36px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span style="position:absolute;top:7px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);"></span></button>
+        <a href="CRUZ%20Login.dc.html" title="{{ t.signOut }}" style="display:flex;align-items:center;gap:7px;text-decoration:none;height:36px;padding:0 9px;border:1px solid var(--border);border-radius:11px;background:var(--surface);"><span style="width:26px;height:26px;border-radius:8px;background:#1f3340;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--accent-text);">RR</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.9"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg></a>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div style="flex:1;display:flex;padding:22px 24px 40px;overflow-x:hidden;">
+
+      <!-- MAIN -->
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:20px;">
+
+        <!-- FRONTIER COMMAND BAND -->
+        <div style="position:relative;overflow:hidden;border-radius:22px;min-height:236px;background:radial-gradient(125% 140% at 85% 25%,#0B1622,#070B12 72%);border:1px solid rgba(34,211,238,.14);box-shadow:0 24px 60px rgba(6,12,22,.5);animation:bc_rise .4s ease both;">
+          <x-import component-from-global-scope="cruz-globe" from="./cruz-globe.js" hint-size="100%,100%" style="position:absolute;right:-8%;top:50%;transform:translateY(-50%);width:500px;height:500px;"></x-import>
+          <div style="position:absolute;inset:0;background:linear-gradient(90deg,#070B12 28%,rgba(7,11,18,.5) 58%,rgba(7,11,18,0) 80%);pointer-events:none;"></div>
+          <div style="position:absolute;top:22px;right:26px;display:flex;align-items:center;gap:11px;padding:10px 15px;border-radius:14px;background:rgba(8,12,18,.6);border:1px solid rgba(34,211,238,.2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);pointer-events:none;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#34D399;box-shadow:0 0 10px #34D399;"></span>
+            <div><div style="font-size:8.5px;font-weight:700;letter-spacing:.13em;color:#7da7bd;text-transform:uppercase;">Laredo Crossing Index</div><div style="font-family:var(--mono);font-size:19px;font-weight:700;color:#EAF4F8;line-height:1;margin-top:3px;">118 <span style="font-size:11px;color:#34D399;">▲2</span></div></div>
+          </div>
+          <div style="position:relative;padding:30px 32px;max-width:560px;pointer-events:none;">
+            <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;"><span style="width:7px;height:7px;border-radius:50%;background:#34D399;box-shadow:0 0 10px #34D399;"></span><span style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7DD3E8;">Patente 3596 · Live</span></div>
+            <h1 style="font-size:28px;font-weight:600;letter-spacing:-.025em;line-height:1.15;margin:0;max-width:520px;color:#EAF4F8;font-family:var(--display);">{{ t.cmdkGoal }}</h1>
+            <div style="font-size:13.5px;color:#9fb4c4;margin-top:10px;max-width:480px;">{{ t.sub }}</div>
+          </div>
+        </div>
+
+        <!-- AT A GLANCE -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:12px;">
+          <sc-for list="{{ aggregates }}" as="a" hint-placeholder-count="4">
+            <div title="{{ a.src }}" style="background:{{ a.bg }};border:1px solid {{ a.line }};border-radius:16px;padding:15px 16px;cursor:help;animation:bc_rise .4s ease both;">
+              <div style="display:flex;align-items:center;gap:7px;">
+                <span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);">{{ a.label }}</span>
+                <span style="margin-left:auto;display:inline-flex;align-items:center;gap:4px;padding:2px 6px;border-radius:999px;background:{{ a.badgeBg }};border:1px solid {{ a.badgeLine }};"><span style="width:5px;height:5px;border-radius:50%;background:{{ a.badgeDot }};"></span><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.06em;color:{{ a.badgeColor }};">{{ a.badge }}</span></span>
+              </div>
+              <div style="font-family:var(--mono);font-size:30px;font-weight:700;color:{{ a.numColor }};margin-top:8px;line-height:1;">{{ a.value }}</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.4;">{{ a.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- SIGNATURE QUEUE -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;animation:bc_rise .45s ease both;">
+          <div style="display:flex;align-items:center;gap:11px;padding:16px 18px;border-bottom:1px solid var(--border);">
+            <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-solid);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg></span>
+            <div style="flex:1;min-width:0;"><div style="font-family:var(--display);font-weight:700;font-size:15px;color:var(--text-strong);">{{ t.queueTitle }}</div><div style="font-size:11.5px;color:var(--text-muted);">{{ t.queueSub }}</div></div>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);">{{ queueCount }}</span>
+          </div>
+
+          <!-- skeleton -->
+          <sc-if value="{{ isSkeleton }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:8px;">
+            <sc-for list="{{ skeletons }}" as="s" hint-placeholder-count="4">
+              <div style="position:relative;overflow:hidden;height:62px;border-radius:12px;background:var(--surface-sunken);margin:6px;"><span style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);animation:bc_shim 1.3s infinite;"></span></div>
+            </sc-for>
+          </div>
+          </sc-if>
+
+          <!-- error -->
+          <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:34px 22px;text-align:center;">
+            <div style="width:46px;height:46px;border-radius:14px;margin:0 auto 12px;background:var(--danger-bg);border:1px solid var(--danger-line);display:flex;align-items:center;justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+            <div style="font-size:14px;font-weight:700;color:var(--text-strong);">{{ t.errTitle }}</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:5px;line-height:1.5;max-width:340px;margin-left:auto;margin-right:auto;">{{ t.errBody }}</div>
+            <button onClick="{{ retry }}" style="margin-top:14px;height:40px;padding:0 20px;border:1px solid var(--border-strong);border-radius:11px;background:var(--surface-sunken);color:var(--text-strong);font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;">{{ t.retry }}</button>
+          </div>
+          </sc-if>
+
+          <!-- honest-empty -->
+          <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:38px 22px;text-align:center;">
+            <div style="width:48px;height:48px;border-radius:14px;margin:0 auto 12px;background:var(--surface-sunken);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div style="font-size:15px;font-weight:700;color:var(--text-strong);">{{ t.emptyTitle }}</div>
+            <div style="font-size:12.5px;color:var(--text-muted);margin-top:6px;line-height:1.5;max-width:360px;margin-left:auto;margin-right:auto;">{{ t.emptyBody }}</div>
+          </div>
+          </sc-if>
+
+          <!-- loaded rows -->
+          <sc-if value="{{ isLoaded }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <sc-for list="{{ queue }}" as="q" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-top:1px solid var(--border);transition:background .15s;flex-wrap:wrap;" style-hover="background:var(--surface-raised)">
+                <span style="width:30px;height:30px;border-radius:9px;background:{{ q.color }};display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:#04161c;flex:0 0 30px;">{{ q.initial }}</span>
+                <div style="min-width:0;flex:1 1 150px;">
+                  <div style="font-size:13px;font-weight:600;color:var(--text-strong);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ q.client }}</div>
+                  <div style="font-family:var(--mono);font-size:10.5px;color:var(--text-muted);margin-top:2px;">{{ q.ped }}</div>
+                </div>
+                <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;background:{{ q.semBg }};border:1px solid {{ q.semLine }};flex:0 0 auto;"><span style="width:6px;height:6px;border-radius:50%;background:{{ q.semDot }};"></span><span style="font-size:10.5px;font-weight:700;color:{{ q.semColor }};">{{ q.sem }}</span></span>
+                <span style="display:inline-flex;align-items:center;gap:7px;flex:0 0 auto;">
+                  <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text-strong);">{{ q.conf }}</span>
+                  <span style="font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:{{ q.routeColor }};padding:2px 7px;border-radius:999px;background:{{ q.routeBg }};border:1px solid {{ q.routeLine }};white-space:nowrap;">{{ q.route }}</span>
+                </span>
+                <span style="font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--text-strong);flex:0 0 auto;min-width:104px;text-align:right;">{{ q.value }}</span>
+                <button onClick="{{ q.act }}" style="flex:0 0 auto;height:36px;padding:0 15px;border:none;border-radius:10px;background:{{ q.btnBg }};color:{{ q.btnColor }};font-family:var(--display);font-size:12.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:7px;">{{ q.btnIcon }}{{ q.btn }}</button>
+              </div>
+            </sc-for>
+          </div>
+          </sc-if>
+        </div>
+
+        <!-- CROSS-TENANT BOOK -->
+        <div style="animation:bc_rise .5s ease both;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:13px;">
+            <span style="font-family:var(--display);font-weight:700;font-size:15px;color:var(--text-strong);">{{ t.bookTitle }}</span>
+            <span style="font-size:11.5px;color:var(--text-muted);">{{ t.bookSub }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px;">
+            <sc-for list="{{ book }}" as="b" hint-placeholder-count="5">
+              <div style="background:var(--surface);border:1px solid var(--border);border-radius:15px;padding:15px;transition:border-color .15s;" style-hover="border-color:var(--border-strong)">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span style="width:30px;height:30px;border-radius:9px;background:{{ b.color }};display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:#04161c;flex:0 0 30px;">{{ b.initial }}</span>
+                  <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;color:var(--text-strong);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ b.name }}</div><div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);">{{ b.rfc }}</div></div>
+                  <span style="width:9px;height:9px;border-radius:50%;background:{{ b.healthDot }};box-shadow:0 0 7px {{ b.healthDot }};"></span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px;">
+                  <div><div style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);">{{ t.loads30 }}</div><div style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--text-strong);margin-top:2px;">{{ b.loads }}</div></div>
+                  <div><div style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);">MVE</div><div style="font-family:var(--mono);font-size:15px;font-weight:700;color:{{ b.mveColor }};margin-top:2px;">{{ b.mve }}</div></div>
+                </div>
+                <div style="margin-top:12px;padding-top:11px;border-top:1px solid var(--border);display:flex;align-items:center;gap:7px;">
+                  <span style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);">{{ t.valueMtd }}</span>
+                  <span style="margin-left:auto;font-family:var(--mono);font-size:12px;font-weight:700;color:{{ b.valColor }};">{{ b.value }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMMAND BAR (⌘K) -->
+      <sc-if value="{{ cmdkOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeCmdk }}" style="position:fixed;inset:0;z-index:60;background:rgba(6,11,18,.5);backdrop-filter:blur(3px);display:flex;justify-content:center;align-items:flex-start;padding-top:11vh;">
+        <div onClick="{{ stop }}" style="width:min(560px,92vw);background:var(--surface);border:1px solid var(--border-strong);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;animation:bc_rise .25s ease both;">
+          <div style="display:flex;align-items:center;gap:11px;padding:15px 18px;border-bottom:1px solid var(--border);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-text)" stroke-width="2"><path d="M12 2.6l1.9 4.6 4.6 1.9-4.6 1.9L12 15.6l-1.9-4.6L5.5 9.1l4.6-1.9z"/></svg>
+            <input autofocus="true" placeholder="{{ t.cmdkGoal }}" style="flex:1;border:none;outline:none;background:transparent;font-family:var(--sans);font-size:15px;color:var(--text-strong);" />
+            <kbd style="font-family:var(--mono);font-size:10px;color:var(--text-muted);border:1px solid var(--border-strong);border-radius:5px;padding:2px 7px;">esc</kbd>
+          </div>
+          <div style="padding:8px;">
+            <div style="font-size:9.5px;font-weight:700;letter-spacing:.12em;color:var(--text-muted);text-transform:uppercase;padding:8px 12px 6px;">{{ t.cmdkActions }}</div>
+            <sc-for list="{{ cmdkItems }}" as="c" hint-placeholder-count="4">
+              <button onClick="{{ c.run }}" style="width:100%;display:flex;align-items:center;gap:13px;padding:11px 12px;border:none;border-radius:11px;background:transparent;cursor:pointer;text-align:left;font-family:var(--sans);" style-hover="background:var(--surface-sunken)">
+                <span style="width:32px;height:32px;border-radius:9px;background:var(--surface-sunken);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--accent-text);" dangerouslySetInnerHTML="{{ c.icon }}"></span>
+                <span style="flex:1;min-width:0;"><span style="display:block;font-size:13.5px;font-weight:600;color:var(--text-strong);">{{ c.label }}</span><span style="display:block;font-size:11.5px;color:var(--text-muted);">{{ c.hint }}</span></span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- FLOATING CRUZ COPILOT ORB (same pattern as the client app) -->
+      <sc-if value="{{ copilotClosed }}" hint-placeholder-val="{{ true }}">
+      <button onClick="{{ toggleCopilot }}" aria-label="CRUZ" title="CRUZ" class="cz-orb" style="position:fixed;right:24px;bottom:24px;width:74px;height:74px;z-index:54;cursor:pointer;border:none;background:transparent;display:flex;align-items:center;justify-content:center;">
+        <span style="position:absolute;inset:-14px;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.42),rgba(8,116,144,.10) 52%,transparent 70%);filter:blur(4px);animation:orbAura 4.2s ease-in-out infinite;pointer-events:none;"></span>
+        <sc-if value="{{ hasProposals }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:-7px;border-radius:50%;border:2px solid rgba(245,158,11,.6);box-shadow:0 0 16px rgba(245,158,11,.45);animation:orbAura 1.8s ease-in-out infinite;pointer-events:none;"></span></sc-if>
+        <span style="position:absolute;left:50%;top:50%;width:122px;height:46px;margin:-23px 0 0 -61px;border:1.5px solid rgba(103,232,249,.30);border-radius:50%;box-shadow:0 0 10px rgba(34,211,238,.16);animation:orbHalo 11s linear infinite;pointer-events:none;"></span><span style="position:absolute;left:50%;top:50%;width:114px;height:41px;margin:-20.5px 0 0 -57px;border:1px solid rgba(52,211,153,.26);border-radius:50%;animation:orbHaloR 16s linear infinite;pointer-events:none;"></span><span style="position:absolute;inset:-2px;border-radius:50%;background:conic-gradient(from 0deg,#22D3EE,#0891B2,#34D399,#67E8F9,#22D3EE);opacity:.95;animation:orbHalo 7s linear infinite;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 1.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 1.5px));pointer-events:none;"></span>
+        <span style="position:relative;width:64px;height:64px;border-radius:50%;overflow:hidden;background:radial-gradient(135% 135% at 30% 22%,#143552,#0a1622 68%);border:1px solid rgba(34,211,238,.42);box-shadow:0 18px 40px rgba(8,20,34,.52),inset 0 1px 1px rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;animation:orbBreathe 4.2s ease-in-out infinite;">
+          <span style="position:absolute;top:10px;left:16px;width:15px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);filter:blur(2px);"></span>
+          <svg width="34" height="34" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="czOrbB" x1="7" y1="9" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#A5F3FC"/><stop offset=".5" stop-color="#22D3EE"/><stop offset="1" stop-color="#34D399"/></linearGradient></defs><path d="M34 10.5 A16.5 16.5 0 1 0 34 37.5" stroke="url(#czOrbB)" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M14 30 L20.5 23.5 L25 28 L32.5 16" stroke="url(#czOrbB)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M26.5 15.5 L33.5 14.5 L32.8 21.5" stroke="url(#czOrbB)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          <span style="position:absolute;right:8px;bottom:8px;width:12px;height:12px;border-radius:50%;background:{{ dockStateDot }};box-shadow:0 0 8px {{ dockStateDot }};border:2px solid #0a1622;"></span>
+        </span>
+      </button>
+      </sc-if>
+
+      <!-- EXPANDED COPILOT PANEL -->
+      <sc-if value="{{ copilotOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;inset:0;z-index:55;display:flex;align-items:flex-end;justify-content:flex-end;padding:22px;">
+        <div onClick="{{ toggleCopilot }}" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,22,.06),rgba(6,11,18,.42));backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);"></div>
+        <div onClick="{{ stop }}" style="position:relative;width:min(404px,100%);max-height:90vh;overflow-y:auto;display:flex;flex-direction:column;animation:bc_rise .32s ease both;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);"></span>
+            <span style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.6);">{{ t.copilotLabel }}</span>
+            <button onClick="{{ toggleCopilot }}" title="{{ t.collapse }}" aria-label="{{ t.collapse }}" style="margin-left:auto;width:32px;height:32px;border:1px solid var(--border-strong);border-radius:10px;background:var(--surface);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+          </div>
+          <dc-import name="CRUZ Copilot Dock" register="terminal" state="{{ dockState }}" on-state="{{ setDock }}" hint-size="372px,560px"></dc-import>
+          <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+            <sc-for list="{{ dockStates }}" as="d" hint-placeholder-count="6">
+              <button onClick="{{ d.pick }}" style="border:1px solid {{ d.line }};border-radius:8px;padding:5px 9px;font-family:var(--mono);font-size:9.5px;font-weight:700;cursor:pointer;background:{{ d.bg }};color:{{ d.color }};">{{ d.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:960}}">
+class Component extends DCLogic {
+  state = { lang:'es', harness:'loaded', dockState:'awaiting', tenant:'all', tenantOpen:false, copilotOpen:false, cmdkOpen:false, cu:0, w:1440 };
+  componentDidMount(){
+    try{ const l=localStorage.getItem('cruz.lang'); if(l)this.setState({lang:l}); }catch(e){}
+    this._onR=()=>this.setState({w:window.innerWidth}); this._onR(); window.addEventListener('resize',this._onR);
+    this._key=(e)=>{ if((e.metaKey||e.ctrlKey)&&(e.key==='k'||e.key==='K')){ e.preventDefault(); this.setState(s=>({cmdkOpen:!s.cmdkOpen})); } else if(e.key==='Escape'){ this.setState({cmdkOpen:false}); } };
+    window.addEventListener('keydown',this._key);
+    let _f=0; clearInterval(this._cu); this._cu=setInterval(()=>{ _f++; this.setState({cu:Math.min(_f/26,1)}); if(_f>=26)clearInterval(this._cu); },24);
+  }
+  componentWillUnmount(){ window.removeEventListener('resize',this._onR); window.removeEventListener('keydown',this._key); clearInterval(this._cu); }
+  setEs=()=>{ try{localStorage.setItem('cruz.lang','es');}catch(e){} this.setState({lang:'es'}); };
+  setEn=()=>{ try{localStorage.setItem('cruz.lang','en');}catch(e){} this.setState({lang:'en'}); };
+  setHarness=(h)=>this.setState({harness:h});
+  setDock=(s)=>this.setState({dockState:s});
+  toggleCopilot=()=>this.setState(s=>({copilotOpen:!s.copilotOpen}));
+  stop=(e)=>{ if(e&&e.stopPropagation)e.stopPropagation(); };
+  openCmdk=()=>this.setState({cmdkOpen:true});
+  closeCmdk=()=>this.setState({cmdkOpen:false});
+  toggleTenant=()=>this.setState(s=>({tenantOpen:!s.tenantOpen}));
+  pickTenant=(id)=>this.setState({tenant:id,tenantOpen:false});
+
+  renderVals(){
+    const es=this.state.lang!=='en'; const A=(en,e)=>es?e:en;
+    const seg=(on)=>({bg:on?'var(--surface-raised)':'transparent', color:on?'var(--accent-text)':'var(--text-muted)'});
+    const e=seg(es), n=seg(!es);
+    const narrow=this.state.w<1200;
+    const ic=(p)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';
+    const navDefs=[
+      ['command', A('Command','Mando'), '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>'],
+      ['traf', A('Loads','Tr\u00e1ficos'), '<path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>'],
+      ['classify', A('Classify','Clasificar'), '<path d="M4 7V5a2 2 0 0 1 2-2h2"/><path d="M4 17v2a2 2 0 0 0 2 2h2"/><path d="M16 3h2a2 2 0 0 1 2 2v2"/><path d="M16 21h2a2 2 0 0 0 2-2v-2"/><circle cx="12" cy="12" r="3"/>'],
+      ['ped', A('Pedimentos','Pedimentos'), '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/>'],
+      ['book', A('Book','Cartera'), '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'],
+      ['gate', A('Signature','Firma'), '<path d="M3 21c3-3 6-9 9-9s4 3 6 0"/><path d="M14 6l4 4"/>'],
+      ['money', A('Accounting','Contabilidad'), '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>'],
+      ['settings', A('Settings','Ajustes'), '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.82 1.17V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 3 12.6a1.65 1.65 0 0 0-1.51-1H1a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 3 6"/>'],
+    ];
+    const navItems=navDefs.map(([id,label,p])=>{ const on=id==='command'; return {label,active:on, pick:()=>{}, icon:{__html:ic(p)},
+      bg:on?'rgba(34,211,238,.10)':'transparent', color:on?'var(--accent-text)':'var(--text-muted)' }; });
+
+    const tenants=[
+      {id:'all', name:A('Whole patente','Toda la patente'), rfc:'3596', initial:'\u25C9', color:'#22D3EE'},
+      {id:'evco', name:'EVCO Manufacturing', rfc:'EVC230114K2', initial:'EV', color:'#34D399'},
+      {id:'acme', name:'Acme Components', rfc:'ACO180922D4', initial:'AC', color:'#5FD8EC'},
+      {id:'toluca', name:'Toluca Auto', rfc:'TAU210733M9', initial:'TA', color:'#FBBF24'},
+      {id:'nordic', name:'Nordic Foods MX', rfc:'NFM200611Q7', initial:'NF', color:'#A78BFA'},
+      {id:'sigma', name:'Sigma Logistics', rfc:'SLO190418B1', initial:'SI', color:'#FB7185'},
+    ];
+    const curT=tenants.find(x=>x.id===this.state.tenant)||tenants[0];
+    const tenantOpts=tenants.map(o=>({name:o.name,rfc:o.rfc,initial:o.initial,color:o.color, pick:()=>this.pickTenant(o.id), bg:o.id===this.state.tenant?'var(--surface-raised)':'transparent'}));
+
+    const harnessDefs=[['loaded',A('Loaded','Datos')],['empty',A('Empty','Vac\u00edo')],['skeleton',A('Skel','Carga')],['error',A('Error','Error')]];
+    const harnessOpts=harnessDefs.map(([id,label])=>{ const on=this.state.harness===id; return {label, title:label, pick:()=>this.setHarness(id), bg:on?'var(--surface-raised)':'transparent', color:on?'var(--accent-text)':'var(--text-muted)'}; });
+
+    const aggregates=[
+      {label:A('Clients · patente','Clientes · patente'), value:'5', note:A('all active under 3596','todos activos bajo 3596'), bg:'var(--surface)', line:'var(--border)', numColor:'var(--text-strong)', badge:'LIVE', badgeBg:'var(--success-bg)', badgeLine:'var(--success-line)', badgeDot:'var(--success)', badgeColor:'var(--success)', src:A('Source: internal patente registry · synced 14:02 CST','Fuente: registro de patente · sinc. 14:02 CST')},
+      {label:A('Loads · 30d','Cargas · 30d'), value:'218', note:A('across 6 corridors','en 6 corredores'), bg:'var(--surface)', line:'var(--border)', numColor:'var(--text-strong)', badge:'LIVE', badgeBg:'var(--success-bg)', badgeLine:'var(--success-line)', badgeDot:'var(--success)', badgeColor:'var(--success)', src:A('Source: CBP + carrier feeds · synced 14:02 CST','Fuente: CBP + transportistas · sinc. 14:02 CST')},
+      {label:A('Awaiting your pen','Esperan tu firma'), value:'3', note:A('high confidence · ready to sign','alta confianza · listas'), bg:'var(--success-bg)', line:'var(--success-line)', numColor:'var(--success)', badge:'LIVE', badgeBg:'var(--surface)', badgeLine:'var(--border)', badgeDot:'var(--success)', badgeColor:'var(--text-muted)', src:A('Derived live from the signature queue','Derivado en vivo de la cola de firma')},
+      {label:A('Value · MTD','Valor · mes'), value:'\u2014', note:A('pending e.conta sync','pendiente de e.conta'), bg:'var(--surface)', line:'var(--border)', numColor:'var(--text-muted)', badge:'STAGED', badgeBg:'var(--warning-bg)', badgeLine:'var(--warning-line)', badgeDot:'var(--warning)', badgeColor:'var(--warning)', src:A('Source: e.conta · STAGED — awaiting first sync','Fuente: e.conta · STAGED — sin primera sincronización')},
+    ];
+
+    const cu=this.state.cu; aggregates.forEach(a=>{ if(/^[0-9]+$/.test(a.value)) a.value=String(Math.round(parseInt(a.value,10)*cu)); });
+    const qm=(on)=>on;
+    const queueDefs=[
+      ['EVCO Manufacturing','EV','#34D399','26 24 3596 6500441','verde',97,'sign','MXN 119,353'],
+      ['Acme Components','AC','#5FD8EC','26 24 3596 6500418','verde',95,'sign','MXN 84,200'],
+      ['Toluca Auto','TA','#FBBF24','26 24 3596 6500402','rojo',71,'escalate','MXN 61,540'],
+      ['Nordic Foods MX','NF','#A78BFA','26 24 3596 6500391','verde',93,'sign','MXN 47,900'],
+    ];
+    const queue=queueDefs.map(([client,initial,color,ped,sem,conf,kind,value])=>{
+      const verde=sem==='verde';
+      const sign=kind==='sign';
+      return { client, initial, color, ped, value,
+        sem:A(verde?'Verde':'Rojo',verde?'Verde':'Rojo'),
+        semBg:verde?'var(--success-bg)':'var(--danger-bg)', semLine:verde?'var(--success-line)':'var(--danger-line)', semDot:verde?'var(--success)':'var(--danger)', semColor:verde?'var(--success)':'var(--danger)',
+        conf:conf+'/99',
+        route: sign?A('Your firm','Tu firma'):A('Escalated','Escalado'),
+        routeColor: sign?'var(--success)':'var(--danger)', routeBg: sign?'var(--success-bg)':'var(--danger-bg)', routeLine: sign?'var(--success-line)':'var(--danger-line)',
+        btn: sign?A('Sign','Firmar'):A('Review','Revisar'),
+        btnBg: sign?'var(--accent-solid)':'var(--danger-bg)', btnColor: sign?'#fff':'var(--danger)',
+        btnIcon: sign?React.createElement('svg',{width:13,height:13,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2.2},React.createElement('path',{d:'M5 12h14M13 6l6 6-6 6'})):'',
+        act:()=>this.setState({dockState: sign?'awaiting':'proposed', copilotOpen:true}),
+      };
+    });
+
+    const bookDefs=[
+      ['EVCO Manufacturing','EV','#34D399','EVC230114K2',62,'98%','MXN 4.2M','sage'],
+      ['Acme Components','AC','#5FD8EC','ACO180922D4',48,'96%','MXN 2.8M','sage'],
+      ['Toluca Auto','TA','#FBBF24','TAU210733M9',39,'88%','MXN 1.9M','amber'],
+      ['Nordic Foods MX','NF','#A78BFA','NFM200611Q7',41,'\u2014','MXN 2.1M','sage'],
+      ['Sigma Logistics','SI','#FB7185','SLO190418B1',28,'91%','\u2014','amber'],
+    ];
+    const healthMap={sage:'var(--success)',amber:'var(--warning)',clay:'var(--danger)'};
+    const book=bookDefs.map(([name,initial,color,rfc,loads,mve,value,health])=>({
+      name, initial, color, rfc, loads:String(loads), mve,
+      mveColor: mve==='\u2014'?'var(--text-muted)':'var(--text-strong)',
+      value, valColor: value==='\u2014'?'var(--text-muted)':'var(--text-strong)',
+      healthDot: healthMap[health],
+    }));
+
+    const dsDefs=[['idle',A('Idle','En espera')],['watching',A('Watching','Vigila')],['working',A('Working','Trabaja')],['proposed',A('Proposed','Propone')],['awaiting',A('Awaiting','Firma')],['shadow',A('Shadow','Sombra')]];
+    const dockStates=dsDefs.map(([id,label])=>{ const on=this.state.dockState===id; return {label, pick:()=>this.setDock(id), bg:on?'var(--surface-raised)':'transparent', line:on?'var(--accent)':'var(--border)', color:on?'var(--accent-text)':'var(--text-muted)'}; });
+
+    const t={
+      title:A('Command','Mando'),
+      sub:A('Patente 3596 · 5 clients · you hold the one signature','Patente 3596 · 5 clientes · t\u00fa tienes la firma'),
+      book:A('Book','Cartera'), clock:A('Thu 19 Jun · 14:02 CST','jue 19 jun · 14:02 CST'),
+      cmdkPh:A('Ask or command CRUZ…','Pregunta o comanda a CRUZ…'), cmdkGoal:A('What do you need to clear today?','¿Qué necesitas despachar hoy?'), cmdkActions:A('Quick actions','Acciones rápidas'),
+      demo:A('DEMO DATA','DATOS DEMO'), demoTitle:A('Figures are illustrative until live feeds are wired','Cifras ilustrativas hasta conectar los feeds en vivo'),
+      queueTitle:A('What needs your signature','Lo que necesita tu firma'),
+      queueSub:A('Ranked by value · CRUZ prepared each one to this gate','Ordenado por valor · CRUZ preparó cada uno hasta esta firma'),
+      bookTitle:A('The patente at a glance','La patente de un vistazo'),
+      bookSub:A('every client under 3596 · calm and dense','cada cliente bajo 3596 · calmo y denso'),
+      loads30:A('Loads 30d','Cargas 30d'), valueMtd:A('Value MTD','Valor mes'),
+      emptyTitle:A('No signatures pending','Sin firmas pendientes'),
+      emptyBody:A('Every prepared entry has been signed or is still being reasoned. This fills as CRUZ finishes loads — nothing is hidden, nothing is faked.','Cada pedimento preparado ya se firmó o sigue en razonamiento. Esto se llena conforme CRUZ termina cargas — nada oculto, nada inventado.'),
+      errTitle:A('Couldn\u2019t load the queue','No se pudo cargar la cola'),
+      errBody:A('The connection dropped while fetching pending signatures. Nothing was filed — your loads are safe.','La conexión se cayó al traer las firmas pendientes. Nada se presentó — tus cargas están a salvo.'),
+      retry:A('Retry','Reintentar'),
+      dockNote:A('The same copilot rides every surface. Click a queue row to pin it here; switch its state above.','El mismo copiloto va en cada superficie. Toca una fila para fijarla aquí; cambia su estado arriba.'),
+      copilotLabel:A('Copilot','Copiloto'), collapse:A('Collapse','Colapsar'), expand:A('Expand copilot','Expandir copiloto'),
+      notifs:A('Notifications','Notificaciones'), signOut:A('Sign out','Cerrar sesión'),
+    };
+    const open=this.state.dockOpen;
+    const dsMeta={idle:['var(--text-muted)','IDLE'],watching:['var(--accent)','WATCH'],working:['var(--accent)','WORK'],proposed:['var(--warning)','PROP'],awaiting:['var(--success)','SIGN'],shadow:['var(--violet)','SHDW']};
+    const dsm=dsMeta[this.state.dockState]||dsMeta.awaiting;
+    const cmdkItems=[
+      {label:A('Review what needs my signature','Revisar lo que necesita mi firma'), hint:A('3 ready · ranked by value','3 listas · por valor'), icon:{__html:ic('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M9 15l2 2 4-4"/>')}, run:()=>this.setState({cmdkOpen:false,copilotOpen:true,dockState:'awaiting'})},
+      {label:A('Watch CRUZ clear a load','Ver a CRUZ despachar una carga'), hint:A('live reasoning trace','traza de razonamiento en vivo'), icon:{__html:ic('<path d="M13 2 3 14h7l-1 8 10-12h-7z"/>')}, run:()=>this.setState({cmdkOpen:false,copilotOpen:true,dockState:'working'})},
+      {label:A('Run a shadow check','Correr una verificación en sombra'), hint:A('measure before you trust','mide antes de confiar'), icon:{__html:ic('<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="2.5"/>')}, run:()=>this.setState({cmdkOpen:false,copilotOpen:true,dockState:'shadow'})},
+      {label:A('Switch tenant','Cambiar de cliente'), hint:A('re-scope the whole console','re-enfoca toda la consola'), icon:{__html:ic('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/>')}, run:()=>this.setState({cmdkOpen:false,tenantOpen:true})},
+    ];
+
+    return {
+      navItems, t, esBg:e.bg,esColor:e.color, enBg:n.bg,enColor:n.color, setEs:this.setEs,setEn:this.setEn,
+      harnessOpts, aggregates, queue, book, dockStates,
+      tenantName:curT.name, tenantInitial:curT.initial, tenantColor:curT.color, tenantOpen:this.state.tenantOpen, tenantOpts, toggleTenant:this.toggleTenant,
+      dockState:this.state.dockState, setDock:this.setDock,
+      copilotOpen:this.state.copilotOpen, copilotClosed:!this.state.copilotOpen, toggleCopilot:this.toggleCopilot, stop:this.stop,
+      cmdkOpen:this.state.cmdkOpen, openCmdk:this.openCmdk, closeCmdk:this.closeCmdk, cmdkItems,
+      dockStateDot:dsm[0], hasProposals: queue.length>0?true:'',
+      queueCount: A(queue.length+' ready','')||(queue.length+' listas'),
+      isLoaded:this.state.harness==='loaded', isEmpty:this.state.harness==='empty', isSkeleton:this.state.harness==='skeleton', isError:this.state.harness==='error',
+      skeletons:[1,2,3,4], retry:()=>this.setHarness('loaded'),
+    };
+  }
+}
+</script>
+</body>
+</html>

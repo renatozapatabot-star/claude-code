@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  @keyframes sr_rise{from{transform:translateY(12px);}to{transform:none;}}
+  @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;}}
+</style>
+</helmet>
+<div style="min-height:100vh;background:radial-gradient(120% 90% at 50% -10%,#e9eef4,#dfe5ec 70%);font-family:'Inter Tight',system-ui,sans-serif;color:#0C1925;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:18px;">
+
+  <div style="width:min(720px,100%);display:flex;align-items:center;gap:11px;animation:sr_rise .4s ease both;">
+    <span style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#0891B2,#059669);display:flex;align-items:center;justify-content:center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M3 8l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg></span>
+    <span style="font-size:13px;font-weight:700;letter-spacing:-.01em;">CRUZ · {{ t.outbound }}</span>
+    <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:rgba(245,158,11,.13);border:1px solid rgba(245,158,11,.32);font-size:9.5px;font-weight:800;letter-spacing:.08em;color:#B45309;"><span style="width:6px;height:6px;border-radius:50%;background:#F59E0B;"></span>{{ t.demo }}</span>
+  </div>
+
+  <!-- email envelope -->
+  <div style="width:min(720px,100%);background:#fff;border:1px solid #dce3ea;border-radius:18px;overflow:hidden;box-shadow:0 30px 70px rgba(20,32,46,.16);animation:sr_rise .5s ease both;">
+
+    <!-- meta -->
+    <div style="padding:22px 26px 16px;border-bottom:1px solid #eef2f6;">
+      <div style="font-size:19px;font-weight:800;letter-spacing:-.015em;line-height:1.3;">{{ t.subject }}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:13px;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <span style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#0891B2,#0E7490);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;">CZ</span>
+          <span><span style="display:block;font-size:13px;font-weight:700;">CRUZ · Aduanas MX</span><span style="display:block;font-size:11.5px;color:#7c8a99;">operaciones@cruz.mx</span></span>
+        </div>
+        <div style="margin-left:auto;text-align:right;align-self:center;">
+          <span style="display:block;font-size:11px;color:#7c8a99;">{{ t.to }} <b style="color:#0C1925;">SPINE-SEED SUPPLIER A</b></span>
+          <span style="display:block;font-size:11px;color:#7c8a99;font-family:'JetBrains Mono',monospace;">exportdocs@spineseed.co · 12 jun 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- body -->
+    <div style="padding:24px 26px;font-size:14px;line-height:1.62;color:#243240;">
+      <div style="margin-bottom:14px;">{{ t.greeting }}</div>
+      <div style="margin-bottom:14px;">{{ t.intro }}</div>
+
+      <div style="border:1px solid #e6ebf0;border-radius:14px;overflow:hidden;margin:18px 0;">
+        <div style="padding:11px 16px;background:#f6f8fb;border-bottom:1px solid #e6ebf0;font-size:10px;font-weight:800;letter-spacing:.09em;color:#5d6e80;text-transform:uppercase;">{{ t.docsNeeded }} · SHP-44210</div>
+        <sc-for list="{{ docs }}" as="d" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid #eef2f6;">
+            <span style="width:24px;height:24px;border-radius:7px;background:{{ d.bg }};display:flex;align-items:center;justify-content:center;flex:0 0 24px;">{{ d.icon }}</span>
+            <span style="flex:1;min-width:0;"><span style="display:block;font-size:13px;font-weight:600;color:#0C1925;">{{ d.name }}</span><span style="display:block;font-size:11.5px;color:#7c8a99;">{{ d.note }}</span></span>
+            <span style="font-size:10px;font-weight:700;letter-spacing:.05em;color:{{ d.statusColor }};border:1px solid {{ d.statusBorder }};border-radius:6px;padding:3px 8px;white-space:nowrap;">{{ d.status }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="margin-bottom:8px;">{{ t.deadline }}</div>
+
+      <div style="display:flex;gap:10px;margin:20px 0 8px;">
+        <button style="height:44px;padding:0 22px;border:none;border-radius:12px;background:linear-gradient(135deg,#0891B2,#059669);color:#fff;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>{{ t.uploadBtn }}</button>
+        <button style="height:44px;padding:0 18px;border:1px solid #d4dce4;border-radius:12px;background:#fff;color:#0C1925;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;">{{ t.questionBtn }}</button>
+      </div>
+
+      <div style="margin-top:16px;font-size:13px;color:#243240;">{{ t.signoff }}<br><b>CRUZ</b> · {{ t.onBehalf }}</div>
+    </div>
+
+    <!-- trust footer -->
+    <div style="padding:14px 26px;background:#f6f8fb;border-top:1px solid #eef2f6;display:flex;align-items:center;gap:10px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7490" stroke-width="2" style="flex:0 0 15px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span style="font-size:11px;color:#5d6e80;line-height:1.45;">{{ t.trust }}</span>
+    </div>
+  </div>
+
+  <div style="width:min(720px,100%);font-size:11px;color:#8595a4;text-align:center;animation:sr_rise .6s ease both;">{{ t.footnote }}</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:760,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { lang: 'es' };
+  componentDidMount(){ try{ const l=localStorage.getItem('cruz.lang'); if(l) this.setState({lang:l}); }catch(e){} }
+  renderVals(){
+    const es = this.state.lang!=='en';
+    const A=(en,esx)=>es?esx:en;
+    const ic=(p,stroke)=>React.createElement('svg',{width:13,height:13,viewBox:'0 0 24 24',fill:'none',stroke:stroke||'#0E7490',strokeWidth:2},React.createElement('path',{d:p}));
+    const t = {
+      outbound: A('Outbound · auto-drafted','Saliente · auto-redactado'),
+      demo: A('DEMO DATA','DATOS DEMO'),
+      subject: A('Documents needed to clear your shipment SHP-44210','Documentos para despachar tu embarque SHP-44210'),
+      to: A('To','Para'),
+      greeting: A('Hello SPINE-SEED team,','Hola equipo SPINE-SEED,'),
+      intro: A('CRUZ is preparing the customs entry for the shipment below on behalf of your importer. To classify and clear it without delay, we need the following documents.','CRUZ está preparando el pedimento del embarque de abajo en representación de tu importador. Para clasificarlo y despacharlo sin demora, necesitamos los siguientes documentos.'),
+      docsNeeded: A('Documents requested','Documentos solicitados'),
+      deadline: A('Uploading by Jun 13, 14:00 CST keeps this shipment in today\u2019s green crossing window at Laredo.','Subirlos antes del 13 jun, 14:00 CST mantiene este embarque en la ventana verde de cruce de hoy en Laredo.'),
+      uploadBtn: A('Upload documents','Subir documentos'),
+      questionBtn: A('I have a question','Tengo una duda'),
+      signoff: A('Thank you,','Gracias,'),
+      onBehalf: A('on behalf of your importer','en representación de tu importador'),
+      trust: A('This request was drafted by CRUZ and sent with your customs broker\u2019s approval. CRUZ never files or pays anything without a human signature.','Esta solicitud fue redactada por CRUZ y enviada con la aprobación de tu agente aduanal. CRUZ nunca presenta ni paga nada sin una firma humana.'),
+      footnote: A('Secure upload link \u00b7 expires in 7 days \u00b7 cruz.mx/u/SHP-44210','Enlace seguro \u00b7 expira en 7 días \u00b7 cruz.mx/u/SHP-44210'),
+    };
+    const docs = [
+      {name:A('Commercial invoice','Factura comercial'), note:A('With unit values & Incoterm','Con valores unitarios e Incoterm'), status:A('RECEIVED','RECIBIDO'), statusColor:'#047857', statusBorder:'rgba(16,185,129,.4)', bg:'rgba(16,185,129,.13)', icon:ic('M20 6L9 17l-5-5','#047857')},
+      {name:A('Packing list','Lista de empaque'), note:A('Quantities & weights per box','Cantidades y pesos por caja'), status:A('RECEIVED','RECIBIDO'), statusColor:'#047857', statusBorder:'rgba(16,185,129,.4)', bg:'rgba(16,185,129,.13)', icon:ic('M20 6L9 17l-5-5','#047857')},
+      {name:A('Certificate of origin (T-MEC)','Certificado de origen (T-MEC)'), note:A('Needed to claim 0% duty','Necesario para arancel 0%'), status:A('PENDING','PENDIENTE'), statusColor:'#B45309', statusBorder:'rgba(245,158,11,.45)', bg:'rgba(245,158,11,.13)', icon:ic('M12 9v4M12 17h.01M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z','#B45309')},
+      {name:A('Material safety data sheet','Hoja de datos de seguridad'), note:A('For NOM compliance review','Para revisión de cumplimiento NOM'), status:A('PENDING','PENDIENTE'), statusColor:'#B45309', statusBorder:'rgba(245,158,11,.45)', bg:'rgba(245,158,11,.13)', icon:ic('M12 9v4M12 17h.01M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z','#B45309')},
+    ];
+    return { t, docs };
+  }
+}
+</script>
+</body>
+</html>

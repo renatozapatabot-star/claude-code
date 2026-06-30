@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --app-bg:#F1F4F9; --surface:#FFFFFF; --surface-raised:#FBFCFE; --surface-sunken:#EFF3F8;
+    --border:rgba(15,30,55,.08); --border-strong:rgba(15,30,55,.14);
+    --text-strong:#0C1925; --text:#2C4053; --text-muted:#64758A;
+    --accent:#0E7490; --accent-solid:#0891B2; --accent-text:#0E7490;
+    --success:#047857; --success-bg:rgba(16,185,129,.10); --success-line:rgba(16,185,129,.30);
+    --danger:#BE123C; --danger-bg:rgba(244,63,94,.08); --danger-line:rgba(244,63,94,.28);
+    --warning:#B45309; --warning-bg:rgba(245,158,11,.10); --warning-line:rgba(245,158,11,.30);
+    --violet:#7C3AED; --violet-bg:rgba(124,58,237,.08); --violet-line:rgba(124,58,237,.30);
+    --focus:#0891B2; --shadow:0 1px 2px rgba(20,40,70,.04),0 4px 12px rgba(20,40,70,.05),0 20px 48px rgba(20,40,70,.09);
+    --mono:'Space Mono',monospace; --sans:'Hanken Grotesk',system-ui,sans-serif; --display:'Archivo',sans-serif;
+  }
+  [data-register="almanac"]{
+    --app-bg:#F1F4F9; --surface:#FFFFFF; --surface-raised:#FBFCFE; --surface-sunken:#EFF3F8;
+    --border:rgba(15,30,55,.08); --border-strong:rgba(15,30,55,.14);
+    --text-strong:#0C1925; --text:#2C4053; --text-muted:#64758A;
+    --accent:#0E7490; --accent-solid:#0891B2; --accent-text:#0E7490;
+    --success:#047857; --success-bg:rgba(16,185,129,.10); --success-line:rgba(16,185,129,.30);
+    --danger:#BE123C; --danger-bg:rgba(244,63,94,.08); --danger-line:rgba(244,63,94,.28);
+    --warning:#B45309; --warning-bg:rgba(245,158,11,.10); --warning-line:rgba(245,158,11,.30);
+    --violet:#7C3AED; --violet-bg:rgba(124,58,237,.08); --violet-line:rgba(124,58,237,.30);
+    --focus:#0891B2; --shadow:0 1px 2px rgba(20,40,70,.04),0 4px 12px rgba(20,40,70,.05),0 20px 48px rgba(20,40,70,.09);
+  }
+  [data-register="terminal"]{
+    --app-bg:#0B1622; --surface:#0D1722; --surface-raised:#13212E; --surface-sunken:#0A1019;
+    --border:rgba(255,255,255,.07); --border-strong:rgba(255,255,255,.14);
+    --text-strong:#E9F1F7; --text:#CDD8E3; --text-muted:#8295A8;
+    --accent:#22D3EE; --accent-solid:#0E7490; --accent-text:#5FD8EC;
+    --success:#34D399; --success-bg:rgba(52,211,153,.12); --success-line:rgba(52,211,153,.30);
+    --danger:#FB7185; --danger-bg:rgba(244,63,94,.14); --danger-line:rgba(244,63,94,.34);
+    --warning:#FBBF24; --warning-bg:rgba(245,158,11,.14); --warning-line:rgba(245,158,11,.32);
+    --violet:#A78BFA; --violet-bg:rgba(167,139,250,.13); --violet-line:rgba(167,139,250,.34);
+    --focus:#22D3EE; --shadow:0 1px 2px rgba(0,0,0,.24),0 4px 12px rgba(0,0,0,.22),0 24px 56px rgba(0,0,0,.40);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  :focus-visible{outline:none;box-shadow:0 0 0 2px var(--app-bg),0 0 0 4px var(--focus);border-radius:8px;transition:box-shadow .15s ease;}
+  @keyframes ct_rise{from{transform:translateY(10px);}to{transform:none;}}
+  @keyframes ct_pop{from{transform:scale(.97);}to{transform:none;}}
+  @keyframes ct_blink{0%,100%{opacity:1;}50%{opacity:.35;}}
+  @keyframes ct_ring{0%{transform:scale(1);opacity:.55;}70%{transform:scale(2.1);opacity:0;}100%{opacity:0;}}
+  @keyframes ct_breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+  @keyframes ct_bar{from{transform:translateX(-100%);}to{transform:translateX(100%);}}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}}
+</style>
+</helmet>
+<div data-register="{{ register }}" style="min-height:100vh;background:var(--app-bg);color:var(--text);font-family:var(--sans);transition:background .25s ease,color .25s ease;">
+
+  <!-- top bar -->
+  <div style="display:flex;align-items:center;gap:14px;padding:16px 22px;border-bottom:1px solid var(--border);flex-wrap:wrap;">
+    <span style="width:30px;height:30px;border-radius:8px;background:var(--accent-solid);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;color:#fff;font-size:15px;">C</span>
+    <span style="font-family:var(--display);font-weight:800;letter-spacing:-.01em;color:var(--text-strong);font-size:15px;">CRUZ</span>
+    <span style="font-size:11px;color:var(--text-muted);font-family:var(--mono);">{{ t.registerLabel }}</span>
+    <div style="margin-left:auto;display:flex;gap:6px;">
+      <div style="display:flex;gap:2px;padding:3px;border-radius:9px;background:var(--surface-sunken);border:1px solid var(--border);">
+        <button onClick="{{ setTerminal }}" style="border:none;border-radius:7px;padding:6px 12px;font-family:var(--sans);font-size:11.5px;font-weight:700;cursor:pointer;background:{{ termBg }};color:{{ termColor }};">TERMINAL</button>
+        <button onClick="{{ setAlmanac }}" style="border:none;border-radius:7px;padding:6px 12px;font-family:var(--sans);font-size:11.5px;font-weight:700;cursor:pointer;background:{{ almBg }};color:{{ almColor }};">ALMANAC</button>
+      </div>
+      <div style="display:flex;gap:2px;padding:3px;border-radius:9px;background:var(--surface-sunken);border:1px solid var(--border);">
+        <button onClick="{{ setEs }}" style="border:none;border-radius:7px;padding:6px 10px;font-size:11.5px;font-weight:700;cursor:pointer;background:{{ esBg }};color:{{ esColor }};font-family:var(--sans);">ES</button>
+        <button onClick="{{ setEn }}" style="border:none;border-radius:7px;padding:6px 10px;font-size:11.5px;font-weight:700;cursor:pointer;background:{{ enBg }};color:{{ enColor }};font-family:var(--sans);">EN</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1040px;margin:0 auto;padding:28px 20px 60px;">
+    <div style="font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-text);margin-bottom:8px;font-family:var(--mono);">{{ t.eyebrow }}</div>
+    <h1 style="font-family:var(--display);font-weight:800;letter-spacing:-.02em;font-size:27px;line-height:1.15;color:var(--text-strong);margin:0 0 6px;max-width:620px;">{{ t.title }}</h1>
+    <div style="font-size:14px;color:var(--text-muted);line-height:1.5;margin-bottom:24px;max-width:600px;">{{ t.sub }}</div>
+
+    <div style="display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap;">
+
+      <!-- STATE SELECTOR -->
+      <div style="flex:1;min-width:280px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:11px;">{{ t.statesLabel }}</div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <sc-for list="{{ states }}" as="s" hint-placeholder-count="6">
+            <button onClick="{{ s.pick }}" style="display:flex;align-items:center;gap:13px;padding:13px 15px;border:1px solid {{ s.border }};border-radius:14px;background:{{ s.bg }};cursor:pointer;text-align:left;font-family:var(--sans);transition:border-color .15s,background .15s;min-height:60px;">
+              <span style="width:11px;height:11px;flex:0 0 11px;border-radius:50%;background:{{ s.dot }};box-shadow:0 0 9px {{ s.dot }};animation:{{ s.dotAnim }};"></span>
+              <span style="flex:1;min-width:0;">
+                <span style="display:block;font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--text-strong);letter-spacing:.01em;">{{ s.label }}</span>
+                <span style="display:block;font-size:11.5px;color:var(--text-muted);line-height:1.4;margin-top:2px;">{{ s.note }}</span>
+              </span>
+              <sc-if value="{{ s.active }}" hint-placeholder-val="{{ true }}"><span style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--accent-text);">◂</span></sc-if>
+            </button>
+          </sc-for>
+        </div>
+        <div style="margin-top:14px;font-size:11px;color:var(--text-muted);line-height:1.55;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--surface-sunken);">{{ t.lawNote }}</div>
+      </div>
+
+      <!-- THE DOCKED PANEL -->
+      <div style="flex:0 0 372px;max-width:100%;width:372px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:11px;">{{ t.dockLabel }}</div>
+        <div style="background:var(--surface);border:{{ panelBorder }};border-radius:20px;box-shadow:var(--shadow);overflow:hidden;animation:ct_pop .25s ease both;">
+
+          <!-- panel header -->
+          <div style="display:flex;align-items:center;gap:12px;padding:15px 17px;border-bottom:1px solid var(--border);background:var(--surface-raised);">
+            <span style="position:relative;width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:radial-gradient(circle at 34% 30%,var(--accent),var(--accent-solid));display:flex;align-items:center;justify-content:center;animation:{{ orbAnim }};">
+              <sc-if value="{{ orbPulse }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;inset:0;border-radius:50%;border:2px solid var(--accent);animation:ct_ring 1.8s ease-out infinite;"></span></sc-if>
+              <span style="width:9px;height:9px;border-radius:50%;background:#fff;opacity:.92;"></span>
+            </span>
+            <div style="flex:1;min-width:0;">
+              <div style="font-family:var(--display);font-weight:800;font-size:14px;color:var(--text-strong);letter-spacing:-.01em;">CRUZ Copilot</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:3px;">
+                <span style="width:6px;height:6px;border-radius:50%;background:{{ stateDot }};box-shadow:0 0 7px {{ stateDot }};animation:{{ stateDotAnim }};"></span>
+                <span style="font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.04em;color:{{ stateColor }};text-transform:uppercase;">{{ stateLabel }}</span>
+                <span style="margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--text-muted);">{{ headRight }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- IDLE -->
+          <sc-if value="{{ isIdle }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:26px 18px 22px;text-align:center;animation:ct_rise .3s ease both;">
+            <div style="width:46px;height:46px;border-radius:14px;margin:0 auto 12px;background:var(--surface-sunken);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.8"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/></svg>
+            </div>
+            <div style="font-family:var(--display);font-weight:700;font-size:15px;color:var(--text-strong);">{{ t.idleTitle }}</div>
+            <div style="font-size:12.5px;color:var(--text-muted);line-height:1.5;margin-top:6px;">{{ t.idleBody }}</div>
+            <div style="margin-top:14px;font-family:var(--mono);font-size:10.5px;color:var(--text-muted);padding:8px 12px;border-radius:9px;background:var(--surface-sunken);border:1px solid var(--border);display:inline-block;">{{ t.idleSync }}</div>
+          </div>
+          </sc-if>
+
+          <!-- WATCHING -->
+          <sc-if value="{{ isWatching }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:17px 18px 20px;animation:ct_rise .3s ease both;">
+            <div style="font-size:12.5px;color:var(--text);line-height:1.5;margin-bottom:13px;">{{ t.watchBody }}</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <sc-for list="{{ watchList }}" as="w" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:11px;background:var(--surface-sunken);border:1px solid var(--border);">
+                  <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 7px var(--accent);animation:ct_blink 1.6s infinite;"></span>
+                  <span style="flex:1;font-size:12.5px;color:var(--text);">{{ w.label }}</span>
+                  <span style="font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--text-strong);">{{ w.val }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:13px;font-size:11px;color:var(--text-muted);"><span style="display:inline-flex;width:15px;height:15px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.5"/></svg></span>{{ t.watchNote }}</div>
+          </div>
+          </sc-if>
+
+          <!-- WORKING -->
+          <sc-if value="{{ isWorking }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:15px 18px 20px;animation:ct_rise .3s ease both;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:8px 11px;border-radius:10px;background:var(--accent-text);background:linear-gradient(90deg,var(--success-bg),transparent);border:1px solid var(--success-line);">
+              <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);animation:ct_blink 1.2s infinite;"></span>
+              <span style="font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-text);">{{ t.workingNow }}</span>
+              <span style="margin-left:auto;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text-strong);">{{ chainPct }}</span>
+            </div>
+            <!-- step rail -->
+            <div style="display:flex;flex-direction:column;gap:2px;margin-bottom:14px;">
+              <sc-for list="{{ steps }}" as="st" hint-placeholder-count="5">
+                <div style="display:flex;align-items:flex-start;gap:11px;padding:8px 4px;opacity:{{ st.opacity }};transition:opacity .25s;">
+                  <span style="display:flex;flex-direction:column;align-items:center;flex:0 0 18px;">
+                    <span style="width:18px;height:18px;border-radius:50%;border:2px solid {{ st.ring }};background:{{ st.fill }};display:flex;align-items:center;justify-content:center;animation:{{ st.anim }};">{{ st.glyph }}</span>
+                    <sc-if value="{{ st.connector }}" hint-placeholder-val="{{ true }}"><span style="width:2px;height:14px;background:var(--border-strong);margin-top:1px;"></span></sc-if>
+                  </span>
+                  <span style="flex:1;min-width:0;padding-top:1px;">
+                    <span style="display:block;font-size:12.5px;font-weight:{{ st.weight }};color:{{ st.textColor }};">{{ st.label }}</span>
+                    <sc-if value="{{ st.showSub }}" hint-placeholder-val="{{ false }}"><span style="display:block;font-family:var(--mono);font-size:10.5px;color:var(--accent-text);margin-top:1px;">{{ st.sub }}</span></sc-if>
+                  </span>
+                  <span style="font-family:var(--mono);font-size:10px;color:var(--text-muted);padding-top:2px;">{{ st.crew }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <!-- confidence meter -->
+            <div style="padding:12px 14px;border-radius:12px;background:var(--surface-sunken);border:1px solid var(--border);">
+              <div style="display:flex;align-items:baseline;gap:7px;">
+                <span style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);">{{ t.confidence }}</span>
+                <span style="margin-left:auto;font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text-strong);">{{ conf }}</span>
+                <span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);">/ {{ aim }} {{ t.aimWord }}</span>
+              </div>
+              <div style="height:7px;border-radius:99px;background:var(--border);margin-top:9px;overflow:hidden;">
+                <div style="height:100%;width:{{ confPct }};border-radius:99px;background:linear-gradient(90deg,var(--accent-solid),var(--accent));transition:width .5s cubic-bezier(.22,1,.36,1);"></div>
+              </div>
+              <div style="font-size:10.5px;color:var(--text-muted);margin-top:8px;line-height:1.45;">{{ t.confNote }}</div>
+            </div>
+          </div>
+          </sc-if>
+
+          <!-- PROPOSED -->
+          <sc-if value="{{ isProposed }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:16px 18px 20px;animation:ct_rise .3s ease both;">
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:12px;">{{ t.proposedIntro }}</div>
+            <div style="border:1px solid var(--accent-text);border-color:var(--accent);border-radius:14px;overflow:hidden;background:var(--surface-raised);">
+              <div style="padding:13px 15px;border-bottom:1px solid var(--border);">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.4"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg>
+                  <span style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text);">{{ t.proposedAction }}</span>
+                  <span style="margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--text-muted);">SHP-44310</span>
+                </div>
+                <div style="font-size:13.5px;font-weight:600;color:var(--text-strong);margin-top:8px;line-height:1.4;">{{ t.proposedTitle }}</div>
+                <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text-strong);margin-top:5px;letter-spacing:.02em;">8708.99.05</div>
+              </div>
+              <!-- confidence routing strip -->
+              <div style="padding:11px 13px;display:flex;gap:5px;">
+                <sc-for list="{{ routeLanes }}" as="r" hint-placeholder-count="3">
+                  <div style="flex:1;padding:8px 7px;border-radius:9px;background:{{ r.bg }};border:1px solid {{ r.line }};text-align:center;">
+                    <div style="font-size:8.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:{{ r.color }};line-height:1.2;">{{ r.label }}</div>
+                    <sc-if value="{{ r.active }}" hint-placeholder-val="{{ false }}"><div style="font-family:var(--mono);font-size:9px;color:{{ r.color }};margin-top:3px;">{{ r.tag }}</div></sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:14px;">
+              <button onClick="{{ toAwaiting }}" style="flex:1;height:44px;border:none;border-radius:12px;background:var(--accent-solid);color:#fff;font-family:var(--display);font-size:13px;font-weight:800;cursor:pointer;">{{ t.acceptBtn }}</button>
+              <button onClick="{{ toIdle }}" style="height:44px;padding:0 16px;border:1px solid var(--border-strong);border-radius:12px;background:var(--surface);color:var(--text);font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;">{{ t.dismissBtn }}</button>
+            </div>
+            <div style="text-align:center;font-size:10.5px;color:var(--text-muted);margin-top:10px;line-height:1.4;">{{ t.proposedNote }}</div>
+          </div>
+          </sc-if>
+
+          <!-- AWAITING-SIGNATURE -->
+          <sc-if value="{{ isAwaiting }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:16px 18px 20px;animation:ct_rise .3s ease both;">
+            <div style="display:flex;align-items:center;gap:10px;padding:13px 14px;border-radius:13px;background:var(--success-bg);border:1px solid var(--success-line);margin-bottom:13px;">
+              <span style="width:32px;height:32px;border-radius:10px;background:var(--success);display:flex;align-items:center;justify-content:center;flex:0 0 32px;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg></span>
+              <div><div style="font-family:var(--display);font-weight:800;font-size:14px;color:var(--text-strong);">{{ t.awaitTitle }}</div><div style="font-size:11.5px;color:var(--text-muted);margin-top:1px;">{{ t.awaitSub }}</div></div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:13px;overflow:hidden;">
+              <sc-for list="{{ gateRows }}" as="g" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--border);">
+                  <span style="flex:1;font-size:12px;color:var(--text-muted);">{{ g.label }}</span>
+                  <span style="font-family:{{ g.font }};font-size:12px;font-weight:700;color:{{ g.color }};">{{ g.val }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <a href="CRUZ%20Approval%20Gate.dc.html" style="display:flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;width:100%;margin-top:14px;height:48px;border-radius:13px;background:var(--accent-solid);color:#fff;font-family:var(--display);font-size:14px;font-weight:800;">{{ t.openGate }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <div style="text-align:center;font-size:10.5px;color:var(--text-muted);margin-top:9px;line-height:1.45;">{{ t.awaitNote }}</div>
+          </div>
+          </sc-if>
+
+          <!-- SHADOW -->
+          <sc-if value="{{ isShadow }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:16px 18px 20px;animation:ct_rise .3s ease both;">
+            <div style="display:flex;align-items:center;gap:9px;padding:11px 13px;border-radius:12px;background:var(--violet-bg);border:1px dashed var(--violet-line);margin-bottom:13px;">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="2.5"/></svg>
+              <div><div style="font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--violet);">{{ t.shadowTitle }}</div><div style="font-size:11.5px;color:var(--text-muted);margin-top:1px;">{{ t.shadowSub }}</div></div>
+            </div>
+            <div style="font-size:12px;color:var(--text);line-height:1.5;margin-bottom:11px;">{{ t.shadowBody }}</div>
+            <div style="border:1px dashed var(--violet-line);border-radius:13px;padding:13px 14px;background:var(--surface-sunken);">
+              <div style="font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--violet);margin-bottom:7px;">{{ t.shadowWould }}</div>
+              <div style="font-size:12.5px;color:var(--text-strong);font-weight:600;line-height:1.4;">{{ t.shadowProposal }}</div>
+              <div style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:6px;">8708.99.05 · {{ t.shadowConf }} 96</div>
+            </div>
+            <div style="text-align:center;font-size:10.5px;color:var(--text-muted);margin-top:12px;line-height:1.45;">{{ t.shadowNote }}</div>
+          </div>
+          </sc-if>
+
+        </div>
+        <!-- embed hint -->
+        <div style="margin-top:11px;font-size:10.5px;color:var(--text-muted);line-height:1.5;font-family:var(--mono);">{{ t.embedNote }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1040,&quot;height&quot;:760},&quot;register&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;terminal&quot;,&quot;almanac&quot;],&quot;default&quot;:&quot;terminal&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;es&quot;,&quot;en&quot;],&quot;default&quot;:&quot;es&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;state&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;idle&quot;,&quot;watching&quot;,&quot;working&quot;,&quot;proposed&quot;,&quot;awaiting&quot;,&quot;shadow&quot;],&quot;default&quot;:&quot;working&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { register:'terminal', lang:'es', view:'working', step:0, conf:71, elapsed:0 };
+  componentDidMount(){
+    try{ const l=localStorage.getItem('cruz.lang'); if(l)this.setState({lang:l}); }catch(e){}
+    if(this.props.register) this.setState({register:this.props.register});
+    if(this.props.state) this.setState({view:this.props.state});
+    this._tick=setInterval(()=>this._advance(),750);
+  }
+  componentWillUnmount(){ clearInterval(this._tick); }
+  _advance(){
+    if(this.state.view!=='working') return;
+    this.setState(s=>{
+      const maxStep=4;
+      const step=Math.min(s.step+1,maxStep);
+      const targetConf=[71,79,86,92,97][step];
+      const conf=Math.min(s.conf + (s.conf<targetConf?Math.ceil((targetConf-s.conf)/2):0), targetConf);
+      const elapsed=step<maxStep||s.conf<97 ? +(s.elapsed+0.7).toFixed(1) : s.elapsed;
+      return {step, conf, elapsed};
+    });
+  }
+  pick=(v)=>{ if(v==='working'){ this.setState({view:v,step:0,conf:71,elapsed:0}); } else { this.setState({view:v}); } };
+  setTerminal=()=>this.setState({register:'terminal'});
+  setAlmanac=()=>this.setState({register:'almanac'});
+  setEs=()=>{ try{localStorage.setItem('cruz.lang','es');}catch(e){} this.setState({lang:'es'}); };
+  setEn=()=>{ try{localStorage.setItem('cruz.lang','en');}catch(e){} this.setState({lang:'en'}); };
+
+  renderVals(){
+    const es=this.state.lang!=='en'; const A=(en,e)=>es?e:en;
+    const reg=this.state.register, v=this.state.view;
+    const seg=(on)=>({bg:on?'var(--surface)':'transparent', color:on?'var(--accent-text)':'var(--text-muted)'});
+    const tm=seg(reg==='terminal'), al=seg(reg==='almanac'), e=seg(es), n=seg(!es);
+
+    const stateMeta={
+      idle:{label:'IDLE', dot:'var(--text-muted)', note:A('Standing by. Nothing needs you.','En espera. Nada te necesita.'), color:'var(--text-muted)'},
+      watching:{label:'WATCHING', dot:'var(--accent)', note:A('Eyes on the corridor, no action yet.','Vigilando el corredor, sin actuar aún.'), color:'var(--accent-text)'},
+      working:{label:'WORKING', dot:'var(--accent)', note:A('Reasoning on one load, live.','Razonando sobre una carga, en vivo.'), color:'var(--accent-text)'},
+      proposed:{label:'PROPOSED', dot:'var(--warning)', note:A('An action on the exact object.','Una acción sobre el objeto exacto.'), color:'var(--warning)'},
+      awaiting:{label:'AWAITING-SIGNATURE', dot:'var(--success)', note:A('Held at the human gate.','Detenido en la firma humana.'), color:'var(--success)'},
+      shadow:{label:'SHADOW', dot:'var(--violet)', note:A('Watching, deliberately not acting.','Observa, deliberadamente sin actuar.'), color:'var(--violet)'},
+    };
+    const order=['idle','watching','working','proposed','awaiting','shadow'];
+    const states=order.map(k=>{ const m=stateMeta[k], on=v===k; return {
+      label:m.label, note:m.note, dot:m.dot, active:on?true:'', pick:()=>this.pick(k),
+      bg:on?'var(--surface)':'var(--surface-sunken)', border:on?'var(--accent)':'var(--border)',
+      dotAnim: (k==='working'||k==='watching')?'ct_blink 1.5s infinite':'none',
+    };});
+
+    // working step rail
+    const stepDefs=[
+      [A('Read source documents','Leer documentos fuente'), A('COVE · invoice · packing list · B/L','COVE · factura · lista · B/L'), 'DOC'],
+      [A('Cross-reference TIGIE + history','Cruzar TIGIE + historial'), A('142 comparable entries','142 entradas comparables'), 'CUM'],
+      [A('Assign tariff fracción','Asignar fracción'), '8708.99.05 · NICO 00', 'CLA'],
+      [A('Score confidence','Calcular confianza'), A('value + origin + risk','valor + origen + riesgo'), 'VAL'],
+      [A('Hold at the signature','Detener en la firma'), A('the broker’s pen','la pluma del agente'), 'GATE'],
+    ];
+    const cur=this.state.step;
+    const checkGlyph=React.createElement('svg',{width:10,height:10,viewBox:'0 0 24 24',fill:'none',stroke:'#fff',strokeWidth:3.4},React.createElement('path',{d:'M20 6L9 17l-5-5'}));
+    const steps=stepDefs.map((d,i)=>{
+      const done=i<cur, active=i===cur, lastHold=(i===4&&active);
+      return {
+        label:d[0], sub:d[1], crew:d[2],
+        connector: i<4?true:'',
+        opacity: (done||active)?'1':'.42',
+        ring: done?'var(--success)':active?'var(--accent)':'var(--border-strong)',
+        fill: done?'var(--success)':active?'var(--accent-bg, transparent)':'transparent',
+        glyph: done?checkGlyph:'',
+        anim: lastHold?'ct_breathe 1.6s ease-in-out infinite':'none',
+        weight: active?'700':'500',
+        textColor: (done||active)?'var(--text-strong)':'var(--text-muted)',
+        showSub: active?true:'',
+      };
+    });
+    const aim=99;
+    const confPct=Math.round(this.state.conf/aim*100)+'%';
+    const chainPct=Math.min(Math.round(cur/4*100),100)+'%';
+
+    const watchList=[
+      {label:A('Classification confidence','Confianza de clasificación'), val:'94–99'},
+      {label:A('T-MEC qualification','Calificación T-MEC'), val:A('tracking','rastreando')},
+      {label:A('Inspection risk · Laredo','Riesgo de revisión · Laredo'), val:A('low','bajo')},
+    ];
+    const routeLanes=[
+      {label:A('Auto-cleared','Auto-despacho'), tag:'', active:false, bg:'var(--surface-sunken)', line:'var(--border)', color:'var(--text-muted)'},
+      {label:A('Your signature','Tu firma'), tag:'97/99', active:true, bg:'var(--success-bg)', line:'var(--success-line)', color:'var(--success)'},
+      {label:A('Escalated','Escalado'), tag:'', active:false, bg:'var(--surface-sunken)', line:'var(--border)', color:'var(--text-muted)'},
+    ];
+    const gateRows=[
+      {label:A('Pedimento','Pedimento'), val:'26 24 3596 6500441', font:'var(--mono)', color:'var(--text-strong)'},
+      {label:A('Semáforo','Semáforo'), val:A('Verde','Verde'), font:'var(--sans)', color:'var(--success)'},
+      {label:A('Declared value','Valor declarado'), val:'USD 41,040', font:'var(--mono)', color:'var(--text-strong)'},
+      {label:A('Duties (MXN)','Contribuciones (MXN)'), val:'MXN 119,353', font:'var(--mono)', color:'var(--text-strong)'},
+    ];
+
+    const headRightMap={
+      idle:A('idle','en espera'), watching:A('12 watched','12 vigiladas'),
+      working:this.state.elapsed.toFixed(1)+'s', proposed:A('1 ready','1 lista'),
+      awaiting:A('your pen','tu pluma'), shadow:A('no action','sin acción'),
+    };
+
+    const t={
+      registerLabel: reg==='terminal'?A('Terminal · operator + broker','Terminal · operador + agente'):A('Almanac · client','Almanac · cliente'),
+      eyebrow:A('The agentic through-line · one docked copilot, six formal states','El hilo agente · un copiloto acoplado, seis estados formales'),
+      title:A('Every surface shows the same copilot, in one visible state.','Cada superficie muestra el mismo copiloto, en un estado visible.'),
+      sub:A('It is page-aware, it acts on the exact object, and you can watch it reason — read, cross-reference, classify, score, then hold at the signature. Confidence is always visible and routes the work.','Conoce la página, actúa sobre el objeto exacto y puedes verlo razonar — leer, cruzar, clasificar, calificar y detenerse en la firma. La confianza siempre es visible y enruta el trabajo.'),
+      statesLabel:A('The state machine','La máquina de estados'),
+      dockLabel:A('Docked panel · 372px','Panel acoplado · 372px'),
+      lawNote:A('The trust loop: CRUZ proposes, the human authorizes. Nothing files, pays, or emails on its own — filing the pedimento is always the broker’s pen.','El ciclo de confianza: CRUZ propone, el humano autoriza. Nada se presenta, paga ni envía solo — presentar el pedimento es siempre la pluma del agente.'),
+      idleTitle:A('All quiet','Todo en calma'),
+      idleBody:A('CRUZ is monitoring 6 corridors. The moment something needs a human, this dock wakes.','CRUZ vigila 6 corredores. En cuanto algo necesite un humano, este panel despierta.'),
+      idleSync:A('last sync · 14:02 CST','última sinc. · 14:02 CST'),
+      watchBody:A('Watching SHP-44310 and 11 more loads. No proposal yet — only the live signals that would trigger one.','Vigilando SHP-44310 y 11 cargas más. Sin propuesta aún — solo las señales en vivo que dispararían una.'),
+      watchNote:A('Will surface a proposal the instant a threshold is crossed.','Mostrará una propuesta en cuanto se cruce un umbral.'),
+      workingNow:A('CRUZ is working','CRUZ está trabajando'),
+      confidence:A('Confidence','Confianza'),
+      aimWord:A('aim','meta'),
+      confNote:A('Honest denominator — climbs as evidence accrues, aims ≥99, never capped to a round number.','Denominador honesto — sube conforme llega evidencia, apunta a ≥99, nunca forzado a un número redondo.'),
+      proposedIntro:A('CRUZ finished reasoning and has one action for the exact object you’re looking at.','CRUZ terminó de razonar y tiene una acción para el objeto exacto que ves.'),
+      proposedAction:A('Proposed action','Acción propuesta'),
+      proposedTitle:A('Classify auto-parts line as fracción 8708.99.05 and draft the pedimento.','Clasificar la partida de autopartes como fracción 8708.99.05 y generar el pedimento.'),
+      acceptBtn:A('Accept → route to signature','Aceptar → enrutar a firma'),
+      dismissBtn:A('Dismiss','Descartar'),
+      proposedNote:A('High confidence routes to your one-tap signature. Low confidence escalates to the broker.','Alta confianza enruta a tu firma de un toque. Baja confianza escala al agente.'),
+      awaitTitle:A('Ready for your signature','Listo para tu firma'),
+      awaitSub:A('The labor is done. The pen is yours.','La labor está hecha. La pluma es tuya.'),
+      openGate:A('Open the signature gate','Abrir la firma'),
+      awaitNote:A('Nothing transmits until you sign — then a 5-second cancel with a live countdown.','Nada se transmite hasta que firmes — luego 5 segundos para cancelar con cuenta regresiva en vivo.'),
+      shadowTitle:A('Shadow mode','Modo sombra'),
+      shadowSub:A('Watching, not acting','Observa, no actúa'),
+      shadowBody:A('On a new workflow CRUZ runs in shadow — it reasons in full but proposes nothing live, so you can measure it before you trust it.','En un flujo nuevo CRUZ corre en sombra — razona por completo pero no propone nada en vivo, para que lo midas antes de confiar.'),
+      shadowWould:A('What it would propose','Lo que propondría'),
+      shadowProposal:A('Classify as fracción 8708.99.05 — matches 142 comparable entries.','Clasificar como fracción 8708.99.05 — coincide con 142 entradas comparables.'),
+      shadowConf:A('confidence','confianza'),
+      shadowNote:A('Nothing here reaches the operator or the broker. Shadow is for proving accuracy, honestly.','Nada de esto llega al operador ni al agente. La sombra prueba la precisión, con honestidad.'),
+      embedNote:A('// embedded by every surface via <dc-import name="CRUZ Copilot Trace">','// incrustado por cada superficie con <dc-import name="CRUZ Copilot Trace">'),
+    };
+
+    return {
+      register:reg, termBg:tm.bg,termColor:tm.color, almBg:al.bg,almColor:al.color, esBg:e.bg,esColor:e.color, enBg:n.bg,enColor:n.color,
+      setTerminal:this.setTerminal,setAlmanac:this.setAlmanac,setEs:this.setEs,setEn:this.setEn,
+      t, states,
+      isIdle:v==='idle', isWatching:v==='watching', isWorking:v==='working', isProposed:v==='proposed', isAwaiting:v==='awaiting', isShadow:v==='shadow',
+      stateLabel:stateMeta[v].label, stateDot:stateMeta[v].dot, stateColor:stateMeta[v].color,
+      stateDotAnim:(v==='working'||v==='watching')?'ct_blink 1.4s infinite':'none',
+      orbAnim:v==='working'?'ct_breathe 2.2s ease-in-out infinite':'none',
+      orbPulse:(v==='working'||v==='watching')?true:'',
+      headRight:headRightMap[v],
+      panelBorder: v==='shadow'?'1.5px dashed var(--violet-line)':'1px solid var(--border)',
+      steps, conf:this.state.conf, aim, confPct, chainPct,
+      watchList, routeLanes, gateRows,
+      toAwaiting:()=>this.pick('awaiting'), toIdle:()=>this.pick('idle'),
+    };
+  }
+}
+</script>
+</body>
+</html>
