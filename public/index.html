@@ -157,7 +157,7 @@
 
   <!-- Embarque detail drawer -->
   <div class="scrim" id="scrim"></div>
-  <aside class="drawer" id="drawer" aria-hidden="true"></aside>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" tabindex="-1" aria-hidden="true"></aside>
 
   <!-- Persistent CRUZ Copilot -->
   <button class="co-pill" id="co-pill" aria-label="CRUZ Copilot">
@@ -165,10 +165,10 @@
     <span><span class="who">CRUZ</span><span class="st" id="co-pill-st"><b>Vigilando</b> · 14 embarques</span></span>
   </button>
   <div class="co-scrim" id="co-scrim"></div>
-  <aside class="co-drawer" id="co-drawer" aria-hidden="true"></aside>
+  <aside class="co-drawer" id="co-drawer" role="dialog" aria-modal="true" aria-label="CRUZ Copilot" tabindex="-1" aria-hidden="true"></aside>
 
   <!-- Signature gate -->
-  <div class="gate-scrim" id="gate-scrim"><div class="gate" id="gate"></div></div>
+  <div class="gate-scrim" id="gate-scrim"><div class="gate" id="gate" role="dialog" aria-modal="true" tabindex="-1"></div></div>
 
   <!-- Undo toast -->
   <div class="toast" id="toast">

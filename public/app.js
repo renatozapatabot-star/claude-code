@@ -125,6 +125,28 @@ async function api(path) {
   return r.json();
 }
 
+/* ---- Modal focus management (trap + restore) ------------------------------ */
+let _lastFocus = null;
+const FOCUS_SEL = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+function focusables(panel) { return [...panel.querySelectorAll(FOCUS_SEL)].filter((el) => el.offsetParent !== null); }
+function trapFocus(panel) {
+  _lastFocus = document.activeElement;
+  const f = focusables(panel);
+  (f[0] || panel).focus();
+  panel._trap = (e) => {
+    if (e.key !== 'Tab') return;
+    const items = focusables(panel); if (!items.length) return;
+    const first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  };
+  panel.addEventListener('keydown', panel._trap);
+}
+function releaseFocus(panel) {
+  if (panel && panel._trap) { panel.removeEventListener('keydown', panel._trap); panel._trap = null; }
+  if (_lastFocus && _lastFocus.focus) { try { _lastFocus.focus(); } catch {} _lastFocus = null; }
+}
+
 /* ---- Boot ----------------------------------------------------------------- */
 async function boot() {
   paintSkeletons();
@@ -304,11 +326,11 @@ function openGate(d) {
       <button class="btn btn-ghost" id="gate-cancel" style="justify-content:center">${t('cancelar')}</button>
       <div class="gate-note">${t('gateNote')}</div>
     </div>`;
-  $('#gate-scrim').classList.add('open');
+  $('#gate-scrim').classList.add('open'); trapFocus($('#gate'));
   $('#gate-sign').addEventListener('click', () => { closeGate(); signDecision(d); });
   $('#gate-cancel').addEventListener('click', closeGate);
 }
-function closeGate() { $('#gate-scrim').classList.remove('open'); }
+function closeGate() { $('#gate-scrim').classList.remove('open'); releaseFocus($('#gate')); }
 function wireGate() { $('#gate-scrim').addEventListener('click', (e) => { if (e.target.id === 'gate-scrim') closeGate(); }); }
 
 function signDecision(d) {
@@ -450,14 +472,14 @@ async function openDrawer(id) {
         <div><div class="k">${t('dr_eta')}</div><div class="v">${fmtEta(e.eta)}</div></div>
       </div>
     </div>`;
-  d.setAttribute('aria-hidden', 'false'); d.classList.add('open'); $('#scrim').classList.add('open');
+  d.setAttribute('aria-hidden', 'false'); d.classList.add('open'); $('#scrim').classList.add('open'); trapFocus(d);
   $('#drawer-x').addEventListener('click', closeDrawer);
 }
 function tlStep(s) {
   const icon = s.state === 'done' ? '<svg><use href="#i-check"/></svg>' : s.state === 'blocked' ? '<svg><use href="#i-x"/></svg>' : '';
   return `<div class="tl-step ${s.state}"><div class="tl-node">${icon}</div><div><div class="tl-lab">${esc(s.label)}</div>${s.at ? `<div class="tl-time">${fmtEta(s.at)}</div>` : ''}</div></div>`;
 }
-function closeDrawer() { $('#drawer').classList.remove('open'); $('#drawer').setAttribute('aria-hidden', 'true'); $('#scrim').classList.remove('open'); }
+function closeDrawer() { $('#drawer').classList.remove('open'); $('#drawer').setAttribute('aria-hidden', 'true'); $('#scrim').classList.remove('open'); releaseFocus($('#drawer')); }
 function wireDrawer() { $('#scrim').addEventListener('click', closeDrawer); }
 function fmtEta(iso) { try { return new Date(iso).toLocaleString(LANG === 'es' ? 'es-MX' : 'en-US', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch { return iso; } }
 
@@ -507,7 +529,7 @@ function renderCopilot() {
 
   // wire drawer internals
   $('#co-x').addEventListener('click', closeCopilot);
-  $$('#co-drawer .assist button').forEach((b) => b.addEventListener('click', () => { state.assist = b.dataset.assist; renderCopilot(); openCopilot(); }));
+  $$('#co-drawer .assist button').forEach((b) => b.addEventListener('click', () => { state.assist = b.dataset.assist; renderCopilot(); }));
   $$('#co-drawer .states button').forEach((b) => b.addEventListener('click', () => { $$('#co-drawer .states button').forEach((x) => x.classList.toggle('on', x === b)); }));
   $$('#co-drawer .co-prop').forEach((b) => b.addEventListener('click', () => {
     state.ledger.unshift({ id: 'L-' + Date.now(), texto: b.dataset.prop, meta: t('coReady') });
@@ -520,8 +542,8 @@ function renderCopilot() {
   });
 }
 function ledHtml(l) { return `<div class="led"><span class="ck"><svg><use href="#i-check"/></svg></span><div>${esc(l.texto)}<div class="m">${esc(l.meta)}</div></div></div>`; }
-function openCopilot() { $('#co-drawer').classList.add('open'); $('#co-drawer').setAttribute('aria-hidden', 'false'); $('#co-scrim').classList.add('open'); }
-function closeCopilot() { $('#co-drawer').classList.remove('open'); $('#co-drawer').setAttribute('aria-hidden', 'true'); $('#co-scrim').classList.remove('open'); }
+function openCopilot() { $('#co-drawer').classList.add('open'); $('#co-drawer').setAttribute('aria-hidden', 'false'); $('#co-scrim').classList.add('open'); trapFocus($('#co-drawer')); }
+function closeCopilot() { $('#co-drawer').classList.remove('open'); $('#co-drawer').setAttribute('aria-hidden', 'true'); $('#co-scrim').classList.remove('open'); releaseFocus($('#co-drawer')); }
 function wireCopilot() {
   $('#co-pill').addEventListener('click', openCopilot);
   $('#co-scrim').addEventListener('click', closeCopilot);
@@ -617,7 +639,7 @@ async function openPedimento(num) {
       ${p.estado === 'preparado' ? `<button class="btn btn-primary" id="ped-sign" style="width:100%;justify-content:center;height:46px;margin-top:var(--sp-4)"><svg class="ico"><use href="#i-stamp"/></svg>${t('p_transmit')}</button>
       <div class="gate-note" style="margin-top:8px">${t('gateNote')}</div>` : ''}
     </div>`;
-  d.setAttribute('aria-hidden', 'false'); d.classList.add('open'); $('#scrim').classList.add('open');
+  d.setAttribute('aria-hidden', 'false'); d.classList.add('open'); $('#scrim').classList.add('open'); trapFocus(d);
   $('#drawer-x').addEventListener('click', closeDrawer);
   const sign = $('#ped-sign');
   if (sign) sign.addEventListener('click', () => {
@@ -743,7 +765,7 @@ function openCliente(name) {
         <div><div class="k">${t('cli_valorMes')}</div><div class="v">${fmtUsd(c.valorMesUsd)} <span style="color:var(--ink-3)">USD</span></div></div>
       </div>
     </div>`;
-  d.setAttribute('aria-hidden', 'false'); d.classList.add('open'); $('#scrim').classList.add('open');
+  d.setAttribute('aria-hidden', 'false'); d.classList.add('open'); $('#scrim').classList.add('open'); trapFocus(d);
   $('#drawer-x').addEventListener('click', closeDrawer);
 }
 function fmtDate(iso) { try { return new Date(iso).toLocaleDateString(LANG === 'es' ? 'es-MX' : 'en-US', { day: '2-digit', month: 'short', year: 'numeric' }); } catch { return iso; } }

@@ -5,6 +5,34 @@ appends here every run.
 
 ---
 
+## 2026-06-30 · Slice 006 — Red globe (founder call) + modal focus management
+
+**Surface audited:** the Login globe and all modal panels (drawer, gate, copilot).
+**User + action:** founder call — make the globe strictly white+red; and a keyboard/screen-reader user
+opening any panel must land inside it, stay trapped while it's open, and return to where they were.
+
+**Changes made**
+- **Globe tinted red/ember** (`public/globe.js`): retinted the full palette — land/ocean dots, atmosphere,
+  sphere gradient, specular, halo, rim, and all corridor/world arcs + comets — from cyan/teal into the
+  CRUZ red family. The US–MX crossing flares brightest. Offline-first dot-globe, console-clean.
+- **Modal focus management** (`public/app.js` + dialog semantics in `index.html`): drawer / signature gate /
+  copilot now `role="dialog" aria-modal="true"`; opening moves focus inside, **traps Tab** (wraps first↔last),
+  and closing **restores focus** to the trigger. Fixed the copilot assist toggle to re-render in place.
+
+**Screenshot / browser verification:** `node scripts/verify.mjs` → 17 shots desktop + 375px (login globe
+confirmed red). **VERIFY: CLEAN** — 0 console errors, 0 overflow.
+
+**Commands run:** `node --check public/{app.js,globe.js}`, `node scripts/verify.mjs`.
+
+**Proven vs subjective**
+- *Proven:* globe renders red without console errors; focus enters/traps/restores across all three modals.
+- *Subjective:* exact red warmth of the globe; a few deep-background world arcs are subtle.
+
+**Next smallest design move:** deepen Pedimento (classify reasoning + citations) · mobile field mode · the
+nightly 06:01 loop carries these with the critic gate.
+
+---
+
 ## 2026-06-30 · Slice 005 — 100/100 critic gate (a11y · bilingual · robustness)
 
 **Surface audited:** the whole product, via an **adversarial critic workflow** — 4 parallel `Explore`
