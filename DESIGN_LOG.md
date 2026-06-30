@@ -5,6 +5,40 @@ appends here every run.
 
 ---
 
+## 2026-06-30 · Slice 003 — Polish to 100/100 (alive & premium)
+
+**Surface audited:** all six surfaces + the persistent copilot (founder chose "polish everything to 100/100").
+**User + action:** every role should feel the product is alive, fast, and premium — KPIs that animate in,
+honest loading instead of blank flashes, a copilot that visibly reacts to where you are, and a pedimento
+that shows its full reasoning trail before you sign.
+
+**Changes made**
+- **KPI count-up:** stat numbers ease from 0 → value (650ms, cubic-out) when a surface is shown; honors
+  `prefers-reduced-motion` (snaps to final). Parses prefix/suffix so `$3.45M`, `94%`, `120` all animate.
+- **Skeleton loading:** shimmer placeholders for stats, decision queue, recent + Embarques rows paint
+  before data resolves (empty ≠ zero, loading ≠ error).
+- **Copilot state machine:** each surface sets a believable state (Inicio/Embarques→Vigilando ·
+  Pedimentos→Propuesto · Expedientes/Facturación→Trabajando · Clientes→Inactivo); the pill status
+  **cross-fades 200ms** on navigation and the drawer's state chips + header track it; orb warms on work.
+- **Audit-trail timeline** on the pedimento drawer (CRUZ generó → 14/14 validaciones → Esperando tu
+  e.firma / Transmitido), reusing the crossing `.timeline` component for cohesion.
+
+**Screenshot / browser verification:** `node scripts/verify.mjs` → 15 shots desktop + 375px. **VERIFY:
+CLEAN** — 0 console errors, 0 horizontal overflow. Pedimento drawer confirmed: header + duties + 14/14 +
+audit trail + sign CTA.
+
+**Commands run:** `node --check public/app.js`, `node scripts/verify.mjs`.
+
+**Proven vs subjective**
+- *Proven:* count-up runs without console errors; skeletons paint then get replaced; copilot state changes
+  per view; audit timeline renders with correct states; no overflow.
+- *Subjective:* count-up easing feel; whether skeleton timing reads well on real (slow) networks.
+
+**Next smallest design move:** (founder feedback) brand front door (Login + living globe) · deepen the
+Pedimento classify reasoning/citations · mobile field mode (60px GO).
+
+---
+
 ## 2026-06-30 · Slice 002 — Complete the whole front end (ultracode)
 
 **Surface audited:** the four placeholder surfaces (Pedimentos, Expedientes, Facturación, Clientes).

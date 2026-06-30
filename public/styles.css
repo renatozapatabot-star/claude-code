@@ -586,8 +586,26 @@ tbody tr:hover { background: var(--hover); }
   .dec-cta { width: 100%; }
 }
 
+/* Skeleton shimmer — honest loading state (empty != zero, loading != error) */
+.skel { position: relative; overflow: hidden; background: var(--surface-2); border-radius: 6px; color: transparent !important; }
+.skel::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--hover) 80%, #fff) 50%, transparent);
+  animation: shimmer 1.3s var(--ease) infinite; }
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+.skel-stat { height: 92px; border: 1px solid var(--line); border-radius: var(--r-lg); }
+.skel-row { height: 46px; border-bottom: 1px solid var(--line); }
+.skel-line { height: 12px; border-radius: 4px; }
+
+/* Copilot status cross-fade (state machine transitions) */
+#co-pill-st, .co-head .st { transition: opacity .2s var(--ease); }
+.co-faded { opacity: 0 !important; }
+.co-pill .orb.st-work { background: radial-gradient(circle at 35% 32%, #ff9a6e, var(--cruz) 60%, var(--cruz-press)); }
+
+/* KPI count-up uses JS only; no layout shift (tabular-nums already on .stat .v) */
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
   .orb::after { display: none; }
+  .skel::after { animation: none; }
 }

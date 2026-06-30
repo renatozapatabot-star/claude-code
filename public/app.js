@@ -56,7 +56,8 @@ const DICT = {
     ped_preparados: 'Listos para firma', ped_transmitidos: 'Transmitidos al SAT', ped_dutiesK: 'Contribuciones · Mes',
     ped_clave: 'Clave', ped_regimen: 'Régimen', ped_validaciones: 'Validaciones', ped_estado: 'Estado',
     ped_duties: 'Contribuciones MXN', ped_preparado: 'Listo para firma', ped_transmitido: 'Transmitido',
-    p_entryHeader: 'Encabezado del pedimento', p_duties: 'Contribuciones e impuestos', p_validation: 'Validación',
+    p_entryHeader: 'Encabezado del pedimento', p_duties: 'Contribuciones e impuestos', p_validation: 'Validación', p_audit: 'Rastro de auditoría',
+    au_gen: 'CRUZ generó el pedimento', au_val: '14/14 validaciones SAT aprobadas', au_wait: 'Esperando tu e.firma', au_sent: 'Transmitido al SAT',
     p_transmit: 'Firmar y transmitir al SAT', ped_valorAduana: 'Valor aduana', ped_igi: 'IGI', ped_dta: 'DTA', ped_iva: 'IVA', ped_total: 'Total',
     ped_satOk: 'validaciones SAT aprobadas', ped_mercancia: 'Mercancía', ped_satToast: 'Transmitido al SAT · tú diste el juicio',
   },
@@ -101,7 +102,8 @@ const DICT = {
     ped_preparados: 'Ready to sign', ped_transmitidos: 'Transmitted to SAT', ped_dutiesK: 'Duties · MTD',
     ped_clave: 'Code', ped_regimen: 'Regime', ped_validaciones: 'Validations', ped_estado: 'Status',
     ped_duties: 'Duties MXN', ped_preparado: 'Ready to sign', ped_transmitido: 'Transmitted',
-    p_entryHeader: 'Entry header', p_duties: 'Duties & taxes', p_validation: 'Validation',
+    p_entryHeader: 'Entry header', p_duties: 'Duties & taxes', p_validation: 'Validation', p_audit: 'Audit trail',
+    au_gen: 'CRUZ drafted the pedimento', au_val: '14/14 SAT validations passed', au_wait: 'Awaiting your e-signature', au_sent: 'Transmitted to SAT',
     p_transmit: 'Sign & transmit to SAT', ped_valorAduana: 'Customs value', ped_igi: 'IGI', ped_dta: 'DTA', ped_iva: 'IVA', ped_total: 'Total',
     ped_satOk: 'SAT validations passed', ped_mercancia: 'Goods', ped_satToast: 'Transmitted to SAT · you made the judgment',
   },
@@ -109,7 +111,7 @@ const DICT = {
 let LANG = (() => { try { return localStorage.getItem('cruz.lang') || 'es'; } catch { return 'es'; } })();
 const t = (k) => (DICT[LANG][k] ?? DICT.es[k] ?? k);
 
-const state = { embarques: [], summary: null, decisions: [], sources: [], copilot: null, pedimentos: [], pediSummary: null, expedientes: null, clientes: null, facturacion: null, filter: '', view: 'inicio', assist: 'sup', ledger: [] };
+const state = { embarques: [], summary: null, decisions: [], sources: [], copilot: null, pedimentos: [], pediSummary: null, expedientes: null, clientes: null, facturacion: null, filter: '', view: 'inicio', assist: 'sup', coState: 'watch', ledger: [] };
 let undoTimer = null;
 const fmtMxn = (n) => 'MXN ' + Math.round(n).toLocaleString('en-US');
 
@@ -121,6 +123,7 @@ async function api(path) {
 
 /* ---- Boot ----------------------------------------------------------------- */
 async function boot() {
+  paintSkeletons();
   try {
     const [emb, sum, dec, src, co, ped, exp, cli, fac] = await Promise.all([
       api('/api/embarques'), api('/api/summary'), api('/api/decisions'), api('/api/sources'), api('/api/copilot?view=inicio'),
@@ -134,6 +137,36 @@ async function boot() {
   applyI18n();
   renderNavCounts(); renderHome(); renderEmbarques(); renderPedimentos(); renderSurfaces(); renderCopilot();
   wireNav(); wireCommand(); wireMobile(); wireDrawer(); wireLang(); wireCopilot(); wireGate();
+  countUp($('#view-inicio'));
+}
+
+/* ---- Polish: skeleton loading + KPI count-up ------------------------------ */
+function paintSkeletons() {
+  const sk = (w) => `<span class="skel skel-line" style="display:inline-block;width:${w}"></span>`;
+  const statSk = `<div class="skel skel-stat"></div>`;
+  if ($('#home-stats')) $('#home-stats').innerHTML = statSk.repeat(3);
+  if ($('#queue-rows')) $('#queue-rows').innerHTML = `<div class="skel skel-row" style="margin:1px 0"></div>`.repeat(3);
+  if ($('#home-recent')) $('#home-recent').innerHTML = [0, 0, 0, 0, 0].map(() => `<tr><td>${sk('120px')}</td><td>${sk('40%')}</td><td>${sk('60%')}</td><td>${sk('70px')}</td></tr>`).join('');
+  if ($('#emb-rows')) $('#emb-rows').innerHTML = [0, 0, 0, 0, 0, 0].map(() => `<tr><td colspan="8" style="padding:0"><div class="skel skel-row"></div></td></tr>`).join('');
+}
+function countUp(scope) {
+  if (!scope) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  scope.querySelectorAll('.stat .v').forEach((el) => {
+    const node = el.childNodes[0];
+    if (!node || node.nodeType !== 3) return;
+    const m = node.nodeValue.match(/^(\D*)(-?[\d,]+(?:\.\d+)?)(.*)$/s);
+    if (!m) return;
+    const prefix = m[1], suffix = m[3];
+    const target = parseFloat(m[2].replace(/,/g, ''));
+    const dec = (m[2].split('.')[1] || '').length;
+    const set = (n) => { node.nodeValue = prefix + n.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suffix; };
+    if (reduce || isNaN(target)) { set(target); return; }
+    set(0);
+    const dur = 650; let start = null;
+    const step = (ts) => { if (start === null) start = ts; const p = Math.min((ts - start) / dur, 1); set(target * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); else set(target); };
+    requestAnimationFrame(step);
+  });
 }
 
 /* ---- i18n ----------------------------------------------------------------- */
@@ -152,12 +185,38 @@ function wireLang() {
 
 /* ---- Navigation ----------------------------------------------------------- */
 function wireNav() { $$('.nav-item').forEach((b) => b.addEventListener('click', () => go(b.dataset.view))); }
+// Copilot state machine: each surface puts the agent in a believable state.
+const VIEW_STATE = { inicio: 'watch', embarques: 'watch', pedimentos: 'prop', expedientes: 'work', facturacion: 'work', clientes: 'idle' };
 async function go(view) {
   state.view = view;
   $$('.nav-item').forEach((b) => b.classList.toggle('active', b.dataset.view === view));
   $$('.view').forEach((v) => v.classList.toggle('active', v.id === `view-${view}`));
   closeSidebar(); window.scrollTo(0, 0);
+  setCoState(VIEW_STATE[view] || 'watch');
+  countUp($(`#view-${view}`));
   try { state.copilot = await api('/api/copilot?view=' + encodeURIComponent(view)); renderCopilot(); } catch {}
+}
+
+// Cross-fade the copilot pill status when the state changes (200ms).
+const CO_STATE_KEY = { idle: 'states_idle', watch: 'states_watch', work: 'states_work', prop: 'states_prop', await: 'states_await', shadow: 'states_shadow' };
+function coStatusLine() {
+  const n = state.summary ? state.summary.total : 0;
+  switch (state.coState) {
+    case 'work': return `<b>${t('coWork')}</b> · ${t('states_work').toLowerCase()}`;
+    case 'prop': return `<b>${t('coProp')}</b> · ${state.pediSummary ? state.pediSummary.preparados : 0} ${t('ped_estado').toLowerCase()}`;
+    case 'idle': return `${t('states_idle')}`;
+    default: return `<b>${t('coWatch')}</b> · ${n} ${t('nShipLc')}`;
+  }
+}
+function setCoState(s) {
+  if (state.coState === s) return;
+  state.coState = s;
+  const st = $('#co-pill-st'); const orb = $('#co-pill .orb');
+  if (orb) orb.classList.toggle('st-work', s === 'work' || s === 'prop');
+  if (!st) return;
+  st.classList.add('co-faded');
+  setTimeout(() => { st.innerHTML = coStatusLine(); st.classList.remove('co-faded'); }, 200);
+  if ($('#co-drawer').classList.contains('open')) renderCopilot();
 }
 function renderNavCounts() {
   const s = state.summary; if (!s) return;
@@ -400,19 +459,19 @@ const STATES = ['idle', 'watch', 'work', 'prop', 'await', 'shadow'];
 function renderCopilot() {
   const co = state.copilot; if (!co) return;
   const ctx = co.context;
-  $('#co-pill-st').innerHTML = `<b>${t('coWatch')}</b> · ${state.summary ? state.summary.total : 0} ${t('nShipLc')}`;
+  $('#co-pill-st').innerHTML = coStatusLine();
   const noteKey = state.assist === 'co' ? 'note_co' : 'note_sup';
   $('#co-drawer').innerHTML = `
     <div class="co-head">
       <span class="orb"></span>
       <div style="flex:1">
         <div class="who">CRUZ <span class="mode">${state.assist === 'co' ? t('a_co') : t('a_sup')}</span></div>
-        <div class="st"><span class="dotlive"></span>${t('coWatch')} · ${esc(t('coSub'))}</div>
+        <div class="st"><span class="dotlive"></span>${t('states_' + state.coState)} · ${esc(t('coSub'))}</div>
       </div>
       <button class="iconbtn" id="co-x" aria-label="Cerrar"><svg><use href="#i-x"/></svg></button>
     </div>
     <div class="co-body">
-      <div class="states">${STATES.map((s, i) => `<button class="${i === 1 ? 'on' : ''}" data-st="${s}">${t('states_' + s)}</button>`).join('')}</div>
+      <div class="states">${STATES.map((s) => `<button class="${s === state.coState ? 'on' : ''}" data-st="${s}">${t('states_' + s)}</button>`).join('')}</div>
 
       <div class="assist-h"><svg style="width:13px;height:13px"><use href="#i-bolt"/></svg>${t('assist')}</div>
       <div class="assist">
@@ -499,6 +558,17 @@ function pediRow(p) {
     <td data-l="${t('ped_estado')}"><span class="cell-pill-wrap">${pediEstadoPill(p)}</span></td>
     <td class="r" data-l="${t('ped_duties')}"><span class="cell-val">${fmtMxn(p.totalMxn).replace('MXN ', '')}</span></td></tr>`;
 }
+function pediAudit(p) {
+  const base = new Date(p.eta).getTime();
+  const steps = [
+    { label: t('au_gen'), state: 'done', at: new Date(base - 3 * 36e5).toISOString() },
+    { label: t('au_val'), state: 'done', at: new Date(base - 2 * 36e5).toISOString() },
+  ];
+  steps.push(p.estado === 'transmitido'
+    ? { label: t('au_sent'), state: 'done', at: new Date(base - 1 * 36e5).toISOString() }
+    : { label: t('au_wait'), state: 'active', at: null });
+  return steps;
+}
 async function openPedimento(num) {
   let p = state.pedimentos.find((x) => x.numero === num);
   try { p = await api('/api/pedimentos/' + encodeURIComponent(num)); } catch {}
@@ -534,6 +604,8 @@ async function openPedimento(num) {
         <span class="ck" style="color:var(--ok)"><svg style="width:18px;height:18px"><use href="#i-check"/></svg></span>
         <div><b class="mono">${v.pasadas}/${v.total}</b> ${t('ped_satOk')}</div>
       </div>
+      <div class="section-h">${t('p_audit')}</div>
+      <div class="timeline">${pediAudit(p).map(tlStep).join('')}</div>
       ${p.estado === 'preparado' ? `<button class="btn btn-primary" id="ped-sign" style="width:100%;justify-content:center;height:46px;margin-top:var(--sp-4)"><svg class="ico"><use href="#i-stamp"/></svg>${t('p_transmit')}</button>
       <div class="gate-note" style="margin-top:8px">${t('gateNote')}</div>` : ''}
     </div>`;
