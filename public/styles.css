@@ -83,6 +83,10 @@ body {
 button { font: inherit; color: inherit; cursor: pointer; }
 a { color: inherit; text-decoration: none; }
 ::selection { background: var(--cruz-wash); color: var(--cruz-press); }
+
+/* Keyboard focus — visible, consistent, brand-colored; mouse clicks stay clean. */
+:focus-visible { outline: 2px solid var(--cruz); outline-offset: 2px; border-radius: 3px; }
+input:focus-visible { outline: none; } /* inputs already show the cruz ring via box-shadow */
 .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
 .num { font-variant-numeric: tabular-nums; }
 
@@ -259,6 +263,9 @@ a { color: inherit; text-decoration: none; }
 .stat .v { font-size: 27px; font-weight: 660; letter-spacing: -.02em; margin-top: 6px; font-variant-numeric: tabular-nums; }
 .stat .v small { font-size: 14px; color: var(--ink-3); font-weight: 500; }
 .stat.attn .v { color: var(--cruz); }
+.stat:hover { background: var(--hover); border-color: var(--line-strong); }
+.stat:active { transform: translateY(1px); }
+.dec[role="button"] { cursor: pointer; }
 
 .inicio-recent { margin-top: var(--sp-6); text-align: left; }
 .inicio-recent .h { font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-4); margin-bottom: var(--sp-2); padding-left: 2px; }
@@ -269,6 +276,7 @@ a { color: inherit; text-decoration: none; }
   padding: 3px 9px 3px 7px; border-radius: 999px; white-space: nowrap;
   background: var(--neutral-wash); color: var(--neutral);
 }
+.pill { font-weight: 600; } /* +contrast on washed backgrounds (WCAG AA) */
 .pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 .pill.ok { background: var(--ok-wash); color: var(--ok); }
 .pill.info { background: var(--info-wash); color: var(--info); }
@@ -608,4 +616,5 @@ tbody tr:hover { background: var(--hover); }
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
   .orb::after { display: none; }
   .skel::after { animation: none; }
+  .btn:active, .stat:active, .co-pill:hover, .btn:hover { transform: none; }
 }

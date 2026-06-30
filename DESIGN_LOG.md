@@ -5,6 +5,42 @@ appends here every run.
 
 ---
 
+## 2026-06-30 · Slice 005 — 100/100 critic gate (a11y · bilingual · robustness)
+
+**Surface audited:** the whole product, via an **adversarial critic workflow** — 4 parallel `Explore`
+reviewers (canon/cohesion · accessibility · clarity/honest-data · robustness) over the actual code,
+returning 32 concrete, confidence-rated, file-anchored findings. (4 agents · ~286k tok.)
+
+**User + action:** a keyboard-only operator, a Spanish *and* English user, and a screen-reader user must
+all get a first-class experience — the bar for "most trusted tool for my operation."
+
+**Changes made (the real levers; cosmetic 1px token-churn deliberately skipped)**
+- **Bilingual completeness:** removed the last hardcoded Spanish (embarque + pedimento drawers — Cruce,
+  Aduana, Agente aduanal, Mercancía, Caja, Sello, ETA, plus the hold/review alert copy) → new `dr_*` keys
+  in ES/EN. The whole UI now flips language with zero leakage.
+- **Keyboard a11y:** decision-queue rows (the trust loop's primary action) are now `role="button"`,
+  focusable, with Enter/Space handlers + aria-label; global brand `:focus-visible` ring (slice prep);
+  KPI stat cards gained `:hover`/`:active` feedback.
+- **Contrast:** pill text weight 560→600 for AA on washed backgrounds.
+- **Reduced-motion:** hover transforms neutralized under `prefers-reduced-motion`.
+- **Robustness:** null-id guards on `openDrawer`/`openPedimento`; copilot state coerced to a valid key
+  before any `t('states_'+k)` lookup (never expose a raw i18n key); unified portfolio-value KPI precision.
+
+**Screenshot / browser verification:** `node scripts/verify.mjs` → 17 shots desktop + 375px. **VERIFY:
+CLEAN** — 0 console errors, 0 overflow.
+
+**Commands run:** `node --check public/app.js`, `node scripts/verify.mjs`.
+
+**Proven vs subjective**
+- *Proven:* no console errors/overflow; bilingual drawers flip fully; queue rows keyboard-operable; guards
+  added without behavior change.
+- *Still open (queued, mostly need care not auto-fix):* focus-trap + focus-restore in modals; full
+  screen-reader pass; the loop doc now runs this critic gate every substantial pass.
+
+**Next smallest design move:** focus-trap/restore in drawers · founder call on globe tint · deepen Pedimento classify reasoning.
+
+---
+
 ## 2026-06-30 · Slice 004 — Brand front door (Login + living globe)
 
 **Surface audited:** none existed — the app had no entry point. Built the CRUZ Login at `/login`.

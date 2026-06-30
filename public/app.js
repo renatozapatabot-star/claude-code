@@ -60,6 +60,8 @@ const DICT = {
     au_gen: 'CRUZ generó el pedimento', au_val: '14/14 validaciones SAT aprobadas', au_wait: 'Esperando tu e.firma', au_sent: 'Transmitido al SAT',
     p_transmit: 'Firmar y transmitir al SAT', ped_valorAduana: 'Valor aduana', ped_igi: 'IGI', ped_dta: 'DTA', ped_iva: 'IVA', ped_total: 'Total',
     ped_satOk: 'validaciones SAT aprobadas', ped_mercancia: 'Mercancía', ped_satToast: 'Transmitido al SAT · tú diste el juicio',
+    dr_cruce: 'Cruce', dr_aduana: 'Aduana', dr_agente: 'Agente aduanal', dr_mercancia: 'Mercancía', dr_caja: 'Caja', dr_sello: 'Sello', dr_eta: 'ETA cruce',
+    dr_hold: 'Carga detenida en aduana — requiere acción del agente aduanal.', dr_review: 'Marcado para revisión documental — verificar pedimento y factura.',
   },
   en: {
     brandSub: 'EVCO · Patente 3801', nInicio: 'Home', grpOps: 'Operations', nShip: 'Shipments',
@@ -106,6 +108,8 @@ const DICT = {
     au_gen: 'CRUZ drafted the pedimento', au_val: '14/14 SAT validations passed', au_wait: 'Awaiting your e-signature', au_sent: 'Transmitted to SAT',
     p_transmit: 'Sign & transmit to SAT', ped_valorAduana: 'Customs value', ped_igi: 'IGI', ped_dta: 'DTA', ped_iva: 'IVA', ped_total: 'Total',
     ped_satOk: 'SAT validations passed', ped_mercancia: 'Goods', ped_satToast: 'Transmitted to SAT · you made the judgment',
+    dr_cruce: 'Crossing', dr_aduana: 'Customs', dr_agente: 'Customs broker', dr_mercancia: 'Goods', dr_caja: 'Trailer', dr_sello: 'Seal', dr_eta: 'ETA clearance',
+    dr_hold: 'Cargo held at customs — requires customs-broker action.', dr_review: 'Flagged for document review — verify pedimento and invoice.',
   },
 };
 let LANG = (() => { try { return localStorage.getItem('cruz.lang') || 'es'; } catch { return 'es'; } })();
@@ -201,6 +205,7 @@ async function go(view) {
 const CO_STATE_KEY = { idle: 'states_idle', watch: 'states_watch', work: 'states_work', prop: 'states_prop', await: 'states_await', shadow: 'states_shadow' };
 function coStatusLine() {
   const n = state.summary ? state.summary.total : 0;
+  if (!STATES.includes(state.coState)) state.coState = 'watch'; // never expose a raw i18n key
   switch (state.coState) {
     case 'work': return `<b>${t('coWork')}</b> · ${t('states_work').toLowerCase()}`;
     case 'prop': return `<b>${t('coProp')}</b> · ${state.pediSummary ? state.pediSummary.preparados : 0} ${t('ped_estado').toLowerCase()}`;
@@ -259,7 +264,7 @@ function renderQueue() {
   const rows = state.decisions;
   $('#q-count').textContent = rows.filter((d) => d.kind === 'firma').length;
   $('#queue-rows').innerHTML = rows.map((d) => `
-    <div class="dec" data-id="${esc(d.id)}" data-emb="${esc(d.embarque)}">
+    <div class="dec" role="button" tabindex="0" aria-label="${esc(d.cliente)} — ${esc(d.titulo)}" data-id="${esc(d.id)}" data-emb="${esc(d.embarque)}">
       <div class="dec-av" style="background:${avatarColor(d.cliente)}">${esc(initials(d.cliente))}</div>
       <div class="dec-main">
         <div class="dec-cli">${esc(d.cliente)} ${d.pedimento ? `<span class="ped">${esc(d.pedimento)}</span>` : ''}</div>
@@ -277,6 +282,7 @@ function renderQueue() {
       if (d.kind === 'firma') openGate(d); else openDrawer(el.dataset.emb);
     });
     el.addEventListener('click', () => openDrawer(el.dataset.emb));
+    el.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); openDrawer(el.dataset.emb); } });
   });
 }
 
@@ -414,6 +420,7 @@ function applyTextFilter(q) {
 
 /* ---- Detail drawer + crossing timeline ------------------------------------ */
 async function openDrawer(id) {
+  if (!id) return;
   let e = state.embarques.find((x) => x.id === id);
   try { e = await api('/api/embarques/' + encodeURIComponent(id)); } catch {}
   if (!e) return;
@@ -426,21 +433,21 @@ async function openDrawer(id) {
       <button class="iconbtn x" id="drawer-x" aria-label="Cerrar"><svg><use href="#i-x"/></svg></button>
     </div>
     <div class="drawer-body">
-      ${e.alerta || e.estado === 'detenido' ? `<div class="alert-bar"><svg><use href="#i-warn"/></svg><div>${e.estado === 'detenido' ? 'Carga detenida en aduana — requiere acción del agente aduanal.' : 'Marcado para revisión documental — verificar pedimento y factura.'}</div></div>` : ''}
-      <div class="section-h">Cruce</div>
+      ${e.alerta || e.estado === 'detenido' ? `<div class="alert-bar"><svg><use href="#i-warn"/></svg><div>${e.estado === 'detenido' ? t('dr_hold') : t('dr_review')}</div></div>` : ''}
+      <div class="section-h">${t('dr_cruce')}</div>
       <div class="timeline">${e.timeline.map(tlStep).join('')}</div>
       <div class="section-h">${t('w_status')}</div>
       <div class="kv">
         <div class="full"><div class="k">${t('thRoute')}</div><div class="v">${esc(e.origen)} &nbsp;→&nbsp; ${esc(e.destino)}</div></div>
-        <div><div class="k">Aduana</div><div class="v">${esc(e.aduana)}</div></div>
-        <div><div class="k">Agente aduanal</div><div class="v">${esc(e.agente)}</div></div>
+        <div><div class="k">${t('dr_aduana')}</div><div class="v">${esc(e.aduana)}</div></div>
+        <div><div class="k">${t('dr_agente')}</div><div class="v">${esc(e.agente)}</div></div>
         <div class="full"><div class="k">${t('tc_pedimento')}</div><div class="v mono">${e.pedimento ? esc(e.pedimento) : t('pendiente')}</div></div>
-        <div><div class="k">Mercancía</div><div class="v">${esc(e.mercancia)}</div></div>
+        <div><div class="k">${t('dr_mercancia')}</div><div class="v">${esc(e.mercancia)}</div></div>
         <div><div class="k">${t('gateDeclared')}</div><div class="v">${fmtUsd(e.valorUsd)} <span style="color:var(--ink-3)">USD</span></div></div>
-        <div><div class="k">Caja</div><div class="v mono">${esc(e.caja)}</div></div>
-        <div><div class="k">Sello</div><div class="v mono">${e.sello ? esc(e.sello) : '—'}</div></div>
+        <div><div class="k">${t('dr_caja')}</div><div class="v mono">${esc(e.caja)}</div></div>
+        <div><div class="k">${t('dr_sello')}</div><div class="v mono">${e.sello ? esc(e.sello) : '—'}</div></div>
         <div><div class="k">${t('conf')}</div><div class="v">${e.confianza}<span style="color:var(--ink-4);font-size:12px">/99</span></div></div>
-        <div><div class="k">ETA cruce</div><div class="v">${fmtEta(e.eta)}</div></div>
+        <div><div class="k">${t('dr_eta')}</div><div class="v">${fmtEta(e.eta)}</div></div>
       </div>
     </div>`;
   d.setAttribute('aria-hidden', 'false'); d.classList.add('open'); $('#scrim').classList.add('open');
@@ -570,6 +577,7 @@ function pediAudit(p) {
   return steps;
 }
 async function openPedimento(num) {
+  if (!num) return;
   let p = state.pedimentos.find((x) => x.numero === num);
   try { p = await api('/api/pedimentos/' + encodeURIComponent(num)); } catch {}
   if (!p) return;
@@ -586,9 +594,9 @@ async function openPedimento(num) {
       <div class="section-h">${t('p_entryHeader')}</div>
       <div class="kv">
         <div><div class="k">${t('sl_client')}</div><div class="v">${esc(p.cliente)}</div></div>
-        <div><div class="k">Aduana</div><div class="v">${esc(p.aduana)}</div></div>
+        <div><div class="k">${t('dr_aduana')}</div><div class="v">${esc(p.aduana)}</div></div>
         <div><div class="k">${t('ped_clave')}</div><div class="v mono">${esc(p.clave)} · ${esc(p.regimen)}</div></div>
-        <div><div class="k">Agente aduanal</div><div class="v">${esc(p.agente)}</div></div>
+        <div><div class="k">${t('dr_agente')}</div><div class="v">${esc(p.agente)}</div></div>
         <div><div class="k">${t('ped_valorAduana')}</div><div class="v">${fmtUsd(p.valorAduanaUsd)} <span style="color:var(--ink-3)">USD</span></div></div>
         <div><div class="k">${t('ped_mercancia')}</div><div class="v">${esc(p.mercancia)}</div></div>
       </div>
@@ -685,7 +693,7 @@ function renderClientes() {
     stat('i-users', t('cli_activos'), s.activos, ''),
     stat('i-shield', t('cli_mve'), s.mve + '%', ''),
     stat('i-truck', t('cli_cargas'), s.cargas, ''),
-    stat('i-coin', t('cli_valor'), '$' + (s.valorUsd / 1e6).toFixed(1), 'M USD'),
+    stat('i-coin', t('cli_valor'), '$' + (s.valorUsd / 1e6).toFixed(2), 'M USD'),
   ]) : '';
   $('#view-clientes').innerHTML = `
     <div class="page-head"><div><h1 class="page-title">${t('cli_title')}</h1><div class="page-sub">${t('cli_sub')}</div></div></div>

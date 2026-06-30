@@ -47,6 +47,12 @@ For big sweeps ("complete the whole front end", "ultracode"), fan out parallel a
 `design/reference/` per surface and return specs, then integrate coherently in one hand (cohesion is a
 score axis) and verify the whole. Deep-research best-in-class operational UI when a surface is novel.
 
+**100/100 critic gate (run each substantial pass):** fan out parallel adversarial reviewers — one per
+lens (canon/cohesion · accessibility · clarity/honest-data · robustness) — over the actual code; collect
+concrete, confidence-rated, file-anchored findings; apply the safe high-confidence ones; re-verify.
+Skip cosmetic churn (sub-pixel token swaps) in favor of real levers: bilingual completeness, keyboard
+a11y/contrast, honest-data, and correctness. Workflow scripts live under `.claude/workflows/`.
+
 ## Stop condition
 Stop only when the current slice is verified, documented, and pushed — and either no safe visual
 improvement remains in this surface, or the next move requires founder judgment (then ask the founder
