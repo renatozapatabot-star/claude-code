@@ -62,6 +62,7 @@ const DICT = {
     ped_satOk: 'validaciones SAT aprobadas', ped_mercancia: 'Mercancía', ped_satToast: 'Transmitido al SAT · tú diste el juicio',
     dr_cruce: 'Cruce', dr_aduana: 'Aduana', dr_agente: 'Agente aduanal', dr_mercancia: 'Mercancía', dr_caja: 'Caja', dr_sello: 'Sello', dr_eta: 'ETA cruce',
     dr_hold: 'Carga detenida en aduana — requiere acción del agente aduanal.', dr_review: 'Marcado para revisión documental — verificar pedimento y factura.',
+    cl_title2: 'Clasificación IA', cl_recommends: 'CRUZ recomienda', cl_fraccion: 'Fracción arancelaria', cl_reasoning: 'Razonamiento', cl_citas: 'Referencias legales', cl_alts: 'Alternativas consideradas',
   },
   en: {
     brandSub: 'EVCO · Patente 3801', nInicio: 'Home', grpOps: 'Operations', nShip: 'Shipments',
@@ -110,6 +111,7 @@ const DICT = {
     ped_satOk: 'SAT validations passed', ped_mercancia: 'Goods', ped_satToast: 'Transmitted to SAT · you made the judgment',
     dr_cruce: 'Crossing', dr_aduana: 'Customs', dr_agente: 'Customs broker', dr_mercancia: 'Goods', dr_caja: 'Trailer', dr_sello: 'Seal', dr_eta: 'ETA clearance',
     dr_hold: 'Cargo held at customs — requires customs-broker action.', dr_review: 'Flagged for document review — verify pedimento and invoice.',
+    cl_title2: 'AI Classification', cl_recommends: 'CRUZ recommends', cl_fraccion: 'Tariff code', cl_reasoning: 'Reasoning', cl_citas: 'Legal references', cl_alts: 'Alternatives considered',
   },
 };
 let LANG = (() => { try { return localStorage.getItem('cruz.lang') || 'es'; } catch { return 'es'; } })();
@@ -628,6 +630,20 @@ async function openPedimento(num) {
         <div><div class="k">${t('ped_dta')}</div><div class="v mono">${fmtMxn(p.dtaMxn)}</div></div>
         <div><div class="k">${t('ped_iva')}</div><div class="v mono">${fmtMxn(p.ivaMxn)}</div></div>
         <div><div class="k">${t('ped_total')}</div><div class="v mono" style="color:var(--cruz-press)">${fmtMxn(p.totalMxn)}</div></div>
+      </div>
+      <div class="section-h">${t('cl_title2')}</div>
+      <div class="co-card" style="margin-top:0">
+        <div class="lbl"><svg style="width:12px;height:12px"><use href="#i-stamp"/></svg>${t('cl_recommends')}</div>
+        <div style="display:flex;align-items:baseline;gap:10px;margin:2px 0 8px">
+          <span class="mono" style="font-size:17px;font-weight:650;color:var(--ink)">${esc(p.clasificacion.fraccion)}</span>
+          <span class="conf"><span class="n" style="font-size:13px">${p.clasificacion.confianza}<s>/99</s></span></span>
+        </div>
+        <div class="txt">${esc(p.clasificacion.descripcion)}.</div>
+        <div style="margin-top:8px;color:var(--ink-3);font-size:12.5px"><b style="color:var(--ink-2)">${t('cl_reasoning')}:</b> ${esc(p.clasificacion.razon)}</div>
+        <div style="margin-top:8px"><div class="lbl">${t('cl_citas')}</div>
+          ${p.clasificacion.citas.map((c) => `<div style="font-size:12px;color:var(--ink-2);padding:2px 0">· ${esc(c)}</div>`).join('')}</div>
+        <div style="margin-top:8px"><div class="lbl">${t('cl_alts')}</div>
+          ${p.clasificacion.alternativas.map((a) => `<div style="font-size:12px;color:var(--ink-3);padding:2px 0"><span class="mono">${esc(a.fraccion)}</span> — ${esc(a.nota)}</div>`).join('')}</div>
       </div>
       <div class="section-h">${t('p_validation')}</div>
       <div class="co-card" style="display:flex;align-items:center;gap:10px;margin-top:0">

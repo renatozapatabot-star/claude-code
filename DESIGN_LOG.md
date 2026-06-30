@@ -5,6 +5,31 @@ appends here every run.
 
 ---
 
+## 2026-06-30 · Slice 007 — Pedimento depth: AI classification reasoning + citations
+
+**Surface audited:** the Pedimento drawer (the legally-serious customs centerpiece for dad/EVCO).
+**User + action:** before signing a pedimento, the broker must *see why* CRUZ classified the goods —
+the recommended fraction, the reasoning, the legal basis, and what was ruled out.
+
+**Change made**
+- New **"Clasificación IA"** section in the pedimento drawer: CRUZ-recommended LIGIE fraction (mono) +
+  confidence /99, plain-language description, **reasoning** (T-MEC VCR origin), **legal references**
+  (LIGIE 2022, T-MEC Anexo 4-B, Nota Explicativa SA), and **alternatives considered** (with why-ruled-out).
+- `data/pedimentos.js`: deterministic `clasificar(goods)` mapping goods → real LIGIE fractions; reused the
+  existing `.co-card` / `.section-h` / `.conf` components (no new design language). Bilingual ES/EN.
+
+**Screenshot / browser verification:** `node scripts/verify.mjs` → shot 10 confirms the section renders
+(8450.20.01 · 90/99 · reasoning · references · alternatives). **VERIFY: CLEAN** — 0 errors, 0 overflow.
+
+**Commands run:** `node --check public/app.js data/pedimentos.js`, `node scripts/verify.mjs`.
+
+**Proven vs subjective:** *proven* — renders from data, bilingual, no errors. *Subjective* — depth of the
+reasoning copy; real version wires `window.claude.complete` per the handoff.
+
+**Next smallest design move:** mobile field mode (one-thumb, 60px GO) — carried next / by the nightly loop.
+
+---
+
 ## 2026-06-30 · Slice 006 — Red globe (founder call) + modal focus management
 
 **Surface audited:** the Login globe and all modal panels (drawer, gate, copilot).

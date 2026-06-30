@@ -21,6 +21,35 @@ function estadoPedi(estado) {
   return ['liberado', 'entregado'].includes(estado) ? 'transmitido' : 'preparado';
 }
 
+// HS classification by goods keyword (illustrative LIGIE fractions).
+function clasificar(merc, conf) {
+  const m = (merc || '').toLowerCase();
+  const table = [
+    [/lavadora|línea blanca|electrón/, '8450.20.01', 'Máquinas para lavar ropa, capacidad > 10 kg'],
+    [/estufa|gas/, '7321.11.01', 'Aparatos de cocción de combustibles gaseosos'],
+    [/freno|componente/, '8708.30.03', 'Frenos y servofrenos; sus partes, para vehículos'],
+    [/arnés|arnes/, '8544.30.99', 'Juegos de cables para bujías; arneses automotrices'],
+    [/cabeza|aluminio|nemak/, '8409.91.99', 'Partes identificables para motores de émbolo'],
+    [/acero|rolado/, '7209.16.01', 'Productos laminados planos de acero, en frío'],
+    [/neumátic|llanta/, '4011.10.07', 'Neumáticos nuevos de caucho, para automóviles'],
+    [/catalític|convertidor/, '8421.39.99', 'Convertidores catalíticos; aparatos de filtrado'],
+    [/cemento/, '2523.29.99', 'Cemento Portland, excepto blanco'],
+    [/bebida|espirituos|tequila/, '2208.90.04', 'Bebidas espirituosas, las demás'],
+    [/panific|pan/, '1905.90.99', 'Productos de panadería, los demás'],
+    [/cárnic|carne/, '0202.30.01', 'Carne de bovino deshuesada, congelada'],
+  ];
+  const hit = table.find(([re]) => re.test(m)) || [/x/, '8708.99.99', 'Las demás partes y accesorios de vehículos'];
+  const [, fraccion, desc] = hit;
+  return {
+    fraccion,
+    descripcion: desc,
+    confianza: conf,
+    razon: `Clasificada en la fracción ${fraccion} por uso final y composición; origen T-MEC calificado por Valor de Contenido Regional.`,
+    citas: ['LIGIE 2022 · Regla General 1ª', `T-MEC Anexo 4-B · regla de origen ${fraccion.slice(0, 4)}`, 'Nota Explicativa del SA'],
+    alternativas: [{ fraccion: fraccion.slice(0, 5) + '.99.99', nota: 'descartada — no corresponde al uso final declarado' }],
+  };
+}
+
 const PEDIMENTOS = EMBARQUES.filter((e) => e.pedimento).map((e) => {
   const valorAduanaUsd = e.valorUsd;
   const clave = claveFor(e.estado, e.id);
@@ -43,6 +72,7 @@ const PEDIMENTOS = EMBARQUES.filter((e) => e.pedimento).map((e) => {
     igiMxn, dtaMxn, ivaMxn, totalMxn,
     validaciones: { pasadas: 14, total: 14 },
     confianza: e.confianza,
+    clasificacion: clasificar(e.mercancia, e.confianza),
     semaforo: e.semaforo,
     estado,
     eta: e.eta,
