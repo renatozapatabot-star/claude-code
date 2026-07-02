@@ -17,7 +17,14 @@ server.js            Zero-dep HTTP server: static + JSON API
 data/embarques.js    Shipment dataset (semáforo, confidence, duties, crossing timeline)
 data/cruz.js         Trust loop: decision queue, LIVE/STAGED sources, copilot, agent crew
 public/              index.html · styles.css (design tokens) · app.js (bilingual + trust loop)
+public/landing.html  The closer — marketing landing: red-globe hero, the four keys of the border
+                     (patente MX · corretaje EE.UU. · bodega · cross-docking), the agent, white
+                     label, founding-program CTA. Bilingual, mobile-clean.
+public/login.html    Brand front door — dark globe panel + white form → the app
 design/reference/    The real CRUZ.dc.html package — source of truth for SUBSTANCE (not palette)
+site/                Deployable static showcase of the original navy/cyan prototypes (design annex;
+                     runs the *.dc.html format via a React-based runtime shim — see site/README.md)
+sales/               The sell-then-build kit: demo script, pricing, outreach, LOI, 5-day runbook
 scripts/cruz-loop.md The recursive 100/100 design loop (run daily at 06:01)
 DESIGN.md            Canonical white+red design system + invariants + the 10/10 lens
 DESIGN_LOG.md        One entry per shipped slice

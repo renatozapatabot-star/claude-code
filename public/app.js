@@ -38,6 +38,8 @@ const DICT = {
     // gate
     gateEyebrow: 'Compuerta de firma', gateNote: 'Nada se transmite hasta que firmes — luego 5 s para cancelar.',
     gateDeclared: 'Valor declarado', gateDuties: 'Contribuciones (MXN)', firmar: 'Firmar y avanzar', cancelar: 'Cancelar',
+    gateDid: 'Lo que CRUZ hizo', gateDidClass: 'Clasificada', gateDidVal: 'validaciones SAT aprobadas',
+    gateDidDuties: 'Contribuciones calculadas', gateDidTmec: 'Origen T-MEC calificado · Valor de Contenido Regional',
     toastSigned: 'firmado · programado a la ventana verde', toastTransmit: 'Transmitido al SAT · tú diste el juicio',
     // placeholder surfaces
     exp_title: 'Expedientes', exp_sub: 'COVE, pedimento, Carta Porte y B/L — todo enlazado.',
@@ -88,6 +90,8 @@ const DICT = {
     states_idle: 'Idle', states_watch: 'Watching', states_work: 'Working', states_prop: 'Proposed', states_await: 'Awaiting', states_shadow: 'Shadow',
     gateEyebrow: 'Signature gate', gateNote: 'Nothing transmits until you sign — then 5s to cancel.',
     gateDeclared: 'Declared value', gateDuties: 'Duties (MXN)', firmar: 'Sign & advance', cancelar: 'Cancel',
+    gateDid: 'What CRUZ did', gateDidClass: 'Classified', gateDidVal: 'SAT validations passed',
+    gateDidDuties: 'Duties calculated', gateDidTmec: 'USMCA origin qualified · Regional Value Content',
     toastSigned: 'signed · scheduled to the green window', toastTransmit: 'Transmitted to SAT · you made the judgment',
     exp_title: 'Files', exp_sub: 'COVE, pedimento, Carta Porte & B/L — all linked.',
     exp_live: 'Documents live', exp_review: 'To review', exp_valor: 'Value in transit',
@@ -311,6 +315,20 @@ function renderQueue() {
 }
 
 /* ---- Signature gate + 5s undo + ledger ----------------------------------- */
+// Tool-use disclosure: only claims backed by the pedimento's own data (honesty rule).
+function gateChecklist(d) {
+  const p = state.pedimentos.find((x) => x.embarque === d.embarque);
+  if (!p) return '';
+  const rows = [];
+  const check = '<svg class="ico" style="color:var(--ok)"><use href="#i-check"/></svg>';
+  if (p.clasificacion) rows.push(`${check}<span>${t('gateDidClass')} <span class="mono">${esc(p.clasificacion.fraccion)}</span> · <span class="mono">${p.clasificacion.confianza}/99</span></span>`);
+  if (p.validaciones) rows.push(`${check}<span><span class="mono">${p.validaciones.pasadas}/${p.validaciones.total}</span> ${t('gateDidVal')}</span>`);
+  if (p.totalMxn != null) rows.push(`${check}<span>${t('gateDidDuties')} · <span class="mono">MXN ${p.totalMxn.toLocaleString('es-MX')}</span></span>`);
+  if (p.clasificacion && /T-MEC/i.test(p.clasificacion.razon || '')) rows.push(`${check}<span>${t('gateDidTmec')}</span>`);
+  if (!rows.length) return '';
+  return `<div class="gate-did"><div class="k">${t('gateDid')}</div>${rows.map((r) => `<div class="row">${r}</div>`).join('')}</div>`;
+}
+
 function openGate(d) {
   $('#gate').innerHTML = `
     <div class="gate-top">
@@ -323,6 +341,7 @@ function openGate(d) {
       <div><div class="k">${t('conf')}</div><div class="v">${d.confianza}<span style="color:var(--ink-4);font-size:12px">/99</span></div></div>
       <div><div class="k">Semáforo</div><div class="v"><span class="sem ${d.semaforo.tone}">${esc(d.semaforo.label)}</span></div></div>
     </div>
+    ${gateChecklist(d)}
     <div class="gate-foot">
       <button class="btn btn-primary" id="gate-sign"><svg class="ico"><use href="#i-check"/></svg>${t('firmar')}</button>
       <button class="btn btn-ghost" id="gate-cancel" style="justify-content:center">${t('cancelar')}</button>
@@ -668,7 +687,7 @@ async function openPedimento(num) {
 
 /* ---- Expedientes (Document Hub) ------------------------------------------- */
 function renderSurfaces() { renderExpedientes(); renderFacturacion(); renderClientes(); }
-function kpiRow(items) { return `<div class="inicio-stats" style="margin:0 0 var(--sp-5)">${items.join('')}</div>`; }
+function kpiRow(items) { return `<div class="inicio-stats${items.length === 4 ? ' cols-4' : ''}" style="margin:0 0 var(--sp-5)">${items.join('')}</div>`; }
 
 function renderExpedientes() {
   const s = state.expedientes && state.expedientes.summary;

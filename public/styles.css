@@ -255,6 +255,7 @@ input:focus-visible { outline: none; } /* inputs already show the cruz ring via 
 .chip b { color: var(--cruz-press); font-weight: 600; }
 
 .inicio-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); margin-top: var(--sp-7); text-align: left; }
+.inicio-stats.cols-4 { grid-template-columns: repeat(4, 1fr); }
 .stat {
   border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface);
   padding: var(--sp-4) var(--sp-4) var(--sp-4); position: relative; overflow: hidden;
@@ -396,6 +397,7 @@ tbody tr:hover { background: var(--hover); }
   .content { padding: var(--sp-4); }
   .cmd .kbd { display: none; }
   .topbar { padding: 0 var(--sp-4); gap: var(--sp-3); }
+  .inicio-stats.cols-4 { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 560px) {
@@ -405,7 +407,7 @@ tbody tr:hover { background: var(--hover); }
   .topbar .demo-badge, .topbar #btn-new { display: none; }
   .cmd { min-width: 0; }
   .cmd input { padding-right: 14px; }
-  .inicio-stats { grid-template-columns: 1fr; gap: var(--sp-2); }
+  .inicio-stats, .inicio-stats.cols-4 { grid-template-columns: 1fr; gap: var(--sp-2); }
   .inicio { padding-top: 40px; }
   .inicio h1 { letter-spacing: .1em; }
   /* Table collapses into stacked cards on phones */
@@ -481,6 +483,11 @@ tbody tr:hover { background: var(--hover); }
 .gate-kv { display: flex; gap: var(--sp-5); padding: var(--sp-4) var(--sp-5); }
 .gate-kv .k { font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-4); }
 .gate-kv .v { font-weight: 650; font-size: 15px; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.gate-did { padding: var(--sp-3) var(--sp-5) var(--sp-4); border-top: 1px solid var(--line); }
+.gate-did .k { font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 8px; }
+.gate-did .row { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--ink-2); padding: 3.5px 0; }
+.gate-did .row .ico { width: 14px; height: 14px; flex: 0 0 14px; }
+.gate-did .row .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 .gate-foot { padding: var(--sp-4) var(--sp-5) var(--sp-5); display: flex; flex-direction: column; gap: 10px; }
 .gate-foot .btn-primary { height: 46px; justify-content: center; font-size: 14px; }
 .gate-note { font-size: 12px; color: var(--ink-3); text-align: center; }
