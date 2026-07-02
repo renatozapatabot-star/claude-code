@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRUZ — Centro de mando</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 48 48%27%3E%3Crect width=%2748%27 height=%2748%27 rx=%2712%27 fill=%27%2306090E%27/%3E%3Cpath d=%27M34 10.5 A16.5 16.5 0 1 0 34 37.5%27 stroke=%27%2322D3EE%27 stroke-width=%274%27 stroke-linecap=%27round%27 fill=%27none%27/%3E%3Cpath d=%27M14 30 L20.5 23.5 L25 28 L32.5 16%27 stroke=%27%2334D399%27 stroke-width=%274%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 fill=%27none%27/%3E%3C/svg%3E">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -343,7 +345,7 @@
           </sc-if>
         </div>
         <div style="display:flex;gap:3px;padding:3px;border-radius:9px;background:var(--surface2);border:1px solid var(--line);"><button onClick="{{ setEn }}" style="border:none;border-radius:6px;padding:4px 8px;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;background:{{ enBg }};color:{{ enColor }};">EN</button><button onClick="{{ setEs }}" style="border:none;border-radius:6px;padding:4px 8px;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;background:{{ esBg }};color:{{ esColor }};">ES</button></div><span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:.02em;">{{ clock }}</span>
-        <a href="CRUZ%20Login.dc.html" title="{{ t.signOut }}" style="display:flex;align-items:center;gap:8px;text-decoration:none;padding:3px 3px 3px 4px;border-radius:11px;border:1px solid var(--line);background:var(--surface);transition:border .15s;" style-hover="border-color:var(--cyan-ink)"><div style="text-align:right;line-height:1.1;"><div style="font-size:11px;font-weight:700;color:var(--ink);">Mariana R.</div><div style="font-size:9.5px;color:var(--muted);">{{ t.signOut }}</div></div><div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1d4ed8,#22D3EE);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#ffffff;">MR</div></a>
+        <a href="login.html" title="{{ t.signOut }}" style="display:flex;align-items:center;gap:8px;text-decoration:none;padding:3px 3px 3px 4px;border-radius:11px;border:1px solid var(--line);background:var(--surface);transition:border .15s;" style-hover="border-color:var(--cyan-ink)"><div style="text-align:right;line-height:1.1;"><div style="font-size:11px;font-weight:700;color:var(--ink);">Mariana R.</div><div style="font-size:9.5px;color:var(--muted);">{{ t.signOut }}</div></div><div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1d4ed8,#22D3EE);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#ffffff;">MR</div></a>
       </div>
     </header>
 
@@ -1447,7 +1449,7 @@
             </div>
           </sc-for>
         </div>
-        <div style="padding:18px 20px;border-radius:14px;background:var(--surface);border:1px solid var(--line);font-size:13.5px;color:var(--ink2);animation:riseIn .65s ease both;">{{ t.rs_how }} <a href="CRUZ%20Login.dc.html" style="color:var(--cyan-ink);font-weight:600;">ai@cruz.mx</a> — {{ t.rs_howEnd }}</div>
+        <div style="padding:18px 20px;border-radius:14px;background:var(--surface);border:1px solid var(--line);font-size:13.5px;color:var(--ink2);animation:riseIn .65s ease both;">{{ t.rs_how }} <a href="login.html" style="color:var(--cyan-ink);font-weight:600;">ai@cruz.mx</a> — {{ t.rs_howEnd }}</div>
       </div>
     </div>
     </sc-if>
@@ -3309,7 +3311,7 @@ class Component extends DCLogic {
     const cmdkActions=[
       {id:'a_lang', label:_L==='es'?'Cambiar a inglés':'Switch to Spanish', hint:_L==='es'?'English':'Español', kw:'language idioma english español lang', run:()=>{_L==='es'?this.setEn():this.setEs(); this.setState({cmdkOpen:false});}},
       {id:'a_copilot', label:_L==='es'?'Abrir CRUZ Copilot':'Open CRUZ Copilot', hint:_L==='es'?'Agente autónomo':'Autonomous agent', kw:'ai agent copilot assistant', run:()=>this.setState({copilotExpanded:true, cmdkOpen:false})},
-      {id:'a_signout', label:_L==='es'?'Cerrar sesión':'Sign out', hint:_L==='es'?'Volver al inicio':'Back to login', kw:'logout signout exit salir', run:()=>{window.location.href='CRUZ Login.dc.html';}},
+      {id:'a_signout', label:_L==='es'?'Cerrar sesión':'Sign out', hint:_L==='es'?'Volver al inicio':'Back to login', kw:'logout signout exit salir', run:()=>{window.location.href='login.html';}},
     ].filter(it=>!q || (it.label+' '+it.hint+' '+it.kw).toLowerCase().includes(q));
     const cmdkAll=[...cmdkResults, ...cmdkActions];
 
