@@ -1,0 +1,543 @@
+<title>CRUZ — El mejor movimiento</title>
+<style>
+  :root{
+    --cruz:#cf3a22; --cruz-press:#b22f1a; --cruz-wash:#fbeae6;
+    --ink:#1a1c20; --ink-2:#4a4e57; --ink-3:#767b85; --ink-4:#a0a4ad;
+    --paper:#faf8f5; --surface:#ffffff; --surface-2:#f4f1ec; --hover:#f3efe9;
+    --line:#e7e2da; --line-strong:#d6cfc4;
+    --ok:#1f8a52; --ok-wash:#e6f3ec;
+    --info:#2a6bb0; --info-wash:#e7f0f8;
+    --warn:#b5781a; --warn-wash:#f8efdc;
+    --alert:#c23a2a; --alert-wash:#fae7e3;
+    --done:#5a6270; --done-wash:#ecedf0;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono","Roboto Mono",Menlo,Consolas,monospace;
+    --measure:68ch;
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ink:#ecebe7; --ink-2:#b6b9c0; --ink-3:#888d97; --ink-4:#5f636d;
+      --paper:#131417; --surface:#1b1d22; --surface-2:#212329; --hover:#24262d;
+      --line:#2a2d34; --line-strong:#3a3e47;
+      --cruz:#f0573b; --cruz-press:#d8412a; --cruz-wash:#2c1a16;
+      --ok:#3bbd7a; --ok-wash:#12241b;
+      --info:#5a9fe0; --info-wash:#122130;
+      --warn:#d8a34a; --warn-wash:#2a2114;
+      --alert:#e8664f; --alert-wash:#2c1712;
+      --done:#8b93a3; --done-wash:#20242c;
+    }
+  }
+  :root[data-theme="light"]{
+    --ink:#1a1c20; --ink-2:#4a4e57; --ink-3:#767b85; --ink-4:#a0a4ad;
+    --paper:#faf8f5; --surface:#ffffff; --surface-2:#f4f1ec; --hover:#f3efe9;
+    --line:#e7e2da; --line-strong:#d6cfc4;
+    --cruz:#cf3a22; --cruz-press:#b22f1a; --cruz-wash:#fbeae6;
+    --ok:#1f8a52; --ok-wash:#e6f3ec; --info:#2a6bb0; --info-wash:#e7f0f8;
+    --warn:#b5781a; --warn-wash:#f8efdc; --alert:#c23a2a; --alert-wash:#fae7e3;
+    --done:#5a6270; --done-wash:#ecedf0;
+  }
+  :root[data-theme="dark"]{
+    --ink:#ecebe7; --ink-2:#b6b9c0; --ink-3:#888d97; --ink-4:#5f636d;
+    --paper:#131417; --surface:#1b1d22; --surface-2:#212329; --hover:#24262d;
+    --line:#2a2d34; --line-strong:#3a3e47;
+    --cruz:#f0573b; --cruz-press:#d8412a; --cruz-wash:#2c1a16;
+    --ok:#3bbd7a; --ok-wash:#12241b; --info:#5a9fe0; --info-wash:#122130;
+    --warn:#d8a34a; --warn-wash:#2a2114; --alert:#e8664f; --alert-wash:#2c1712;
+    --done:#8b93a3; --done-wash:#20242c;
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0}
+  .doc{
+    background:var(--paper); color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px; line-height:1.62;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    padding:clamp(28px,6vw,80px) clamp(20px,5vw,40px) 96px;
+  }
+  .wrap{max-width:760px; margin:0 auto}
+
+  /* ---- eyebrow / labels ---- */
+  .eyebrow{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--ink-3); font-weight:600;
+  }
+  .rule{height:1px; background:var(--line); border:0; margin:0}
+
+  /* ---- masthead ---- */
+  .masthead{display:flex; flex-direction:column; gap:26px}
+  .masthead-top{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:20px; flex-wrap:wrap;
+  }
+  .brand{display:flex; align-items:baseline; gap:12px}
+  .brand .mark{
+    font-family:var(--mono); font-weight:700; letter-spacing:.02em;
+    font-size:15px; color:var(--ink);
+  }
+  .brand .mark b{color:var(--cruz)}
+  .brand .sub{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--ink-4);
+  }
+  .meta{
+    font-family:var(--mono); font-size:11.5px; color:var(--ink-4);
+    text-align:right; letter-spacing:.04em; line-height:1.7;
+  }
+
+  .seal{flex:0 0 auto}
+  .title-block{display:flex; align-items:flex-start; gap:clamp(20px,5vw,40px)}
+  h1{
+    font-size:clamp(38px,7vw,60px); line-height:1.02; letter-spacing:-.025em;
+    font-weight:680; margin:0; text-wrap:balance;
+  }
+  .dek{
+    font-size:clamp(18px,2.4vw,21px); color:var(--ink-2); line-height:1.5;
+    margin:18px 0 0; max-width:var(--measure); text-wrap:pretty;
+  }
+
+  /* ---- verdict ---- */
+  .verdict{
+    margin:44px 0 8px; padding:30px clamp(22px,4vw,36px);
+    background:var(--surface); border:1px solid var(--line);
+    border-left:3px solid var(--cruz); border-radius:12px;
+    box-shadow:0 6px 24px -14px rgba(26,28,32,.22);
+  }
+  .verdict .k{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--cruz); font-weight:700;
+  }
+  .verdict p{
+    margin:14px 0 0; font-size:clamp(22px,3.2vw,29px); line-height:1.32;
+    letter-spacing:-.015em; font-weight:560; text-wrap:pretty;
+  }
+  .verdict p em{font-style:normal; color:var(--cruz); font-weight:640}
+  .verdict .foot{
+    margin-top:16px; font-size:15.5px; color:var(--ink-2); line-height:1.55;
+    font-weight:400; letter-spacing:0;
+  }
+
+  /* ---- section scaffolding ---- */
+  section{margin-top:64px}
+  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:22px}
+  .sec-num{
+    font-family:var(--mono); font-size:12px; color:var(--cruz);
+    font-weight:700; letter-spacing:.08em; flex:0 0 auto;
+  }
+  h2{
+    font-size:clamp(23px,3.4vw,30px); line-height:1.14; letter-spacing:-.02em;
+    font-weight:640; margin:0; text-wrap:balance;
+  }
+  .lede{max-width:var(--measure); color:var(--ink-2); font-size:16.5px; margin:0 0 26px}
+  .lede strong{color:var(--ink); font-weight:600}
+  p{max-width:var(--measure)}
+
+  /* ---- scorecard ---- */
+  .board{
+    border:1px solid var(--line); border-radius:12px; overflow:hidden;
+    background:var(--surface);
+  }
+  .board-scroll{overflow-x:auto}
+  table{border-collapse:collapse; width:100%; min-width:520px}
+  thead th{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.13em;
+    text-transform:uppercase; color:var(--ink-3); font-weight:600;
+    text-align:left; padding:14px 18px; background:var(--surface-2);
+    border-bottom:1px solid var(--line);
+  }
+  thead th.num{text-align:right}
+  tbody td{padding:15px 18px; border-bottom:1px solid var(--line); vertical-align:middle}
+  tbody tr:last-child td{border-bottom:0}
+  .cell-name{font-weight:560; font-size:15.5px}
+  .cell-name small{display:block; font-weight:400; color:var(--ink-3); font-size:13px; margin-top:3px; line-height:1.45}
+  td.score{font-family:var(--mono); font-weight:600; font-size:15px; text-align:right; font-variant-numeric:tabular-nums}
+  .light{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:11px; letter-spacing:.06em;
+    text-transform:uppercase; font-weight:600; white-space:nowrap;
+    padding:5px 10px; border-radius:999px; border:1px solid transparent;
+  }
+  .light::before{content:""; width:8px; height:8px; border-radius:50%; background:currentColor; flex:0 0 auto}
+  .light.ok{color:var(--ok); background:var(--ok-wash); border-color:color-mix(in srgb,var(--ok) 22%,transparent)}
+  .light.warn{color:var(--warn); background:var(--warn-wash); border-color:color-mix(in srgb,var(--warn) 22%,transparent)}
+  .light.alert{color:var(--alert); background:var(--alert-wash); border-color:color-mix(in srgb,var(--alert) 26%,transparent)}
+  .board-foot{
+    padding:16px 18px; font-size:14.5px; color:var(--ink-2);
+    background:var(--surface-2); border-top:1px solid var(--line);
+  }
+  .board-foot b{color:var(--ink); font-weight:600}
+  .board-foot .n{font-family:var(--mono); color:var(--cruz); font-weight:700}
+
+  /* ---- the trap ---- */
+  .trap{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin:8px 0 26px}
+  .palette{
+    border:1px solid var(--line); border-radius:10px; padding:16px; background:var(--surface);
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .palette .swatches{display:flex; gap:0; border-radius:6px; overflow:hidden; height:40px; border:1px solid var(--line)}
+  .palette .swatches i{flex:1}
+  .palette .nm{font-weight:600; font-size:14.5px}
+  .palette .st{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; font-weight:600}
+  .palette .st.live{color:var(--ok)}
+  .palette .st.dead{color:var(--ink-4)}
+  .palette .desc{font-size:12.5px; color:var(--ink-3); line-height:1.5}
+  .chosen{border-color:color-mix(in srgb,var(--cruz) 40%,var(--line)); box-shadow:0 0 0 1px color-mix(in srgb,var(--cruz) 30%,transparent)}
+
+  /* ---- move callout ---- */
+  .move{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:clamp(22px,4vw,32px); margin-top:6px;
+  }
+  .move h3{margin:0; font-size:20px; font-weight:620; letter-spacing:-.01em}
+  .move .big{
+    font-family:var(--mono); font-size:clamp(28px,5vw,40px); font-weight:700;
+    color:var(--cruz); letter-spacing:-.02em; margin:6px 0 16px; line-height:1;
+  }
+  .move p{margin:0; color:var(--ink-2); font-size:16px}
+
+  /* ---- sequence spine ---- */
+  .spine{display:flex; flex-direction:column; gap:0; margin-top:8px}
+  .step{
+    display:grid; grid-template-columns:auto 1fr; gap:0 22px;
+    padding:24px 0; border-top:1px solid var(--line); position:relative;
+  }
+  .step:first-child{border-top:0}
+  .step-idx{
+    font-family:var(--mono); font-size:12px; font-weight:700; color:var(--cruz);
+    letter-spacing:.06em; padding-top:3px; white-space:nowrap;
+  }
+  .step-body h3{margin:0 0 6px; font-size:18.5px; font-weight:620; letter-spacing:-.01em; line-height:1.28}
+  .step-body h3 .when{
+    font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--ink-4); margin-left:10px;
+  }
+  .step-body p{margin:0; color:var(--ink-2); font-size:15.5px; max-width:var(--measure)}
+  .acc{
+    margin-top:12px; font-family:var(--mono); font-size:12.5px; line-height:1.6;
+    color:var(--ink-2); background:var(--surface-2); border:1px solid var(--line);
+    border-radius:8px; padding:11px 14px; max-width:var(--measure);
+  }
+  .acc b{color:var(--ok); font-weight:700; letter-spacing:.04em}
+
+  /* ---- definition ---- */
+  .def{
+    margin-top:8px; padding:clamp(22px,4vw,34px); border-radius:12px;
+    background:
+      radial-gradient(120% 140% at 100% 0%, color-mix(in srgb,var(--cruz) 7%,transparent), transparent 55%),
+      var(--surface);
+    border:1px solid var(--line);
+  }
+  .def p{font-size:18px; line-height:1.55; color:var(--ink); margin:0; max-width:none}
+  .def p strong{color:var(--cruz); font-weight:640}
+
+  /* ---- signoff ---- */
+  .signoff{
+    margin-top:64px; padding-top:26px; border-top:2px solid var(--ink);
+    display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap;
+  }
+  .signoff .line{font-size:19px; font-weight:560; letter-spacing:-.01em}
+  .signoff .line b{color:var(--cruz)}
+  .signoff .stamp{font-family:var(--mono); font-size:11.5px; color:var(--ink-4); letter-spacing:.06em; text-align:right; line-height:1.7}
+
+  a.jump{color:var(--cruz); text-decoration:none; border-bottom:1px solid color-mix(in srgb,var(--cruz) 40%,transparent)}
+  a.jump:hover{border-bottom-color:var(--cruz)}
+  :focus-visible{outline:2px solid var(--cruz); outline-offset:2px; border-radius:3px}
+
+  @media (max-width:640px){
+    .doc{font-size:16px}
+    .trap{grid-template-columns:1fr}
+    .title-block{flex-direction:column; gap:20px}
+    .meta{text-align:left}
+    .masthead-top{gap:14px}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .seal svg{animation:seal-in .9s var(--ease) both}
+    @keyframes seal-in{from{opacity:0; transform:scale(.86) rotate(-8deg)} to{opacity:1; transform:none}}
+  }
+</style>
+
+<div class="doc">
+<div class="wrap">
+
+  <!-- ============ MASTHEAD ============ -->
+  <header class="masthead">
+    <div class="masthead-top">
+      <div class="brand">
+        <span class="mark">CRUZ<b>.</b></span>
+        <span class="sub">Documento de estrategia</span>
+      </div>
+      <div class="meta">
+        Patente 3596 · Aduana 240<br>
+        Para: el fundador (EVCO)<br>
+        12 jul 2026
+      </div>
+    </div>
+
+    <hr class="rule">
+
+    <div class="title-block">
+      <div class="seal" aria-hidden="true">
+        <svg width="112" height="112" viewBox="0 0 112 112" role="img">
+          <defs>
+            <path id="ring" d="M56,56 m-40,0 a40,40 0 1,1 80,0 a40,40 0 1,1 -80,0"/>
+          </defs>
+          <circle cx="56" cy="56" r="52" fill="none" stroke="var(--cruz)" stroke-width="1.5" opacity=".35"/>
+          <circle cx="56" cy="56" r="46" fill="none" stroke="var(--cruz)" stroke-width="2.5"/>
+          <circle cx="56" cy="56" r="30" fill="var(--cruz)"/>
+          <text fill="var(--surface)" font-family="var(--mono)" font-size="26" font-weight="700"
+                text-anchor="middle" x="56" y="65">✚</text>
+          <text font-family="var(--mono)" font-size="8.4" font-weight="600" letter-spacing="2.4"
+                fill="var(--cruz)">
+            <textPath href="#ring" startOffset="2%">EST. 1941 · US–MX · EL SISTEMA TRANSFRONTERIZO ·</textPath>
+          </text>
+        </svg>
+      </div>
+      <div>
+        <p class="eyebrow">El mejor movimiento</p>
+        <h1>Deja de reelegir el aspecto. Haz que CRUZ actúe.</h1>
+        <p class="dek">CRUZ ya es hermoso y coherente —el trabajo restante no es otra piel, es
+          comportamiento. Este es el movimiento de mayor palanca y el plan para ejecutarlo, sin
+          arriesgar ni un solo número inventado.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ VERDICT ============ -->
+  <div class="verdict">
+    <span class="k">El veredicto, en una línea</span>
+    <p>El techo de CRUZ no es la estética —es que <em>todavía no actúa sobre datos reales</em>.
+      Congela la dirección visual ya aprobada (blanco + rojo) y gasta cada gramo de esfuerzo en
+      hacerlo razonar, conectar un feed vivo y matar los dos números inventados que violan su
+      propia ley.</p>
+    <p class="foot">Seis planes en el repositorio proponen tres paletas distintas. El fundador ya
+      eligió una. La decisión más valiosa que queda no es <em>otra</em> dirección — es la disciplina
+      de no volver a tomarla.</p>
+  </div>
+
+  <!-- ============ 01 — WHERE WE STAND ============ -->
+  <section id="stand">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2>Dónde estamos hoy (honesto)</h2>
+    </div>
+    <p class="lede">Ocho slices enviados en el canon blanco + rojo. La convergencia visual está
+      esencialmente hecha. Lo que queda abierto es exactamente lo que separa <strong>“la demo de
+      aduanas más bella”</strong> de <strong>un producto frontera</strong>.</p>
+
+    <div class="board">
+      <div class="board-scroll">
+        <table>
+          <thead>
+            <tr><th>Superficie / sistema</th><th class="num">Nota</th><th>Estado</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="cell-name">Cimiento + trust loop<small>Cola de decisión · compuerta de firma · deshacer 5 s · copiloto</small></div></td>
+              <td class="score">9.0</td>
+              <td><span class="light ok">Enviado</span></td>
+            </tr>
+            <tr>
+              <td><div class="cell-name">Seis superficies<small>Pedimentos · Expedientes · Facturación · Clientes · Inicio · Embarques</small></div></td>
+              <td class="score">8.4</td>
+              <td><span class="light ok">Enviado</span></td>
+            </tr>
+            <tr>
+              <td><div class="cell-name">Login + globo rojo · a11y<small>Puerta de marca · foco atrapado en modales · bilingüe completo</small></div></td>
+              <td class="score">8.6</td>
+              <td><span class="light ok">Enviado</span></td>
+            </tr>
+            <tr>
+              <td><div class="cell-name">Profundidad de pedimento<small>Clasificación IA · razonamiento · citas legales LIGIE / T-MEC</small></div></td>
+              <td class="score">8.7</td>
+              <td><span class="light ok">Enviado</span></td>
+            </tr>
+            <tr>
+              <td><div class="cell-name">Números inventados<small>Login “99.2%” · ROI del landing — violan la ley de honestidad</small></div></td>
+              <td class="score">—</td>
+              <td><span class="light alert">Viola la ley</span></td>
+            </tr>
+            <tr>
+              <td><div class="cell-name">Razonamiento real<small>El trace corre en un temporizador — ninguna llamada de modelo real</small></div></td>
+              <td class="score">—</td>
+              <td><span class="light warn">Pendiente</span></td>
+            </tr>
+            <tr>
+              <td><div class="cell-name">Feed regulado en vivo<small>Cero fuentes reales — ninguna insignia EN VIVO honesta</small></div></td>
+              <td class="score">—</td>
+              <td><span class="light warn">Pendiente</span></td>
+            </tr>
+            <tr>
+              <td><div class="cell-name">Landing = el foso, dicho<small>Tiene el moat (supervisión) pero apenas lo dice</small></div></td>
+              <td class="score">7.0</td>
+              <td><span class="light warn">Subvende</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="board-foot">
+        Agregado honesto: <span class="n">~8.4</span>. <b>Hermoso y coherente — no todavía frontera</b>,
+        por tres razones que apuntan a una sola causa: no actúa sobre datos reales.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 — THE TRAP ============ -->
+  <section id="trap">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2>La trampa: churn estético</h2>
+    </div>
+    <p class="lede">El mayor riesgo no es una superficie débil. Es que el repositorio contiene
+      <strong>tres direcciones visuales contradictorias</strong>, y cada re-piel reinicia el reloj a
+      cero. El fundador ya resolvió esto en <code>DESIGN.md</code>. La disciplina es el movimiento.</p>
+
+    <div class="trap">
+      <div class="palette chosen">
+        <div class="swatches"><i style="background:#faf8f5"></i><i style="background:#fff"></i><i style="background:#cf3a22"></i><i style="background:#1a1c20"></i></div>
+        <div><div class="nm">Blanco + rojo</div><div class="st live">● Canónico · enviado</div></div>
+        <div class="desc">“El blanco y rojo se ve dope. Hazlo el nuevo 10/10.” — llamada del fundador, jun 2026. Papel cálido, un sello rojo.</div>
+      </div>
+      <div class="palette">
+        <div class="swatches"><i style="background:#0b1622"></i><i style="background:#22d3ee"></i><i style="background:#0c1925"></i><i style="background:#f1f4f9"></i></div>
+        <div><div class="nm">Command center oscuro</div><div class="st dead">○ Superseded</div></div>
+        <div class="desc">Frontier-10: un shell holográfico inmersivo navy/cyan. Bello — pero “lee como igualdad” y lo reemplazó la llamada del fundador.</div>
+      </div>
+      <div class="palette">
+        <div class="swatches"><i style="background:#1a1917"></i><i style="background:#c9a063"></i><i style="background:#faf7f0"></i><i style="background:#5fa46b"></i></div>
+        <div><div class="nm">Latón · herencia</div><div class="st dead">○ Superseded</div></div>
+        <div class="desc">10-Final: grafito + latón + reglas de libro mayor. Un sello de patente encantador — pero es una cuarta re-piel, no un producto que actúa.</div>
+      </div>
+    </div>
+    <p>Todas las buenas ideas de las direcciones descartadas (el sello de latón, la disciplina de una
+      sola CTA, la ley de legibilidad) <strong>sobreviven como componentes dentro del canon blanco +
+      rojo</strong>. No se pierde nada al converger — se pierde tiempo al no converger.</p>
+  </section>
+
+  <!-- ============ 03 — THE ONE MOVE ============ -->
+  <section id="move">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2>El movimiento de mayor palanca</h2>
+    </div>
+    <p class="lede">Cada plan del repositorio, despojado de su disputa de paleta, converge en la misma
+      verdad: el diseño ya está en ~8.4, y el límite es el comportamiento.</p>
+    <div class="move">
+      <h3>El único movimiento que importa</h3>
+      <div class="big">Haz que actúe.</div>
+      <p>Un razonamiento real por carga, un feed regulado vivo, y cero números inventados. Ese es
+        el salto de “parece frontera” a “<strong>es</strong> frontera”. Todo lo demás es pulir una demo.</p>
+    </div>
+  </section>
+
+  <!-- ============ 04 — THE SEQUENCE ============ -->
+  <section id="sequence">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2>La secuencia</h2>
+    </div>
+    <p class="lede">Sin big-bang. Cada paso es enviable por sí solo, verificado en escritorio +
+      375 px, ES + EN. Cada uno lleva una <strong>prueba de aceptación</strong> — “hecho” = la prueba
+      pasa en vivo, no que el trabajo se despachó.</p>
+
+    <div class="spine">
+      <div class="step">
+        <div class="step-idx">PASO 1</div>
+        <div class="step-body">
+          <h3>Parche de honestidad <span class="when">hoy · rápido</span></h3>
+          <p>Mata los dos números inventados (login “99.2%”, ROI del landing) → LIVE / STAGED /
+            honest-empty. Es la corrección más barata y protege la marca cuya ley entera es “nunca
+            inventes un número”.</p>
+          <div class="acc"><b>ACC ▸</b> grep no encuentra stats de éxito/ROI hardcodeados; cada número en
+            pantalla es EN VIVO, POR ACTIVAR, o honesto-vacío.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-idx">PASO 2</div>
+        <div class="step-body">
+          <h3>Haz que razone <span class="when">el ceiling · núcleo</span></h3>
+          <p>Cablea <code>window.claude.complete</code> en el trace del copiloto y en la clasificación,
+            con degradación elegante. El trace deja de correr en un temporizador y empieza a variar por
+            carga real.</p>
+          <div class="acc"><b>ACC ▸</b> el trace difiere por carga; la confianza es real; sin conexión
+            degrada al estado guionado honesto — nunca a uno falso.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-idx">PASO 3</div>
+        <div class="step-body">
+          <h3>Un feed regulado vivo <span class="when">el foso real</span></h3>
+          <p>Conecta el tipo de cambio DOF (público, sin credenciales) → una insignia <b>EN VIVO</b>
+            real con un last-sync real. Un badge honesto vence a diez fingidos.</p>
+          <div class="acc"><b>ACC ▸</b> el badge muestra un timestamp real; si el feed cae, renderiza
+            “Pendiente de sincronización”, nunca lo viejo como fresco.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-idx">PASO 4</div>
+        <div class="step-body">
+          <h3>Procedencia en todas partes</h3>
+          <p>Cada número es tocable → fuente + último sync (extiende el patrón “¿por qué esta fracción?”
+            del pedimento a toda superficie). El what / how / why se vuelve una capa universal, no un
+            muestreo.</p>
+          <div class="acc"><b>ACC ▸</b> tocar cualquier cifra en cualquier superficie abre el popover
+            de origen; funciona en 375 px (tap, no hover).</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-idx">PASO 5</div>
+        <div class="step-body">
+          <h3>El landing dice el foso</h3>
+          <p>Reposiciona el titular al moat: <em>“CRUZ hace la labor; un agente aduanal con licencia
+            sostiene la pluma.”</em> Una sola CTA. Banda de confianza sobre el pliegue (la compuerta,
+            el cancelar de 5 s, la auditoría, el modo sombra).</p>
+          <div class="acc"><b>ACC ▸</b> pasa la prueba de 5 s; una CTA primaria; cero números
+            inventados; contraste AA; 375 px limpio.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-idx">PASO 6</div>
+        <div class="step-body">
+          <h3>Re-sync + artefactos de salida</h3>
+          <p>Sincroniza broker / operador / login al canon a nivel de píxel. Luego el PDF del documento
+            despachado y el correo de estatus, tipografiados y dignos de captura — <strong>el diseño es
+            el canal de adquisición</strong>.</p>
+          <div class="acc"><b>ACC ▸</b> una sola paleta en todas las superficies; el PDF sellado es
+            digno de reenviar (el loop viral hecho tangible).</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 — DEFINITION OF DONE ============ -->
+  <section id="done">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2>Definición de 10/10</h2>
+    </div>
+    <div class="def">
+      <p>Un revisor frío —teléfono y laptop, ES e inglés, como broker, operador, embarcador o prospecto—
+        abre cualquier superficie, ve a CRUZ <strong>razonar sobre datos reales</strong>, toca cualquier
+        número hasta su fuente, nunca encuentra un stat inventado ni una falla de contraste — y el agente
+        aduanal sostiene la <strong>única firma irremplazable</strong>. El sistema alrededor del modelo
+        —no el modelo— es el producto, y es visible, hermosa, honestamente confiable.</p>
+    </div>
+  </section>
+
+  <!-- ============ SIGNOFF ============ -->
+  <div class="signoff">
+    <div class="line">CRUZ prepara; <b>la firma es tuya.</b></div>
+    <div class="stamp">
+      Spanish UI · English code<br>
+      Blanco + rojo · canónico<br>
+      El sistema operativo transfronterizo
+    </div>
+  </div>
+
+</div>
+</div>
