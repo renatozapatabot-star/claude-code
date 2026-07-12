@@ -21,7 +21,12 @@
     .bp-foot h2 { font-size: clamp(26px, 3.4vw, 40px); font-weight: 680; letter-spacing: -.01em; line-height: 1.08; margin: 0 0 14px; }
     .bp-foot h2 b { color: var(--cruz); font-weight: 680; }
     .bp-foot p { color: rgba(255,255,255,.66); font-size: 15px; line-height: 1.6; margin: 0; }
-    .bp-ports { position: relative; display: flex; gap: 22px; padding: 0 40px 40px; flex-wrap: wrap; }
+    .bp-ports { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 0 40px 40px; }
+    .bp-ports-head { display: flex; align-items: center; gap: 12px; }
+    .bp-ports-label { font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: rgba(255,255,255,.5); }
+    .bp-feed { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; color: rgba(255,255,255,.62); background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+    .bp-feed::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.5); flex: 0 0 auto; }
+    .bp-ports-row { display: flex; gap: 22px; flex-wrap: wrap; }
     .bp-port { display: flex; flex-direction: column; gap: 2px; }
     .bp-port .n { font-family: var(--mono); font-size: 13px; font-weight: 600; }
     .bp-port .s { font-size: 11px; color: rgba(255,255,255,.5); }
@@ -75,9 +80,15 @@
         <p data-i18n="loginP">El sistema operativo del cruce. CRUZ prepara cada pedimento — clasificado, validado y costeado. La firma legal es siempre tuya.</p>
       </div>
       <div class="bp-ports">
-        <div class="bp-port"><span class="n">Nuevo Laredo</span><span class="s"><b>38 min</b> · 74% verde</span></div>
-        <div class="bp-port"><span class="n">El Paso</span><span class="s"><b>22 min</b> · 81% verde</span></div>
-        <div class="bp-port"><span class="n">Otay Mesa</span><span class="s">51 min · 60% verde</span></div>
+        <div class="bp-ports-head">
+          <span class="bp-ports-label" data-i18n="portsLabel">Tiempos de cruce</span>
+          <span class="bp-feed" data-i18n="portsStatus">Por activar · ilustrativo</span>
+        </div>
+        <div class="bp-ports-row">
+          <div class="bp-port"><span class="n">Nuevo Laredo</span><span class="s"><b>38 min</b> · 74% verde</span></div>
+          <div class="bp-port"><span class="n">El Paso</span><span class="s"><b>22 min</b> · 81% verde</span></div>
+          <div class="bp-port"><span class="n">Otay Mesa</span><span class="s">51 min · 60% verde</span></div>
+        </div>
       </div>
     </section>
 
@@ -117,8 +128,8 @@
   <script>
     // Minimal bilingual + enter-the-app wiring. Persists language for the app.
     const DICT = {
-      es: { loginH: 'Una sola pregunta:<br><b>¿dónde está mi carga ahora mismo?</b>', loginP: 'El sistema operativo del cruce. CRUZ prepara cada pedimento — clasificado, validado y costeado. La firma legal es siempre tuya.', tagline: 'El Sistema Operativo Transfronterizo', loginTitle: 'Entrar', loginSub: 'Accede a la operación de EVCO · Patente 3801.', loginEmail: 'Correo', loginPass: 'Contraseña', loginForgot: '¿Olvidaste tu contraseña?', loginEnter: 'Entrar', loginOr: 'o continúa con', loginGoogle: 'Continuar con Google', loginMs: 'Continuar con Microsoft', loginEfirma: 'e.firma del SAT · verificada' },
-      en: { loginH: 'One question:<br><b>where is my cargo right now?</b>', loginP: 'The operating system of the crossing. CRUZ prepares every pedimento — classified, validated, costed. The legal signature is always yours.', tagline: 'The Cross-Border Operating System', loginTitle: 'Sign in', loginSub: 'Access the EVCO operation · Patente 3801.', loginEmail: 'Email', loginPass: 'Password', loginForgot: 'Forgot your password?', loginEnter: 'Sign in', loginOr: 'or continue with', loginGoogle: 'Continue with Google', loginMs: 'Continue with Microsoft', loginEfirma: 'SAT e.firma · verified' },
+      es: { loginH: 'Una sola pregunta:<br><b>¿dónde está mi carga ahora mismo?</b>', loginP: 'El sistema operativo del cruce. CRUZ prepara cada pedimento — clasificado, validado y costeado. La firma legal es siempre tuya.', tagline: 'El Sistema Operativo Transfronterizo', loginTitle: 'Entrar', loginSub: 'Accede a la operación de EVCO · Patente 3801.', loginEmail: 'Correo', loginPass: 'Contraseña', loginForgot: '¿Olvidaste tu contraseña?', loginEnter: 'Entrar', loginOr: 'o continúa con', loginGoogle: 'Continuar con Google', loginMs: 'Continuar con Microsoft', loginEfirma: 'e.firma del SAT · verificada', portsLabel: 'Tiempos de cruce', portsStatus: 'Por activar · ilustrativo' },
+      en: { loginH: 'One question:<br><b>where is my cargo right now?</b>', loginP: 'The operating system of the crossing. CRUZ prepares every pedimento — classified, validated, costed. The legal signature is always yours.', tagline: 'The Cross-Border Operating System', loginTitle: 'Sign in', loginSub: 'Access the EVCO operation · Patente 3801.', loginEmail: 'Email', loginPass: 'Password', loginForgot: 'Forgot your password?', loginEnter: 'Sign in', loginOr: 'or continue with', loginGoogle: 'Continue with Google', loginMs: 'Continue with Microsoft', loginEfirma: 'SAT e.firma · verified', portsLabel: 'Crossing times', portsStatus: 'Not yet live · illustrative' },
     };
     let LANG = (() => { try { return localStorage.getItem('cruz.lang') || 'es'; } catch { return 'es'; } })();
     function apply() {

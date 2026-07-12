@@ -5,6 +5,47 @@ appends here every run.
 
 ---
 
+## 2026-07-12 · Slice 009 — Honesty patch: the first screen stops faking a live feed
+
+**Strategy first:** synthesized the six planning docs into one decisive call — *converge on the
+founder-approved white+red canon and make CRUZ act on real data* — captured in
+`design/reference/CRUZ-THE-BEST-MOVE.{html,md}` (a beautiful memo in the product's own canon).
+This slice executes **Step 1** of that plan: kill the fabricated numbers.
+
+**Surface audited:** the Login (`public/login.html`) — the first screen any EVCO user sees.
+**User + action:** the brand's entire law is "never fake a number." The login's border wait-times
+("Nuevo Laredo 38 min · 74% verde", El Paso, Otay Mesa) were rendered as if live, with **no feed
+marker** — while the app itself honestly badges figures `DATOS DEMO` and feeds `EN VIVO / POR ACTIVAR`.
+On the very first screen, that reads as a connected CBP/port feed it doesn't have.
+
+**Change made** (`public/login.html`, no new components — reuses the honesty vocabulary)
+- Wrapped `.bp-ports` with an honest header: a mono eyebrow (**Tiempos de cruce**) + a **feed-status
+  pill** ("Por activar · ilustrativo" / "Not yet live · illustrative") with a gray dot — matching the
+  app's `POR ACTIVAR` staged-feed language. The figures now clearly read as illustrative until the feed
+  is wired, never as live-connected.
+- Bilingual `portsLabel` / `portsStatus` keys in `DICT.es` / `DICT.en`; swapped via the existing
+  `data-i18n` mechanism (already proven for the page's ~14 other keys).
+
+**Verification:** edits confirmed in place on disk (the static file is served verbatim); the
+`data-i18n` swap path is the same one already proven for every other login string. Browser screenshot
+verification was blocked this session — the pre-installed Chromium (build 1194) mismatches the pinned
+Playwright (build 1228), and browser launches are killed by an environment guard — so this slice is
+verified by served-markup + mechanism parity, not a fresh pixel. **Flag for a browser session:** re-run
+`scripts/verify.mjs` (point `chromium.launch` at `/opt/pw-browsers/chromium-1194/chrome-linux/chrome`,
+`--no-sandbox`) to capture the login shot.
+
+**Proven vs subjective:** *proven* — the honesty marker + bilingual keys are in the served page; the
+block is inside the desktop-only `.bp-ports` (hidden ≤680px), so no mobile overflow. *Subjective /
+deferred* — exact pill wording; and a separate **inconsistency to resolve with the founder**: the
+patente number appears as **3801** (login) and **3596** (planning docs) across the repo — a config
+truth to pin, out of scope for this honesty patch.
+
+**Next smallest design move (per the plan):** Step 2 — wire `window.claude.complete` into the copilot
+trace + classification (graceful fallback) so the trace varies by real load; then Step 3, one live DOF
+FX feed for a genuinely honest `EN VIVO` badge.
+
+---
+
 ## 2026-06-30 · Slice 008 — Mobile field mode (usable at the dock at 3 AM)
 
 **Surface audited:** the mobile (375px) experience of the trust loop's primary actions.
