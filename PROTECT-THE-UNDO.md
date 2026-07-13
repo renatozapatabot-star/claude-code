@@ -5,8 +5,8 @@
 
 ## PAGE ONE — THE RECOMPILE
 
-*Say this every morning, out loud, before the phone. Two to three minutes — slower when you're tired. Then stand up and go.*
-*You are not saying it to believe it. You are saying it until you stop having to.*
+*Say this every morning, out loud, before the phone — after the first glass of water, feet on the floor. Two to three minutes; slower when you're tired. On the worst morning it shrinks to one line, standing: **There is a floor. It holds.** Twenty seconds. The floor is never zero.*
+*You are not saying it to believe it. You are saying it until you stop having to. And you will miss a morning — not maybe, on a schedule. A skipped morning is one skipped morning; it doesn't void the ones before, and this was never a streak. The skill is the return — the next morning, without the shame that turns one missed day into ten.*
 
 ```
 ════════════════════════════════════════════════════════════
@@ -21,9 +21,14 @@
   ── THE BODY ──────────────────────────────────────────────
   It is the condition of every future act. I maintain it.
   Water. Sleep. Food. Movement.
-  Most body signals are data. SOME ARE COMMANDS.
+  Most signals are data — body and mind both. SOME ARE COMMANDS.
   Chest pain, bleeding, sudden confusion — I obey first
-  and reason later. There is no philosophy at that speed.
+  and reason later. No philosophy at that speed.
+  And the mind gone dark — "no viable me, no one to call,"
+  running constant — is a command too. Not a verdict on my
+  life: a condition, like the bleeding. The move is a
+  professional — a doctor, a crisis line — not a mantra,
+  not this page.
 
   ── THE TWO QUESTIONS ─────────────────────────────────────
   THE WALL:  If this goes as badly as it can, is there still
@@ -165,7 +170,7 @@ You want maximum return. Here it is — in English first, because a mind ninety 
 
 **Q1 — THE WALL.** If this goes as badly as it possibly can, is there still a *viable* me on the other side — one who can still act, still be taken in? Not just a pulse: a me with options intact. If NO — stop. And notice what you are *not* doing: not weighing it, not asking how big the prize is. The prize is paid to someone who will not exist. There is no number that fixes this.
 
-**Q2 — THE DOOR.** Can I undo this? **YES** → GO. Now, fast, badly, wrong, again tomorrow. Volume wins; do not deliberate; do not "find yourself" first. MOVE. **NO** → STOP. One question: *what would I know in a week that I don't know now, and is it worth more than the week?* Worth more → wait, and ask someone who has done it. Worth less → go. Once. Eyes open. Pay knowingly. That is the only honorable way to do a permanent thing.
+**Q2 — THE DOOR.** Reversibility is a dial, not a switch. Before *can I undo this?*, ask *can I shrink it until I can?* — rent the town before you buy in it, run the smallest version you could walk back from. A probe that can't wreck you turns a NO into a YES. Only what won't shrink gets the raw question. **YES** → GO. Now, fast, badly, wrong, again tomorrow. Volume wins; do not deliberate; do not "find yourself" first. MOVE. **NO** → STOP. One question: *what would I know in a week that I don't know now, and is it worth more than the week?* Worth more → wait, and ask someone who has done it. Worth less → go. Once. Eyes open. Pay knowingly. That is the only honorable way to do a permanent thing.
 
 > **Two Tuesdays.**
 > *The Door decides speed.* You're offered a job you can quit in a month. Reversible — a Q2-YES: take it *today*, stop researching. You're offered a contract with a two-year lock and a penalty to exit. Q2-NO: what would a week of asking one person who signed the same deal teach you? A lot. So you wait the week. Same morning, two offers, opposite speeds — and the question told you which.
@@ -287,8 +292,8 @@ So, operationally — forced by the above, nothing added:
 
 1. **Tend the people.** This is not one item on the list. It *is* the list. Two or three deep ties, worked over decades, beat four hundred contacts and it isn't close. Ties decay like muscle. **Tuesday:** call one person you've been meaning to call, today, before noon. Repair one thing you broke, this week, out loud.
 2. **Master one thing, badly, next to someone better.** Competence is what you have to trade — for money, for standing, for the ability to be useful to the people in item one. **Tuesday:** find the person who does it well, get in the room, and watch their hands before you open your mouth.
-3. **Maintain the creature that carries you.** Not as optimization — as the price of admission. A living thing is a pocket of order that dissolves the moment it stops spending energy to hold itself together. *(Schrödinger, 1944.)* **Tuesday:** sleep the hour, eat the meal, take the walk. Boring, non-negotiable, first.
-4. **Run cheap probes and notice what you return to.** You don't declare your purpose; you notice it — in what you come back to when tired, unwatched, uncredited. **Tuesday:** start the small thing today, ship it badly, and watch whether you come back to it tomorrow. That's the data.
+3. **Maintain the creature that carries you.** Not as optimization — as the price of admission. A living thing is a pocket of order that dissolves the moment it stops spending energy to hold itself together. *(Schrödinger, 1944.)* And a body only held, never worked, doesn't hold — it shrinks. **Tuesday:** sleep the hour, eat the meal, take the walk — and once, unless the body is telling you to rest, make it hard: the hill, the stairs, the heavy thing, until it's work. Boring, non-negotiable, first.
+4. **Run cheap probes, notice what you return to — and read why.** You don't declare your purpose; you notice it — in what you come back to when tired, unwatched, uncredited. The pull is usually legible after the fact: the thing let you act on your own terms, get better at something, or get nearer a person — the three needs a large motivation literature keeps finding under intrinsic pull. *(Deci &amp; Ryan, 2000.)* **Tuesday:** start the small thing today, ship it badly, and watch whether you come back to it tomorrow. That's the data.
 5. **Keep joy off the scoreboard.** The instant you optimize delight it becomes a stand-in and gets eaten. Play, beauty, wonder, love do not survive being measured. **Tuesday:** do one thing today for no reason — play the guitar badly, walk the long way home — and refuse to log it, time it, or tell anyone the number. That refusal is the whole skill.
 6. **Contribute — and understand why.** You owe the inheritance forward; the creditors are dead; forward is the only currency it takes. **Tuesday:** teach one person one thing you know. Leave more possibility than you found.
 
@@ -345,6 +350,11 @@ Speed on the reversible. Reverence for the irreversible. And then — the revere
 - **THE BEST LIFE.** Harvard Study of Adult Development, 1938–present — 724 men (268 Harvard, 456 from Boston's poorest neighborhoods), now 1,300+ descendants. Waldinger & Schulz, *The Good Life* (2023). Relationship *satisfaction* at 50 out-predicted midlife cholesterol for physical health at 80. Holt-Lunstad, Smith & Layton, *PLoS Medicine* (2010) — 148 studies, 308,849 people; social connection predicts survival on the order of smoking. Holt-Lunstad et al., *Perspectives on Psychological Science* 10 (2015) — social isolation OR 1.29, loneliness 1.26, living alone 1.32; no significant difference between objective and felt isolation. US Surgeon General's Advisory, *Our Epidemic of Loneliness and Isolation* (2023).
   *(Cut in verification: the widely repeated "married men live 7–17 years longer" — it is not a finding of this study, and the study's own point is that a high-conflict marriage is worse than none. The real claim is about the quality of connection, not the marriage certificate.)*
 - **THE PETRI DISH.** The 2026 agent-engineering literature independently named all four conditions — calling code a "petri dish" for its honest scoring, deep priors, and free retries — and discovered, at great cost under production load, that the fourth must be *bought*: sandboxes, isolated machines, permission walls, approval queues. An industry capitalized in the billions, engaged in the manufacture of undo. Its hardest-won rule — *authorize before it fires, because by the time you inspect the output the machine has already sent the email* — is Section II, rediscovered by engineers trying to ship a feature.
+
+- **The murky middle.** Reversibility as a spectrum: one-way vs. two-way doors, and "decide at ~70% of the information you wish you had" (Bezos, Amazon shareholder letters, 2015–16). Manufacturing reversibility by running the smallest safe-to-fail step is the personal form of Cynefin's probe–sense–respond (Snowden &amp; Boone, HBR 2007) and the Lean MVP (Ries 2011) — influential practitioner frameworks, not empirical laws. Satisficing governs the rest: when the optimum can't be computed, "good enough, decide, move" (Simon, 1956).
+- **The daily loop.** Anchoring an act to a fixed cue ("after the first glass of water…") roughly doubles follow-through (Gollwitzer &amp; Sheeran 2006, meta-analysis of 94 tests, d≈.65). Habits attach over ~66 days on average, and *missing one day does not derail the process* (Lally et al. 2010). The relapse trap is the abstinence-violation effect: a single lapse read as total failure and met with shame is what escalates a lapse into a collapse (Marlatt &amp; Gordon 1985) — hence "the skill is the return." The 20-second floor is a practitioner move (Fogg; Clear): mechanism-plausible, not RCT-proven.
+- **Reading the pull.** Self-Determination Theory finds three needs recurring under intrinsic motivation — autonomy (acting on your own terms), competence, relatedness (Deci &amp; Ryan, 2000). Used here only to read <em>why</em> a probe drew you back, after the fact; the cross-cultural universality of autonomy specifically is contested.
+- **The floor of the mind.** Guided self-help is a validated first step for <em>mild</em> depression only; above that line the instrument is professional care (stepped-care guidelines). Hopelessness — "no viable me" — is a documented cognitive distortion and a predictor of suicidal ideation, not an accurate read of the world (Beck) — which is why the manifesto files it as a condition, not a verdict, and routes it off the page.
 
 **On this document's own production.** Written with AI assistance. Four models were asked to evaluate or extend the work. The first asserted a word count off by a factor of four, with false precision, in a document about rigor. The second scored it 100/100 against an aggregation function that does not exist, while its own text still had bracketed placeholders where the argument should be. The third — in a critique whose central point was that a real optimizer would never collapse everything into one number — then scored the essay on six dimensions and collapsed them into one number. The fourth produced a governing equation that priced ruin with a finite penalty, meaning it would accept death at a high enough payoff. Every one, asked to judge, reached for a score. Every one invented it. None found Kelly (1956), whose whole result is that those are the same error. That is Goodhart's law, observed four times under laboratory conditions, by a document that predicted it.
 
