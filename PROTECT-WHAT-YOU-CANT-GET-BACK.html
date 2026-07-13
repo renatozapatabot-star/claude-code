@@ -1,0 +1,200 @@
+<title>Protect What You Can't Get Back</title>
+<style>
+  :root{
+    --bg:#f4f2ee; --card:#ffffff; --ink:#1b1b1a; --ink-2:#55534e; --ink-3:#86837c;
+    --line:#e4e1d9; --line-2:#d3cfc5;
+    --accent:#b0402a; --accent-soft:#f3e3de;
+    --go:#2f7d55; --go-soft:#e4f0e8;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --measure:64ch;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#141312; --card:#1c1b19; --ink:#ecebe6; --ink-2:#b3b0a8; --ink-3:#807d75;
+      --line:#2b2926; --line-2:#3a3733;
+      --accent:#e07555; --accent-soft:#2c1a14;
+      --go:#5bbf88; --go-soft:#15271d;
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#f4f2ee; --card:#ffffff; --ink:#1b1b1a; --ink-2:#55534e; --ink-3:#86837c;
+    --line:#e4e1d9; --line-2:#d3cfc5; --accent:#b0402a; --accent-soft:#f3e3de; --go:#2f7d55; --go-soft:#e4f0e8;
+  }
+  :root[data-theme="dark"]{
+    --bg:#141312; --card:#1c1b19; --ink:#ecebe6; --ink-2:#b3b0a8; --ink-3:#807d75;
+    --line:#2b2926; --line-2:#3a3733; --accent:#e07555; --accent-soft:#2c1a14; --go:#5bbf88; --go-soft:#15271d;
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0}
+  .doc{
+    background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased;
+    padding:clamp(28px,6vw,72px) clamp(18px,5vw,32px) 96px;
+  }
+  .wrap{max-width:720px; margin:0 auto}
+  p{max-width:var(--measure)}
+
+  header.top{margin-bottom:36px}
+  .eyebrow{font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:700}
+  h1{font-size:clamp(32px,6vw,50px); line-height:1.04; letter-spacing:-.02em; font-weight:800; margin:.35em 0 .3em; text-wrap:balance}
+  .sub{font-size:17px; color:var(--ink-2); max-width:56ch; line-height:1.5}
+  .start{font-size:17.5px; color:var(--ink); margin-top:26px; line-height:1.6}
+  .start strong{font-weight:700}
+
+  hr.rule{border:0; border-top:1px solid var(--line); margin:40px 0}
+
+  h2{font-size:clamp(21px,3.4vw,26px); line-height:1.15; letter-spacing:-.01em; font-weight:750; margin:0 0 6px; text-wrap:balance}
+  .sec{margin:40px 0}
+  .sec > p{margin:0 0 16px; color:var(--ink-2)}
+  .sec > p strong{color:var(--ink); font-weight:650}
+
+  /* decision block */
+  .decision{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:clamp(20px,4vw,30px); margin:8px 0}
+  .q{margin:0 0 22px}
+  .q:last-child{margin-bottom:0}
+  .q .num{display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:var(--ink); color:var(--card); font-weight:700; font-size:14px; margin-right:10px; vertical-align:middle}
+  .q .ask{font-weight:700; font-size:18.5px; letter-spacing:-.01em; display:inline; color:var(--ink)}
+  .q .gloss{color:var(--ink-2); font-size:15.5px; margin:8px 0 12px; max-width:var(--measure)}
+  .branch{border-left:3px solid var(--line-2); padding:2px 0 2px 16px; margin:10px 0; max-width:var(--measure)}
+  .branch.stop{border-color:var(--accent)}
+  .branch.go{border-color:var(--go)}
+  .tag{font-weight:700; font-size:13px; letter-spacing:.04em; text-transform:uppercase}
+  .tag.stop{color:var(--accent)}
+  .tag.go{color:var(--go)}
+  .branch p{margin:4px 0 0; color:var(--ink-2); font-size:15.5px}
+
+  .pull{font-size:19px; font-weight:650; color:var(--ink); border-left:3px solid var(--accent); padding:2px 0 2px 18px; margin:24px 0; letter-spacing:-.01em; line-height:1.45; max-width:var(--measure)}
+
+  ul.plain{list-style:none; margin:0; padding:0}
+  ul.plain li{position:relative; padding:0 0 0 22px; margin:0 0 16px; color:var(--ink-2); max-width:var(--measure); line-height:1.55}
+  ul.plain li::before{content:""; position:absolute; left:2px; top:11px; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+  ul.plain li strong{color:var(--ink); font-weight:650}
+
+  .card-one{background:var(--accent-soft); border:1px solid color-mix(in srgb,var(--accent) 30%,transparent); border-radius:14px; padding:24px clamp(20px,4vw,28px); margin:44px 0}
+  .card-one .lbl{font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:700; margin-bottom:8px}
+  .card-one .line{font-size:clamp(19px,3vw,23px); font-weight:750; letter-spacing:-.015em; line-height:1.35; color:var(--ink)}
+
+  .sources{margin-top:44px; border-top:1px solid var(--line); padding-top:26px}
+  .sources h2{font-size:18px; color:var(--ink)}
+  .sources p{font-size:14.5px; color:var(--ink-3); max-width:var(--measure)}
+  .sources ul.plain li{font-size:14.5px; color:var(--ink-3)}
+  .sources ul.plain li strong{color:var(--ink-2)}
+  .sources ul.plain li::before{background:var(--ink-3); top:10px}
+
+  a{color:var(--accent)}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:3px}
+  @media (max-width:560px){ .doc{font-size:16px} }
+</style>
+
+<div class="doc">
+<div class="wrap">
+
+  <header class="top">
+    <div class="eyebrow">A plain manual for a life</div>
+    <h1>Protect What You Can't Get Back</h1>
+    <p class="sub">Deciding well, recovering from mistakes, and spending a life. No metaphors, no jargon — just what to do.</p>
+    <p class="start"><strong>Start here.</strong> Almost everything you do can be undone. A few things can't. Get the few right and you can afford to be bold and sloppy about all the rest — which is most of life. That's the whole idea. Most advice tells you how to <em>win</em>; this tells you how to stay in the game long enough that winning stays possible — because you get one life, and the math of one life is not the math of a crowd. A bet that pays off for most people can still wipe out the one person who keeps taking it.</p>
+  </header>
+
+  <section class="sec">
+    <h2>The two questions</h2>
+    <p>Ask them before anything that matters.</p>
+    <div class="decision">
+      <div class="q">
+        <span class="ask"><span class="num">1</span>If this goes as badly as it possibly can, is there still a "me" on the other side who can keep going?</span>
+        <p class="gloss">Not "will I feel bad" — will there still be a version of you with your health, your freedom, your name, and people who'd take you in?</p>
+        <div class="branch stop">
+          <span class="tag stop">If no → stop.</span>
+          <p>Don't weigh it. Don't ask how big the reward is — a reward you won't be around to collect isn't a reward. Total ruin is a <strong>wall</strong>, not a <strong>price</strong>, and that difference matters more than anything else here. A price can be worth paying if the payoff is big enough. A wall can't be — ever, at any payoff. The moment you start pricing ruin, someone (often you) finds a number that makes it look worth it. Don't.</p>
+        </div>
+      </div>
+      <div class="q">
+        <span class="ask"><span class="num">2</span>Can I undo it?</span>
+        <div class="branch go">
+          <span class="tag go">Yes → do it now.</span>
+          <p>Fast, imperfectly, before you feel ready. Try the thing, ask the question, send the message, take the class. If it's reversible, the worst case is a small loss and a lesson — and cheap failure is the most valuable thing you own. Spend it constantly. Almost everyone is far too careful here and calls it wisdom.</p>
+        </div>
+        <div class="branch">
+          <span class="tag">Can you make it smaller?</span>
+          <p>Before you decide something's a "no," ask if you can shrink it until it's a "yes." Rent before you buy. Trial it before you quit. Take a version small enough that a bad result won't wreck you. Most walls are things you didn't shrink first.</p>
+        </div>
+        <div class="branch stop">
+          <span class="tag stop">No → slow down.</span>
+          <p>Ask one honest question: <em>what would I know in a week that I don't know now — and is it worth the wait?</em> If yes, wait, and go find someone who's already done it and ask them. If no, go — once, eyes open, knowing the price. (And the older you get, the less waiting is worth: a lesson you won't live to use is worthless, so later in life you stop waiting sooner.)</p>
+        </div>
+      </div>
+    </div>
+    <p class="pull">Fast on what you can undo. Careful with what you can't. That one line is most of the manual.</p>
+  </section>
+
+  <hr class="rule">
+
+  <section class="sec">
+    <h2>When you break something — and you will</h2>
+    <p>You will hurt people and get things wrong. That's not a risk; it's a certainty, on a schedule. You can't erase it. But you can <strong>answer</strong> it — and answering counts for almost as much as never doing it, sometimes more, because people trust the person who owns a mistake more than the one who never seems to make one.</p>
+    <ul class="plain">
+      <li>Stop the harm. Say plainly what you did — <strong>"I did that"</strong> — to the person's face, without excuses. Fix what can be fixed. Change the thing that led to it. Then show, over time, that the change is real.</li>
+      <li>The mistake isn't the real failure. <strong>Disappearing is.</strong> The apology that never comes, the call you keep meaning to make, the person you avoid because it's awkward now — that's what actually ends things. Not the break. The vanishing.</li>
+    </ul>
+  </section>
+
+  <section class="sec">
+    <h2>Your people are the whole thing</h2>
+    <p>This is not a nice sentiment. The single biggest factor in whether your life is long, healthy, and worth living — larger than money, larger than success — is a few close relationships you tend over time. That's not a saying; it's the clearest finding of the longest study ever run on human lives. And those same people are the only real safety net you have: when you fall, no amount of money or cleverness pulls you out. People do.</p>
+    <ul class="plain">
+      <li>Spend real time on a few of them, on purpose, for years. Two or three deep beats four hundred contacts, and it isn't close.</li>
+      <li>If you have no one right now, that is not a life sentence. A friendship that starts today still counts — it doesn't have to be old to matter. Have one real conversation this week. You're not behind. You're at the start.</li>
+    </ul>
+  </section>
+
+  <section class="sec">
+    <h2>A few more, plainly</h2>
+    <ul class="plain">
+      <li><strong>Keep your word.</strong> It's the one thing fully in your control, and it's how people decide whether to trust you, hire you, lend to you, take you in. If you can't keep a promise, say so <em>early</em>, to their face — a changed plan costs an hour; a broken silence costs the person.</li>
+      <li><strong>Learn from people who've done it.</strong> You didn't invent any of this. The fastest way to get good at anything is to find someone better, watch how they actually do it, and be quiet. A rulebook keeps you a beginner; watching real hands makes you good.</li>
+      <li><strong>Take care of your body.</strong> Sleep, eat, move — it's the entry fee for everything else, not a bonus. Most aches are just information. A few things — chest pain, heavy bleeding, sudden confusion — are commands: get help first, understand it later.</li>
+      <li><strong>Don't chase a single number.</strong> Pick one measure — money, followers, tasks finished, pounds — optimize it hard, and you'll hit the number and lose the thing you actually wanted. The number is never the point, and it can't tell you when it's the wrong number.</li>
+      <li><strong>Leaving is a decision too.</strong> Stuck in a job or relationship you've poured years into? Those years are already gone whether you stay or go — so don't let what you've <em>spent</em> decide it. Choose from where you stand now. (You still owe the people an honest goodbye; the years are yours to write off, the obligations aren't.)</li>
+      <li><strong>When someone won't ever make it right</strong> — or is gone before they could — let the debt go, forward. Not to excuse them: for you. Carrying it just builds a wall around you that keeps everyone else out too.</li>
+      <li><strong>When your own mind goes dark</strong> — when it tells you there's no point, no future, no one — that is the condition talking, not the truth about your life. Treat it exactly like the bleeding: get a doctor, or a crisis line, now. That is not failing at any of this. That is doing it right.</li>
+    </ul>
+  </section>
+
+  <hr class="rule">
+
+  <section class="sec">
+    <h2>The daily part — this is what actually makes it work</h2>
+    <p>Here's the catch: knowing all of this changes nothing. You already knew most of it. The problem was never knowledge — it's that you know it in calm moments and forget it in hot ones: tired, angry, tempted, at 6:40 in the morning with your phone already in your hand. The rule lives in the slow part of your mind; the moment happens in the fast part. Knowing doesn't reach the doing in time. The fix isn't more knowing. It's a small daily habit, repeated until the two questions fire on their own.</p>
+    <ul class="plain">
+      <li><strong>Morning (two minutes — tie it to something you already do, like the first coffee):</strong> run the two questions in your head, and name one thing you expect from the day. On a bad morning, one line is enough: <em>slow down on what I can't take back.</em> The floor is never zero.</li>
+      <li><strong>Night (one minute):</strong> What did I get wrong today? Who do I owe, and what one act answers it — schedule it now. What one thing do I do differently tomorrow?</li>
+      <li><strong>You'll skip days.</strong> Skipping one is just one skipped day; it doesn't erase the ones before, and there's no streak to protect. Come back the next morning. Quitting because you broke a streak is the <em>only</em> way to actually lose the habit.</li>
+      <li><strong>Nothing here is fixed.</strong> If life shows you a line is wrong, life wins — change it that night. A habit you're allowed to correct is a tool; one you can't is a superstition.</li>
+    </ul>
+  </section>
+
+  <section class="sec">
+    <h2>And the last one, which is the hardest</h2>
+    <p>At some point you have to stop planning and <strong>do the thing.</strong> You will always be able to see three more improvements — that never stops; it's just what having a mind is like, and it is not a signal to keep going. People spend entire lives getting ready and call it being careful. Decide with about 70% of what you wish you knew. Then commit — put your name on it, send it, start it, marry them, ship it — and let it become real.</p>
+    <p>That moment, the one you can't take back, is exactly what all the caution was <strong>for.</strong> You protect your ability to recover, for years, precisely so that when the thing genuinely worth doing finally shows up, you can walk right up to it, see clearly that it won't end you, and go.</p>
+  </section>
+
+  <div class="card-one">
+    <div class="lbl">The whole thing in one line, if you forget the rest</div>
+    <div class="line">Protect what you can't get back. Be bold with everything you can. Answer what you break. Keep your people. Then go.</div>
+  </div>
+
+  <section class="sources">
+    <h2>Where this comes from</h2>
+    <p>Everything above is meant to be usable without taking it on faith. The handful of factual claims, in plain terms:</p>
+    <ul class="plain">
+      <li><strong>Why total ruin is a wall, not a price.</strong> In a real experiment, 61 finance and economics students were given a coin secretly weighted 60/40 in their favor and real money to bet over half an hour — a game they almost couldn't lose. Nearly a third bet everything on a single flip at least once and went bust; only about one in five walked away with the maximum. Being right about the odds didn't save them, because one total loss isn't undone by any number of wins after it.</li>
+      <li><strong>Why relationships are the headline, not a footnote.</strong> The Harvard Study of Adult Development followed hundreds of men for over eighty years. How satisfied they were in their close relationships at fifty predicted their physical health at eighty better than their cholesterol did — and better than wealth, IQ, or class.</li>
+      <li><strong>Why loneliness is on this list at all.</strong> Across nearly 150 studies of hundreds of thousands of people, weak social connection raises your risk of dying about as much as smoking does. "Tend your people" is a health instruction, not a greeting card.</li>
+      <li><strong>Why "sleep on it" is real advice.</strong> For a choice you can't undo, waiting has a genuine, measurable value — it's worth roughly what you'd learn by waiting. When there's still something to learn and you can't reverse the move, patience isn't weakness; it's using an option you already own, for free.</li>
+    </ul>
+  </section>
+
+</div>
+</div>
