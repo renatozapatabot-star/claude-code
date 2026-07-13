@@ -7,10 +7,10 @@
 
 ## The two questions — ask them before anything that matters
 
-**1. If this goes as badly as it possibly can, is there still a "me" on the other side who can keep going?**
-Not "will I feel bad" — will there still be a version of you with your health, your freedom, your name, and people who'd take you in?
+**1. Could this — or refusing it — realistically put a "me" on the other side who can't keep going?**
+Not the worst thing imaginable (almost anything *can* end in disaster if you chase the tail) — a real, avoidable chance of losing your health, your freedom, your name, or the people who'd take you in. And ask it of doing nothing, too: waiting can close a door as surely as acting.
 
-- **If no → stop.** Don't weigh it. Don't ask how big the reward is. A reward you won't be around to collect isn't a reward. This is the one place you refuse to do the math. Total ruin is a *wall*, not a *price* — and the difference matters more than anything else here. A price can always be worth paying if the payoff is big enough. A wall can't be, ever, at any payoff. The moment you start pricing ruin, someone (often you) will find a number that makes it look worth it. Don't.
+- **If yes → stop.** Don't weigh it. Don't ask how big the reward is. A reward you won't be around to collect isn't a reward. This is the one place you refuse to do the math. Total ruin is a *wall*, not a *price* — and the difference matters more than anything else here. A price can always be worth paying if the payoff is big enough. A wall can't be, ever, at any payoff. The moment you start pricing ruin, someone (often you) will find a number that makes it look worth it. Don't.
 
 **2. Can I undo it?**
 
@@ -33,7 +33,7 @@ You will hurt people and get things wrong. That's not a risk; it's a certainty, 
 
 ## Your people are the whole thing
 
-This is not a nice sentiment. The single biggest factor in whether your life is long, healthy, and worth living — larger than money, larger than success — is a few close relationships you tend over time. That's not a saying; it's the clearest finding of the longest study ever run on human lives. And those same people are the only real safety net you have: when you fall, no amount of money or cleverness pulls you out. People do.
+This is not a nice sentiment. The single biggest factor in whether your life is long, healthy, and worth living — larger than money, larger than success — is a few close relationships you tend over time. That's not a saying; it's the clearest finding of the longest study ever run on human lives. And safe, reciprocal people are the deepest safety net there is — the kind no money, medicine, or cleverness can replace: when you fall, they're what pulls you out. (Not every tie counts. One that takes your freedom or safety instead of guarding it isn't a safety net — it's the fall.)
 
 - So spend real time on a few of them, on purpose, for years. Two or three deep beats four hundred contacts, and it isn't close.
 - If you have no one right now, that is not a life sentence. A friendship that starts today still counts — the connection doesn't have to be old to matter. Have one real conversation this week. You're not behind. You're at the start.
@@ -82,7 +82,7 @@ That moment, the one you can't take back, is exactly what all the caution was *f
 
 Everything above is meant to be usable without taking it on faith. The handful of empirical claims, in plain terms:
 
-- **Why total ruin is a wall, not a price.** In a real experiment, 61 finance and economics students were given a coin secretly weighted 60/40 in their favor and real money to bet over half an hour — a game they almost couldn't lose. Nearly a third bet everything on a single flip at least once and went bust; only about one in five walked away with the maximum. Being right about the odds didn't save them, because one total loss isn't undone by any number of wins after it.
+- **Why total ruin is a wall, not a price.** In a real experiment, 61 finance and economics students were given a coin secretly weighted 60/40 in their favor and real money to bet over half an hour — a game the odds were built to let them win, one a steady bettor was overwhelmingly likely to come out ahead on. Instead, nearly a third bet everything on a single flip at least once and went bust; only about one in five walked away with the maximum. Being right about the odds didn't save them, because one total loss isn't undone by any number of wins after it.
 - **Why relationships are the headline, not a footnote.** The Harvard Study of Adult Development followed hundreds of men for over eighty years. How satisfied they were in their close relationships at fifty predicted their physical health at eighty better than their cholesterol did — and better than wealth, IQ, or class.
 - **Why loneliness is on this list at all.** Across nearly 150 studies of hundreds of thousands of people, weak social connection raises your risk of dying about as much as smoking does. "Tend your people" is a health instruction, not a greeting card.
 - **Why "sleep on it" is real advice.** For a choice you can't undo, waiting has a genuine, calculable value: it's worth roughly what you'd learn by waiting. When there's still something to learn and you can't reverse the move, patience is not weakness — it's using an option you already own for free.
