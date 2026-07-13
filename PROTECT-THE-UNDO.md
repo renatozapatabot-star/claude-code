@@ -5,7 +5,7 @@
 
 ## PAGE ONE — THE RECOMPILE
 
-*Say this every morning, out loud, before the phone. About two minutes. Then stand up and go.*
+*Say this every morning, out loud, before the phone. Two to three minutes — slower when you're tired. Then stand up and go.*
 *You are not saying it to believe it. You are saying it until you stop having to.*
 
 ```
@@ -91,6 +91,7 @@
 
   — AT NIGHT — (one minute, one line written down)
 
+  Did I run the Wall and the Door before I acted, or skip them?
   What did I expect? What happened? Where was I wrong?
   Who do I owe, and what is the answering act? Schedule it.
   What one line changes tomorrow?
@@ -130,7 +131,7 @@ So the question was never *can I run this year's machine on my life.* It is: **c
 
 ## II. WHY IT CANNOT RUN ON YOU
 
-Hold your life against the list. Be savage; sentimentality here kills you slower but just as dead.
+Hold your life against the list honestly — the comforting read is the one that costs you.
 
 **1. There is no score.** What is the score of a human life? Happiness? Then plug into the machine that gives you any experience you want while you float in a tank believing you are writing the novel, holding the child, being loved — perfectly, forever, and you never know. Almost nobody would. Because we do not want the *experience* of doing things. We want to *do* them. Pleasure is not the number; the tank is an infinite score and you don't want it. *(Nozick called it the experience machine, in 1974. He was right, and it has only gotten more literal.)*
 
@@ -168,7 +169,7 @@ You want maximum return. Here it is — in English first, because a mind ninety 
 
 > **Two Tuesdays.**
 > *The Door decides speed.* You're offered a job you can quit in a month. Reversible — a Q2-YES: take it *today*, stop researching. You're offered a contract with a two-year lock and a penalty to exit. Q2-NO: what would a week of asking one person who signed the same deal teach you? A lot. So you wait the week. Same morning, two offers, opposite speeds — and the question told you which.
-> *The Wall decides whether you play at all.* You have people who depend on you and no second stake, and you're offered the disclosed 60/40 coin and want to bet the house. If it comes up tails, is there a viable you on the far side — one who can still feed them, still be taken in? No. So you don't price the prize, however good the odds look. You stop. The wall is not death; it is the loss of the you who can still act.
+> *The Wall decides whether you play at all.* You have people who depend on you and no money to fall back on, and you're offered the disclosed 60/40 coin and want to bet the house. If it comes up tails, is there a viable you on the far side — one who can still feed them, still be taken in? No. So you don't price the prize, however good the odds look. You stop. The wall is not death; it is the loss of the you who can still act.
 
 **Receipt one: why the wall is a wall and not a weight.** Seventy years ago, at Bell Labs — where Claude Shannon had just invented information theory — John Kelly proved something that should be taught to children: if you maximize your *expected winnings*, you go broke, given enough time, with certainty. Because expected value is a fact about a thousand people playing once; you are one person playing a thousand times, and the difference will kill you. His fix — maximize not what you win but the *rate at which you compound* — makes zero infinitely bad. Not very bad. Infinitely. A man following it will not bet his whole stack no matter how good the odds, because the arithmetic won't permit it. *(Kelly 1956; Breiman 1961 proved it beats every essentially different strategy.)*
 
@@ -178,19 +179,7 @@ And if you think this is obvious: sixty-one people trained in finance and econom
 
 **Receipt two: why waiting has a price.** In 1974, two papers in two fields, with no contact, proved the same thing: when an act cannot be undone, the future is uncertain, and waiting would teach you something — then waiting is worth money. One named it with no poetry: the *irreversibility effect.* And the value of holding off is roughly the value of what you'd learn by waiting. *(Arrow & Fisher 1974; Henry 1974; Conrad 1980. Later work refines the exact identity; the direction never moves — information you could still get has value, and committing early throws it away.)* So when I tell you to sleep on it, that is not a mood, and not me being careful with your life. It is you exercising an option you already own and didn't know you were holding. It costs nothing. Almost nobody uses it.
 
-**And the two receipts are one receipt.** Kelly's paper isn't titled *How to Gamble.* It's *A New Interpretation of Information Rate* — because the fastest rate at which one person can compound turns out to be the same quantity as the rate at which a line can carry information without error. Think of the world as a channel — a pipe that pieces of truth come down, some of them noise. Both halves of the equation are about that pipe: the reckless half fills it as fast as it will run; the reverent half refuses to cut it.
-
-```
-  ══════════════════════════════════════════════════
-   SPEED ON THE REVERSIBLE   = pull truth down the pipe
-                               as fast as it will come.
-   REVERENCE FOR THE         = never sever the pipe
-   IRREVERSIBLE                before you have to commit.
-   PROTECT THE UNDO          = keep the pipe open.
-  ══════════════════════════════════════════════════
-```
-
-A life run well is that pipe, worked at the fastest rate it will bear, by someone who never lets the flow reach zero. I derived none of it; it was all published before I woke up, one question away the whole time. Which was *watch someone who already knows.* Which was on Page One.
+**And the two receipts are one receipt.** Kelly's paper isn't titled *How to Gamble.* It's *A New Interpretation of Information Rate* — because the fastest rate at which one person can compound turns out to be the same quantity as the rate at which a line can carry information without error. Think of the world as a channel — a pipe down which pieces of truth come, some of them noise. Both halves of the equation are about that pipe: the reckless half fills it as fast as it will run; the reverent half refuses to cut it. A life run well is that pipe, worked at the fastest rate it will bear, by someone who never lets the flow reach zero. I derived none of it; it was all published before I woke up, one question away the whole time. Which was *watch someone who already knows.* Which was on Page One.
 
 ## IV. THE OPERATING SYSTEM
 
@@ -274,11 +263,11 @@ What's left is the log. You are an add-only log; every act an entry, all permane
 
 **What most people are actually afraid of is the wrong thing.** You are afraid of failing. But failure — really trying at something hard enough to break on — is rare, and survivable, and honest work. Something quieter happens far more often, and it is worse: **the log does not close.** The debts get incurred and the answering entries never get written — not out of malice, out of Tuesday. Out of the call that was going to happen next week, and then next week, and then it was eleven years, and then there was a funeral and the thing got said to a box.
 
-And here is the part the document owes you, because it is the exact wound it just named: **when the creditor is already gone — when the person you owed died before you answered — the debt does not vanish, and it does not trap you forever.** It re-addresses. You answer the dead the same way you answer the ancestors whose hands you inherited and can never repay: *forward.* The call you never made becomes a call you make to someone else who needs it. The patience you never showed him becomes patience you show her. The log still closes — just not at the line where you opened it. That is not a loophole. It is the only mechanism there has ever been for a grief that cannot be paid back directly, and it is real, and it is available to you tonight.
+And here is the part the document owes you, because it is the exact wound it just named: **when the creditor is already gone — when the person you owed died before you answered, whether the debt was a call you failed to make or a harm you cannot undo — the debt does not vanish, and it does not trap you forever.** It re-addresses. You answer the dead the same way you answer the ancestors whose hands you inherited and can never repay: *forward.* The call you never made becomes a call you make to someone else who needs it. The patience you never showed him becomes patience you show her. The log still closes — just not at the line where you opened it. That is not a loophole. It is the only mechanism there has ever been for a grief that cannot be paid back directly, and it is real, and it is available to you tonight.
 
 Most lives are not failures. Most lives are *unanswered* — and the answer, even to the unreachable, is still yours to write.
 
-Because notice who reads the log. Nobody but the people who were in it — once, out loud, in a room, badly, for about eleven minutes. And notice what they say. In the whole history of the species, nobody has ever stood at a funeral and read out a metric. Nobody said his throughput was exceptional, or he was top decile, or he maximized. Not because it would be tasteless — because it would not be *about anything.* What they say, in every language, at every funeral ever held: *He came when I called. He kept his word. He said he was sorry and meant it. He paid it back. He was there.* Those are answering entries, read out loud. That is what a eulogy is — the log, executed once, by the only people with standing to run it, returning one thing: whether the later lines answered the earlier ones. You will never see the output. That is the deal, the same one for everyone who ever lived. And the only copy is held by them. Not the machine, not the market, not the metric. Them.
+Because notice who reads the log. Nobody but the people who were in it — once, out loud, in a room, badly, for a few minutes. And notice what they say. In the whole history of the species, nobody has ever stood at a funeral and read out a metric. Nobody said his throughput was exceptional, or he was top decile, or he maximized. Not because it would be tasteless — because it would not be *about anything.* What they say, in every language, at every funeral ever held: *He came when I called. He kept his word. He said he was sorry and meant it. He paid it back. He was there.* Those are answering entries, read out loud. That is what a eulogy is — the log, executed once, by the only people with standing to run it, returning one thing: whether the later lines answered the earlier ones. You will never see the output. That is the deal, the same one for everyone who ever lived. And the only copy is held by them. Not the machine, not the market, not the metric. Them.
 
 ## VII. THE BEST LIFE
 
@@ -288,11 +277,11 @@ I won't hand you a list — cultivate love, mastery, curiosity, play, wonder. Ev
 
 Success is an answered log. So: **what creates a debt worth answering?** The inheritance — from someone. The damage — to someone. The word — to someone. You cannot inherit from no one, damage no one, promise to no one. **Every debt in the ledger requires another person.** So a man alone in a room, harming nobody, owing nobody, promising nobody, does not have a clean log. He has an *empty* one — a blank page where a life was supposed to be. The conclusion is forced, and it isn't sentimental: the best life is not the one with the fewest debts. It is the one with the most *answered* ones — the deepest web of tended ties, not the widest.
 
-**And reality confirms it.** In 1938 Harvard began following 724 men — 268 undergraduates and 456 boys from the poorest neighborhoods in Boston — and tracked them for eighty-five years: medical records, brain scans, marriages, regrets, now more than 1,300 of their descendants. It is one of the longest studies of human life ever run, and it was built to answer exactly the question you're asking this morning. The finding: the strength of your close relationships predicts how happy and how healthy you'll be in old age better than wealth, IQ, social class, or genes. And the line to sit with: when they gathered everything they knew about these men at fifty, it was not their cholesterol that predicted who'd be healthy at eighty — it was how satisfied they were in their relationships. The most satisfied at fifty were the healthiest at eighty. A further 148 studies across 300,000 people put the effect of connection on survival on the order of quitting smoking. *(Waldinger & Schulz, The Good Life, 2023; Holt-Lunstad et al., 2010.)*
+**And reality confirms it.** In 1938 Harvard began following 724 men — 268 undergraduates and 456 boys from the poorest neighborhoods in Boston — and tracked them for over eight decades: medical records, brain scans, marriages, regrets, now more than 1,300 of their descendants. It is one of the longest studies of human life ever run, and it was built to answer exactly the question you're asking this morning. The finding: the strength of your close relationships predicts how happy and how healthy you'll be in old age better than wealth, IQ, social class, or genes. And the line to sit with: when they gathered everything they knew about these men at fifty, it was not their cholesterol that predicted who'd be healthy at eighty — it was how satisfied they were in their relationships. The most satisfied at fifty were the healthiest at eighty. A further 148 studies across 300,000 people put the effect of connection on survival on the order of quitting smoking. *(Waldinger & Schulz, The Good Life, 2023; Holt-Lunstad et al., 2010.)*
 
 **Now look at what happened.** Back in Section II, "don't burn the people who would take you in" was *defensive* — cold, structural risk management, because other people are your only rollback. And the best data ever collected on human life comes back and says those same people are the single largest determinant of whether the life was worth having at all. **The thing that keeps you from dying is the same thing that makes the living good. The safety layer and the reward layer are the same layer.** That is the finding. You do not have to choose between the safe life and the rich one. The equation that keeps you alive is the equation that makes it worth staying.
 
-And if you are reading this with no one to call — if the ties "worked over decades" are a door that looks already closed — read the finding again, because it cuts your way too: *felt* isolation and *actual* isolation carry nearly the same risk, which means the ties don't have to be old to count. A tie that starts today is a real entry. The from-zero move is the same "go fast on the reversible" logic pointed at connection: one conversation, one stranger, this week. You are not behind. You are at the first line.
+And if you are reading this with no one to call — if the ties "worked over decades" are a door that looks already closed — read the finding again, because it cuts your way too: what drives the risk is how alone you *feel*, and a tie that starts today lowers that today. The log does not care how old the line is. The from-zero move is the same "go fast on the reversible" logic pointed at connection: one conversation, one stranger, this week. You are not behind. You are at the first line.
 
 So, operationally — forced by the above, nothing added:
 
