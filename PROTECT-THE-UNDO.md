@@ -79,6 +79,12 @@
   Accountability. Repair. Shared agency.
   I hold these at any price — because each one keeps me
   correctable, and everything else I am free to change.
+  When two of them collide, I don't price them either.
+  I ask which breach forecloses — leaves someone, them or
+  me, unable to act or return — and which I can still answer.
+  I keep the one I can't take back; I spend the one I can
+  repair. The foreclosing breach is the wall; the other,
+  the weight.
 
   ── MUTATE THE MAP ────────────────────────────────────────
   Every belief, plan, habit, and definition of success —
@@ -170,7 +176,9 @@ You want maximum return. Here it is — in English first, because a mind ninety 
 
 **Q1 — THE WALL.** If this goes as badly as it possibly can, is there still a *viable* me on the other side — one who can still act, still be taken in? Not just a pulse: a me with options intact. If NO — stop. And notice what you are *not* doing: not weighing it, not asking how big the prize is. The prize is paid to someone who will not exist. There is no number that fixes this.
 
-**Q2 — THE DOOR.** Reversibility is a dial, not a switch. Before *can I undo this?*, ask *can I shrink it until I can?* — rent the town before you buy in it, run the smallest version you could walk back from. A probe that can't wreck you turns a NO into a YES. Only what won't shrink gets the raw question. **YES** → GO. Now, fast, badly, wrong, again tomorrow. Volume wins; do not deliberate; do not "find yourself" first. MOVE. **NO** → STOP. One question: *what would I know in a week that I don't know now, and is it worth more than the week?* Worth more → wait, and ask someone who has done it. Worth less → go. Once. Eyes open. Pay knowingly. That is the only honorable way to do a permanent thing.
+**Q2 — THE DOOR.** Reversibility is a dial, not a switch. Before *can I undo this?*, ask *can I shrink it until I can?* — rent the town before you buy in it, run the smallest version you could walk back from. A probe that can't wreck you turns a NO into a YES. Only what won't shrink gets the raw question. **YES** → GO. Now, fast, badly, wrong, again tomorrow. Volume wins; do not deliberate; do not "find yourself" first. MOVE. **NO** → STOP. One question: *what would I know in a week that I don't know now, and is it worth more than the week?* — and the week costs more as the runway shortens, because a lesson you won't live to spend is worth nothing, so when little remains you stop waiting and go. Worth more → wait, and ask someone who has done it. Worth less → go. Once. Eyes open. Pay knowingly. That is the only honorable way to do a permanent thing.
+
+And getting *out* is a Door too. What you already spent is written — add-only, unrecoverable — so it cannot price the next line. The wrong career, the wrong marriage: the decade is gone either way, whether you stay or leave. Ask the Door forward, from here — never from what it cost.
 
 > **Two Tuesdays.**
 > *The Door decides speed.* You're offered a job you can quit in a month. Reversible — a Q2-YES: take it *today*, stop researching. You're offered a contract with a two-year lock and a penalty to exit. Q2-NO: what would a week of asking one person who signed the same deal teach you? A lot. So you wait the week. Same morning, two offers, opposite speeds — and the question told you which.
@@ -272,6 +280,8 @@ And here is the part the document owes you, because it is the exact wound it jus
 
 Most lives are not failures. Most lives are *unanswered* — and the answer, even to the unreachable, is still yours to write.
 
+And the mirror holds. A debt owed *to* you and never paid — someone gone, or someone who won't — closes the same way you answer the dead: released forward, not extracted and not erased. Acceptance was never the part you controlled; the release is. Carried instead, it becomes a wall you build around your own ties — the one thing you cannot afford. That release has an old name, and it is the undo, reversed.
+
 Because notice who reads the log. Nobody but the people who were in it — once, out loud, in a room, badly, for a few minutes. And notice what they say. In the whole history of the species, nobody has ever stood at a funeral and read out a metric. Nobody said his throughput was exceptional, or he was top decile, or he maximized. Not because it would be tasteless — because it would not be *about anything.* What they say, in every language, at every funeral ever held: *He came when I called. He kept his word. He said he was sorry and meant it. He paid it back. He was there.* Those are answering entries, read out loud. That is what a eulogy is — the log, executed once, by the only people with standing to run it, returning one thing: whether the later lines answered the earlier ones. You will never see the output. That is the deal, the same one for everyone who ever lived. And the only copy is held by them. Not the machine, not the market, not the metric. Them.
 
 ## VII. THE BEST LIFE
@@ -296,6 +306,8 @@ So, operationally — forced by the above, nothing added:
 4. **Run cheap probes, notice what you return to — and read why.** You don't declare your purpose; you notice it — in what you come back to when tired, unwatched, uncredited. The pull is usually legible after the fact: the thing let you act on your own terms, get better at something, or get nearer a person — the three needs a large motivation literature keeps finding under intrinsic pull. *(Deci &amp; Ryan, 2000.)* **Tuesday:** start the small thing today, ship it badly, and watch whether you come back to it tomorrow. That's the data.
 5. **Keep joy off the scoreboard.** The instant you optimize delight it becomes a stand-in and gets eaten. Play, beauty, wonder, love do not survive being measured. **Tuesday:** do one thing today for no reason — play the guitar badly, walk the long way home — and refuse to log it, time it, or tell anyone the number. That refusal is the whole skill.
 6. **Contribute — and understand why.** You owe the inheritance forward; the creditors are dead; forward is the only currency it takes. **Tuesday:** teach one person one thing you know. Leave more possibility than you found.
+
+One honest edge, named because the vanishing is the sin. This ledger tracks what touches you. What you owe the stranger who can never be your undo — the drowning man, the ones your comfort quietly rests on — this page cannot derive, so it does not claim to cover it. That debt is real; this is just not the tool that finds it. Silent there, not against.
 
 ## VIII. WHY YOU HEAR THIS EVERY MORNING
 
