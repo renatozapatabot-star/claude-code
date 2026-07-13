@@ -5,7 +5,7 @@
 
 ## PAGE ONE — THE RECOMPILE
 
-*Say this every morning, out loud, before the phone — after the first glass of water, feet on the floor. Two to three minutes; slower when you're tired. On the worst morning it shrinks to one line, standing: **There is a floor. It holds.** Twenty seconds. The floor is never zero.*
+*Say this every morning, out loud, before the phone — after the first glass of water, feet on the floor. Three to four minutes; slower when you're tired. On the worst morning it shrinks to one line, standing: **There is a floor. It holds.** Twenty seconds. The floor is never zero.*
 *You are not saying it to believe it. You are saying it until you stop having to. And you will miss a morning — not maybe, on a schedule. A skipped morning is one skipped morning; it doesn't void the ones before, and this was never a streak. The skill is the return — the next morning, without the shame that turns one missed day into ten.*
 
 ```
