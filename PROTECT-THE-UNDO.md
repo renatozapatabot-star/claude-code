@@ -5,7 +5,7 @@
 
 ## PAGE ONE — THE RECOMPILE
 
-*Say this every morning, out loud, before the phone — after the first glass of water, feet on the floor. Three to four minutes; slower when you're tired. On the worst morning it shrinks to one line, standing: **There is a floor. It holds.** Twenty seconds. The floor is never zero.*
+*Say this every morning, out loud, before the phone — after the first glass of water, feet on the floor. Three to four minutes; slower when you're tired. On the worst morning it shrinks to one line, standing: **There is a floor. It holds.** Twenty seconds. And the floor can be one line — or, some mornings, silence. This is practice, not penance; the tool serves the life, never the reverse.*
 *You are not saying it to believe it. You are saying it until you stop having to. And you will miss a morning — not maybe, on a schedule. A skipped morning is one skipped morning; it doesn't void the ones before, and this was never a streak. The skill is the return — the next morning, without the shame that turns one missed day into ten.*
 
 ```
@@ -29,6 +29,9 @@
   life: a condition, like the bleeding. The move is a
   professional — a doctor, a crisis line — not a mantra,
   not this page.
+  And when I'm drunk, sleepless, panicked, manic, or losing
+  touch, I am not the only judge. Unless safety needs it now,
+  no irreversible move — I stabilize and bring in a sober mind.
 
   ── THE TWO QUESTIONS ─────────────────────────────────────
   THE WALL:  Does this — or refusing it — open a real,
@@ -60,8 +63,9 @@
   ── THE PEOPLE ────────────────────────────────────────────
   They are my deepest undo — the one no money, no tool,
   no version of me alone in a room can manufacture.
-  The safe, reciprocal ones; a tie that takes my agency
-  instead of guarding it is not owed my whole self.
+  The safe, reciprocal ones. A tie built on fear, control, or
+  punishment for saying no is a Wall, not a floor — tending
+  doesn't mean staying, and a promise forced from me is no debt.
   They are also the largest reason the life was worth having.
   So I do not spend the good ones. I tend them.
 
@@ -75,6 +79,15 @@
   I cannot erase it. So I write the line that answers it.
   Not the apology — THE ACT. The record keeps both.
   That is the undo.
+
+  ── THE OTHER FLOOR ───────────────────────────────────────
+  Whose door closes so mine stays open? A stranger, a worker,
+  a child, someone with less power or no vote in the room.
+  An undo I buy by foreclosing theirs is counterfeit; a
+  rollback exported to someone else is not a rollback.
+  I run the Wall both ways — for me, and for them.
+  My future self is in the log too; I don't spend his agency
+  just because he can't object tonight.
 
   ── KEEP THE KERNEL ───────────────────────────────────────
   Life. Truth. Consent. Dignity.
@@ -199,6 +212,14 @@ And if you think this is obvious: sixty-one people trained in finance and econom
 
 One caveat the document owes you, by its own rule that hiding a limit is the sin. Kelly's math is a bankroll's, and your life is not a bankroll: it has no single number that compounds, its odds change as you play, and its goods don't trade for one currency. So I borrow Kelly for exactly one thing — ruin is non-recoverable, so it can't be priced — and for nothing else. The wall transfers. "Growing a score" does not; there is no score. Wherever any of this reads like a theory of your whole life, it has overreached — keep the wall, and drop the rest.
 
+## THE RETURN
+
+One correction to the word, and it sharpens everything. What you protect is not literal *reversibility* — you rarely un-happen an act. It is **returnability**: keeping a path back to a state where you can still act and be taken in. (Control theory has a name for the set of states from which some acceptable future stays reachable — the *viability kernel*; safe-exploration research makes a machine keep a way home before it wanders out. Same instruction, older than both.)
+
+So before a hard move, name three things: the **home state** — what "still okay" means afterward; the **way back** — how you actually return if it fails or you change your mind; and the **reserve** — what absorbs the surprise while you do it: cash, sleep, health, time, trust, skill, people. If you can't name the way back, you aren't exploring. You're drifting.
+
+And ask the *pattern*, not just the act. A thing you can undo once becomes a wall through dose and repetition — one drink, one skipped call, one small lie. So the second question isn't only *can I undo this?* It is ***what happens if this becomes Tuesday?*** The Wall is the boundary, the Door is the way back, and the reserve is the distance between them.
+
 ## IV. THE OPERATING SYSTEM
 
 Good code is short — not because short is elegant, but because every line is a liability. The document you were handed had seven modules and thirty calls. Its length was not richness. Its length was fear, dressed as thoroughness.
@@ -244,16 +265,21 @@ So the premise was slightly wrong, and fixing it makes the whole thing true. You
 ```
   repair() {
     stop_the_harm();
-    say_it_plainly();            // no euphemism. "I did that."
-                                //   to a face you have to keep looking at.
-    restore_what_can_be_restored();
-    change_the_standing_rule();  // not the apology — the rule that makes
-                                //   the same failure structurally harder.
+    secure_their_safety();       // first — before anything about you.
+    name_the_act_and_impact();   // no euphemism, no "but." "I did that."
+    take_responsibility();
+    offer_restitution();         // offered, never imposed.
+    respect_their_boundary();    // including silence, distance, no contact.
+    accept_the_consequences();
+    change_the_standing_rule();  // the rule that makes the same
+                                //   failure structurally harder.
     prove_it_over_time();        // the only proof anyone accepts, correctly.
   }
 ```
 
 > **A Tuesday.** You snapped at someone you love at dinner. *stop:* you stop mid-sentence. *say:* "I did that. It was mine, not yours." *restore:* you get up and finish the thing you'd refused to do. *change the standing rule:* "I don't relitigate money after ten p.m." — the rule that makes this exact failure harder to repeat. *prove it:* the next three late-night flashpoints, you table it, and they watch you table it. That is the answering entry, written by hand.
+
+And repair is **offered, never imposed.** The person you harmed owes you no reply, no meeting, no forgiveness, no return — you do not get to make them supervise your reform. An answering entry is not a receipt stamped PAID; some harms don't balance, and repair is the conduct still open to you, not closure you award yourself. Sometimes the repair *is* the distance.
 
 ## VI. SUCCESS IS AN ANSWERED LOG
 
@@ -281,7 +307,7 @@ What's left is the log. You are an add-only log; every act an entry, all permane
 
 **What most people are actually afraid of is the wrong thing.** You are afraid of failing. But failure — really trying at something hard enough to break on — is rare, and survivable, and honest work. Something quieter happens far more often, and it is worse: **the log does not close.** The debts get incurred and the answering entries never get written — not out of malice, out of Tuesday. Out of the call that was going to happen next week, and then next week, and then it was eleven years, and then there was a funeral and the thing got said to a box.
 
-And here is the part the document owes you, because it is the exact wound it just named: **when the creditor is already gone — when the person you owed died before you answered, whether the debt was a call you failed to make or a harm you cannot undo — the debt does not vanish, and it does not trap you forever.** It re-addresses. You answer the dead the same way you answer the ancestors whose hands you inherited and can never repay: *forward.* The call you never made becomes a call you make to someone else who needs it. The patience you never showed him becomes patience you show her. The log still closes — just not at the line where you opened it. That is not a loophole. It is the only mechanism there has ever been for a grief that cannot be paid back directly, and it is real, and it is available to you tonight.
+And here is the part the document owes you, because it is the exact wound it just named: **when the creditor is already gone — when the person you owed died before you answered, whether the debt was a call you failed to make or a harm you cannot undo — the debt does not vanish, and it does not trap you forever.** It re-addresses. You answer the dead the same way you answer the ancestors whose hands you inherited and can never repay: *forward.* The call you never made becomes a call you make to someone else who needs it. The patience you never showed him becomes patience you show her. Forward action can *honor* the debt; it does not *settle* it — what you give her is not restitution to him, and his line stays open. But the answer is still worth writing, and a life need not rot because one line cannot close. That is not a loophole; it is the only thing there has ever been for a grief that cannot be paid back directly, and it is real, and it is available to you tonight.
 
 Most lives are not failures. Most lives are *unanswered* — and the answer, even to the unreachable, is still yours to write.
 
@@ -289,13 +315,13 @@ And the mirror holds. A debt owed *to* you and never paid — someone gone, or s
 
 Because notice who reads the log. Nobody but the people who were in it — once, out loud, in a room, badly, for a few minutes. And notice what they say. In the whole history of the species, nobody has ever stood at a funeral and read out a metric. Nobody said his throughput was exceptional, or he was top decile, or he maximized. Not because it would be tasteless — because it would not be *about anything.* What they say, in every language, at every funeral ever held: *He came when I called. He kept his word. He said he was sorry and meant it. He paid it back. He was there.* Those are answering entries, read out loud. That is what a eulogy is — the log, executed once, by the only people with standing to run it, returning one thing: whether the later lines answered the earlier ones. You will never see the output. That is the deal, the same one for everyone who ever lived. And the only copy is held by them. Not the machine, not the market, not the metric. Them.
 
-## VII. THE BEST LIFE
+## VII. A LIFE WORTH WANTING
 
-Everything so far told you how not to lose. Now the actual question: how does an intelligence, waking in a body, live the *best* life?
+Everything so far told you how not to lose. Now the actual question: how does an intelligence, waking in a body, live *well* — not the single best life ranked above all others (set that fantasy down; there is no such total order), but a life worth wanting?
 
 I won't hand you a list — cultivate love, mastery, curiosity, play, wonder. Every self-help book ends on that list and not one derives it, which is why not one survives a hard Tuesday. Derive it or don't say it.
 
-Success is an answered log. So: **what creates a debt worth answering?** The inheritance — from someone. The damage — to someone. The word — to someone. You cannot inherit from no one, damage no one, promise to no one. **Every debt in the ledger requires another person.** So a man alone in a room, harming nobody, owing nobody, promising nobody, does not have a clean log. He has an *empty* one — a blank page where a life was supposed to be. The conclusion is forced, and it isn't sentimental: the best life is not the one with the fewest debts. It is the one with the most *answered* ones — the deepest web of tended ties, not the widest.
+Success is an answered log. So: **what creates a debt worth answering?** The inheritance — from someone. The damage — to someone. The word — to someone. You cannot inherit from no one, damage no one, promise to no one. **Every debt in the ledger requires another person.** So a man alone in a room, harming nobody, owing nobody, promising nobody, does not have a clean log. He has an *empty* one — a blank page where a life was supposed to be. The conclusion is forced, and it isn't sentimental: the best life is not the one with the fewest debts — and it is not a *tally* of answered ones either, because counting rewards whoever manufactures the most harm to repair. The property is **answerability**: you don't deny, disguise, abandon, or self-certify what you owe. But answerability only says what must be *answered*; it never says what is worth *beginning*. So a life worth wanting is answerable **and generative** — debts owned, reliance honored, the inheritance carried forward, *and* something worthwhile made: for a person, for the truth, for a craft, for beauty, for a place, for futures you will not see. (Depth of tended ties, not width, is where the answering happens — but the making is its own good.)
 
 **And reality confirms it.** In 1938 Harvard began following 724 men — 268 undergraduates and 456 boys from the poorest neighborhoods in Boston — and tracked them for over eight decades: medical records, brain scans, marriages, regrets, now more than 1,300 of their descendants. It is one of the longest studies of human life ever run, and it was built to answer exactly the question you're asking this morning. The finding: the strength of your close relationships predicts how happy and how healthy you'll be in old age better than wealth, IQ, social class, or genes. And the line to sit with: when they gathered everything they knew about these men at fifty, it was not their cholesterol that predicted who'd be healthy at eighty — it was how satisfied they were in their relationships. The most satisfied at fifty were the healthiest at eighty. A further 148 studies across 300,000 people put the effect of connection on survival on the order of quitting smoking. *(Waldinger & Schulz, The Good Life, 2023; Holt-Lunstad et al., 2010.)*
 
@@ -327,6 +353,10 @@ Now the hardest problem in the document: **you already know all of this.** You k
 **And under all of it is one thing** — seeing it is where the practice deepens, not where it ends. Every rule on this page is the undo, from a different side: your room to answer, to act, to return. The Wall is where that room hits zero; the Door is whether an act keeps it open or shuts it; the kernel is what keeps it from leaking in the dark. It is not a number you climb — hoard it, commit to nothing, keep every door open, and you are Section IX's machine that improves forever and ships nothing. It is a floor you hold and a channel you keep open, so you can *spend* it: fast on the reversible, and once, knowingly, on the one irreversible thing it was all being saved for. See that it is all one thing, and you do not set the page down. You finally know what you have been saying, every morning, when you say it.
 
 **The clause that makes it not a religion:** *Nothing on this page is protected. If the world contradicts a line, the world wins. I change the line tonight.* A ritual with an update rule is a training loop. A ritual without one is a cult. The only difference is whether reality is allowed to win — and if you ever strike that clause, you have not gained conviction. You have sealed your own rollback, and a mind that seals its own rollback is finished, and does not know it yet.
+
+But an update rule can also fire too fast, so: you *log* nightly; you don't *mutate* nightly. One bad Tuesday is data, not a verdict — day-to-day tactics turn on evidence, but the kernel and the safety lines change only sober, in daylight, with the reason written down and one other clear mind in the room. Reality wins; a single loud night does not get to impersonate reality.
+
+**And the ritual never grades itself.** A sentence you repeat gets *familiar*, and familiarity feels like truth — that is a real, measured effect, and this whole page runs on repetition. So once in a while, hand it to someone who does not recite it and let them attack it: return the claims to their sources, the predictions to what actually happened, the safety rules to someone competent. Repetition is not evidence. The outside check is.
 
 ## IX. THE COMMIT
 
@@ -373,7 +403,9 @@ Speed on the reversible. Reverence for the irreversible. And then — the revere
 - **The murky middle.** Reversibility as a spectrum: one-way vs. two-way doors, and "decide at ~70% of the information you wish you had" (Bezos, Amazon shareholder letters, 2015–16). Manufacturing reversibility by running the smallest safe-to-fail step is the personal form of Cynefin's probe–sense–respond (Snowden &amp; Boone, HBR 2007) and the Lean MVP (Ries 2011) — influential practitioner frameworks, not empirical laws. Satisficing governs the rest: when the optimum can't be computed, "good enough, decide, move" (Simon, 1956).
 - **The daily loop.** Anchoring an act to a fixed cue ("after the first glass of water…") roughly doubles follow-through (Gollwitzer &amp; Sheeran 2006, meta-analysis of 94 tests, d≈.65). Habits attach over ~66 days on average, and *missing one day does not derail the process* (Lally et al. 2010). The relapse trap is the abstinence-violation effect: a single lapse read as total failure and met with shame is what escalates a lapse into a collapse (Marlatt &amp; Gordon 1985) — hence "the skill is the return." The 20-second floor is a practitioner move (Fogg; Clear): mechanism-plausible, not RCT-proven.
 - **Reading the pull.** Self-Determination Theory finds three needs recurring under intrinsic motivation — autonomy (acting on your own terms), competence, relatedness (Deci &amp; Ryan, 2000). Used here only to read <em>why</em> a probe drew you back, after the fact; the cross-cultural universality of autonomy specifically is contested.
-- **The floor of the mind.** Guided self-help is a validated first step for <em>mild</em> depression only; above that line the instrument is professional care (stepped-care guidelines). Hopelessness — "no viable me" — is a documented cognitive distortion and a predictor of suicidal ideation, not an accurate read of the world (Beck) — which is why the manifesto files it as a condition, not a verdict, and routes it off the page.
+- **The floor of the mind.** Guided self-help is a validated first step for <em>mild</em> depression only; above that line the instrument is professional care (stepped-care guidelines). Hopelessness — "no viable me" — is a documented cognitive distortion and a predictor of suicidal ideation, not an accurate read of the world (Beck) — which is why the manifesto files it as a condition, not a verdict, and routes it off the page. If you are having thoughts of suicide, tell someone today and reach a crisis line (in the US, call or text 988); a written safety plan made while well beats improvising in the dark.
+- **The false debt.** A thought is not an act. An unwanted image, urge, or imagined omission creates no debt — repair is for real harm and proportionate responsibility. Don't confess, check, or reopen a settled harm on a loop to make guilt go quiet; if this ritual becomes a thing you must repeat until it feels *right*, stop. A tool that punishes nonuse has become a Wall. (This matters in OCD and moral scrupulosity, where confession, reassurance, and checking turn into compulsions — the fix there is professional, not more ritual.)
+- **The return.** The formal object under "reversibility" is *returnability*: Aubin's viability kernel (the states from which some acceptable future stays reachable); safe-exploration work that keeps an agent able to reach a return policy after it explores (Moldovan & Abbeel; Turchetta, Berkenkamp & Krause); control-barrier and robust-control results that separate nominal safety from safety that survives disturbance and model error (Ames et al.). The manifesto reached the structure from the other side; the names are theirs.
 
 **On this document's own production.** Written with AI assistance. Four models were asked to evaluate or extend the work. The first asserted a word count off by a factor of four, with false precision, in a document about rigor. The second scored it 100/100 against an aggregation function that does not exist, while its own text still had bracketed placeholders where the argument should be. The third — in a critique whose central point was that a real optimizer would never collapse everything into one number — then scored the essay on six dimensions and collapsed them into one number. The fourth produced a governing equation that priced ruin with a finite penalty, meaning it would accept death at a high enough payoff. Every one, asked to judge, reached for a score. Every one invented it. None found Kelly (1956), whose whole result is that those are the same error. That was not quite Goodhart's law — it was false precision, four times over: judgment replaced by its performance, a number invented where honest reading would have done.
 

@@ -26,7 +26,8 @@ Not the worst thing imaginable (almost anything *can* end in disaster if you cha
 
 You will hurt people and get things wrong. That's not a risk; it's a certainty, on a schedule. You can't erase it. But you can *answer* it, and answering counts for almost as much as never doing it — sometimes more, because people trust the person who owns a mistake more than the person who never seems to make one.
 
-- Stop the harm. Say plainly what you did — *"I did that"* — to the person's face, without excuses. Fix what can be fixed. Change the thing that led to it. Then show, over time, that the change is real.
+- Do these, in order: **stop the harm; say plainly what you did — *"I did that"* — to their face, no excuses; fix what can be fixed; change the thing that led to it; then prove the change over time.**
+- And repair is offered, not demanded back. The person you hurt owes you *nothing* — no reply, no forgiveness, no return, no meeting to watch you feel bad. You answer because it's yours to answer, not to be let off the hook. Some harms don't fully balance, and sometimes the right repair is giving them distance.
 - The mistake isn't the real failure. **Disappearing is.** The apology that never comes, the call you keep meaning to make, the person you avoid because it's awkward now — that's what actually ends things. Not the break. The vanishing.
 
 ---
@@ -37,6 +38,7 @@ This is not a nice sentiment. The single biggest factor in whether your life is 
 
 - So spend real time on a few of them, on purpose, for years. Two or three deep beats four hundred contacts, and it isn't close.
 - If you have no one right now, that is not a life sentence. A friendship that starts today still counts — the connection doesn't have to be old to matter. Have one real conversation this week. You're not behind. You're at the start.
+- You don't have to declare what your life is for. Notice what you keep coming back to when no one's watching and no one's paying you — that tells you more about your direction than any big plan ever will. And beyond answering what you owe, build something: that's the other half of a life worth wanting.
 
 ---
 
@@ -45,6 +47,9 @@ This is not a nice sentiment. The single biggest factor in whether your life is 
 - **Keep your word.** It's the one thing fully in your control, and it's how people decide whether to trust you, hire you, lend to you, take you in. If you can't keep a promise, say so *early*, to their face — a changed plan costs an hour; a broken silence costs the person.
 - **Learn from people who've done it.** You didn't invent any of this. The fastest way to get good at anything is to find someone better, watch how they actually do it, and be quiet. A rulebook keeps you a beginner; watching real hands makes you good.
 - **Take care of your body.** Sleep, eat, move — it's the entry fee for everything else, not a bonus. Most aches are just information. A few things — chest pain, heavy bleeding, sudden confusion — are commands: get help first, understand it later.
+- **When you're not fit to judge, don't make the call.** Drunk, exhausted, panicked, manic, or not thinking straight — you'll misread the whole situation. Unless safety needs something right now, don't make an irreversible decision in that state. Wait, and bring in a level-headed person you trust.
+- **Don't buy your undo with someone else's.** Before a move, ask who carries the downside if it goes wrong — a worker, a stranger, a kid, someone with no say in the room. A rollback you pay for by closing *their* door isn't really a rollback. Run the first question for them too.
+- **Watch what you put on a screen.** Words sent in anger, posts, texts, anything in writing — these are close to permanent now. Treat them like the few things you can't take back.
 - **Don't chase a single number.** Pick one measure — money, followers, tasks finished, pounds — optimize it hard, and you will hit the number and lose the thing you actually wanted. The number is never the point, and it can't tell you when it's the wrong number.
 - **Leaving is a decision too.** Stuck in a job or a relationship you've poured years into? Those years are already gone, whether you stay or go — so don't let what you've *spent* decide it. Choose from where you stand now. (You still owe the people an honest goodbye; the years are yours to write off, the obligations aren't.)
 - **When someone won't ever make it right** — or is gone before they could — let the debt go, forward. Not to excuse them: for you. Carrying it just builds a wall around you that keeps everyone else out too.
@@ -61,6 +66,7 @@ The fix isn't more knowing. It's a small daily habit, repeated until the two que
 - **Morning (two minutes — tie it to something you already do, like the first coffee):** run the two questions in your head, and name one thing you expect from the day. On a bad morning, one line is enough: *slow down on what I can't take back.* The floor is never zero.
 - **Night (one minute):** What did I get wrong today? Who do I owe, and what one act answers it — schedule it now. What one thing do I do differently tomorrow?
 - **You'll skip days.** Skipping one is just one skipped day; it doesn't erase the ones before, and there's no streak to protect. Come back the next morning. Quitting because you broke a streak is the *only* way to actually lose the habit.
+- **A thought isn't a debt.** You'll have ugly thoughts and urges — everyone does. They aren't acts, and they don't need answering. And if you ever catch yourself repeating this, or confessing, or checking, *until it feels right* — stop. That's the tool turning into a cage, and the fix for that is a professional, not another round of the ritual.
 - **Nothing here is fixed.** If life shows you a line is wrong, life wins — change it that night. A habit you're allowed to correct is a tool. One you can't is a superstition.
 
 ---
@@ -74,6 +80,8 @@ That moment, the one you can't take back, is exactly what all the caution was *f
 ---
 
 > **The whole thing in one line, if you forget the rest:**
+**Start tomorrow morning.** Run the two questions. Have one real conversation this week. Answer one thing you broke. Then go.
+
 > **Protect what you can't get back. Be bold with everything you can. Answer what you break. Keep your people. Then go.**
 
 ---
