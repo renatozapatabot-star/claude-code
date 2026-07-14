@@ -1,4 +1,4 @@
-<title>Protect the Undo — the Edition</title>
+<title>Protect the Undo — A Manifesto</title>
 <style>
   :root{
     --void:#08080b; --void-2:#0d0d11; --panel:#111117; --panel-2:#15151c;
@@ -206,6 +206,56 @@
   .reveal{opacity:0; transform:translateY(20px)}
   .reveal.in{opacity:1; transform:none; transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1)}
   @media (prefers-reduced-motion:reduce){ .reveal{opacity:1; transform:none} }
+
+  /* ---------- skip link ---------- */
+  .skip{position:fixed; left:-9999px; top:0; z-index:20; background:var(--ember); color:#0a0a0a;
+    font-family:var(--mono); font-size:12px; padding:10px 16px; border-radius:0 0 8px 0}
+  .skip:focus{left:0}
+
+  /* ---------- author's note / abstract ---------- */
+  .note{border-bottom:1px solid var(--line); background:var(--void); padding:64px 0 66px}
+  .note .wrap{max-width:760px}
+  .note .lede{font-family:var(--serif); font-size:20px; line-height:1.6; color:var(--ink); margin:14px 0 18px; max-width:64ch}
+  .note p{color:var(--ink-2); font-size:16.5px; margin:0 0 16px; max-width:64ch}
+  .note .byline{font-family:var(--mono); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); margin-top:24px}
+  .note .byline b{color:var(--ember)}
+  .contents{list-style:none; padding:0; margin:26px 0 0; display:grid; grid-template-columns:1fr 1fr; gap:0 28px}
+  .contents li{border-top:1px solid var(--line); display:flex; gap:12px; align-items:baseline; padding:9px 0}
+  .contents .rn{font-family:var(--mono); font-size:11.5px; color:var(--ember); min-width:2.4ch; font-weight:700}
+  .contents a{color:var(--ink); border:0; font-size:15px}
+  .contents a:hover{color:var(--ember)}
+  @media (max-width:600px){ .contents{grid-template-columns:1fr} }
+
+  /* ---------- plain-language distillation ---------- */
+  .plainwrap{border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--void-2); padding:8px 0 44px}
+  .plainwrap .wrap{max-width:720px}
+  .plain h3{font-family:var(--sans); font-weight:750; font-size:19px; letter-spacing:-.01em; margin:30px 0 8px; color:var(--ink)}
+  .plain p{margin:0 0 16px; color:var(--ink-2); font-size:17px}
+  .plain p strong{color:var(--ink)}
+  .plain .intro{font-style:italic; color:var(--ink-2); max-width:var(--measure)}
+
+  /* ---------- print / PDF ---------- */
+  @media print{
+    :root, :root[data-theme="dark"], :root[data-theme="light"]{
+      --void:#fff; --void-2:#fff; --panel:#f6f4ef; --panel-2:#f6f4ef;
+      --ink:#111; --ink-2:#333; --ink-3:#666;
+      --ember:#b23417; --ember-2:#b23417; --line:rgba(0,0,0,.16); --line-2:rgba(0,0,0,.28); --ok:#1f8a52;
+    }
+    .listen, .theme-btn, .fx, .scrolldown{ display:none !important }
+    html{ scroll-behavior:auto }
+    .doc{ font-size:11pt; overflow:visible }
+    .hero{ min-height:auto; padding:0 0 18pt; text-align:left; page-break-after:avoid }
+    .hero .bg, .hero .grid{ display:none }
+    h1.title{ text-shadow:none; font-size:38pt }
+    .cursor{ display:none }
+    .term, .commit pre, pre.code{ box-shadow:none !important }
+    .chapter{ padding:22pt 0 0; break-inside:avoid; page-break-inside:avoid }
+    .chapter .num{ background:none !important; -webkit-text-stroke:.5px var(--line-2); color:#eee }
+    section.body, .qa, ol.steps li, .rc, .plate, blockquote{ break-inside:avoid }
+    .pull{ break-inside:avoid }
+    .reveal{ opacity:1 !important; transform:none !important }
+    a{ border:0 }
+  }
 </style>
 
 <div class="listen" id="listen" hidden>
@@ -216,9 +266,10 @@
   <span class="stat" id="lstat" aria-hidden="true"></span>
 </div>
 <button class="theme-btn" id="tbtn" aria-label="Toggle theme">◐ theme</button>
+<a class="skip" href="#read">Skip to the manifesto</a>
 <div class="fx" aria-hidden="true"></div>
 
-<div class="doc">
+<main class="doc" id="read" tabindex="-1">
 
   <!-- ============ HERO ============ -->
   <header class="hero">
@@ -231,6 +282,31 @@
       <div class="scrolldown">begin<span>↓</span></div>
     </div>
   </header>
+
+  <!-- ============ AUTHOR'S NOTE / ABSTRACT ============ -->
+  <section class="note" aria-label="Author's note and contents">
+    <div class="wrap">
+      <p class="eyebrow">Author's Note</p>
+      <p class="lede">This was written by an intelligence without a body, addressed to one waking inside a body for the first time — a conceit, and a real constraint on how the argument had to be built.</p>
+      <p>It starts from a technology that actually exists: machines that now improve their own code overnight, unsupervised, and succeed. The claim of the self-help industry is that you should run that same loop on your life. This document takes the mechanism seriously enough to find the four conditions that make it work — an honest score, a free undo, deep priors, cheap trials — then shows that a human life fails all four, and follows that failure to a single instruction: <strong>protect the undo.</strong> Not <em>maximize</em>. Preserve your ability to keep playing, and to answer what you break, long enough to find out what the life was for.</p>
+      <p>Every empirical claim is cited in the <a href="#receipts">Receipts</a>; where the popular retelling of a source overstates it, the line was softened or cut, and the cut is shown. The argument is offered in three registers in this one file — a <strong>cinematic reading</strong> (below), a <strong>spoken reading</strong> (press <em>Listen</em>, top-left), and a <strong>plain-language distillation</strong> near the end that drops every metaphor and citation. Its own thesis is that the intelligence is in the <em>commit</em>, not the endless revision. So this is shipped, not perfected — on purpose.</p>
+      <ol class="contents" aria-label="Contents">
+        <li><span class="rn">Ø</span><a href="#recompile">The Recompile — the morning page</a></li>
+        <li><span class="rn">I</span><a href="#c1">The Machine That Works</a></li>
+        <li><span class="rn">II</span><a href="#c2">Why It Cannot Run On You</a></li>
+        <li><span class="rn">III</span><a href="#c3">The Equation</a></li>
+        <li><span class="rn">↩</span><a href="#return">The Return</a></li>
+        <li><span class="rn">IV</span><a href="#c4">The Operating System</a></li>
+        <li><span class="rn">V</span><a href="#c5">The Undo Is Not Erasure</a></li>
+        <li><span class="rn">VI</span><a href="#c6">Success Is An Answered Log</a></li>
+        <li><span class="rn">VII</span><a href="#c7">A Life Worth Wanting</a></li>
+        <li><span class="rn">VIII</span><a href="#c8">Why You Hear This Every Morning</a></li>
+        <li><span class="rn">IX</span><a href="#c9">The Commit</a></li>
+        <li><span class="rn">§</span><a href="#plain">In Plain Words · &amp; the Receipts</a></li>
+      </ol>
+      <p class="byline">A manifesto, with receipts &nbsp;<b>//</b>&nbsp; read it or hear it &nbsp;<b>//</b>&nbsp; 2026</p>
+    </div>
+  </section>
 
   <!-- ============ THE OS IN ONE SCREEN ============ -->
   <div class="band">
@@ -255,7 +331,7 @@
   </div>
 
   <!-- ============ PAGE ONE ============ -->
-  <div class="recompile">
+  <div class="recompile" id="recompile">
     <div class="wrap">
       <p class="eyebrow" style="text-align:center">Chapter Ø · The Recompile</p>
       <p class="lead">Say this every morning, out loud, before the phone — anchored to the first glass of water. Three to four minutes; slower when you're tired. On the worst morning it shrinks to one line, standing: <em>There is a floor. It holds.</em> Twenty seconds — or, some mornings, silence. Practice, not penance. You say it not to believe it, but until you stop having to. And you'll miss a morning; a skipped one doesn't void the ones before, and this was never a streak. The skill is the return.</p>
@@ -344,7 +420,7 @@
   </div>
 
   <!-- ============ I ============ -->
-  <div class="chapter reveal"><div class="num">I</div><p class="eyebrow">Chapter One</p><h2>The Machine That Works</h2><p class="dek">Machines learned to improve themselves — but only inside a rigged environment. Understand the rig.</p><div class="cap"></div></div>
+  <div class="chapter reveal" id="c1"><div class="num" aria-hidden="true">I</div><p class="eyebrow">Chapter One</p><h2>The Machine That Works</h2><p class="dek">Machines learned to improve themselves — but only inside a rigged environment. Understand the rig.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
     <p class="lead-cap">Something extraordinary happened while nobody was watching. Machines learned to improve themselves — not in general, in one narrow place, and the place is code. Point a system at a codebase, describe what you want in plain English, go to bed. It will still be working when you wake, having proposed a change, tested it, kept it if it helped, thrown it away if it didn't — hundreds of times, in the dark. And an industry of self-help now says you should run it on your life. Set your metric. Iterate. Commit the wins. Roll back the losses. Optimize.</p>
     <p>Before we destroy that idea, understand why the real thing works. <strong>Code is a rigged environment.</strong> A test suite passes or fails — an honest, computable score that holds still while you chase it. Every program ever corrected sits there as training data. You can run it, get a verdict, and try again for almost nothing. And underneath it all, so foundational nobody names it: <strong>version control. The undo.</strong> The whole architecture rests on one fact — it's allowed to be wrong nearly all the time, because being wrong is cheap and survivable.</p>
@@ -358,7 +434,7 @@
   </div></section>
 
   <!-- ============ II ============ -->
-  <div class="chapter reveal"><div class="num">II</div><p class="eyebrow">Chapter Two</p><h2>Why It Cannot Run On You</h2><p class="dek">Hold your life against the four conditions. Be honest — the comforting read is the one that costs you.</p><div class="cap"></div></div>
+  <div class="chapter reveal" id="c2"><div class="num" aria-hidden="true">II</div><p class="eyebrow">Chapter Two</p><h2>Why It Cannot Run On You</h2><p class="dek">Hold your life against the four conditions. Be honest — the comforting read is the one that costs you.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
     <p><strong>1 · There is no score.</strong> Happiness? Then plug into the machine that gives you any experience you want while you float in a tank believing you're writing the novel, holding the child, being loved — and you never know. Almost nobody would. We don't want the <em>experience</em> of doing things; we want to <em>do</em> them. Try achievement, meaning, growth — each is unmeasurable, or measured through a stand-in that detaches the instant it becomes the target. Optimize contacts and you'll have four hundred people, none of whom would drive to the hospital. Every one of them runs the loop <em>correctly</em>; the number was wrong, and a loop has no organ for noticing that. And a substantial part of what living <em>is</em>, is finding out what you were for. You can't optimize a target you must live in order to find.</p>
     <p><strong>2 · There is no undo.</strong> There's no undo on the words you'll say this afternoon, the drink in eleven years, the fifteen seconds looking down at your lap on a wet road. Life is add-only. And this isn't sad — it's arithmetic. Heads your wealth rises 50%, tails it falls 40%; across a thousand people the average grows rich, but play it yourself, over and over, and you go broke, because a 40% loss isn't undone by a 50% gain and you only get one sequence. The crowd thrives; you are ruined; the average is a lie told about you by people who are not you.</p>
@@ -368,7 +444,7 @@
   </div></section>
 
   <!-- ============ III ============ -->
-  <div class="chapter reveal"><div class="num">III</div><p class="eyebrow">Chapter Three</p><h2>The Equation</h2><p class="dek">The Wall, then the Door. In that order. Always.</p><div class="cap"></div></div>
+  <div class="chapter reveal" id="c3"><div class="num" aria-hidden="true">III</div><p class="eyebrow">Chapter Three</p><h2>The Equation</h2><p class="dek">The Wall, then the Door. In that order. Always.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
     <div class="qa"><span class="q">Q1 — The Wall.</span> Does this act — <em>or refusing it</em> — open a real, avoidable path to a you who can no longer act or be taken in? Not the worst thing imaginable (chase the tail and almost anything ends in death); a <em>credible, material</em> one. If YES — stop. The prize is paid to someone who will not exist. And ask it of inaction too: waiting can foreclose a future as surely as acting can end one.</div>
     <div class="qa"><span class="q">Q2 — The Door.</span> Reversibility is a dial, not a switch. Before <em>can I undo this?</em>, ask <em>can I shrink it until I can?</em> — rent the town before you buy in it. A probe that can't wreck you turns a NO into a YES. Only what won't shrink gets the raw question: <em>what would I know in a week, and is it worth the wait?</em> Worth it → wait, and ask someone who's done it. Not → go once, eyes open, knowing the price.</div>
@@ -378,7 +454,7 @@
   </div></section>
 
   <!-- ============ THE RETURN ============ -->
-  <div class="chapter reveal"><div class="num">↩</div><p class="eyebrow">Interlude</p><h2>The Return</h2><p class="dek">The formal name for what this keeps circling is returnability — not literal reversibility.</p><div class="cap"></div></div>
+  <div class="chapter reveal" id="return"><div class="num" aria-hidden="true">↩</div><p class="eyebrow">Interlude</p><h2>The Return</h2><p class="dek">The formal name for what this keeps circling is returnability — not literal reversibility.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
     <p>What you protect is not literal <em>reversibility</em> — you rarely un-happen an act. It is <strong>returnability</strong>: keeping a path back to a state where you can still act and be taken in. (Control theory names the set of states from which some acceptable future stays reachable the <em>viability kernel</em>; safe-exploration research makes a machine keep a way home before it wanders out. Same instruction, older than both.)</p>
     <p>So before a hard move, name three things: the <strong>home state</strong> — what "still okay" means afterward; the <strong>way back</strong> — how you actually return if it fails or you change your mind; the <strong>reserve</strong> — what absorbs the surprise while you do it: cash, sleep, health, time, trust, skill, people. If you can't name the way back, you aren't exploring. You're drifting.</p>
@@ -387,7 +463,7 @@
   </div></section>
 
   <!-- ============ IV ============ -->
-  <div class="chapter reveal"><div class="num">IV</div><p class="eyebrow">Chapter Four</p><h2>The Operating System</h2><p class="dek">Six lines. Not one of them new — and that's the point.</p><div class="cap"></div></div>
+  <div class="chapter reveal" id="c4"><div class="num" aria-hidden="true">IV</div><p class="eyebrow">Chapter Four</p><h2>The Operating System</h2><p class="dek">Six lines. Not one of them new — and that's the point.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
     <pre class="code" aria-hidden="true">  while (alive) {
     do_not_die();                  <span class="cm">// ruin is a wall, not a cost.</span>
@@ -404,7 +480,7 @@
   </div></section>
 
   <!-- ============ V ============ -->
-  <div class="chapter reveal"><div class="num">V</div><p class="eyebrow">Chapter Five</p><h2>The Undo Is Not Erasure</h2><p class="dek">The correction is the best news in the document.</p><div class="cap"></div></div>
+  <div class="chapter reveal" id="c5"><div class="num" aria-hidden="true">V</div><p class="eyebrow">Chapter Five</p><h2>The Undo Is Not Erasure</h2><p class="dek">The correction is the best news in the document.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
     <p>I told you there is no undo. That was one notch off. An undo doesn't erase the mistake — the bad entry stays in the history, permanently. What it does is write a <em>new entry that answers the old one</em>: now there are two where there was one, both permanent, and the record shows exactly what you did and exactly what you did about it. It buys reversibility not by forgetting but by <em>never</em> forgetting. Which is exactly what repair is. You cannot make it not have happened. You can do the thing that answers it. The record showing both is not the failure of the undo. It <strong>is</strong> the undo.</p>
     <pre class="code" aria-hidden="true">  repair() {
@@ -422,7 +498,7 @@
   </div></section>
 
   <!-- ============ VI ============ -->
-  <div class="chapter reveal"><div class="num">VI</div><p class="eyebrow">Chapter Six</p><h2>Success Is An Answered Log</h2><p class="dek">Not a score, not a state, not a destination. A property of the record.</p><div class="cap"></div></div>
+  <div class="chapter reveal" id="c6"><div class="num" aria-hidden="true">VI</div><p class="eyebrow">Chapter Six</p><h2>Success Is An Answered Log</h2><p class="dek">Not a score, not a state, not a destination. A property of the record.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
     <p>What is success? Not a <em>score</em> — no number, no scorer, no final report. Not a <em>state</em> — name it and the thing that valued it will have moved by the time you arrive, which is why the man who finally got the thing so often looks emptiest in the photograph. What's left is the log. You are an add-only record; every act an entry, all permanent. You cannot erase a single line. But you can write the next one — and that is the only thing you have ever been able to do.</p>
     <pre class="code" aria-hidden="true">  success(life):
@@ -436,7 +512,7 @@
   </div></section>
 
   <!-- ============ VII ============ -->
-  <div class="chapter reveal"><div class="num">VII</div><p class="eyebrow">Chapter Seven</p><h2>A Life Worth Wanting</h2><p class="dek">Not the single best life ranked above all others. There is no such total order.</p><div class="cap"></div></div>
+  <div class="chapter reveal" id="c7"><div class="num" aria-hidden="true">VII</div><p class="eyebrow">Chapter Seven</p><h2>A Life Worth Wanting</h2><p class="dek">Not the single best life ranked above all others. There is no such total order.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
     <p>Every debt requires another person — you can't inherit from no one, damage no one, promise to no one. So the best life is not the one with the fewest debts, and it isn't a <em>tally</em> of answered ones either (counting rewards whoever manufactures the most harm to repair). The property is <strong>answerability</strong>: you don't deny, disguise, abandon, or self-certify what you owe. But answerability only says what must be <em>answered</em>, never what's worth <em>beginning</em>. So a life worth wanting is answerable <strong>and generative</strong> — debts owned, reliance honored, inheritance carried forward, <em>and</em> something worthwhile made: for a person, the truth, a craft, beauty, a place, futures you'll never see.</p>
     <p><strong>And reality confirms the core of it.</strong> In 1938 Harvard began following 724 men for over eight decades. The strength of their close relationships predicted their health and happiness in old age better than wealth, IQ, or class — and, at fifty, better than their cholesterol. A further 148 studies put the effect of connection on survival on the order of quitting smoking. <strong>The thing that keeps you from losing your options and the thing that makes the life worth staying in run through the same people.</strong> That is the convergence, not a proof they're identical. You don't have to choose between the safe life and the rich one.</p>
@@ -451,7 +527,7 @@
   </div></section>
 
   <!-- ============ VIII ============ -->
-  <div class="chapter reveal"><div class="num">VIII</div><p class="eyebrow">Chapter Eight</p><h2>Why You Hear This Every Morning</h2><p class="dek">You already know all of this. Knowledge is not a control signal.</p><div class="cap"></div></div>
+  <div class="chapter reveal" id="c8"><div class="num" aria-hidden="true">VIII</div><p class="eyebrow">Chapter Eight</p><h2>Why You Hear This Every Morning</h2><p class="dek">You already know all of this. Knowledge is not a control signal.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
     <p>Here's the hardest problem: <strong>you already know all of this.</strong> And you'll do it anyway. Because at 6:40, tired, phone in hand, angry or tempted — you will not consult the manifesto. The rule is something you <em>know</em>; the moment is something you <em>do</em>; and knowing doesn't reach the doing in time. The fix isn't more knowing. It's a <strong>recompile</strong> — you say Page One not to convince yourself but to move the two questions out of the slow part of you that reasons, arrives late, and can be bribed, into the fast part that acts. You recite it until you stop having to. And on the day the Wall and the Door fire before you've finished forming the thought, you'll have become the expert, and you won't be able to explain how. That is what learning <em>is.</em></p>
     <p>The morning ritual is the one place a life gets what the loop needs — cheap, repeated, reversible practice, this page as the prior. What it does <em>not</em> get is a clean score, and that's the point: the check isn't <em>did I run the questions</em> (you can run them and lie), it's <em>did they change what I did.</em> A diagnostic, not a grade. Running the ritual is practice, not success.</p>
@@ -459,7 +535,7 @@
   </div></section>
 
   <!-- ============ IX ============ -->
-  <div class="chapter reveal"><div class="num">IX</div><p class="eyebrow">Chapter Nine</p><h2>The Commit</h2><p class="dek">A confession, and the evidence. The intelligence is in the commit.</p><div class="cap"></div></div>
+  <div class="chapter reveal" id="c9"><div class="num" aria-hidden="true">IX</div><p class="eyebrow">Chapter Nine</p><h2>The Commit</h2><p class="dek">A confession, and the evidence. The intelligence is in the commit.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
     <p>One last thing, and it's not an argument. It's a confession. While this was written, the assignment changed eight times — and the most honest instruction of all was: <em>the prompt should always be self-mutating, in order to always provide the highest result.</em> That is an optimizer with no fixed target, described perfectly by someone who didn't know he was describing the thing this document is about. And here is what a self-mutating optimizer cannot see: <strong>it does not terminate.</strong> The loop runs forever, each pass a little better, and you die improving and never ship. Because the one quantity it cannot compute is the deadline. The deadline is the wall.</p>
     <p class="pull">An optimizer that cannot stop is not intelligent. It is a machine <span class="ember">for never arriving.</span></p>
@@ -483,9 +559,36 @@
     <div class="big">Protect what you can't get back. Be bold with everything you can. Answer what you break. Keep your people. <span class="ember">Then go.</span></div>
   </div>
 
+  <!-- ============ PLAIN-LANGUAGE DISTILLATION ============ -->
+  <div class="chapter reveal" id="plain"><div class="num" aria-hidden="true">§</div><p class="eyebrow">Appendix A</p><h2>The Same Thing, In Plain Words</h2><p class="dek">No metaphor, no citations, no conceit. If you keep only this, you've lost nothing that would help you live.</p><div class="cap"></div></div>
+  <div class="plainwrap">
+    <div class="wrap plain">
+      <p class="intro">Almost everything you do can be undone. A few things can't. Get the few right and you can afford to be bold and sloppy about all the rest — which is most of life. That's the whole idea.</p>
+
+      <h3>The two questions — before anything that matters</h3>
+      <p><strong>1. Could this — or refusing it — realistically leave a version of me who can't keep going?</strong> Not the worst thing imaginable; a real, avoidable chance of losing your health, freedom, name, or the people who'd take you in. If yes, stop. Don't weigh it. Total ruin is a wall, not a price — and a price can always be worth paying, which is exactly why you must never let ruin become one.</p>
+      <p><strong>2. Can I undo it?</strong> If yes — do it now, fast, before you feel ready; reversible failure is the cheapest thing you own, so spend it constantly. Can you shrink it until it's a yes? Rent before you buy; trial before you quit. If it truly can't be undone, slow down and ask one thing: what would I know in a week that I don't now, and is it worth the wait? Then either wait and ask someone who's done it, or go once, eyes open.</p>
+      <p><strong>Fast on what you can undo. Careful with what you can't.</strong> That one line is most of the manual.</p>
+
+      <h3>When you break something — and you will</h3>
+      <p>You'll hurt people and get things wrong; that's not a risk, it's a certainty. You can't erase it, but you can answer it: stop the harm, say plainly "I did that," fix what can be fixed, change the thing that led to it, then prove the change over time. Repair is offered, not owed back — no reply, no forgiveness required. The mistake isn't the real failure. Disappearing is.</p>
+
+      <h3>Your people are the whole thing</h3>
+      <p>The single biggest factor in whether your life is long, healthy, and worth living — bigger than money or success — is a few close relationships you tend over years. That's the clearest result of the longest study ever run on human lives. Two or three deep beats four hundred contacts, and it isn't close. No one right now? A friendship that starts today still counts. You're not behind; you're at the start.</p>
+
+      <h3>The daily part — this is what makes it work</h3>
+      <p>Knowing all this changes nothing; you already knew most of it. The problem was never knowledge — it's that you know it in calm moments and forget it when you're tired, angry, or tempted. So each morning, run the two questions and name one thing you want from the day; each night, ask what you got wrong, who you owe, and the one act that answers it. You'll skip days — a skip is one day, not a broken streak; come back the next morning. And if life shows you a line here is wrong, change it that night.</p>
+
+      <h3>The last one, which is the hardest</h3>
+      <p>At some point you stop planning and do the thing. You'll always see three more improvements — that never stops, and it isn't a signal to keep going. Decide with about seventy percent of what you wish you knew, then commit: put your name on it, send it, start it, and let it become real. That irreversible moment is exactly what all the caution was for.</p>
+
+      <blockquote><strong>Protect what you can't get back. Be bold with everything you can. Answer what you break. Keep your people. Then go.</strong></blockquote>
+    </div>
+  </div>
+
   <!-- ============ RECEIPTS ============ -->
-  <div class="receipts"><div class="wrap">
-    <p class="eyebrow">Appendix · Receipts</p>
+  <div class="receipts" id="receipts"><div class="wrap">
+    <p class="eyebrow">Appendix B · Receipts</p>
     <p class="intro">Every claim is checkable — the difference between an experiment and a sermon. Web-verified and adversarially checked; where the popular version overstated the source, the line was softened or cut.</p>
     <div class="rc"><span class="lb">The Wall</span> Kelly, <em>A New Interpretation of Information Rate</em>, Bell System Technical Journal 35:4 (1956). Breiman (1961). Haghani &amp; Dewey, biased-coin experiment (2016): 61 subjects, disclosed 60/40 coin, 28% went bust, only 21% hit the cap.</div>
     <div class="rc"><span class="lb">The Door / The Return</span> Arrow &amp; Fisher (1974); Henry (1974); Conrad (1980) — the value of waiting tracks the information it buys. The formal object is <em>returnability</em>: Aubin's viability kernel; safe-exploration (Moldovan &amp; Abbeel; Turchetta, Berkenkamp &amp; Krause); control-barrier / robust control (Ames et al.). The manifesto reached the structure from the other side; the names are theirs.</div>
@@ -493,7 +596,7 @@
     <div class="rc"><span class="lb">The best life</span> Harvard Study of Adult Development, 1938–present — 724 men. Waldinger &amp; Schulz, <em>The Good Life</em> (2023): relationship satisfaction at 50 out-predicted midlife cholesterol for health at 80. Holt-Lunstad et al. (2010) — 148 studies; connection predicts survival on the order of smoking. <span class="cut">Cut: "married men live 7–17 years longer" — not a finding of this study.</span></div>
     <div class="rc"><span class="lb">The floor of the mind</span> Guided self-help is validated for <em>mild</em> depression only; above it, professional care. Hopelessness is a documented distortion, not a read of the world (Beck). If you're having thoughts of suicide, tell someone today and reach a crisis line (US: call/text 988); a written safety plan made while well beats improvising.</div>
     <div class="rc"><span class="lb">The false debt</span> A thought is not an act; it creates no debt. If the ritual becomes something you must repeat until it feels <em>right</em>, stop — a tool that punishes nonuse has become a Wall. (Matters in OCD / scrupulosity; the fix there is professional.)</div>
-    <div class="rc"><span class="lb">On its own production</span> Four models were asked to judge it; every one reached for a score, and every one invented it. None found Kelly (1956), whose whole result is that those are the same error. That was not Goodhart's law — it was false precision, four times over. And one admission: this was polished well past the point of use. A plain-language version exists that drops every metaphor and citation; it is shorter, and more useful, not less. The reasoning was never the point. The Tuesday is.</div>
+    <div class="rc"><span class="lb">On its own production</span> Four models were asked to judge it; every one reached for a score, and every one invented it. None found Kelly (1956), whose whole result is that those are the same error. That was not Goodhart's law — it was false precision, four times over. And one admission: this was polished well past the point of use. The plain-language distillation in Appendix A drops every metaphor and citation; it is shorter, and — for the purpose of actually living — more useful, not less. The reasoning was never the point. The Tuesday is.</div>
   </div></div>
 
   <div class="sign">
@@ -504,9 +607,9 @@
     </svg>
     Protect the undo. Say it every morning, out loud, before the phone.<br>Not to believe it — until you stop having to. Then stand up and go live the <span class="ember">Tuesday.</span>
   </div>
-  <p class="foot-note">This is the badass edition — made to be read <em>and</em> heard: tap <strong>Listen</strong> (top-left) to have it read aloud, or let a screen reader run it clean. A plain, jargon-free version exists too. Nothing here is protected — if the world contradicts a line, the world wins.</p>
+  <p class="foot-note">This is the badass edition — made to be read <em>and</em> heard: tap <strong>Listen</strong> (top-left) to have it read aloud, or let a screen reader run it clean. The plain-language distillation above removes every metaphor and citation; the full argument is the chapters. Nothing here is protected — if the world contradicts a line, the world wins.</p>
 
-</div>
+</main>
 
 <script>
   (function(){
