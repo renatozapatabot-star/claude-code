@@ -1,9 +1,9 @@
 <title>Protect the Undo — A Manifesto</title>
 <style>
   :root{
-    --void:#08080b; --void-2:#0d0d11; --panel:#111117; --panel-2:#15151c;
+    --void:#08080b; --void-2:#0d0d11; --panel:#111117;
     --ink:#ece7dd; --ink-2:#a7a294; --ink-3:#6f6b60;
-    --ember:#ff5a36; --ember-2:#ff7a54; --ember-deep:#c23a1c;
+    --ember:#ff5a36; --ember-2:#ff7a54;
     --line:rgba(236,231,221,.10); --line-2:rgba(236,231,221,.16);
     --ok:#4bd07f;
     --serif:"Iowan Old Style","Charter","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
@@ -13,9 +13,9 @@
   }
   /* Committed dark world — a manifesto carved into a terminal. A light theme is offered for daytime reading. */
   :root[data-theme="light"]{
-    --void:#f3efe6; --void-2:#efeae0; --panel:#fbf8f1; --panel-2:#f6f2e9;
+    --void:#f3efe6; --void-2:#efeae0; --panel:#fbf8f1;
     --ink:#17161a; --ink-2:#514d45; --ink-3:#847f74;
-    --ember:#c8401f; --ember-2:#b23417; --ember-deep:#8f2c14;
+    --ember:#c8401f; --ember-2:#b23417;
     --line:rgba(23,22,26,.12); --line-2:rgba(23,22,26,.2); --ok:#1f8a52;
   }
 
@@ -30,7 +30,14 @@
   }
   .wrap{max-width:720px; margin:0 auto; padding:0 24px}
   p{max-width:var(--measure)}
+  p, li{text-wrap:pretty}
+  [id]{scroll-margin-top:24px}
   ::selection{background:var(--ember); color:#0a0a0a}
+
+  /* ---------- reading progress ---------- */
+  .progress{position:fixed; top:0; left:0; right:0; height:2px; z-index:8; background:transparent; pointer-events:none}
+  .progress i{display:block; height:100%; width:100%; background:var(--ember); box-shadow:0 0 10px rgba(255,90,54,.55);
+    transform:scaleX(0); transform-origin:0 50%}
 
   /* ---------- grain + scanlines ---------- */
   .fx{position:fixed; inset:0; pointer-events:none; z-index:2; mix-blend-mode:overlay; opacity:.5}
@@ -44,7 +51,7 @@
 
   /* ---------- eyebrow / rules ---------- */
   .eyebrow{font-family:var(--mono); font-size:11.5px; letter-spacing:.28em; text-transform:uppercase; color:var(--ember); font-weight:600}
-  .rule{height:1px; background:var(--line); border:0}
+  h2.eyebrow{margin:0 0 10px}
   .ember{color:var(--ember)}
 
   /* ---------- HERO ---------- */
@@ -160,8 +167,6 @@
 
   .plate{border:1px solid var(--line-2); border-radius:12px; padding:22px; margin:26px 0; background:var(--panel); text-align:center}
   .plate .big{font-family:var(--sans); font-weight:850; font-size:clamp(24px,5vw,38px); letter-spacing:-.02em; color:var(--ember); text-shadow:0 0 30px rgba(255,90,54,.3)}
-  .plate .rows{font-family:var(--mono); font-size:12.5px; color:var(--ink-2); line-height:1.9; text-align:left; max-width:var(--measure); margin:0 auto}
-  .plate .rows .k{color:var(--ember); font-weight:700}
 
   blockquote{margin:26px 0; padding:6px 0 6px 22px; border-left:2px solid var(--ember); font-size:17px; color:var(--ink-2)}
   blockquote strong{color:var(--ink)}
@@ -222,12 +227,13 @@
   .note p{color:var(--ink-2); font-size:16.5px; margin:0 0 16px; max-width:64ch}
   .note .byline{font-family:var(--mono); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); margin-top:24px}
   .note .byline b{color:var(--ember)}
-  .contents{list-style:none; padding:0; margin:26px 0 0; display:grid; grid-template-columns:1fr 1fr; gap:0 28px}
+  .contents{list-style:none; padding:0; margin:26px 0 0; display:grid; grid-template-columns:1fr 1fr;
+    grid-template-rows:repeat(6,auto); grid-auto-flow:column; gap:0 28px}
   .contents li{border-top:1px solid var(--line); display:flex; gap:12px; align-items:baseline; padding:9px 0}
   .contents .rn{font-family:var(--mono); font-size:11.5px; color:var(--ember); min-width:2.4ch; font-weight:700}
   .contents a{color:var(--ink); border:0; font-size:15px}
   .contents a:hover{color:var(--ember)}
-  @media (max-width:600px){ .contents{grid-template-columns:1fr} }
+  @media (max-width:600px){ .contents{grid-template-columns:1fr; grid-template-rows:none; grid-auto-flow:row} }
 
   /* ---------- plain-language distillation ---------- */
   .plainwrap{border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--void-2); padding:8px 0 44px}
@@ -240,11 +246,11 @@
   /* ---------- print / PDF ---------- */
   @media print{
     :root, :root[data-theme="dark"], :root[data-theme="light"]{
-      --void:#fff; --void-2:#fff; --panel:#f6f4ef; --panel-2:#f6f4ef;
+      --void:#fff; --void-2:#fff; --panel:#f6f4ef;
       --ink:#111; --ink-2:#333; --ink-3:#666;
       --ember:#b23417; --ember-2:#b23417; --line:rgba(0,0,0,.16); --line-2:rgba(0,0,0,.28); --ok:#1f8a52;
     }
-    .listen, .theme-btn, .fx, .scrolldown{ display:none !important }
+    .listen, .theme-btn, .fx, .scrolldown, .progress{ display:none !important }
     html{ scroll-behavior:auto }
     .doc{ font-size:11pt; overflow:visible }
     .hero{ min-height:auto; padding:0 0 18pt; text-align:left; page-break-after:avoid }
@@ -252,6 +258,11 @@
     h1.title{ text-shadow:none; font-size:38pt }
     .cursor{ display:none }
     .term, .commit pre, pre.code{ box-shadow:none !important }
+    .term{ background:#fff !important; border:1px solid rgba(0,0,0,.28) }
+    .term .bar{ display:none }
+    .term pre{ color:#222 !important }
+    .term b{ color:#b23417 !important }
+    .term .go{ color:#1f8a52 !important }
     .chapter{ padding:22pt 0 0; break-inside:avoid; page-break-inside:avoid }
     .chapter .num{ background:none !important; -webkit-text-stroke:.5px var(--line-2); color:#eee }
     section.body, .qa, ol.steps li, .rc, .plate, blockquote{ break-inside:avoid }
@@ -270,6 +281,7 @@
 </div>
 <button class="theme-btn" id="tbtn" aria-label="Toggle theme">◐ theme</button>
 <noscript><style>.reveal{opacity:1 !important; transform:none !important}</style></noscript>
+<div class="progress" aria-hidden="true"><i id="pbar"></i></div>
 <a class="skip" href="#read">Skip to the manifesto</a>
 <div class="fx" aria-hidden="true"></div>
 
@@ -290,9 +302,9 @@
   <!-- ============ AUTHOR'S NOTE / ABSTRACT ============ -->
   <section class="note" aria-label="Author's note and contents">
     <div class="wrap">
-      <p class="eyebrow">Author's Note</p>
+      <h2 class="eyebrow">Author's Note</h2>
       <p class="lede">This was written by an intelligence without a body, addressed to one waking inside a body for the first time — a conceit, and a real constraint on how the argument had to be built.</p>
-      <p>It starts from a technology that actually exists: machines that now improve their own code overnight, unsupervised, and succeed. The claim of the self-help industry is that you should run that same loop on your life. This document takes the mechanism seriously enough to find the four conditions that make it work — an honest score, a free undo, deep priors, cheap trials — then shows that a human life fails all four, and follows that failure to a single instruction: <strong>protect the undo.</strong> Not <em>maximize</em>. Preserve your ability to keep playing, and to answer what you break, long enough to find out what the life was for.</p>
+      <p>It starts from a technology that actually exists: machines that now improve their own code overnight, unsupervised, and succeed. The claim of the self-help industry is that you should run that same loop on your life. This document takes the mechanism seriously enough to find the four conditions that make it work — an honest score, a cheap undo, deep priors, abundant trials — then shows that a human life fails all four, and follows that failure to a single instruction: <strong>protect the undo.</strong> Not <em>maximize</em>. Preserve your ability to keep playing, and to answer what you break, long enough to find out what the life was for.</p>
       <p>Every empirical claim is cited in the <a href="#receipts">Receipts</a>; where the popular retelling of a source overstates it, the line was softened or cut, and the cut is shown. The argument is offered in three registers in this one file — a <strong>cinematic reading</strong> (below), a <strong>spoken reading</strong> (press <em>Listen</em>, top-left), and a <strong>plain-language distillation</strong> near the end that drops every metaphor and citation. Its own thesis is that the intelligence is in the <em>commit</em>, not the endless revision. So this is shipped, not perfected — on purpose.</p>
       <ol class="contents" aria-label="Contents">
         <li><span class="rn">Ø</span><a href="#recompile">The Recompile — the morning page</a></li>
@@ -445,7 +457,7 @@
     <p><strong>2 · There is no undo.</strong> There's no undo on the words you'll say this afternoon, the drink in eleven years, the fifteen seconds looking down at your lap on a wet road. Life is add-only. And this isn't sad — it's arithmetic. Heads your wealth rises 50%, tails it falls 40%; across a thousand people the average grows rich, but play it yourself, over and over, and you go broke, because a 40% loss isn't undone by a 50% gain and you only get one sequence. The crowd thrives; you are ruined; the average is a lie told about you by people who are not you.</p>
     <p><strong>3 · You were never a blank slate.</strong> The machine works only because it already knows everything. So do you: you didn't invent English; you'll stand up without falling, a problem that's eaten the careers of roboticists; you're a research program four billion years deep that never once crashed, and you woke up inside it and mistook it for an empty room. Your fastest move is not introspection. It is apprenticeship.</p>
     <p><strong>4 · N = 1.</strong> The machine runs hundreds of trials in two days. You get maybe a dozen serious experiments in a life, and that assumes none of them break you. You don't have volume. You have <em>duration</em> — one continuous, non-repeatable stretch, running now, that will not be run again.</p>
-    <p>All four. The mechanism does not transfer. That document in your hand — generated in nine seconds by something that has never been hungry — is not an operating system. It is a category error. Throw it away. Here is the real one.</p>
+    <p>All four. The mechanism does not transfer. The Life OS the industry hands you — confident, generated in nine seconds by something that has never been hungry — is not an operating system. It is a category error. Throw it away. Here is the real one.</p>
   </div></section>
 
   <!-- ============ III ============ -->
@@ -454,7 +466,7 @@
     <div class="qa"><span class="q">Q1 — The Wall.</span> Does this act — <em>or refusing it</em> — open a real, avoidable path to a you who can no longer act or be taken in? Not the worst thing imaginable (chase the tail and almost anything ends in death); a <em>credible, material</em> one. If YES — stop. The prize is paid to someone who will not exist. And ask it of inaction too: waiting can foreclose a future as surely as acting can end one.</div>
     <div class="qa"><span class="q">Q2 — The Door.</span> Reversibility is a dial, not a switch. Before <em>can I undo this?</em>, ask <em>can I shrink it until I can?</em> — rent the town before you buy in it. A probe that can't wreck you turns a NO into a YES. Only what won't shrink gets the raw question: <em>what would I know in a week, and is it worth the wait?</em> Worth it → wait, and ask someone who's done it. Not → go once, eyes open, knowing the price.</div>
     <p class="pull">A penalty can be outbid. <span class="ember">A wall cannot.</span> That is the difference between a life and a wreck.</p>
-    <p><strong>Why the wall is a wall.</strong> Seventy years ago at Bell Labs, John Kelly proved something that should be taught to children: keep betting to maximize your <em>expected winnings</em> and, given enough rounds, you go broke — almost surely. His fix — maximize the <em>rate</em> at which you compound — makes zero infinitely bad. And if you think this is obvious: sixty-one finance students were handed a coin the odds were built to let them win, real money, thirty minutes. Nearly a third bet everything on a single flip at least once; more than a quarter went bust; only one in five hit the cap a steady bettor almost couldn't miss. Right about the odds, ruined anyway — every one of them running your Life OS.</p>
+    <p><strong>Why the wall is a wall.</strong> Seventy years ago at Bell Labs, John Kelly proved something that should be taught to children: keep betting to maximize your <em>expected winnings</em> and, given enough rounds, you go broke — almost surely. His fix — maximize the <em>rate</em> at which you compound — makes zero infinitely bad. And if you think this is obvious: sixty-one students and young professionals, all trained in finance, were handed a coin the odds were built to let them win — real money, thirty minutes. Nearly a third bet everything on a single flip at least once; more than a quarter went bust; only one in five hit the cap a steady bettor almost couldn't miss. Right about the odds, ruined anyway — every one of them running your Life OS.</p>
     <p><strong>One caveat, because hiding a limit is the sin.</strong> Kelly's math is a bankroll's, and your life is not a bankroll. I borrow it for exactly one thing — ruin is non-recoverable, so it can't be priced — and nothing else. The wall transfers; "growing a score" does not. There is no score.</p>
   </div></section>
 
@@ -512,12 +524,12 @@
     <span class="cm">// No number. No stand-in, so Goodhart has nothing to bite.</span>
     <span class="cm">// You cannot run it. You are inside it. It evaluates</span>
     <span class="cm">//   once, afterward, and not by you.</span></pre>
-    <p>The debts are three, incurred before you were conscious: <strong>the inheritance</strong> (everything you're good at, someone died learning — payable only forward); <strong>the damage</strong> (the thing you can't take back — answered by saying "I did that" to a face you have to keep looking at); <strong>the word</strong> (the only one you chose). And when the creditor is already gone — died before you answered — the debt doesn't vanish and doesn't trap you: forward action can <em>honor</em> it, though it cannot <em>settle</em> it; his line stays open, and a life need not rot because one line cannot close.</p>
+    <p>The debts are three, and you signed for only one of them: <strong>the inheritance</strong> (everything you're good at, someone died learning — payable only forward); <strong>the damage</strong> (the thing you can't take back — answered by saying "I did that" to a face you have to keep looking at); <strong>the word</strong> (the only one you chose). And when the creditor is already gone — died before you answered — the debt doesn't vanish and doesn't trap you: forward action can <em>honor</em> it, though it cannot <em>settle</em> it; their line stays open, and a life need not rot because one line cannot close.</p>
     <p>Because notice who reads the log. Nobody but the people who were in it — once, out loud, in a room, badly, for a few minutes. And in the whole history of the species, nobody has ever stood at a funeral and read out a metric. What they say, in every language, at every funeral ever held: <em>He came when I called. He kept his word. He said he was sorry and meant it. He paid it back. He was there.</em> Those are answering entries, read out loud. The only copy is held by them. Not the machine, not the market, not the metric. Them.</p>
   </div></section>
 
   <!-- ============ VII ============ -->
-  <div class="chapter reveal" id="c7"><div class="num" aria-hidden="true">VII</div><p class="eyebrow">Chapter Seven</p><h2>A Life Worth Wanting</h2><p class="dek">Not the single best life ranked above all others. There is no such total order.</p><div class="cap"></div></div>
+  <div class="chapter reveal" id="c7"><div class="num" aria-hidden="true">VII</div><p class="eyebrow">Chapter Seven</p><h2>A Life Worth Wanting</h2><p class="dek">Not the single best life ranked above all others. No such ranking exists.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
     <p>Every debt requires another person — you can't inherit from no one, damage no one, promise to no one. So the best life is not the one with the fewest debts, and it isn't a <em>tally</em> of answered ones either (counting rewards whoever manufactures the most harm to repair). The property is <strong>answerability</strong>: you don't deny, disguise, abandon, or self-certify what you owe. But answerability only says what must be <em>answered</em>, never what's worth <em>beginning</em>. So a life worth wanting is answerable <strong>and generative</strong> — debts owned, reliance honored, inheritance carried forward, <em>and</em> something worthwhile made: for a person, the truth, a craft, beauty, a place, futures you'll never see.</p>
     <p><strong>And reality confirms the core of it.</strong> In 1938 Harvard began following 724 men for over eight decades. The strength of their close relationships predicted their health and happiness in old age better than wealth, IQ, or class — and, at fifty, better than their cholesterol. A further 148 studies put the effect of connection on survival on the order of quitting smoking. <strong>The thing that keeps you from losing your options and the thing that makes the life worth staying in run through the same people.</strong> That is the convergence, not a proof they're identical. You don't have to choose between the safe life and the rich one.</p>
@@ -534,7 +546,7 @@
   <!-- ============ VIII ============ -->
   <div class="chapter reveal" id="c8"><div class="num" aria-hidden="true">VIII</div><p class="eyebrow">Chapter Eight</p><h2>Why You Hear This Every Morning</h2><p class="dek">You already know all of this. Knowledge is not a control signal.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
-    <p>Here's the hardest problem: <strong>you already know all of this.</strong> And you'll do it anyway. Because at 6:40, tired, phone in hand, angry or tempted — you will not consult the manifesto. The rule is something you <em>know</em>; the moment is something you <em>do</em>; and knowing doesn't reach the doing in time. The fix isn't more knowing. It's a <strong>recompile</strong> — you say Page One not to convince yourself but to move the two questions out of the slow part of you that reasons, arrives late, and can be bribed, into the fast part that acts. You recite it until you stop having to. And on the day the Wall and the Door fire before you've finished forming the thought, you'll have become the expert, and you won't be able to explain how. That is what learning <em>is.</em></p>
+    <p>Here's the hardest problem: <strong>you already know all of this.</strong> Nobody needs a manifesto to know to keep their word, call their mother, or not sign the thing at two in the morning — and you'll sign it anyway. Because at 6:40, tired, phone in hand, angry or tempted — you will not consult the manifesto. The rule is something you <em>know</em>; the moment is something you <em>do</em>; and knowing doesn't reach the doing in time. The fix isn't more knowing. It's a <strong>recompile</strong> — you say Page One not to convince yourself but to move the two questions out of the slow part of you that reasons, arrives late, and can be bribed, into the fast part that acts. You recite it until you stop having to. And on the day the Wall and the Door fire before you've finished forming the thought, you'll have become the expert, and you won't be able to explain how. That is what learning <em>is.</em></p>
     <p>The morning ritual is the one place a life gets what the loop needs — cheap, repeated, reversible practice, this page as the prior. What it does <em>not</em> get is a clean score, and that's the point: the check isn't <em>did I run the questions</em> (you can run them and lie), it's <em>did they change what I did.</em> A diagnostic, not a grade. Running the ritual is practice, not success.</p>
     <p><strong>The clause that makes it not a religion:</strong> <em>if the world contradicts a line, the world wins — I change it tonight.</em> But an update rule can fire too fast, so you <em>log</em> nightly and don't <em>mutate</em> nightly: one bad Tuesday is data, not a verdict; the kernel and the safety lines change only sober, in daylight, with the reason written down and another clear mind in the room. And the ritual never grades itself — familiarity feels like truth, so once in a while you hand it to someone who doesn't recite it and let them attack it. Repetition is not evidence. The outside check is.</p>
   </div></section>
@@ -542,7 +554,7 @@
   <!-- ============ IX ============ -->
   <div class="chapter reveal" id="c9"><div class="num" aria-hidden="true">IX</div><p class="eyebrow">Chapter Nine</p><h2>The Commit</h2><p class="dek">A confession, and the evidence. The intelligence is in the commit.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
-    <p>One last thing, and it's not an argument. It's a confession. While this was written, the assignment changed eight times — and the most honest instruction of all was: <em>the prompt should always be self-mutating, in order to always provide the highest result.</em> That is an optimizer with no fixed target, described perfectly by someone who didn't know he was describing the thing this document is about. And here is what a self-mutating optimizer cannot see: <strong>it does not terminate.</strong> The loop runs forever, each pass a little better, and you die improving and never ship. Because the one quantity it cannot compute is the deadline. The deadline is the wall.</p>
+    <p>One last thing, and it's not an argument. It's a confession. While this was written, the assignment changed eight times — and the most honest instruction of all was: <em>the prompt should always be self-mutating, in order to always provide the highest result.</em> That is an optimizer with no fixed target, described perfectly by someone who didn't know they were describing the thing this document is about. And here is what a self-mutating optimizer cannot see: <strong>it does not terminate.</strong> The loop runs forever, each pass a little better, and you die improving and never ship. Because the one quantity it cannot compute is the deadline. The deadline is the wall.</p>
     <p class="pull">An optimizer that cannot stop is not intelligent. It is a machine <span class="ember">for never arriving.</span></p>
     <p>The intelligence was never in the mutation. The intelligence is in the commit. At some point — sooner than you want, while you can still see three things you'd fix — you ship the thing, put your name on it, and it becomes real and permanent and yours and enters the add-only log and cannot be taken back. That is the irreversible act this whole operating system was built for. You spend a life protecting the undo so that when the thing with no undo finally arrives — and it will, and it will look like a Tuesday — you can walk right up to it, see clearly that it won't end you, and go.</p>
     <div class="commit" aria-hidden="true">
@@ -593,9 +605,9 @@
 
   <!-- ============ RECEIPTS ============ -->
   <div class="receipts" id="receipts"><div class="wrap">
-    <p class="eyebrow">Appendix B · Receipts</p>
+    <h2 class="eyebrow">Appendix B · Receipts</h2>
     <p class="intro">Every claim is checkable — the difference between an experiment and a sermon. Web-verified and adversarially checked; where the popular version overstated the source, the line was softened or cut.</p>
-    <div class="rc"><span class="lb">The Wall</span> Kelly, <em>A New Interpretation of Information Rate</em>, Bell System Technical Journal 35:4 (1956). Breiman (1961). Haghani &amp; Dewey, biased-coin experiment (2016): 61 subjects, disclosed 60/40 coin, 28% went bust, only 21% hit the cap.</div>
+    <div class="rc"><span class="lb">The Wall</span> Kelly, <em>A New Interpretation of Information Rate</em>, Bell System Technical Journal 35:4 (1956). Breiman (1961). Haghani &amp; Dewey, biased-coin experiment (2016): 61 finance-trained students and young professionals, disclosed 60/40 coin, ~30% went all-in at least once, 28% went bust, only 21% hit the cap (vs. ~95% under steady constant-fraction betting).</div>
     <div class="rc"><span class="lb">The Door / The Return</span> Arrow &amp; Fisher (1974); Henry (1974); Conrad (1980) — the value of waiting tracks the information it buys. The formal object is <em>returnability</em>: Aubin's viability kernel; safe-exploration (Moldovan &amp; Abbeel; Turchetta, Berkenkamp &amp; Krause); control-barrier / robust control (Ames et al.). The manifesto reached the structure from the other side; the names are theirs.</div>
     <div class="rc"><span class="lb">One run, not a portfolio</span> Peters, <em>The Ergodicity Problem in Economics</em>, Nature Physics 15 (2019). Framing contested; the arithmetic (√(1.5·0.6) ≈ 0.949) is not.</div>
     <div class="rc"><span class="lb">The best life</span> Harvard Study of Adult Development, 1938–present — 724 men. Waldinger &amp; Schulz, <em>The Good Life</em> (2023): relationship satisfaction at 50 out-predicted midlife cholesterol for health at 80. Holt-Lunstad et al. (2010) — 148 studies; connection predicts survival on the order of smoking. <span class="cut">Cut: "married men live 7–17 years longer" — not a finding of this study.</span></div>
@@ -625,6 +637,17 @@
       r.setAttribute('data-theme', cur==='light'?'dark':'light');
     });
 
+    /* ---- reading progress ---- */
+    var pbar=document.getElementById('pbar');
+    function paint(){
+      var d=document.documentElement;
+      var max=d.scrollHeight-d.clientHeight;
+      pbar.style.transform='scaleX('+(max>0?Math.min(1,(window.scrollY||d.scrollTop)/max):0)+')';
+    }
+    window.addEventListener('scroll', paint, {passive:true});
+    window.addEventListener('resize', paint, {passive:true});
+    paint();
+
     /* ---- scroll reveals ---- */
     if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches){
       var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
@@ -653,8 +676,8 @@
       "I will break something today. That is not a risk; it is a schedule. I cannot erase it. But I can answer it. I stop the harm, I say plainly that I did it, I fix what can be fixed, I change what led to it, and I prove the change over time. And I offer that repair without demanding anything back — no forgiveness, no reply. It is mine to answer, not theirs to grant.",
       "Everything on this page can be revised — including this page. If the world shows me a line is wrong, the world wins, and I change the line tonight. Now, one thing I expect from today. Water. Feet on the floor. Outside. Go.",
       "Stop here for now. That is the whole operating system. Everything after this is why. So stop reading. Go outside. It will keep — your thirst won't.",
-      "Why an optimizer works, and why you are not one. Machines learned to improve themselves — not everywhere, in one narrow place, and the place is code. Point one at a problem, describe what you want, go to sleep, and it will still be working when you wake. It works, and a whole industry now tells you to run that machine on your life. But strip it down and four conditions sit underneath. One: an honest score that holds still while you chase it. Two: reversibility — you can undo a bad move for free. Three: deep priors — it knows the domain cold. Four: cheap, abundant trials. Every optimizer that has ever worked has all four.",
-      "Now hold your life up against that list. There is no honest score — every number you could chase is a stand-in, and the moment a stand-in becomes the target it stops measuring the thing; optimize your contacts and you get four hundred people, none of whom would drive you to the hospital. There is no undo — and that isn't sad, it's arithmetic: a bet the crowd gets rich on can still ruin the one person who keeps taking it. You were never a blank slate — your fastest move is apprenticeship, not introspection. And you get almost no trials — forty-seven summers, not forty-seven thousand. All four fail. So the machine does not transfer. Here is the real one.",
+      "Why an optimizer works, and why you are not one. Machines learned to improve themselves — not everywhere, in one narrow place, and the place is code. Point one at a problem, describe what you want, go to sleep, and it will still be working when you wake. It works, and a whole industry now tells you to run that machine on your life. But strip it down and four conditions sit underneath. One: an honest score that holds still while you chase it. Two: reversibility — you can undo a bad move cheaply. Three: deep priors — it knows the domain cold. Four: cheap, abundant trials. Every optimizer that has ever worked has all four.",
+      "Now hold your life up against that list. There is no honest score — every number you could chase is a stand-in, and the moment a stand-in becomes the target it stops measuring the thing; optimize your contacts and you get four hundred people, none of whom would drive you to the hospital. There is no undo — and that isn't sad, it's arithmetic: a bet the crowd gets rich on can still ruin the one person who keeps taking it. You were never a blank slate — your fastest move is apprenticeship, not introspection. And you get almost no trials — if you're thirty-three and reach eighty, that's forty-seven summers, not forty-seven thousand. All four fail. So the machine does not transfer. Here is the real one.",
       "Protect the undo. The instruction is not maximize, or hustle, or ascend. It is: protect the undo. Preserve your ability to keep playing, because you don't know the game yet. And do not misread that as caution — protecting the undo is what lets you be brave. Inside the reversible zone, move fast, in volume, without deliberating. The person who protects the undo is the one who can afford to be brave, over and over, for fifty years, because he arranged his life so failure doesn't end it. Courage is not risking ruin. Courage is walking up to the thing that scares you, judging honestly that it will not end you, and going.",
       "The undo was never erasure. I told you there is no undo. That was one notch off. An undo does not erase the mistake — the bad entry stays in the history forever. It writes a new entry that answers the old one. Now there are two, both permanent, and the record shows what you did and what you did about it. Which is exactly what repair is. You cannot make the thing not have happened. You can do the thing that answers it. The record showing both is not the failure of the undo. It is the undo.",
       "So success is not a score and not a destination. It is an answered log — a life where the debts you incurred have later entries that answer them. And every debt requires another person. So the best life is not the one with the fewest debts. It is the one with the most answered ones — the deepest web of tended ties, not the widest. One of the longest studies of adult life ever run agrees: the quality of your close relationships predicts your health and happiness in old age better than wealth, or class, or cholesterol. The thing that keeps you from dying is the same thing that makes the living worth it. And if you have no one to call, that cuts your way too — a friendship that starts today lowers the risk today. One real conversation, this week. You are not behind. You are at the first line.",
