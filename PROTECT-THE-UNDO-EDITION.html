@@ -15,7 +15,7 @@
   :root[data-theme="light"]{
     --void:#f3efe6; --void-2:#efeae0; --panel:#fbf8f1; --panel-2:#f6f2e9;
     --ink:#17161a; --ink-2:#514d45; --ink-3:#847f74;
-    --ember:#c8401f; --ember-2:#a8331500; --ember-2:#b23417; --ember-deep:#8f2c14;
+    --ember:#c8401f; --ember-2:#b23417; --ember-deep:#8f2c14;
     --line:rgba(23,22,26,.12); --line-2:rgba(23,22,26,.2); --ok:#1f8a52;
   }
 
@@ -128,7 +128,9 @@
   .term pre{margin:0; padding:24px clamp(16px,4vw,30px); font-family:var(--mono); font-size:12.5px; line-height:1.74;
     color:#ded9cd; white-space:pre; overflow-x:auto}
   .term b{color:var(--ember-2); font-weight:700}
-  .term .go{color:var(--ok); font-weight:700}
+  /* terminal keeps a dark ground in both themes, so its highlight needs the bright ember even in light mode */
+  :root[data-theme="light"] .term b{color:#ff7a54}
+  .term .go{color:#4bd07f; font-weight:700}
 
   .go-out{max-width:var(--measure); margin:34px auto 0; text-align:center}
   .go-out strong{font-family:var(--sans); font-weight:800; font-size:22px; letter-spacing:-.01em}
@@ -206,6 +208,7 @@
   .reveal{opacity:0; transform:translateY(20px)}
   .reveal.in{opacity:1; transform:none; transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1)}
   @media (prefers-reduced-motion:reduce){ .reveal{opacity:1; transform:none} }
+  /* if JS never runs, the observer can't reveal — the noscript block below restores full visibility */
 
   /* ---------- skip link ---------- */
   .skip{position:fixed; left:-9999px; top:0; z-index:20; background:var(--ember); color:#0a0a0a;
@@ -266,6 +269,7 @@
   <span class="stat" id="lstat" aria-hidden="true"></span>
 </div>
 <button class="theme-btn" id="tbtn" aria-label="Toggle theme">◐ theme</button>
+<noscript><style>.reveal{opacity:1 !important; transform:none !important}</style></noscript>
 <a class="skip" href="#read">Skip to the manifesto</a>
 <div class="fx" aria-hidden="true"></div>
 
@@ -333,7 +337,8 @@
   <!-- ============ PAGE ONE ============ -->
   <div class="recompile" id="recompile">
     <div class="wrap">
-      <p class="eyebrow" style="text-align:center">Chapter Ø · The Recompile</p>
+      <h2 class="sr-only">Chapter Ø — The Recompile</h2>
+      <p class="eyebrow" style="text-align:center" aria-hidden="true">Chapter Ø · The Recompile</p>
       <p class="lead">Say this every morning, out loud, before the phone — anchored to the first glass of water. Three to four minutes; slower when you're tired. On the worst morning it shrinks to one line, standing: <em>There is a floor. It holds.</em> Twenty seconds — or, some mornings, silence. Practice, not penance. You say it not to believe it, but until you stop having to. And you'll miss a morning; a skipped one doesn't void the ones before, and this was never a streak. The skill is the return.</p>
       <div class="sr-only">
         <p>I am awake. There is a floor, and it holds.</p>
@@ -449,7 +454,7 @@
     <div class="qa"><span class="q">Q1 — The Wall.</span> Does this act — <em>or refusing it</em> — open a real, avoidable path to a you who can no longer act or be taken in? Not the worst thing imaginable (chase the tail and almost anything ends in death); a <em>credible, material</em> one. If YES — stop. The prize is paid to someone who will not exist. And ask it of inaction too: waiting can foreclose a future as surely as acting can end one.</div>
     <div class="qa"><span class="q">Q2 — The Door.</span> Reversibility is a dial, not a switch. Before <em>can I undo this?</em>, ask <em>can I shrink it until I can?</em> — rent the town before you buy in it. A probe that can't wreck you turns a NO into a YES. Only what won't shrink gets the raw question: <em>what would I know in a week, and is it worth the wait?</em> Worth it → wait, and ask someone who's done it. Not → go once, eyes open, knowing the price.</div>
     <p class="pull">A penalty can be outbid. <span class="ember">A wall cannot.</span> That is the difference between a life and a wreck.</p>
-    <p><strong>Why the wall is a wall.</strong> Seventy years ago at Bell Labs, John Kelly proved something that should be taught to children: keep betting to maximize your <em>expected winnings</em> and, given enough rounds, you go broke — almost surely. His fix — maximize the <em>rate</em> at which you compound — makes zero infinitely bad. And if you think this is obvious: sixty-one finance students were handed a coin the odds were built to let them win, real money, thirty minutes. Nearly a third bet everything on a single flip and went bust; only one in five hit the cap a steady bettor almost couldn't miss. Right about the odds, ruined anyway — every one of them running your Life OS.</p>
+    <p><strong>Why the wall is a wall.</strong> Seventy years ago at Bell Labs, John Kelly proved something that should be taught to children: keep betting to maximize your <em>expected winnings</em> and, given enough rounds, you go broke — almost surely. His fix — maximize the <em>rate</em> at which you compound — makes zero infinitely bad. And if you think this is obvious: sixty-one finance students were handed a coin the odds were built to let them win, real money, thirty minutes. Nearly a third bet everything on a single flip at least once; more than a quarter went bust; only one in five hit the cap a steady bettor almost couldn't miss. Right about the odds, ruined anyway — every one of them running your Life OS.</p>
     <p><strong>One caveat, because hiding a limit is the sin.</strong> Kelly's math is a bankroll's, and your life is not a bankroll. I borrow it for exactly one thing — ruin is non-recoverable, so it can't be priced — and nothing else. The wall transfers; "growing a score" does not. There is no score.</p>
   </div></section>
 
@@ -574,7 +579,7 @@
       <p>You'll hurt people and get things wrong; that's not a risk, it's a certainty. You can't erase it, but you can answer it: stop the harm, say plainly "I did that," fix what can be fixed, change the thing that led to it, then prove the change over time. Repair is offered, not owed back — no reply, no forgiveness required. The mistake isn't the real failure. Disappearing is.</p>
 
       <h3>Your people are the whole thing</h3>
-      <p>The single biggest factor in whether your life is long, healthy, and worth living — bigger than money or success — is a few close relationships you tend over years. That's the clearest result of the longest study ever run on human lives. Two or three deep beats four hundred contacts, and it isn't close. No one right now? A friendship that starts today still counts. You're not behind; you're at the start.</p>
+      <p>One of the biggest factors in whether your life is long, healthy, and worth living — rivaling money or success — is a few close relationships you tend over years. That's the clearest result of one of the longest studies of adult life ever run. Two or three deep beats four hundred contacts, and it isn't close. No one right now? A friendship that starts today still counts. You're not behind; you're at the start.</p>
 
       <h3>The daily part — this is what makes it work</h3>
       <p>Knowing all this changes nothing; you already knew most of it. The problem was never knowledge — it's that you know it in calm moments and forget it when you're tired, angry, or tempted. So each morning, run the two questions and name one thing you want from the day; each night, ask what you got wrong, who you owe, and the one act that answers it. You'll skip days — a skip is one day, not a broken streak; come back the next morning. And if life shows you a line here is wrong, change it that night.</p>
@@ -652,7 +657,7 @@
       "Now hold your life up against that list. There is no honest score — every number you could chase is a stand-in, and the moment a stand-in becomes the target it stops measuring the thing; optimize your contacts and you get four hundred people, none of whom would drive you to the hospital. There is no undo — and that isn't sad, it's arithmetic: a bet the crowd gets rich on can still ruin the one person who keeps taking it. You were never a blank slate — your fastest move is apprenticeship, not introspection. And you get almost no trials — forty-seven summers, not forty-seven thousand. All four fail. So the machine does not transfer. Here is the real one.",
       "Protect the undo. The instruction is not maximize, or hustle, or ascend. It is: protect the undo. Preserve your ability to keep playing, because you don't know the game yet. And do not misread that as caution — protecting the undo is what lets you be brave. Inside the reversible zone, move fast, in volume, without deliberating. The person who protects the undo is the one who can afford to be brave, over and over, for fifty years, because he arranged his life so failure doesn't end it. Courage is not risking ruin. Courage is walking up to the thing that scares you, judging honestly that it will not end you, and going.",
       "The undo was never erasure. I told you there is no undo. That was one notch off. An undo does not erase the mistake — the bad entry stays in the history forever. It writes a new entry that answers the old one. Now there are two, both permanent, and the record shows what you did and what you did about it. Which is exactly what repair is. You cannot make the thing not have happened. You can do the thing that answers it. The record showing both is not the failure of the undo. It is the undo.",
-      "So success is not a score and not a destination. It is an answered log — a life where the debts you incurred have later entries that answer them. And every debt requires another person. So the best life is not the one with the fewest debts. It is the one with the most answered ones — the deepest web of tended ties, not the widest. The longest study ever run on human lives agrees: the quality of your close relationships predicts your health and happiness in old age better than wealth, or class, or cholesterol. The thing that keeps you from dying is the same thing that makes the living worth it. And if you have no one to call, that cuts your way too — a friendship that starts today lowers the risk today. One real conversation, this week. You are not behind. You are at the first line.",
+      "So success is not a score and not a destination. It is an answered log — a life where the debts you incurred have later entries that answer them. And every debt requires another person. So the best life is not the one with the fewest debts. It is the one with the most answered ones — the deepest web of tended ties, not the widest. One of the longest studies of adult life ever run agrees: the quality of your close relationships predicts your health and happiness in old age better than wealth, or class, or cholesterol. The thing that keeps you from dying is the same thing that makes the living worth it. And if you have no one to call, that cuts your way too — a friendship that starts today lowers the risk today. One real conversation, this week. You are not behind. You are at the first line.",
       "Why you say it every morning. You already knew almost all of this, and you'll fail to do it anyway. That's the point. Knowing is not doing, and the gap is where lives get ruined. At six-forty in the morning, tired or angry or tempted with your phone in your hand, you will not consult a document. You fix that by running it every morning — until the wall and the door fire on their own, before you've finished forming the thought. You get one run at your marriage. You get thousands of mornings at the question: did I check before I acted today? You cannot iterate on your life. You can iterate on your policy, every morning, for free, for the rest of your life.",
       "The commit. You will always see three more things you could improve. That never stops, and it is not a signal to keep going. An optimizer that cannot stop is not intelligent. It is a machine for never arriving. The intelligence is in the commit. So at some point — sooner than you want, while you can still see the flaws — you ship the thing. You put your name on it. And it becomes real, and permanent, and yours. That moment you can't take back is what all the caution was for.",
       "Protect what you can't get back. Be bold with everything you can. Answer what you break. Keep your people. The floor holds. The people are the undo. Answer what you did. Shipped it. Go."
