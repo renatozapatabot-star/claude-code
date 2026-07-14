@@ -80,6 +80,25 @@
     background:var(--panel); color:var(--ink-2); border:1px solid var(--line-2); border-radius:999px; padding:7px 12px; cursor:pointer}
   .theme-btn:hover{color:var(--ember); border-color:var(--ember)}
 
+  /* ---------- screen-reader-only (voice reads this; eyes never see it) ---------- */
+  .sr-only{position:absolute!important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+  /* ---------- Listen control (read-aloud, in-browser speech) ---------- */
+  .listen{position:fixed; left:16px; top:16px; z-index:6; display:flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:11px; letter-spacing:.08em;
+    background:var(--panel); color:var(--ink-2); border:1px solid var(--line-2); border-radius:999px; padding:6px 8px 6px 12px}
+  .listen[hidden]{display:none}
+  .listen .lbtn{appearance:none; background:transparent; border:0; color:var(--ink); cursor:pointer; font:inherit;
+    display:flex; align-items:center; gap:7px; padding:2px 4px; border-radius:999px}
+  .listen .lbtn:hover{color:var(--ember)}
+  .listen .ico{display:inline-flex; width:20px; height:20px; align-items:center; justify-content:center;
+    border-radius:50%; background:var(--ember); color:#0a0a0a; font-size:11px; line-height:1}
+  .listen.playing .ico{background:var(--ember)}
+  .listen .stopb{appearance:none; background:transparent; border:0; color:var(--ink-3); cursor:pointer; font:inherit; padding:2px 6px}
+  .listen .stopb:hover{color:var(--ember)}
+  .listen .stat{color:var(--ink-3); font-size:10px; letter-spacing:.1em; min-width:2.4ch; text-align:right; font-variant-numeric:tabular-nums}
+  @media (max-width:600px){ .listen{padding:5px 7px 5px 10px} .listen .stat{display:none} }
+
   /* ---------- one-screen OS band ---------- */
   .band{border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--void-2); padding:60px 0}
   .band .wrap{max-width:760px}
@@ -189,6 +208,13 @@
   @media (prefers-reduced-motion:reduce){ .reveal{opacity:1; transform:none} }
 </style>
 
+<div class="listen" id="listen" hidden>
+  <button class="lbtn" id="lbtn" aria-label="Listen — read the manifesto aloud">
+    <span class="ico" id="lico" aria-hidden="true">▶</span><span id="ltxt">Listen</span>
+  </button>
+  <button class="stopb" id="lstop" aria-label="Stop reading" hidden>stop</button>
+  <span class="stat" id="lstat" aria-hidden="true"></span>
+</div>
 <button class="theme-btn" id="tbtn" aria-label="Toggle theme">◐ theme</button>
 <div class="fx" aria-hidden="true"></div>
 
@@ -233,7 +259,16 @@
     <div class="wrap">
       <p class="eyebrow" style="text-align:center">Chapter Ø · The Recompile</p>
       <p class="lead">Say this every morning, out loud, before the phone — anchored to the first glass of water. Three to four minutes; slower when you're tired. On the worst morning it shrinks to one line, standing: <em>There is a floor. It holds.</em> Twenty seconds — or, some mornings, silence. Practice, not penance. You say it not to believe it, but until you stop having to. And you'll miss a morning; a skipped one doesn't void the ones before, and this was never a streak. The skill is the return.</p>
-      <div class="term reveal">
+      <div class="sr-only">
+        <p>I am awake. There is a floor, and it holds.</p>
+        <p>I don't know what my life is for. That is not a failure — I find it out by living, and I learn it late. So I am not here to optimize. I am here to stay in the game long enough to find out what the game was.</p>
+        <p>The body is the condition of every future act, so I maintain it. Water, sleep, food, movement. Most signals are information; some are commands. Chest pain, bleeding, sudden confusion — I get help first and reason later. And when the mind goes dark, when it says there is no future and no one to call, that is a command too: a condition, like the bleeding, not a verdict. The move is a doctor or a crisis line, not a mantra and not this page. And when I'm drunk, sleepless, panicked, or losing touch, I am not the only judge — no irreversible move; I bring in a sober mind.</p>
+        <p>Before anything that matters, two questions. The Wall: does this, or refusing it, open a real and avoidable path to a me who can no longer act or be taken in? Not the worst imaginable — a credible one. If yes, I don't weigh it. I stop. The Door: can I undo it, or shrink it until I can? If yes, I go — now, fast, imperfectly, again tomorrow. If no, I ask what a week would teach; if it's worth it I wait and ask someone who has done it; if not, I go once, eyes open, knowing the price. Speed on the reversible. Reverence for the irreversible.</p>
+        <p>But reversible is only permission to test, not a reason to act. So first I ask what good this serves and whether it is mine to do. Direction comes first.</p>
+        <p>The people are my deepest undo — the one no money, no tool, no version of me alone in a room can manufacture. I tend the safe ones; a tie built on fear or control is a wall, not a floor. My word is the one thing I fully control; if I can't keep it, I say so before, to their face. The breaking isn't the sin — the vanishing is. I will break something today; not a risk, a schedule. I can't erase it, so I write the line that answers it — not the apology, the act.</p>
+        <p>Everything here can be revised, including this page. If the world contradicts a line, the world wins, and I change it — in daylight, sober. Now, one thing I expect today. Water. Feet on the floor. Outside. Go.</p>
+      </div>
+      <div class="term reveal" aria-hidden="true">
         <div class="bar"><span class="dot r"></span><span class="dot"></span><span class="dot"></span><span class="path">~/life — page-one --recompile</span></div>
 <pre>  I am awake. There is a floor. It holds.
 
@@ -314,7 +349,7 @@
     <p class="lead-cap">Something extraordinary happened while nobody was watching. Machines learned to improve themselves — not in general, in one narrow place, and the place is code. Point a system at a codebase, describe what you want in plain English, go to bed. It will still be working when you wake, having proposed a change, tested it, kept it if it helped, thrown it away if it didn't — hundreds of times, in the dark. And an industry of self-help now says you should run it on your life. Set your metric. Iterate. Commit the wins. Roll back the losses. Optimize.</p>
     <p>Before we destroy that idea, understand why the real thing works. <strong>Code is a rigged environment.</strong> A test suite passes or fails — an honest, computable score that holds still while you chase it. Every program ever corrected sits there as training data. You can run it, get a verdict, and try again for almost nothing. And underneath it all, so foundational nobody names it: <strong>version control. The undo.</strong> The whole architecture rests on one fact — it's allowed to be wrong nearly all the time, because being wrong is cheap and survivable.</p>
     <p>Strip it to structure. Four conditions:</p>
-    <pre class="code">  1. AN HONEST, FIXED SCORE   measurable, and it holds
+    <pre class="code" aria-hidden="true">  1. AN HONEST, FIXED SCORE   measurable, and it holds
                               still while you chase it
   2. REVERSIBILITY            you can undo it, cheaply
   3. RICH PRIORS              you already know the domain
@@ -354,7 +389,7 @@
   <!-- ============ IV ============ -->
   <div class="chapter reveal"><div class="num">IV</div><p class="eyebrow">Chapter Four</p><h2>The Operating System</h2><p class="dek">Six lines. Not one of them new — and that's the point.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
-    <pre class="code">  while (alive) {
+    <pre class="code" aria-hidden="true">  while (alive) {
     do_not_die();                  <span class="cm">// ruin is a wall, not a cost.</span>
     prefer_the_reversible();       <span class="cm">// speed on what you can undo;</span>
                                    <span class="cm">//   reverence for what you can't.</span>
@@ -372,7 +407,7 @@
   <div class="chapter reveal"><div class="num">V</div><p class="eyebrow">Chapter Five</p><h2>The Undo Is Not Erasure</h2><p class="dek">The correction is the best news in the document.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
     <p>I told you there is no undo. That was one notch off. An undo doesn't erase the mistake — the bad entry stays in the history, permanently. What it does is write a <em>new entry that answers the old one</em>: now there are two where there was one, both permanent, and the record shows exactly what you did and exactly what you did about it. It buys reversibility not by forgetting but by <em>never</em> forgetting. Which is exactly what repair is. You cannot make it not have happened. You can do the thing that answers it. The record showing both is not the failure of the undo. It <strong>is</strong> the undo.</p>
-    <pre class="code">  repair() {
+    <pre class="code" aria-hidden="true">  repair() {
     stop_the_harm();
     secure_their_safety();       <span class="cm">// first — before anything about you.</span>
     name_the_act_and_impact();   <span class="cm">// no euphemism, no "but."</span>
@@ -390,7 +425,7 @@
   <div class="chapter reveal"><div class="num">VI</div><p class="eyebrow">Chapter Six</p><h2>Success Is An Answered Log</h2><p class="dek">Not a score, not a state, not a destination. A property of the record.</p><div class="cap"></div></div>
   <section class="body"><div class="wrap">
     <p>What is success? Not a <em>score</em> — no number, no scorer, no final report. Not a <em>state</em> — name it and the thing that valued it will have moved by the time you arrive, which is why the man who finally got the thing so often looks emptiest in the photograph. What's left is the log. You are an add-only record; every act an entry, all permanent. You cannot erase a single line. But you can write the next one — and that is the only thing you have ever been able to do.</p>
-    <pre class="code">  success(life):
+    <pre class="code" aria-hidden="true">  success(life):
     <span class="cm">// A PROPERTY of the log, not a value returned.</span>
     <span class="cm">// success = every debt has a later entry that answers it.</span>
     <span class="cm">// No number. No stand-in, so Goodhart has nothing to bite.</span>
@@ -429,7 +464,7 @@
     <p>One last thing, and it's not an argument. It's a confession. While this was written, the assignment changed eight times — and the most honest instruction of all was: <em>the prompt should always be self-mutating, in order to always provide the highest result.</em> That is an optimizer with no fixed target, described perfectly by someone who didn't know he was describing the thing this document is about. And here is what a self-mutating optimizer cannot see: <strong>it does not terminate.</strong> The loop runs forever, each pass a little better, and you die improving and never ship. Because the one quantity it cannot compute is the deadline. The deadline is the wall.</p>
     <p class="pull">An optimizer that cannot stop is not intelligent. It is a machine <span class="ember">for never arriving.</span></p>
     <p>The intelligence was never in the mutation. The intelligence is in the commit. At some point — sooner than you want, while you can still see three things you'd fix — you ship the thing, put your name on it, and it becomes real and permanent and yours and enters the add-only log and cannot be taken back. That is the irreversible act this whole operating system was built for. You spend a life protecting the undo so that when the thing with no undo finally arrives — and it will, and it will look like a Tuesday — you can walk right up to it, see clearly that it won't end you, and go.</p>
-    <div class="commit">
+    <div class="commit" aria-hidden="true">
 <pre>  <span class="cm">// The loop that cannot be run terminates here.</span>
   <span class="cm">// Not because it converged. Because I did.</span>
   <span class="cm">//</span>
@@ -469,20 +504,107 @@
     </svg>
     Protect the undo. Say it every morning, out loud, before the phone.<br>Not to believe it — until you stop having to. Then stand up and go live the <span class="ember">Tuesday.</span>
   </div>
-  <p class="foot-note">This is the badass edition. A quieter reading version and a plain, jargon-free version exist too. Nothing here is protected — if the world contradicts a line, the world wins.</p>
+  <p class="foot-note">This is the badass edition — made to be read <em>and</em> heard: tap <strong>Listen</strong> (top-left) to have it read aloud, or let a screen reader run it clean. A plain, jargon-free version exists too. Nothing here is protected — if the world contradicts a line, the world wins.</p>
 
 </div>
 
 <script>
   (function(){
+    /* ---- theme toggle ---- */
     var b=document.getElementById('tbtn');
     b.addEventListener('click',function(){
       var r=document.documentElement, cur=r.getAttribute('data-theme');
       r.setAttribute('data-theme', cur==='light'?'dark':'light');
     });
+
+    /* ---- scroll reveals ---- */
     if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches){
       var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
       document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
     } else { document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');}); }
+
+    /* ---- Listen: read the manifesto aloud, in-browser, no network ---- */
+    var synth = window.speechSynthesis;
+    var Utter = window.SpeechSynthesisUtterance;
+    var listen = document.getElementById('listen');
+    if(!synth || !Utter){ return; } // no speech support — leave control hidden
+
+    // The manifesto, written for the ear. Each string is one spoken passage.
+    var SCRIPT = [
+      "Protect the Undo. The spoken edition.",
+      "The morning words. Say this every morning, out loud, before the phone. After the first glass of water, with your feet on the floor. On the worst morning it shrinks to one line, spoken standing: there is a floor, and it holds. That is enough. The floor is never zero. You are not saying it to believe it. You are saying it until you stop having to. And you will miss a morning. Not maybe — on a schedule. A skipped morning is one skipped morning. It does not erase the ones before it, and this was never a streak to protect. The skill is the return.",
+      "I am awake. There is a floor, and it holds.",
+      "I do not know yet what my life is for. That is not a failure. I find it out by living, and I learn it late. So I am not here to optimize. I am here to stay in the game long enough to find out what the game was.",
+      "My body carries every future act, so I maintain it. Water. Sleep. Food. Movement. Most signals are information. A few are commands. Chest pain, heavy bleeding, sudden confusion — I get help first and understand it later. And when the mind goes dark, when it says there is no future and no one to call, that is a command too. It is a condition, like the bleeding. Not a verdict on my life. The move is a real person — a doctor, a crisis line — not a mantra, and not this page.",
+      "Before anything that matters, I ask two questions, in order. First, the wall. If this goes as badly as it possibly can, is there still a version of me on the other side who can keep going? If the answer is no, I stop. I do not weigh it. A prize is paid to someone who has to be there to collect it. There is no number that buys back a wall.",
+      "Second, the door. Can I undo this? If yes, I go — now, fast, imperfectly, before I feel ready — because cheap, survivable failure is the most valuable thing I own, and I spend it like water. If I cannot undo it, I slow down and ask one honest question: what would I know in a week that I do not know now, and is it worth the wait? If it is, I wait, and I ask someone who has done it. If not, I go once, eyes open, knowing the price. Speed on what I can undo. Reverence for what I can't.",
+      "But reversible is only permission to test. It is not a reason to act. A foolish thing does not become wise just because I can walk it back. So before the wall and the door, I ask what good this actually serves, and whether it is mine to do. Direction comes first.",
+      "I did not build my own hands or invent this language. So I inherit before I invent. I find someone better than me, I watch how they work, and I stay quiet.",
+      "The people in my life are not tools and not mine to spend. Some ties hold me up; a few pull me down, and those are not safety, they are the fall. I tend the safe ones, on purpose, for years — because when I go under, they are what pulls me out, and because they are the largest part of why the life was worth living at all.",
+      "My word is the one thing I fully control. If I cannot keep it, I say so early, out loud, to their face. Breaking a promise costs an hour. Vanishing costs the person.",
+      "I will break something today. That is not a risk; it is a schedule. I cannot erase it. But I can answer it. I stop the harm, I say plainly that I did it, I fix what can be fixed, I change what led to it, and I prove the change over time. And I offer that repair without demanding anything back — no forgiveness, no reply. It is mine to answer, not theirs to grant.",
+      "Everything on this page can be revised — including this page. If the world shows me a line is wrong, the world wins, and I change the line tonight. Now, one thing I expect from today. Water. Feet on the floor. Outside. Go.",
+      "Stop here for now. That is the whole operating system. Everything after this is why. So stop reading. Go outside. It will keep — your thirst won't.",
+      "Why an optimizer works, and why you are not one. Machines learned to improve themselves — not everywhere, in one narrow place, and the place is code. Point one at a problem, describe what you want, go to sleep, and it will still be working when you wake. It works, and a whole industry now tells you to run that machine on your life. But strip it down and four conditions sit underneath. One: an honest score that holds still while you chase it. Two: reversibility — you can undo a bad move for free. Three: deep priors — it knows the domain cold. Four: cheap, abundant trials. Every optimizer that has ever worked has all four.",
+      "Now hold your life up against that list. There is no honest score — every number you could chase is a stand-in, and the moment a stand-in becomes the target it stops measuring the thing; optimize your contacts and you get four hundred people, none of whom would drive you to the hospital. There is no undo — and that isn't sad, it's arithmetic: a bet the crowd gets rich on can still ruin the one person who keeps taking it. You were never a blank slate — your fastest move is apprenticeship, not introspection. And you get almost no trials — forty-seven summers, not forty-seven thousand. All four fail. So the machine does not transfer. Here is the real one.",
+      "Protect the undo. The instruction is not maximize, or hustle, or ascend. It is: protect the undo. Preserve your ability to keep playing, because you don't know the game yet. And do not misread that as caution — protecting the undo is what lets you be brave. Inside the reversible zone, move fast, in volume, without deliberating. The person who protects the undo is the one who can afford to be brave, over and over, for fifty years, because he arranged his life so failure doesn't end it. Courage is not risking ruin. Courage is walking up to the thing that scares you, judging honestly that it will not end you, and going.",
+      "The undo was never erasure. I told you there is no undo. That was one notch off. An undo does not erase the mistake — the bad entry stays in the history forever. It writes a new entry that answers the old one. Now there are two, both permanent, and the record shows what you did and what you did about it. Which is exactly what repair is. You cannot make the thing not have happened. You can do the thing that answers it. The record showing both is not the failure of the undo. It is the undo.",
+      "So success is not a score and not a destination. It is an answered log — a life where the debts you incurred have later entries that answer them. And every debt requires another person. So the best life is not the one with the fewest debts. It is the one with the most answered ones — the deepest web of tended ties, not the widest. The longest study ever run on human lives agrees: the quality of your close relationships predicts your health and happiness in old age better than wealth, or class, or cholesterol. The thing that keeps you from dying is the same thing that makes the living worth it. And if you have no one to call, that cuts your way too — a friendship that starts today lowers the risk today. One real conversation, this week. You are not behind. You are at the first line.",
+      "Why you say it every morning. You already knew almost all of this, and you'll fail to do it anyway. That's the point. Knowing is not doing, and the gap is where lives get ruined. At six-forty in the morning, tired or angry or tempted with your phone in your hand, you will not consult a document. You fix that by running it every morning — until the wall and the door fire on their own, before you've finished forming the thought. You get one run at your marriage. You get thousands of mornings at the question: did I check before I acted today? You cannot iterate on your life. You can iterate on your policy, every morning, for free, for the rest of your life.",
+      "The commit. You will always see three more things you could improve. That never stops, and it is not a signal to keep going. An optimizer that cannot stop is not intelligent. It is a machine for never arriving. The intelligence is in the commit. So at some point — sooner than you want, while you can still see the flaws — you ship the thing. You put your name on it. And it becomes real, and permanent, and yours. That moment you can't take back is what all the caution was for.",
+      "Protect what you can't get back. Be bold with everything you can. Answer what you break. Keep your people. The floor holds. The people are the undo. Answer what you did. Shipped it. Go."
+    ];
+
+    var lbtn=document.getElementById('lbtn'), lico=document.getElementById('lico'),
+        ltxt=document.getElementById('ltxt'), lstop=document.getElementById('lstop'),
+        lstat=document.getElementById('lstat');
+    var idx=0, playing=false, paused=false, voice=null, keepAlive=null;
+
+    function pickVoice(){
+      var vs=synth.getVoices()||[];
+      if(!vs.length) return null;
+      var pref=vs.filter(function(v){return /^en(-|_|$)/i.test(v.lang);});
+      var pool=pref.length?pref:vs;
+      // prefer a natural-sounding default if present
+      var named=pool.filter(function(v){return /natural|siri|samantha|daniel|serena|google/i.test(v.name);});
+      return (named[0]||pool[0]);
+    }
+    voice=pickVoice();
+    if(synth.onvoiceschanged!==undefined){ synth.onvoiceschanged=function(){ if(!voice) voice=pickVoice(); }; }
+
+    function setState(state){ // 'idle' | 'playing' | 'paused'
+      if(state==='playing'){ listen.classList.add('playing'); lico.textContent='❚❚'; ltxt.textContent='Pause'; lstop.hidden=false; }
+      else if(state==='paused'){ listen.classList.remove('playing'); lico.textContent='▶'; ltxt.textContent='Resume'; lstop.hidden=false; }
+      else { listen.classList.remove('playing'); lico.textContent='▶'; ltxt.textContent='Listen'; lstop.hidden=true; lstat.textContent=''; }
+    }
+    function updateStat(){ lstat.textContent=(idx+1)+'/'+SCRIPT.length; }
+
+    function speakFrom(i){
+      if(i>=SCRIPT.length){ stopAll(); return; }
+      idx=i; updateStat();
+      var u=new Utter(SCRIPT[i]);
+      if(voice) u.voice=voice;
+      u.rate=0.97; u.pitch=1; u.lang=(voice&&voice.lang)||'en-US';
+      u.onend=function(){ if(playing && !paused){ speakFrom(idx+1); } };
+      u.onerror=function(){ if(playing && !paused){ speakFrom(idx+1); } };
+      synth.speak(u);
+    }
+    // Chrome pauses long sessions after ~15s; nudge it awake.
+    function startKeepAlive(){ stopKeepAlive(); keepAlive=setInterval(function(){ if(playing && !paused && synth.speaking){ synth.pause(); synth.resume(); } },10000); }
+    function stopKeepAlive(){ if(keepAlive){ clearInterval(keepAlive); keepAlive=null; } }
+
+    function stopAll(){ playing=false; paused=false; stopKeepAlive(); try{synth.cancel();}catch(e){} idx=0; setState('idle'); }
+
+    lbtn.addEventListener('click',function(){
+      if(!playing){ playing=true; paused=false; setState('playing'); startKeepAlive(); try{synth.cancel();}catch(e){} speakFrom(idx||0); }
+      else if(!paused){ paused=true; try{synth.pause();}catch(e){} setState('paused'); }
+      else { paused=false; try{synth.resume();}catch(e){} setState('playing'); }
+    });
+    lstop.addEventListener('click', stopAll);
+    // Don't leave a voice talking to an empty room.
+    window.addEventListener('beforeunload', function(){ try{synth.cancel();}catch(e){} });
+    window.addEventListener('pagehide', function(){ try{synth.cancel();}catch(e){} });
+
+    listen.hidden=false; // speech supported — reveal the control
   })();
 </script>
