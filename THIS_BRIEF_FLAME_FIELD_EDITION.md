@@ -122,6 +122,8 @@ Doors that exist almost everywhere — search these words:
 
 **US quick list:** 211 (everything) · 988 (crisis) · SNAP + "expedited service" (food) · Medicaid (health, any day) · HealthCare.gov (after job loss) · state unemployment office · American Job Centers (free job help) · LawHelp.org (free lawyers) · VITA (free tax filing — the EITC can be worth thousands) · school enrolls a homeless child same day, no papers needed.
 
+**Laredo, TX quick list:** 211 (text your zip to 898-211) · **Bethany House** — 817 Hidalgo St, 956-722-4152 (bed, meals, caseworker, mailing address) · **South Texas Food Bank** — 2121 Jefferson St (food + SNAP help) · **Casa de Misericordia** — 956-712-9591 (domestic violence, day or night) · **Gateway Community Health Center** — 956-795-8101 (pay-what-you-can health care — in Texas this IS your health plan) · **Joe A. Guerra Library** — 1120 E. Calton Rd (free computers + wifi) · **Workforce Solutions** — 1406 Jacaman Rd (free job help + paid training). Work starts fast here: staffing agencies place warehouse shifts on Mines Road within days. Speak both languages? The trade industry (freight, customs paperwork) pays more at every step — ask Workforce Solutions about logistics training.
+
 ---
 
 ## THE DEAL, IN FOUR LINES
