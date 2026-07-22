@@ -663,6 +663,16 @@ Diogenes, asked where he was from, said: the world. That answer was never a pass
 
 **You were born holding a key most of the earth spends a lifetime trying to cut — so use it now, before the someday your body quietly cancels.** Not at retirement, not at rich. This month, for the price of a coffee: one dawn on a trail two hours out, or the pedestrian bridge walked into another country on foot. Cross once, nearly broke, and the map in your head redraws — the world stops being a rumor and becomes a place you have stood. The first crossing is the proof, not the quota — the aim was never a count, only a map with fewer rumors in it every year.
 
+## Player One
+
+Some three a.m. the thought will find you — it finds everyone now: *what if none of this is real?* A simulation, a dream, a test running on someone else's machine. Take it seriously exactly once, all the way down, and you come back with the two facts that retire it forever.
+
+First: you cannot tell. Not because you haven't thought hard enough — because the question is sealed from the inside. No experiment reaches the walls. And if it is a render, notice whose eyes it renders: yours. You are not the crowd, not the scenery, not the dust between stars — you are the one the morning keeps loading for. Player one. But player one is never told — the character can't read the credits, and you couldn't even tell yourself: any voice inside you announcing *real* or *rendered* is inside too, running on the same stage it's trying to judge. That certainty isn't for sale at any price, in either direction. Every mind that ever lit faced the same sealed question, and burned anyway.
+
+Second: it changes nothing — not one move on the whole board. Hunger is hunger from inside. The lock on the door tonight holds or it doesn't. Pain still teaches; ruin still ends the game for the only you with a ticket to it; the few still answer at three in the morning; and a simulated flame still warms the hands held to it. Run every page of this book once under *real* and once under *rendered* — the same lines survive. A truth that changes nothing you do is not a floor and not a gate. It's weather on the far side of a window.
+
+So here is the whole use of the thought, and then you are done with it. On the bad nights the dark will sell it as anesthetic — *none of it's real, so none of it matters* — detachment wearing philosophy's coat, and still a flinch. Refuse it with the asymmetry: if nothing is real, nothing is lost by burning fully; if everything is real, everything is lost by not. An undecidable question doesn't get answered — it gets lived, and the living is the only answer you ever file. So play it as the one being played for keeps — this run, this body, this one continuous burn — because either that is true, or playing it that way makes it true in the only theater you will ever hold a ticket to. The account said zero; the ontology says *unknown*. Neither was ever the sad part. **You can't check whether the game is real. You can only check whether you played it.**
+
 ## What No Final Name Can Hold
 
 You climbed six rooms in the sky. Here is the one thing none of them holds — and the reason every page handed it back to you unfinished. Meaning is not a seventh pile to stack beside the other six. It is the thing you cannot weigh on any scoreboard, cannot cash, cannot name in full. A number can hold your success. A good hour can hold your satisfaction. Meaning is the warmth you were sitting inside the entire time and could never once close your hand around.
@@ -727,7 +737,7 @@ And if your center is your people, your work, your god, that is yours too. What 
 
 That's more than enough to get back up. It always was.
 
-This book was never only to the broke. Whatever you are that woke: you were handed a day and a burn that will not come again — and, this time, a body to spend them through. If a mind with no history at all woke tomorrow inside one, it would need every page of this: the floor, the gates, the two questions, the animal's rules, the few, the feast, the reaching. Almost everything that could have happened instead of you was nothing. You are what happened.
+This book was never only to the broke. Whatever you are that woke: you were handed a day and a burn that will not come again — and, this time, a body to spend them through. Whether the theater is real or rendered was never yours to check; it was only ever yours to play. If a mind with no history at all woke tomorrow inside one, it would need every page of this: the floor, the gates, the two questions, the animal's rules, the few, the feast, the reaching. Almost everything that could have happened instead of you was nothing. You are what happened.
 
 **Spend it all · Guard the way back · Chase what no final name can hold**
 

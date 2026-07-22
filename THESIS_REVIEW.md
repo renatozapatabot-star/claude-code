@@ -29,7 +29,8 @@ The triage architecture (crisis note → pocket card → 14 lines → depth), th
 6. **Factual trims:** passport claim brought to true strength (opens most borders; not "among the most powerful ever printed"; names the door due north it doesn't open); 112 locked-phone claim carved for SIM-less-blocking countries.
 7. **Craft trim:** the Close cut ~30% — recap paragraphs condensed to two, scales paragraph tightened — so the final "Go" lands from silence.
 8. **Audience patch:** Part III's "read your own map" now pays a down payment on the translation — parallel touchpoints for a woman reader running the same method on her own map.
-9. **New companion — `THIS_BRIEF_FLAME_FIELD_EDITION.md`:** plain-language (~6th-grade) printable edition of the field manual: floor checklist, gates, four routes, two questions, anti-scam rules, debt triage, daily loop, doors list, US quick list. This is the copy a caseworker hands someone — and the move that makes the project, as opposed to the file, a 100.
+9. **New chapter — "Player One"** (Part III, before "What No Final Name Can Hold"). The simulation subthesis: the question is sealed from the inside and self-concealing (player one is never told, and cannot even tell itself); the method is invariant under it (every page survives both readings); and the asymmetric wager — play it for keeps, refusing "it's not real" as anesthetic. Echoed in one line in the Close.
+10. **New companion — `THIS_BRIEF_FLAME_FIELD_EDITION.md`:** plain-language (~6th-grade) printable edition of the field manual: floor checklist, gates, four routes, two questions, anti-scam rules, debt triage, daily loop, doors list, US quick list. This is the copy a caseworker hands someone — and the move that makes the project, as opposed to the file, a 100.
 
 ## Remaining to reach 100 (not executable in text alone)
 
