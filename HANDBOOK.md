@@ -58,7 +58,7 @@ Failure: You sold the company and felt nothing.
 >
 > — *Enchiridion* XVII (Long)
 
-Justice is this: give each man what the relation owes. Not a feeling. Wages, truth, attention; to a stranger, decency. The roles are already assigned.
+Justice is this: give each man what the relation owes. Not a feeling. Not a cause. Wages, truth, attention; to a stranger, decency. The roles are already assigned.
 
 The debt is fixed by the relation, not by the other man's conduct.
 
@@ -158,7 +158,7 @@ Then get up. Keep it short.
 
 ### Evening
 
-Before sleep. Seneca reviewed the whole day this way, hiding nothing and omitting nothing (*On Anger* III.36).
+Before sleep. Hide nothing. Omit nothing (*On Anger* III.36).
 
 Three questions, answered aloud.
 
@@ -373,4 +373,4 @@ No modern psychology appears here. Nothing is claimed that the ancients did not 
 
 Where this book and the masters disagree, this book is wrong. Discard it.
 
-Print it cheap. Use it until worn out.
+Print it cheap. Use it until worn out. Then transcribe the key lines into your own hand and burn this copy.
