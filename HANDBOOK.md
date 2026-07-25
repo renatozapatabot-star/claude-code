@@ -54,19 +54,17 @@ Failure: You sold the company and felt nothing.
 
 ### Action
 
-> Remember that thou art an actor in a play, the character of which is determined by the poet: if he wishes the play to be short, it is short; if long, it is long: if he wishes you to act the part of a poor man, see that you act the part naturally; if the part of a lame man, of a magistrate, of a private person, do the same. For this is your duty, to act well the part that is given to you; but to select the part belongs to another.
+> Remember that thou art an actor in a play, of such a kind as the teacher (author) may choose; if short, of a short one; if long, of a long one: if he wishes you to act the part of a poor man, see that you act the part naturally; if the part of a lame man, of a magistrate, of a private person, (do the same). For this is your duty, to act well the part that is given to you; but to select the part, belongs to another.
 >
 > — *Enchiridion* XVII (Long)
 
 Justice is this: give each man what the relation owes. Not a feeling. Not a cause. Wages, truth, attention; to a stranger, decency. The roles are already assigned.
 
-The debt is fixed by the relation, not by the other man's conduct.
+The debt is fixed by the relation, not by the other man's conduct. Withdraw from a violent man. Refuse a corrupt order. His failure is not your permission, and yours is not excused by his.
 
-> Duties are universally measured by relations. Is a man a father? The precept is to take care of him, to yield to him in all things, to submit when he is reproachful, when he strikes. But he is a bad father. Were you then by nature made akin to a good father? No, but to a father.
+> Duties are universally measured by relations. Is a man a father? The precept is to take care of him, to yield to him in all things, to submit when he is reproachful, when he inflicts blows. But suppose that he is a bad father. Were you then by nature made akin to a good father? No; but to a father.
 >
 > — *Enchiridion* XXX (Long)
-
-Withdraw from a violent man. Refuse a corrupt order. His failure is not your permission.
 
 Speak the condition before the act. The bather says it first (*Enchiridion* IV, Long): *I now intend to bathe, and to maintain my will in a manner conformable to nature*. Jostling and theft cannot overturn it. Aim at the action, not the result. Say it instead of working and you are idle.
 
@@ -110,11 +108,11 @@ The universe is one substance, ordered by one reason. Every event follows from t
 >
 > — *Meditations* X.5 (Long)
 
-You are a part, not a spectator. What happens to the part serves the whole, and the whole is not consulting your preferences. Nothing is arranged for your benefit, your growth, or your lesson. The order is rational. Will it.
+You are a part, not a spectator. What happens to the part serves the whole, and the whole is not consulting your preferences. The order is rational. Will it.
 
 One thing inside that order is walled off. Epictetus calls it *prohairesis*: your power to assent, to refuse, to desire, to act. They can take the body, the property, the children. Only you can reach the judgement. You surrender it daily.
 
-> Therefore the understanding which is free from passions is a citadel, for man has nothing more secure to which he can fly for refuge and for the future be inexpugnable.
+> Therefore the mind which is free from passions is a citadel, for man has nothing more secure to which he can fly for refuge and for the future be inexpugnable.
 >
 > — *Meditations* VIII.48 (Long)
 
@@ -146,7 +144,7 @@ Remove the surprise.
 
 Rehearse the loss.
 
-> Let death and exile, and everything which appears terrible be daily before your eyes; but most of all death: and you will never think of anything mean nor will you desire anything extravagantly.
+> Let death and exile and every other thing which appears dreadful be daily before your eyes; but most of all death: and you will never think of any thing mean nor will you desire any thing extravagantly.
 >
 > — *Enchiridion* XXI (Long)
 
@@ -179,9 +177,11 @@ Temperate: did I take the right amount and stop?
 
 A no names a field: desire, action, or assent. Train there tomorrow.
 
-You will fail in all three fields today. Measure the interval: how long you stayed wrong. Shorten it. Miss twice and you chose it.
+You will fail in all three fields today. Measure the interval: how long you stayed wrong. Shorten it.
 
 The end is eudaimonia: flourishing as a rational animal, virtue alone chosen. Calm is a byproduct.
+
+You are not emptied. Craving becomes wish, fear becomes caution, pleasure becomes joy. The good feelings (*Diogenes Laertius* VII.116). What is left when passion goes is not nothing.
 
 ---
 
@@ -229,7 +229,7 @@ Tears are a first movement. Let them come.
 
 What is judged is the sentence passed afterward: that something belonging to you has been taken. Nothing belonging to you can be taken.
 
-> Never say about anything, I have lost it, but say I have restored it. Is your child dead? It has been restored. Is your wife dead? She has been restored. Has your estate been taken from you? Has not then this also been restored?
+> Never say about any thing, I have lost it, but say I have restored it. Is your child dead? It has been restored. Is your wife dead? She has been restored. Has your estate been taken from you? Has not then this also been restored?
 >
 > — *Enchiridion* XI (Long)
 
@@ -367,7 +367,7 @@ Marcus Aurelius, *Meditations* II.1, VI.6, VI.54, VIII.48, X.5, in Long (1862), 
 
 Seneca, *Letters* XVIII.5–6 in Richard Gummere (Loeb, 1917–25), public domain. The evening review is described, not quoted, from *On Anger* III.36.
 
-Stated as doctrine, not quoted, because no single ancient line carries it whole: that the end is eudaimonia, flourishing in agreement with nature; that virtue is the sole good and vice the sole evil; that all else is indifferent, some preferred and some dispreferred; the definitions of the four virtues; the doctrine of first movements; that no man errs willingly. See Diogenes Laertius VII.87–89, VII.92–93 and VII.101–107 (Hicks), Stobaeus, and Cicero's *De Finibus* III; on first movements, Seneca's *On Anger* II.2–4 and Aulus Gellius, *Attic Nights* XIX.1. Hierocles on drawing the circles inward is preserved in Stobaeus. *Prohairesis* is Epictetus' own term (*Discourses* I.1); *prosoche*, continuous attention, underlies the daily practice (*Discourses* III.12, IV.12).
+Stated as doctrine, not quoted, because no single ancient line carries it whole: that the end is eudaimonia, flourishing in agreement with nature; that virtue is the sole good and vice the sole evil; that all else is indifferent, some preferred and some dispreferred; the definitions of the four virtues; the doctrine of first movements; the good feelings that replace the passions; that no man errs willingly. See Diogenes Laertius VII.87–89, VII.92–93, VII.101–107 and VII.116 (Hicks), Stobaeus, and Cicero's *De Finibus* III; on first movements, Seneca's *On Anger* II.2–4 and Aulus Gellius, *Attic Nights* XIX.1. Hierocles on drawing the circles inward is preserved in Stobaeus. *Prohairesis* is Epictetus' own term (*Discourses* I.1); *prosoche*, continuous attention, underlies the daily practice (*Discourses* III.12, IV.12).
 
 No modern psychology appears here. Nothing is claimed that the ancients did not claim.
 
