@@ -20,6 +20,37 @@ without a logged run. `canon-check` enforces that every stage below names a skil
 | 7 | Warehouse | `warehouse-tracker` | dock receive / release | `inventory`, `locations` | POR ACTIVAR (WO-01) |
 | 8 | Invoice/audit | `financial-summary` + `evco-audit-report` | weekly / on settlement | `accounting`, `quotes` | POR ACTIVAR (WO-01) |
 
+## §Real-CRUZ-status (ground truth, 2026-07-30 — corrects the blanket POR ACTIVAR above for stage 1)
+
+The real `evco-portal` repo tracks its own 12-step clearance lifecycle in `PIPELINE.md` (its single
+source of truth, last updated 2026-04-05): `INTAKE → CLASSIFY → COMPLETENESS → SOLICIT → DRAFT →
+REVIEW → TRANSMIT → CROSSING → CLEARANCE → INVOICE → PAYMENT → ARCHIVE`. Real status, per that
+tracker:
+
+| Step | Status |
+|---|---|
+| 1. Intake (`email-intake.js`, Gmail OAuth on `ai@`, Sonnet extraction, */15min cron) | ✅ **WORKING** |
+| 2. Classify | ✅ **WORKING** |
+| 3. Completeness + Sync | ✅ **WORKING** |
+| 4. Solicit | 🟡 PARTIAL |
+| 5. Draft | 🟢 READY (API credits funded) |
+| 6. Review + Approval | ✅ **WORKING** |
+| 7. Shadow Intelligence | ✅ **WORKING** |
+| 8. Transmit | ❌ NOT BUILT |
+| 9. Crossing | ❌ NOT BUILT |
+| 10. Clearance | ❌ NOT BUILT |
+| 11. Invoice + Payment | ❌ NOT BUILT |
+| 12. Archive | 🟡 PARTIAL |
+
+**This corrects stage 1 above** — `email-ingestion`-equivalent intake is not "POR ACTIVAR (WO-01)," it
+is **already running** in production on `ai@renatozapata.com` (a real refresh token, a real cron, real
+Sonnet extraction). The stage-1..8 table above documents the *intended skill-based re-implementation*
+for the founder's wider ops surface; the real evco-portal build is the actual, currently-shipping CRUZ
+product and is ahead of that intent on steps 1–3, 6–7. Steps 8–11 (Transmit/Crossing/Clearance/
+Invoice+Payment — the actual filing-to-cash chain) are the real gap, not steps 1–3. Named real
+operator: **Tito** (`tito@renatozapata.com`) is who "the phone buzzes" per `VISION.md`'s approval flow.
+Real license identity: **Renato Zapata & Company · Patente 3596 · Aduana 240 · Est. 1941.**
+
 ## Cross-cutting inputs
 
 - **Forecast:** `demand-forecaster` reads historical `traficos`/`pedimentos` to pre-stage document
