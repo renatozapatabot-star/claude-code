@@ -22,7 +22,13 @@ async function shoot(page, name, viewport) {
   return page;
 }
 
-const browser = await chromium.launch();
+// Use the sandbox's pre-installed Chromium when the pinned playwright build is absent
+// (env: PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers). Falls back to the default resolver.
+import { existsSync } from 'node:fs';
+const PREINSTALLED = '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const browser = await chromium.launch(
+  existsSync(PREINSTALLED) ? { executablePath: PREINSTALLED, args: ['--no-sandbox'] } : {}
+);
 const ctx = await browser.newContext();
 const page = await ctx.newPage();
 page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });

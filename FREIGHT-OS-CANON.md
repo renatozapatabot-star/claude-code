@@ -172,7 +172,7 @@ present-but-not-yet-connected.
 |---|---|---|
 | `server.js` + `data/` | CRUZ zero-dep Node server: static + JSON API | EN VIVO — `npm run check` → exit 0 |
 | `public/` | CRUZ app — white+red canon, bilingual ES/EN, trust loop, living globe, mobile field mode | EN VIVO — `npm start` → :4317 |
-| `scripts/verify.mjs` | Headless-browser verification (desktop + 375px, console + overflow gates) | **POR ACTIVAR** — needs `npm i -D playwright` (not installed here; exits 1 until bootstrapped) |
+| `scripts/verify.mjs` | Headless-browser verification (desktop + 375px, console + overflow gates) | **EN VIVO** — playwright bootstrapped + wired to the sandbox chromium; `node scripts/verify.mjs` → `VERIFY: CLEAN` (19 shots, 0 console errors, 0 overflow @375) this session |
 | `FREIGHT-OS-CANON.md` (this) + `scripts/canon-check.mjs` | The canon + its machine guard | EN VIVO — `npm run canon` → exit 0 |
 | `FREIGHT-OS-PIPELINE.md` · `design/reference/THE-DECK.md` · `FREIGHT-GROWTH.md` | The P1/P6/P7 spec docs (authored this session) | EN VIVO — content-checked by `npm run canon` |
 | `DESIGN.md` · `scripts/cruz-loop.md` · `DESIGN_LOG.md` | White+red design law · the 06:01 loop directive · the slice log | on disk (log entries dated 2026-06-30) |

@@ -11,5 +11,10 @@
     "check": "node --check server.js && node --check data/embarques.js",
     "canon": "node scripts/canon-check.mjs"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.0"
+  }
 }
