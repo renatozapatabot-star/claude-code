@@ -27,7 +27,7 @@
 export function correlate(observations, nowMs) {
   void nowMs;
 
-  // Group by a normalized key (v3.7 audit fix: exact-string grouping silently failed to
+  // Group by a normalized key (v3.8 audit fix: exact-string grouping silently failed to
   // correlate the same real client reported with different casing/whitespace by different
   // systems — e.g. "MAFESA" from Aduanet vs "Mafesa" from econta — defeating the exact
   // cross-system value the Cortana law exists to provide). The first-seen original-casing

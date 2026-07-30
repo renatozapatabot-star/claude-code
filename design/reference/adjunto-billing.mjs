@@ -52,7 +52,7 @@ function nextId(state) {
 // exact rows the first call produced and leaves state untouched — this is what makes case 8 (the
 // team-charge replay) hold even though upgrade() posts two rows (refund + charge) per call.
 //
-// v3.7 audit fix: the cache used to be keyed ONLY by opKey, with no check that a replay's actual
+// v3.8 audit fix: the cache used to be keyed ONLY by opKey, with no check that a replay's actual
 // call arguments (e.g. refund's `amount`) matched what produced the cached rows — a caller bug
 // that reused the same idempotencyKey with a genuinely different amount would silently replay the
 // FIRST call's (now wrong) cached rows instead of erroring, exactly the failure mode real payment

@@ -60,7 +60,7 @@ function requireFiniteNumber(value, label) {
   return value;
 }
 
-// v3.7 audit fix: `raw.field ?? ''` only substitutes for null/undefined — a defined-but-non-string
+// v3.8 audit fix: `raw.field ?? ''` only substitutes for null/undefined — a defined-but-non-string
 // falsy value (e.g. `detail: 0` or `detail: false`) passed straight into the canonical `snippet`
 // field, silently violating the documented `{ snippet: string }` shape contract every downstream
 // consumer (classifyThread, toAlert) assumes holds.

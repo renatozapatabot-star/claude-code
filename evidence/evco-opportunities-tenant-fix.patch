@@ -1,0 +1,44 @@
+diff --git a/src/lib/trade/opportunities.ts b/src/lib/trade/opportunities.ts
+index 0000000..1111111 100644
+--- a/src/lib/trade/opportunities.ts
++++ b/src/lib/trade/opportunities.ts
+@@ -107,16 +107,34 @@
+   return { totalShipments: total, topLanes: lanes.slice(0, 5), topSuppliers: suppliers.slice(0, 5), notes }
+ }
+ 
+-/** Read recent real traficos (tenant + window via scopedQuery) → opportunities.
+- * Honest-empty + graceful on any failure. EVCO-scoped today. */
++/** Read recent real traficos (tenant-scoped) → opportunities.
++ * Honest-empty + graceful on any failure OR missing tenant scope.
++ *
++ * TENANT-SCOPING FIX (found during the exponential-leverage research pass that
++ * followed [WO-16]'s main SEV-1 fix; logged in PROJECT-STATUS.md as "a related,
++ * separate tenant-scoping gap in opportunities.ts, not yet fixed"):
++ *
++ * The previous version made `companyId` an OPTIONAL parameter and only applied
++ * the `.eq('company_id', companyId)` filter `if (companyId)` — a falsy/missing
++ * companyId silently fell through to an UNFILTERED query across every tenant's
++ * traficos. This is the exact same fail-OPEN bug shape `scoped-query.ts` had to
++ * be fixed for twice already (see that file's own "SEV-1 history" comment: a
++ * missing/unresolved tenant used to mean "no filter", now means "hard-refuse,
++ * return empty"). This function bypassed `scopedQuery`/`resolveTenantColumn`
++ * entirely — it never inherited either of those fixes — so it was a THIRD,
++ * independent instance of the same bug class, not covered by the WO-16 patch.
++ *
++ * Fix: `companyId` must be a non-empty string or this returns the honest-empty
++ * OpportunitySet immediately, before ever issuing a query. No tenant filter is
++ * ever skipped; a missing tenant means zero rows, never all-tenants rows. */
+ export async function loadOpportunities(
+   supabase: SupabaseClient,
+-  companyId?: string,
++  companyId: string,
+   opts: { limit?: number } = {},
+ ): Promise<OpportunitySet> {
++  if (!companyId) return { totalShipments: 0, topLanes: [], topSuppliers: [], notes: [] }
+   try {
+-    let q = supabase.from('traficos').select('*')
+-    if (companyId) q = q.eq('company_id', companyId)
++    const q = supabase.from('traficos').select('*').eq('company_id', companyId)
+     const { data, error } = await q.order('fecha_llegada', { ascending: false }).limit(opts.limit ?? 2000)
+     if (error || !data) return { totalShipments: 0, topLanes: [], topSuppliers: [], notes: [] }
+     return computeOpportunities(data as TraficoLite[])

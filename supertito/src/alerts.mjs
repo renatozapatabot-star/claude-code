@@ -5,7 +5,7 @@ const DEDUP_WINDOW_MS_DEFAULT = 60 * 60 * 1000; // 1h, matches supertito/POLICY.
 
 /**
  * Merge repeated alerts for the same thread within `windowMs` of each other (a true sliding
- * window — v3.7 audit fix: the window comparison used to anchor against the surviving,
+ * window — v3.8 audit fix: the window comparison used to anchor against the surviving,
  * highest-urgency alert's own emittedAtMs, which could be an OLDER timestamp than the most
  * recently seen occurrence whenever a higher-urgency alert arrived before a lower-urgency one;
  * that froze the anchor in the past and could incorrectly split a genuinely continuous run of

@@ -113,7 +113,7 @@ test('case 8: idempotent replay of a team-charge key returns the original row, n
   assert.equal(state.customers.c1.net, 999, 'replay does not double-charge');
 });
 
-test('idempotencyKey reused for the same customer with a genuinely different amount throws, never silently replays the wrong cached rows (v3.7 audit fix)', () => {
+test('idempotencyKey reused for the same customer with a genuinely different amount throws, never silently replays the wrong cached rows (v3.8 audit fix)', () => {
   let state = createLedger();
   ({ state } = subscribe(state, { customerId: 'c1', idempotencyKey: 'sub-1' })); // net 499
   ({ state } = upgrade(state, { customerId: 'c1', idempotencyKey: 'up-1' })); // net 999

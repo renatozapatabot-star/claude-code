@@ -25,7 +25,7 @@ const KNOWN_ENTITIES = ['MAFESA', 'EVCO', 'Duratech', 'Milacron', 'Foam Supplies
 // positive (a real 4+ letter ID prefix could still slip through).
 const CAPS_TOKEN_RE = /\b[A-ZÁÉÍÓÚÑ]{4,}\b/g;
 
-// v3.7 audit fix: without a stoplist, the ALL-CAPS fallback happily adopted generic regulatory/
+// v3.8 audit fix: without a stoplist, the ALL-CAPS fallback happily adopted generic regulatory/
 // urgency vocabulary (VUCEM, MVE, URGENTE...) as a "client name" whenever no KNOWN_ENTITIES name
 // was present — silently merging two unrelated clients' observations into one false correlated
 // brief the moment both mentioned the same compliance term. Mirrors inbox-triage.mjs's own
@@ -43,7 +43,7 @@ function textOf(subject, snippet) {
 /** @returns {string|null} a recognized entity name, or null if the heuristic found nothing */
 function extractEntity(text) {
   const lower = text.toLowerCase();
-  // Prefer the KNOWN_ENTITIES name that actually occurs earliest in the text (v3.7 audit fix: this
+  // Prefer the KNOWN_ENTITIES name that actually occurs earliest in the text (v3.8 audit fix: this
   // used to return whichever known name came first in the static array, regardless of which one
   // the text was actually about — a message mentioning two known clients in passing could
   // misattribute the observation to the wrong one).

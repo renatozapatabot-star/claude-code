@@ -7,7 +7,7 @@ const STALE_DAYS = 3; // an unanswered inbound thread older than this ranks as a
 const URGENT_KEYWORDS = [
   'urgent', 'urgente', 'asap', 'hoy mismo', 'primera hora', 'detenid', 'embargo',
 ];
-// v3.7 audit fix: 'sat ' required a literal trailing space, so real text ending "...ante el SAT."
+// v3.8 audit fix: 'sat ' required a literal trailing space, so real text ending "...ante el SAT."
 // or "...ante el SAT" (end of sentence/string, no space after) silently failed to match — a
 // genuine SAT-compliance thread could fall through to a lower category. Keywords are now matched
 // via word-boundary regex (see hasAny below), so the trailing-space workaround is gone.
@@ -19,7 +19,7 @@ const MS_PER_DAY = 86_400_000;
 /**
  * @param {{ id: string, dateMs: number, fromMe: boolean, subject: string, snippet: string }[]} messages
  *   Messages in one thread, any order — the "latest" one is derived by dateMs, not array position
- *   (v3.7 audit fix: this used to trust `messages[messages.length - 1]` per the old "oldest first"
+ *   (v3.8 audit fix: this used to trust `messages[messages.length - 1]` per the old "oldest first"
  *   precondition; an out-of-order array silently misclassified the thread using a stale message).
  * @param {number} nowMs
  */
@@ -32,7 +32,7 @@ export function classifyThread(messages, nowMs) {
 
   const hasAny = (kws) => kws.some((k) => new RegExp(`\\b${k}\\b`).test(text));
 
-  // v3.7 audit fix: these used to be an if/else-if chain checked in a fixed order (stale-hot-lead
+  // v3.8 audit fix: these used to be an if/else-if chain checked in a fixed order (stale-hot-lead
   // before compliance-deadline), so a thread matching BOTH a lead keyword and a compliance keyword
   // at borderline staleness got the LOWER stale-hot-lead urgency instead of the flat, always-higher
   // compliance-deadline urgency — silently deprioritizing a genuinely regulatory-deadline-bearing

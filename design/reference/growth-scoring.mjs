@@ -69,7 +69,7 @@ export function scoreLeadReadiness(lead) {
     priorClient = false,
   } = lead ?? {};
 
-  // v3.7 audit fix: a non-finite (NaN, from real upstream date-math on a missing timestamp) or
+  // v3.8 audit fix: a non-finite (NaN, from real upstream date-math on a missing timestamp) or
   // negative (clock-skew/timezone bug) daysSinceLastTouch used to propagate unvalidated —  NaN
   // silently corrupted readinessScore and broke rankLeads' numeric sort, and a negative value
   // could drive the follow-up stage's freshnessPenalty negative, pushing its score above 95

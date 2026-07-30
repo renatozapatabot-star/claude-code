@@ -123,7 +123,7 @@ test('missing/undefined fields default safely (all falsy/zero) -> earliest stage
   assert.doesNotThrow(() => scoreLeadReadiness(null));
 });
 
-test('a NaN daysSinceLastTouch never corrupts readinessScore into NaN (v3.7 audit fix)', () => {
+test('a NaN daysSinceLastTouch never corrupts readinessScore into NaN (v3.8 audit fix)', () => {
   const r = scoreLeadReadiness({
     hasProofArtifactSent: true, hasQuoteSent: true, complianceClean: true, repliedLast: false,
     daysSinceLastTouch: NaN,
@@ -132,7 +132,7 @@ test('a NaN daysSinceLastTouch never corrupts readinessScore into NaN (v3.7 audi
   assert.equal(r.stage, 'follow-up'); // treated as 0 days, not stale
 });
 
-test('a negative daysSinceLastTouch never pushes a follow-up lead\'s score above onboard\'s ceiling (v3.7 audit fix)', () => {
+test('a negative daysSinceLastTouch never pushes a follow-up lead\'s score above onboard\'s ceiling (v3.8 audit fix)', () => {
   const r = scoreLeadReadiness({
     hasProofArtifactSent: true, hasQuoteSent: true, complianceClean: true, repliedLast: false,
     daysSinceLastTouch: -50,
