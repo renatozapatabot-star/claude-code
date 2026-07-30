@@ -234,11 +234,12 @@ The v1.4 "twin repos" were not fiction — they are the founder's **real** priva
 | Repo | Role in FREIGHT | State |
 |---|---|---|
 | `freightos-control-plane` | The private **execution OS** control plane (canon/kernel/admission/evidence) | **admitted + cloned** `/workspace/freightos-control-plane` |
-| `adjunto-integration-launch` | **Adjunto** — the sole public brand/product | named ([WO-07]) |
-| `evco-portal` | **CRUZ** client portal (portal.renatozapata.com) | **admitted** |
+| `adjunto-integration-launch` | **Adjunto** — the sole public brand/product | **admitted + cloned** `/workspace/adjunto-integration-launch` |
+| `evco-portal` | **CRUZ** client portal (portal.renatozapata.com) — the REAL deployment | **admitted + cloned** `/workspace/evco-portal` |
 | `aguila-brain` | The **CRUZ-scoped project vault** (customs domain notes, client material — per Throne's own two-vault decision record) | **admitted + cloned + populated** `/workspace/aguila-brain` → pushed `master` (was a stock empty Obsidian install) |
 | `throne-stack` | **Clawdia / the Throne Mac Studio stack** — Docker+Tailscale+LiteLLM+Hermes runtime; carries its OWN separate ops vault at `throne-stack/vault/` (identity, decisions, playbooks — NOT client material) | **admitted + cloned** `/workspace/throne-stack` |
-| `clawdia-presence` · `beatvig` · `ayudasolares` | Adjacent services under FREIGHT | inventoried ([WO-07]) |
+| `clawdia-presence` | The private surface source for FREIGHT's automations (`freight_brief.py`, `freight_proactive.py`, per `freightos-control-plane`'s admission-policy.json) | **admitted + cloned** `/workspace/clawdia-presence` |
+| `beatvig` · `ayudasolares` | Adjacent repos on the account — relevance to FREIGHT not yet confirmed | **admitted + cloned**; scope confirmation pending ([WO-07]) |
 
 This de-defers the plan hard: the pillars port against **real code**, not a twin. **Correction
 (2026-07-19, after reading `throne-stack`):** `aguila-brain` is not a generic "everything" second
@@ -259,10 +260,24 @@ to these:
   `start-attempt · disposition · reconcile-export · money-employment · practice · coaching`). 100 =
   a `signed_authority.v2` receipt + 20 verified calls in shift 1 + 40/weekday avg + 200 unique verified
   calls in 14 days + one booked-and-covered load + one linked positive **Norfleet settlement deposit**
-  + `operating_state=real_cash`. Today: **0 verified calls, 0 cash.** Real automation schemas:
-  `freight_load/rate/quote/proposal/carrier_score/dispatch_draft/guided_call/call_notes/cadence/
-  tai_autofill/tai_entry/doc_fields/email_intake/memory_fact/adjunto_leads`. (The customs skills —
-  mve/oca/pedimento/usmca/evco-audit — are **CRUZ/EVCO-only**, a *separate* business, not FREIGHT's.)
+  + `operating_state=real_cash`. Control-plane snapshot (evidence_cutoff 2026-07-15): **0 verified
+  calls, 0 cash.** Real automation schemas: `freight_load/rate/quote/proposal/carrier_score/
+  dispatch_draft/guided_call/call_notes/cadence/tai_autofill/tai_entry/doc_fields/email_intake/
+  memory_fact/adjunto_leads`. (The customs skills — mve/oca/pedimento/usmca/evco-audit — are
+  **CRUZ/EVCO-only**, a *separate* business, not FREIGHT's.)
+
+  **Correction — the loop is LIVE (found in the founder's real Google Calendar, not a repo):** two
+  recurring weekday **FREIGHT DIAL BLOCK** events run the Money-Employment loop operationally —
+  **Block 1** (East-coast prime, ≤09:00 first dial, target 20 attempts) and **Block 2** (West
+  late-AM/East PM, target 20 attempts; **tripwire**: if the day is under 20 attempts when Block 2
+  starts, Block 2 alone must clear the 40/day floor). Each event's description names the real
+  **cockpit**: `https://throne.tail5af2c9.ts.net:8443/plaios/freight` (PLAIOS's freight surface,
+  Tailscale-private — unreachable from this sandbox, honestly noted). Protocol: cards arrive via a
+  **06:30 daily brief email**; every disposition is logged in ≤60s (one keystroke); **"no build work
+  during this block — the fleet builds, you dial."** This corrects the control-plane snapshot above:
+  the 0/0 figure is a point-in-time cutover reading, not evidence the loop is idle — the operational
+  rhythm is real and running. The true verified-calls/cash count is only knowable from the live
+  cockpit (out of this sandbox's reach) or the founder's own report.
 - **The two-agent model:** **Claude Code = planner / judge / canon-keeper; Grok (grok-4.5) = executor**
   of sealed handoff packets (one per session, SHA-pinned, isolated worktree) + adversarial
   CONFIRMED/PLAUSIBLE second opinions. A **heartbeat** contract (`status:grok`, `check:heartbeat`,
@@ -732,6 +747,7 @@ every registered path exists. Exit 0/1.
 | 2026-07-19 | **Executed, not just planned:** `supertito/` built + green (16/16 tests, bench PASS, score 8/8); playwright bootstrapped → `verify.mjs` CLEAN (19 shots); MVE action list for Ursula Banda authored; real `aguila-brain` vault (was empty) populated + pushed to `master`; all committed/pushed to `claude/freight-os-optimization-6gn2qz` | executed |
 | 2026-07-19 | **Cloned + read `throne-stack`** (real Clawdia/Throne Mac Studio repo) — discovered a live, tested Telegram bot `@clawdyia_rz_bot` (Hermes gateway, principal-only, smoke-tested 2026-05-09) and Throne's own two-vault model (`aguila-brain` = CRUZ-scoped project vault; `throne-stack/vault/` = separate Clawdia ops vault) | discovery |
 | 2026-07-19 | **FOUNDER RULING (binding instantly, §0.1): "It's @supertitobot — everything else should be deleted."** [WO-15] closed: the bot is `@supertitobot` (renamed from `@clawdyia_rz_bot`); no other name. P2 pillar + `supertito/POLICY.md` updated to match. | founder-override |
+| 2026-07-30 | **Magnify-glass sweep** — all 9 real repos admitted + cloned (`freightos-control-plane`, `aguila-brain`, `evco-portal`, `throne-stack`, `adjunto-integration-launch`, `clawdia-presence`, `beatvig`, `ayudasolares`) + Gmail/Calendar pulled into scope per founder directive ("pull EVERYTHING that is my work computer... everything you have access to"). Findings: (1) **the Money-Employment dial-block loop is LIVE** — recurring calendar events name the real cockpit `throne.tail5af2c9.ts.net:8443/plaios/freight`, 06:30 brief email, 40-attempts/day floor with tripwire — corrects the control-plane's static 0/0 snapshot (§1.6 amended); (2) **Adjunto is live at `adjunto.co`** (verified 200 on `/`, `/builder`, `/proof`, `/pricing`; `/trial/:name` pilot pattern; `/api/health/version` 404 = stale deployed build, honestly noted); (3) **Ursula Banda (EVCO) had an 18-day-stale hot lead** — asked 2026-07-29 for trial access after the founder's 2026-07-11 pitch, unanswered. **Action taken:** drafted (never sent, §0.4-8) a reply with the real `adjunto.co/trial/ursula` link, using the founder's own Mode-A outreach language — draft id `r-4593963464206317792`, awaiting founder review/send. | executed |
 | 2026-07-19 | **v3.0 GROUND-TRUTH CORRECTION** — the earlier drafts inherited v1.4 fictions; corrected against the real `freightos-control-plane`: (1) entity model → boundary-preserving federation; Adjunto = sole public brand (own mint/navy canon), FREIGHT = private freight-brokerage OS (goal = Money Employment), CRUZ = EVCO-only + hard no-import boundary; (2) §4 → four independent never-combined scores (Adjunto ~92.2 · Money-Employment 0/not-achieved · PLAIOS snapshot-only · plan-quality); deleted the forbidden merged CANON-100; (3) §0.2a → this overlay has zero canonical standing, defers to `HANDOFF-MASTER.md` + the founder-override plan; (4) P2 → Clawdia is the real proactive surface, @supertitobot is founder-directed/aspirational; (5) added §1.6 (Money Employment, Grok two-agent model, heartbeat, Wave0–W8, PLAIOS, admission/allowlist/secret-scan, state-root 0700/0600, B2 backups, CI suite); (6) added provenance honesty laws §0.4-11..13 | amended |
 
 ### §5.5 v1.4 → canon coverage map (nothing silently dropped)
