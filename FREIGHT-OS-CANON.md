@@ -1,6 +1,10 @@
-# FREIGHT (OS) — THE STRATEGIC OVERLAY · v3.0 · 2026-07-19
+# FREIGHT (OS) — THE STRATEGIC OVERLAY · v3.1 · 2026-07-19
 
-<!-- CANON-META version=3.0 status=proposed-overlay-defers-to-control-plane supersedes=FREIGHTCOMPLETE100PLAN20260719.pdf(v1.4) authority=freightos-control-plane/canon/HANDOFF-MASTER.md -->
+<!-- CANON-META version=3.1 status=proposed-overlay-defers-to-control-plane supersedes=FREIGHTCOMPLETE100PLAN20260719.pdf(v1.4) authority=freightos-control-plane/canon/HANDOFF-MASTER.md -->
+
+> **v3.1:** cloned + read the real `throne-stack` (Clawdia/Throne) repo. Found a live, tested
+> Telegram bot (`@clawdyia_rz_bot`) and Throne's real two-vault architecture. **Founder ruled
+> instantly (§0.1): the bot is `@supertitobot`** — closed [WO-15], no ambiguity left.
 
 > **v3.0 is a ground-truth correction.** A 6-agent sweep of the real `freightos-control-plane` (69
 > findings) showed the earlier drafts inherited the v1.4 PDF's fictions. Corrected here: the estate is
@@ -232,11 +236,19 @@ The v1.4 "twin repos" were not fiction — they are the founder's **real** priva
 | `freightos-control-plane` | The private **execution OS** control plane (canon/kernel/admission/evidence) | **admitted + cloned** `/workspace/freightos-control-plane` |
 | `adjunto-integration-launch` | **Adjunto** — the sole public brand/product | named ([WO-07]) |
 | `evco-portal` | **CRUZ** client portal (portal.renatozapata.com) | **admitted** |
-| `aguila-brain` | The **second brain** / knowledge base | **admitted** ([WO-14]) |
-| `throne-stack` | The **Throne Mac Studio** runtime host | named ([WO-13]) |
+| `aguila-brain` | The **CRUZ-scoped project vault** (customs domain notes, client material — per Throne's own two-vault decision record) | **admitted + cloned + populated** `/workspace/aguila-brain` → pushed `master` (was a stock empty Obsidian install) |
+| `throne-stack` | **Clawdia / the Throne Mac Studio stack** — Docker+Tailscale+LiteLLM+Hermes runtime; carries its OWN separate ops vault at `throne-stack/vault/` (identity, decisions, playbooks — NOT client material) | **admitted + cloned** `/workspace/throne-stack` |
 | `clawdia-presence` · `beatvig` · `ayudasolares` | Adjacent services under FREIGHT | inventoried ([WO-07]) |
 
-This de-defers the plan hard: the pillars port against **real code**, not a twin.
+This de-defers the plan hard: the pillars port against **real code**, not a twin. **Correction
+(2026-07-19, after reading `throne-stack`):** `aguila-brain` is not a generic "everything" second
+brain — Throne's own `2026-05-09-two-vault-model.md` decision record establishes it as the
+**CRUZ-scoped** vault (project/client work, kept separate from Clawdia's operational vault
+specifically so future MCP access can be scoped per-vault without exposing client material). This
+session's population of `aguila-brain` (§P8) is compatible with that scoping for the Clients/CRUZ
+content, but the FREIGHT/Adjunto overview notes added there should be treated as **bootstrap
+cross-reference only** pending a founder call on where FREIGHT-wide notes belong (§0.4-8 boundary
+law — flagged, not resolved, in [WO-15]-adjacent follow-up).
 
 ### §1.6 Control-plane ground truth (what the real FREIGHT execution OS actually is)
 
@@ -373,6 +385,14 @@ WO+PREP arms the clock, drills, and logging now so the days merely have to pass.
   **Acceptance:** the second-brain access matrix recorded in §5.4; [P8-W1-01] ingestion spec runs
   against real content. — **Prep-now:** [P8-W1-01] writes the ingestion + access-matrix spec now. —
   **Evidence:** §5.4 row + `SECOND-BRAIN.md`.
+- **[WO-15]** SuperTito bot name — **CLOSED by founder instruction (2026-07-19):** *"It's
+  @supertitobot — everything else should be deleted."* The existing Throne bot (`@clawdyia_rz_bot`,
+  Hermes gateway) is renamed/repurposed to **@supertitobot**; no other name/bot for this rail. —
+  **Founder:** (already given — the ruling above). — **Acceptance:** the Telegram bot handle at
+  Throne reads `@supertitobot`; P2-W3-01 wires to it under that name only. — **Prep-now:**
+  [P2-W3-01] — the `supertito/` package is channel-agnostic, so pointing it at the real bot is a
+  config change, not a rebuild. —
+  **Evidence:** §5.4 row (this instruction, logged verbatim).
 
 *(v1.4 WO-F rows with no live obligation here — the ConnectUC/Callicity CDR export tap — are retired
 with reason in §5.5, not silently dropped: no ConnectUC access exists in this estate; it re-enters as a
@@ -427,13 +447,15 @@ map, not as FREIGHT's core. The items below serve that EVCO/CRUZ pipeline + the 
 
 ### Pillar P2 — The proactive rail: Clawdia (real) + SuperTito/Telegram (founder-directed)
 
-**Corrected (§1.6):** the real proactive/briefing surface today is **Clawdia** (`clawdia-presence`,
-`freight_brief.py`, `freight_proactive.py`) — **no Telegram / no @supertitobot exists in the real
-system yet.** The founder has *directed* a Telegram @supertitobot rail (binding, §0.1) — it is
-**aspirational**, to be built on the Clawdia pattern + the mock harness below, and is honestly labeled
-SIM/not-yet-real until [WO-03]. The `supertito/` harnesses re-ground v1.4's ST-1..ST-10 +
-RES-01/03/04/07/08/10/11 so the real rail (whichever channel) is a thin swap. **`depends:` — P2-W2
-items build one shared package sequentially (scoped test dirs), not parallel.**
+**RESOLVED by founder instruction (2026-07-19, binding instantly per §0.1): "It's @supertitobot —
+everything else should be deleted."** The bot is **`@supertitobot`**, full stop. (Ground truth: a
+live Telegram bot already exists on Throne under the name `@clawdyia_rz_bot` — Hermes gateway,
+principal-only allowlist, smoke-tested 2026-05-09. Per the founder's ruling, that naming is
+superseded/renamed to `@supertitobot`; [WO-15] is closed by this instruction, no longer an open
+question.) The `supertito/` harnesses below are channel-agnostic by construction, so pointing them at
+the real bot is a naming/config change, not a rebuild — re-grounding v1.4's ST-1..ST-10 +
+RES-01/03/04/07/08/10/11. **`depends:` — P2-W2 items build one shared package sequentially (scoped
+test dirs), not parallel.**
 
 - **[P2-W2-01]** `SIM-HERE` ✅ **BUILT + GREEN this session** (`supertito/`, `npm test` → 16/16;
   `npm run score` → 8/8; `npm run bench` → PASS ratio 1.02). — **Core + mock rail + admission.**
@@ -707,6 +729,9 @@ every registered path exists. Exit 0/1.
 | 2026-07-19 | **REAL ECOSYSTEM DISCOVERED** — `list_repos` revealed the founder's actual private repos (not twins): `freightos-control-plane` (the private execution OS, carries its own canon/kernel/evidence — *"Adjunto is the sole public company; F.R.E.I.G.H.T. is the private execution OS; physical body = the Throne Mac Studio"*), `adjunto-integration-launch`, `evco-portal` (CRUZ), `aguila-brain` (second brain), `throne-stack` (Throne host), + clawdia-presence/beatvig/ayudasolares. Core repos **admitted this session** (`add_repo`); control plane cloned to `/workspace`. | discovery |
 | 2026-07-19 | **v2.4** — entity model corrected to ground truth (§0.3); §0.2a reconciliation with the control-plane execution canon; §1.5 real-repo table; [WO-07] concretized to named real repos; [WO-13] = the Throne; **[WO-14] + Pillar P8 Second Brain** added (`aguila-brain`, `SECOND-BRAIN.md` authored + access matrix); founder absolute-override + "everything I say is binding" + bias-to-action laws encoded (§0.1/§0.1a) | amended |
 | 2026-07-19 | **Control-plane truth sweep** (6 Opus readers, workflow `wf_6c83a7eb-f63`, 69 findings: 22 corrections, 31 additions, 16 reconciles) — evidence in the workflow journal | not clean |
+| 2026-07-19 | **Executed, not just planned:** `supertito/` built + green (16/16 tests, bench PASS, score 8/8); playwright bootstrapped → `verify.mjs` CLEAN (19 shots); MVE action list for Ursula Banda authored; real `aguila-brain` vault (was empty) populated + pushed to `master`; all committed/pushed to `claude/freight-os-optimization-6gn2qz` | executed |
+| 2026-07-19 | **Cloned + read `throne-stack`** (real Clawdia/Throne Mac Studio repo) — discovered a live, tested Telegram bot `@clawdyia_rz_bot` (Hermes gateway, principal-only, smoke-tested 2026-05-09) and Throne's own two-vault model (`aguila-brain` = CRUZ-scoped project vault; `throne-stack/vault/` = separate Clawdia ops vault) | discovery |
+| 2026-07-19 | **FOUNDER RULING (binding instantly, §0.1): "It's @supertitobot — everything else should be deleted."** [WO-15] closed: the bot is `@supertitobot` (renamed from `@clawdyia_rz_bot`); no other name. P2 pillar + `supertito/POLICY.md` updated to match. | founder-override |
 | 2026-07-19 | **v3.0 GROUND-TRUTH CORRECTION** — the earlier drafts inherited v1.4 fictions; corrected against the real `freightos-control-plane`: (1) entity model → boundary-preserving federation; Adjunto = sole public brand (own mint/navy canon), FREIGHT = private freight-brokerage OS (goal = Money Employment), CRUZ = EVCO-only + hard no-import boundary; (2) §4 → four independent never-combined scores (Adjunto ~92.2 · Money-Employment 0/not-achieved · PLAIOS snapshot-only · plan-quality); deleted the forbidden merged CANON-100; (3) §0.2a → this overlay has zero canonical standing, defers to `HANDOFF-MASTER.md` + the founder-override plan; (4) P2 → Clawdia is the real proactive surface, @supertitobot is founder-directed/aspirational; (5) added §1.6 (Money Employment, Grok two-agent model, heartbeat, Wave0–W8, PLAIOS, admission/allowlist/secret-scan, state-root 0700/0600, B2 backups, CI suite); (6) added provenance honesty laws §0.4-11..13 | amended |
 
 ### §5.5 v1.4 → canon coverage map (nothing silently dropped)
