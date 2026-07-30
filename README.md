@@ -1,5 +1,8 @@
 # CRUZ — El Sistema Operativo Transfronterizo
 
+> **Canonical law:** [`FREIGHT-OS-CANON.md`](FREIGHT-OS-CANON.md) — the founder-override canon
+> governing FREIGHT (OS) · CRUZ · SuperTito · Adjunto · the data layer. Guard: `npm run canon`.
+
 The cross-border (US–MX) customs operating system for EVCO. White + red canon.
 **CRUZ prepares; the signature is yours.** Spanish UI, English code.
 
