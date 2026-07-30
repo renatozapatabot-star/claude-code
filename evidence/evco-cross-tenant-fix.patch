@@ -1,0 +1,264 @@
+diff --git a/src/lib/supabase/scoped-query.ts b/src/lib/supabase/scoped-query.ts
+index 990c15d..23ef9f1 100644
+--- a/src/lib/supabase/scoped-query.ts
++++ b/src/lib/supabase/scoped-query.ts
+@@ -6,12 +6,28 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js'
+  * Per the v2 dispatch (2026-05-14): every Supabase query in the portal
+  * MUST be scoped to:
+  *   1. The 2024–2026 date window (date column varies per table)
+- *   2. The EVCO tenant (company_id, sniffed at runtime — see resolveTenantColumn)
++ *   2. The CALLING SESSION's tenant — company_id, derived STRICTLY from
++ *      `session.companyId` (see resolveTenantColumn). No other tenant
++ *      is ever considered, probed, or defaulted to.
+  *
+- * Tenant filter is sniffed at runtime per Renato IV's adjudication
+- * (response: "Both — sniff at runtime"). We probe the table for whichever
+- * value matches: company_id='evco' (clean slug per Block EE convention),
+- * company_id='9254' (clave-as-slug fallback). Cached per process per table.
++ * SEV-1 FIX (2026-07-30 · WO-16 / P4-W1-00): the previous version probed
++ * a fixed, hardcoded `EVCO_CANDIDATES` list against every table,
++ * regardless of which tenant's session was actually calling. Any signed
++ * -in session — MAFESA included — got the EVCO-shaped filter applied,
++ * because the candidate values were never derived from
++ * `session.companyId` in the first place. That is a real cross-tenant
++ * read: MAFESA (or any other future tenant) could see EVCO's rows, and
++ * vice versa, the moment a non-EVCO session hit a v2 page.
++ *
++ * Fix: `resolveTenantColumn` / `scopedQuery` / `scopedQueryNoDate` now
++ * REQUIRE the caller's `companyId` (sourced from `session.companyId` at
++ * the route/page layer — never inferred, never defaulted). The
++ * candidate {column, value} pairs are no longer a fixed global list —
++ * they are built per-call from THIS tenant's own `companies` row
++ * (`company_id` slug + `clave_cliente` / `globalpc_clave`), reusing the
++ * same slug/clave mapping already codified for writes in
++ * `lib/tenant/resolve-slug.ts`. A session for tenant A can never
++ * resolve, probe for, or match tenant B's identifiers.
+  *
+  * The AI agent's tool layer wraps this same helper, so the LLM cannot
+  * override the window or tenant — the constants below are load-bearing.
+@@ -20,53 +36,124 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js'
+  *   - vault/00-clawdia/decisions (v2 plan)
+  *   - .claude/rules/tenant-isolation.md (HARD invariant — tenant boundary)
+  *   - .claude/rules/baseline-2026-04-20.md (I20 — session.companyId is the gate)
++ *   - lib/tenant/resolve-slug.ts (slug/clave mapping this fix reuses)
++ *   - FREIGHT-OS-CANON.md — [WO-16] / [P4-W1-00]
+  */
+ 
+ export const WINDOW_START = '2024-01-01'
+ export const WINDOW_END = '2027-01-01' // exclusive
+ 
+-// Known EVCO identifiers (sniffed against actual tables).
+-const EVCO_CANDIDATES: Array<{ column: string; value: string }> = [
+-  { column: 'company_id', value: 'evco' },   // clean slug per Block EE
+-  { column: 'company_id', value: '9254' },   // legacy slug-as-clave shape
+-  { column: 'cliente_clave', value: '9254' }, // legacy table convention
+-  { column: 'clave_cliente', value: '9254' }, // alt legacy spelling
+-]
+-
+-const TENANT_CACHE = new Map<string, { column: string; value: string }>()
++interface TenantCandidate {
++  column: string
++  value: string
++}
+ 
+ export interface TenantResolution {
+   column: string
+   value: string
+ }
+ 
++// Cache key is `${companyId}::${table}` — NEVER just `table` — so one
++// tenant's resolved {column, value} can never be reused for a different
++// tenant's lookup against the same table. This is part of the SEV-1 fix:
++// the old cache was keyed by table alone, so whichever tenant resolved
++// a table first poisoned the cache for every session after it.
++const TENANT_CACHE = new Map<string, TenantResolution>()
++
++interface CompanyIdentity {
++  company_id: string
++  clave_cliente: string | null
++  globalpc_clave: string | null
++}
++
++/**
++ * Load the calling tenant's OWN identity row from `companies` — the
++ * single source of truth for slug ↔ legacy-clave mapping (the same
++ * table `lib/tenant/resolve-slug.ts` reads for the write path). Scoped
++ * by `.eq('company_id', companyId)` so it is structurally impossible to
++ * fetch a different tenant's identity here.
++ */
++async function loadCompanyIdentity(
++  client: SupabaseClient,
++  companyId: string,
++): Promise<CompanyIdentity | null> {
++  const { data, error } = await client
++    .from('companies')
++    .select('company_id, clave_cliente, globalpc_clave')
++    .eq('company_id', companyId)
++    .maybeSingle<CompanyIdentity>()
++  if (error || !data) return null
++  return data
++}
++
+ /**
+- * Probe each candidate {column, value} against the given table; cache
+- * + return the first that yields > 0 rows. Returns null if no candidate
+- * matches (e.g. table has no tenant column at all — like `pedimentos`).
++ * Build the candidate {column, value} pairs for THIS tenant only,
++ * derived from the tenant's own `companies` row — never a hardcoded
++ * global list. A tenant with no `clave_cliente`/`globalpc_clave` (fresh
++ * onboarding, not yet linked to legacy GlobalPC) simply gets fewer
++ * candidates; it never falls back to another tenant's values.
++ */
++function buildTenantCandidates(identity: CompanyIdentity): TenantCandidate[] {
++  const candidates: TenantCandidate[] = [
++    { column: 'company_id', value: identity.company_id },
++  ]
++  const clave = identity.clave_cliente ?? identity.globalpc_clave
++  if (clave) {
++    candidates.push(
++      { column: 'company_id', value: clave },   // legacy slug-as-clave shape
++      { column: 'cliente_clave', value: clave }, // legacy table convention
++      { column: 'clave_cliente', value: clave }, // alt legacy spelling
++    )
++  }
++  return candidates
++}
++
++/**
++ * Probe each candidate {column, value} — derived STRICTLY from
++ * `companyId` (the caller's `session.companyId`, never a hardcoded
++ * candidate list) — against the given table; cache + return the first
++ * that yields > 0 rows. Returns null if no candidate matches (e.g. the
++ * table has no tenant column at all — like `pedimentos`) OR if
++ * `companyId` is missing/empty (no session tenant ⇒ no data, never a
++ * default tenant).
+  *
+- * SEV-1 history: prior version checked `data !== null` after a
+- * `head: true` request. That's always false (head requests don't
+- * return rows), so the sniffer always returned null → scopedQuery
+- * fell through to NO tenant filter → every v2 page leaked
+- * cross-tenant data (Renato IV reported "all clients showing" on
+- * 2026-05-15). Now uses `count` from `head: true` and refuses to
+- * return data without a tenant binding.
++ * SEV-1 history:
++ *   - v1: checked `data !== null` after a `head: true` request. That's
++ *     always false (head requests don't return rows), so the sniffer
++ *     always returned null → scopedQuery fell through to NO tenant
++ *     filter → every v2 page leaked cross-tenant data (Renato IV
++ *     reported "all clients showing" on 2026-05-15). Patched with a
++ *     `count`-based check.
++ *   - v2 (this file, until 2026-07-30): the count-based check was
++ *     correct, but it probed a fixed, hardcoded `EVCO_CANDIDATES` list
++ *     for EVERY session regardless of caller — so a MAFESA session
++ *     still matched and inherited EVCO's rows. Fixed 2026-07-30
++ *     (WO-16 / P4-W1-00): candidates are now built per-call from the
++ *     session's OWN tenant identity; `companyId` is a required
++ *     parameter, not an ambient assumption.
+  */
+ export async function resolveTenantColumn(
+   client: SupabaseClient,
+   table: string,
++  companyId: string,
+ ): Promise<TenantResolution | null> {
+-  const cached = TENANT_CACHE.get(table)
++  if (!companyId) return null
++
++  const cacheKey = `${companyId}::${table}`
++  const cached = TENANT_CACHE.get(cacheKey)
+   if (cached) return cached
+-  for (const cand of EVCO_CANDIDATES) {
++
++  const identity = await loadCompanyIdentity(client, companyId)
++  if (!identity) return null
++
++  for (const cand of buildTenantCandidates(identity)) {
+     try {
+       const { count, error } = await client
+         .from(table)
+         .select('*', { count: 'exact', head: true })
+         .eq(cand.column, cand.value)
+       if (!error && typeof count === 'number' && count > 0) {
+-        TENANT_CACHE.set(table, cand)
++        TENANT_CACHE.set(cacheKey, cand)
+         return cand
+       }
+     } catch {
+@@ -81,37 +168,41 @@ export async function resolveTenantColumn(
+  * Date column is REQUIRED — caller picks the right one per-table:
+  *   pedimentos.fecha_pago, traficos.fecha_cruce, expediente_documentos.uploaded_at, etc.
+  *
++ * `companyId` is REQUIRED and MUST come from `session.companyId` at the
++ * route/page layer — this function does not read the session itself,
++ * it just refuses to guess a tenant when one isn't supplied.
++ *
+  * IMPORTANT: PostgrestFilterBuilder is thenable. Returning it directly
+  * from an async function would cause `await scopedQuery(...)` to execute
+  * the query immediately, defeating the chain. We return a `.builder`
+  * accessor on a plain object instead — callers chain off `.builder`.
+  *
+  * Usage:
+- *   const q = await scopedQuery(sb, 'traficos', 'fecha_cruce')
++ *   const q = await scopedQuery(sb, 'traficos', 'fecha_cruce', session.companyId)
+  *   const { data, error } = await q.builder.order('fecha_cruce', { ascending: false }).limit(100)
+  */
+ export async function scopedQuery(
+   client: SupabaseClient,
+   table: string,
+   dateColumn: string,
++  companyId: string,
+ ) {
+-  const tenant = await resolveTenantColumn(client, table)
++  const tenant = await resolveTenantColumn(client, table, companyId)
+   let q = client.from(table).select('*').gte(dateColumn, WINDOW_START).lt(dateColumn, WINDOW_END)
+   if (tenant) {
+     q = q.eq(tenant.column, tenant.value)
+   } else {
+     // HARD invariant — no tenant binding = refuse to return any rows.
+-    // Better empty-state UX than a SEV-1 cross-tenant leak (the bug we
+-    // just fixed). Forces an obviously-impossible filter that returns
+-    // zero rows without erroring. The empty result is logged below so
+-    // operators see WHICH tables need a tenant column added.
++    // Covers both "no resolvable tenant column" and "no/invalid
++    // companyId" — either way, better an empty-state UX than a
++    // cross-tenant leak (the exact SEV-1 this file fixes).
+     q = q.eq(dateColumn, '__no_tenant_column_resolved__')
+     if (typeof console !== 'undefined') {
+       console.warn(
+-        `[scopedQuery] table="${table}" has no resolvable tenant column ` +
+-        `(tried: ${EVCO_CANDIDATES.map(c => `${c.column}=${c.value}`).join(', ')}). ` +
+-        `Returning empty to prevent cross-tenant leak. Add a tenant column or ` +
+-        `add this candidate set to EVCO_CANDIDATES.`,
++        `[scopedQuery] table="${table}" companyId="${companyId || '(missing)'}" has no ` +
++        `resolvable tenant binding. Returning empty to prevent cross-tenant leak. ` +
++        `Add a tenant column, or verify this companyId has a companies row with a ` +
++        `clave_cliente/globalpc_clave mapping.`,
+       )
+     }
+   }
+@@ -120,13 +211,15 @@ export async function scopedQuery(
+ 
+ /**
+  * Like scopedQuery but for tables WITHOUT a date column (e.g. catalogs).
+- * Tenant filter still applied. Same `{builder, tenant}` shape.
++ * Tenant filter still applied and still requires `companyId`. Same
++ * `{builder, tenant}` shape.
+  */
+ export async function scopedQueryNoDate(
+   client: SupabaseClient,
+   table: string,
++  companyId: string,
+ ) {
+-  const tenant = await resolveTenantColumn(client, table)
++  const tenant = await resolveTenantColumn(client, table, companyId)
+   let q = client.from(table).select('*')
+   if (tenant) {
+     q = q.eq(tenant.column, tenant.value)
+@@ -134,7 +227,7 @@ export async function scopedQueryNoDate(
+     // Same hard contract as scopedQuery — no tenant = empty, never leak.
+     q = q.eq('id', '__no_tenant_column_resolved__')
+     if (typeof console !== 'undefined') {
+-      console.warn(`[scopedQueryNoDate] table="${table}" no tenant column — returning empty`)
++      console.warn(`[scopedQueryNoDate] table="${table}" companyId="${companyId || '(missing)'}" no tenant binding — returning empty`)
+     }
+   }
+   return { builder: q, tenant }

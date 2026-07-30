@@ -1,6 +1,6 @@
 # FREIGHT (OS) — THE STRATEGIC OVERLAY · v3.4 · 2026-07-30
 
-<!-- CANON-META version=3.5 status=proposed-overlay-defers-to-control-plane supersedes=FREIGHTCOMPLETE100PLAN20260719.pdf(v1.4) authority=freightos-control-plane/canon/HANDOFF-MASTER.md -->
+<!-- CANON-META version=3.6 status=proposed-overlay-defers-to-control-plane supersedes=FREIGHTCOMPLETE100PLAN20260719.pdf(v1.4) authority=freightos-control-plane/canon/HANDOFF-MASTER.md -->
 
 > **v3.4:** 🚨 found a live SEV-1 cross-tenant data-isolation risk in the real `evco-portal` (EVCO +
 > MAFESA, ~$5.86M+ verified value exposed) — fully diagnosed, logged as [WO-16]/[P4-W1-00], awaiting
@@ -494,11 +494,17 @@ WO+PREP arms the clock, drills, and logging now so the days merely have to pass.
   status — read scope), (d) econta (accounting/invoicing — read scope). — **Acceptance:** each granted
   system has a real credential wired into the bot's backend (not this session) and a live round-trip
   proving it (bot cites a real fact only obtainable via that system); each ungranted system stays
-  named here, not silently dropped. — **Prep-now:** [P2-W2-04]'s `inbox-triage.mjs` + [P2-W3-02]'s
-  channel-agnostic classify/rank shape are the receiving end, already built and tested — the only
-  missing piece per system is the credential + a thin adapter translating that system's real
-  data into the same `{id, dateMs, fromMe, subject, snippet}`-shaped input. — **Evidence:** the
-  screenshot (logged §5.4) + wiring commits per system as they land.
+  named here, not silently dropped. — **Prep-now:** **BUILT + GREEN this session:**
+  `supertito/src/system-adapters.mjs` implements `adaptGlobalpc`/`adaptAduanet`/`adaptEconta` — pure
+  mapping functions from each system's (necessarily placeholder, explicitly marked
+  ASSUMED-PENDING-WO-17) raw-record shape into the canonical `{id, dateMs, fromMe, subject, snippet}`
+  input `inbox-triage.mjs`'s `classifyThread` expects; `supertito/test/system-adapters.test.mjs` (9/9
+  green) proves each adapter's output feeds `classifyThread` cleanly, ready to drop straight into
+  [P2-W3-02]'s correlation engine. **This closes the shape gap, not the credential gap** — the moment
+  WO-17 grants a real API, only the adapter's field-name mapping needs correcting against the real
+  docs, not a rebuild. — **Evidence:** the screenshot (logged §5.4) +
+  `supertito/src/system-adapters.mjs` + `supertito/test/system-adapters.test.mjs` + wiring commits per
+  system as real credentials land.
 
 *(v1.4 WO-F rows with no live obligation here — the ConnectUC/Callicity CDR export tap — are retired
 with reason in §5.5, not silently dropped: no ConnectUC access exists in this estate; it re-enters as a
@@ -639,27 +645,48 @@ test dirs), not parallel.**
   where, as of what date); for each system with real access, `node --test supertito/test/inbox` (or
   its per-system analogue) green and a real observed-and-surfaced pass logged; for each system without
   access yet, an explicit [WO-17] sub-row naming the credential/API the founder must supply — no
-  system may sit in a bare "someday" state. — **Prep-now:** `inbox-triage.mjs`'s classify/rank/toAlert
-  functions are already channel-agnostic (message-shaped input in, alert-shaped output out); the
-  Gmail leg is done ([P2-W2-04]); the same shape is ready to receive globalpc/Aduanet/econta input the
-  moment [WO-17] lands real access. — **Evidence:** §5.4 access-matrix row + `supertito/` per-system
-  triage modules as they're wired.
+  system may sit in a bare "someday" state. — **Prep-now (BUILT + GREEN this session):**
+  `inbox-triage.mjs`'s classify/rank/toAlert functions are already channel-agnostic (message-shaped
+  input in, alert-shaped output out); the Gmail leg is done ([P2-W2-04]); `system-adapters.mjs` ([WO-17])
+  is the per-system shape-conversion layer. **The cross-system correlation half of the Cortana law —
+  "helps out the whole ecosystem" — is now real, not aspirational:** `supertito/src/correlate.mjs`
+  (`correlate(observations, nowMs)`, pure function) takes `{system, threadId, entity, classification}`
+  observations from any number of systems, groups by `entity` (client/company name), keeps only groups
+  spanning ≥2 distinct systems, and returns a `cortana-correlated-brief` per group ranked by max
+  urgency — no send/dispatch/reply-capable export (denial test). `supertito/test/correlate.test.mjs`
+  (6/6 green) proves the exact scenario named above: a MAFESA compliance-deadline observation
+  (Aduanet-shaped) + a stale-invoice observation (econta-shaped) + an urgent-client email observation
+  (Gmail-shaped) correctly merge into one 3-system correlated brief; single-system observations
+  correctly do NOT spuriously correlate. The only remaining gap is [WO-17]'s real credentials feeding
+  real observations into this — the correlation engine itself is done. — **Evidence:** §5.4
+  access-matrix row + `supertito/src/correlate.mjs` + `supertito/test/correlate.test.mjs` +
+  `supertito/src/system-adapters.mjs` per-system triage modules as they're wired.
 
 ### Pillar P3 — Adjunto
 
-- **[P3-W2-01]** `EXEC-NOW` — **Billing law spec.** `design/reference/ADJUNTO-BILLING-LAW.md`: the
-  full-price-swap rule ([WO-05]) + the 8-case test spec (upgrade nets list price; subscribe→upgrade→
-  cancel nets 0; every amount ∈ {0,499,999}; randomized 200-op invariant; idempotent replay), each case
-  with concrete inputs/expected. — **Acceptance:** `canon-check` confirms the file names 8 cases + the
-  amount-set invariant. — **Evidence:** the spec file.
+- **[P3-W2-01]** `EXEC-NOW` ✅ **BUILT + GREEN this session** — **Billing law spec, now a real
+  implementation.** `design/reference/ADJUNTO-BILLING-LAW.md`: the full-price-swap rule ([WO-05]) + the
+  8-case test spec (upgrade nets list price; subscribe→upgrade→cancel nets 0; every amount ∈
+  {0,499,999}; randomized 200-op invariant; idempotent replay). **`design/reference/adjunto-billing.mjs`
+  implements the rule as a pure, zero-dep ledger (createLedger/subscribe/upgrade/cancel/refund,
+  `PLAN_PRICE` = {free:0,pro:499,team:999}); `adjunto-billing.test.mjs` runs all 8 named cases + 2
+  supplementary tests — 10/10 real, `node --test design/reference/adjunto-billing.test.mjs`.** One
+  disclosed scope reduction: the doc's "randomized 200-op invariant" is covered by a short deterministic
+  multi-customer sequence, not a true 200-op randomized run — flagged honestly, not silently narrowed;
+  still open as a follow-up. No network/send-capable export exists (denial test). — **Acceptance:**
+  `canon-check` confirms the file names 8 cases + the amount-set invariant; `node --test
+  design/reference/adjunto-billing.test.mjs` green. — **Evidence:** the spec file + the two new source
+  files.
 - **[P3-W2-02]** `EXEC-NOW` — **Rubric draft.** `design/reference/ADJUNTO-100-RUBRIC-DRAFT.md`: 12 named
   dimensions × measurable checks, drafted from v1.4's G6 evidence ([WO-06] prep). — **Acceptance:**
   `canon-check` confirms exactly 12 dimension headings. — **Evidence:** the draft.
 - **[P3-W3-01]** `WO+PREP`([WO-07]) — **Port to the real repo.** Land the billing tests + rubric scorer
   + uniform invalid-credentials/equal-cost login pad (RES-06) + the **WebAuthn/passkey auth harness**
   (ST-1: real ceremony against a real WebAuthn library, SIM-labeled, wrong-challenge/counter-regression
-  refused) in the actual Adjunto codebase. — **Acceptance:** that repo's suite green with the new
-  tests. — **Evidence:** commits in the Adjunto repo.
+  refused) in the actual Adjunto codebase (`adjunto-integration-launch`, admitted [WO-07]) — [P3-W2-01]'s
+  `adjunto-billing.mjs`/`.test.mjs` are now genuinely drop-in-ready for that port, not just a spec. —
+  **Acceptance:** that repo's suite green with the new tests. — **Evidence:** commits in the Adjunto
+  repo.
 
 ### Pillar P4 — CRUZ: the client-facing OS (this repo)
 
@@ -667,14 +694,23 @@ Design law `DESIGN.md`; engine the 06:01 loop; roadmap `design/reference/CRUZ-10
 items are `EXEC-NOW*`** — one bootstrap `npm i -D playwright` makes `node scripts/verify.mjs` runnable
 (it exits 1 until then; §1.1).
 
-- **[P4-W1-00]** `WO+PREP`([WO-16]) — 🚨 **SEV-1 cross-tenant fix (highest priority in this pillar).**
-  Fix `evco-portal`'s `scopedQuery` to derive tenant strictly from `session.companyId`, never a
-  hardcoded EVCO candidate list; add a cross-tenant denial test (EVCO session querying MAFESA data,
-  and reverse, both must be refused). — **Acceptance:** the cross-tenant test passes denied; no
-  hardcoded tenant list remains in `scopedQuery`. — **Prep-now:** the defect is fully diagnosed and
-  located (`EVCO-DEMO-READY-2026-05-15.md:113`) — this item IS the prep; only write access to
-  `evco-portal` ([WO-07]/[WO-16]) is needed to execute the fix already scoped. — **Evidence:** commit
-  in `evco-portal` + test result.
+- **[P4-W1-00]** `WO+PREP`([WO-16]) ✅ **FIX STAGED this session, not yet applied** — 🚨 **SEV-1
+  cross-tenant fix (highest priority in this pillar).** Fix `evco-portal`'s `scopedQuery` to derive
+  tenant strictly from `session.companyId`, never a hardcoded EVCO candidate list; add a cross-tenant
+  denial test (EVCO session querying MAFESA data, and reverse, both must be refused). **The fix is now
+  a real, verified git patch — `evidence/evco-cross-tenant-fix.patch` — built by reading the actual
+  current `evco-portal/src/lib/supabase/scoped-query.ts` and independently confirmed to `git apply`
+  cleanly against it (checked twice in a disposable scratch copy; the real repo itself was never
+  touched — `git status`/`reflog` confirm zero changes there). `evidence/evco-cross-tenant.test.ts` is
+  the companion reproduction test, staged the same way; it has NOT been run against evco-portal's real
+  suite (no `node_modules` installed there) — the test file itself carries a top banner disclosing
+  this, so it cannot be mistaken for a green run.** — **Acceptance:** once write access is confirmed,
+  `git apply evidence/evco-cross-tenant-fix.patch` inside `evco-portal` + the companion test passes
+  denied; no hardcoded tenant list remains in `scopedQuery`. — **Prep-now:** the defect is fully
+  diagnosed and located (`EVCO-DEMO-READY-2026-05-15.md:113`); the fix is no longer just scoped, it is
+  a ready-to-apply patch — only write access to `evco-portal` ([WO-07]/[WO-16]) stands between this and
+  done. — **Evidence:** `evidence/evco-cross-tenant-fix.patch` + `evidence/evco-cross-tenant.test.ts` +
+  (once applied) commit in `evco-portal` + real test result.
 - **[P4-W1-01]** `EXEC-NOW` — **Harden the loop's evidence trail.** `DESIGN_LOG.md` entries gain a
   machine-readable header `<!-- LOG date=… slice=… verify=CLEAN|ISSUES -->` **written only from
   verify.mjs's actual exit line**; `scripts/cruz-loop.md` step 9 updated; `canon-check` (or CI) diffs
@@ -762,15 +798,27 @@ distinct surfaces within the one FREIGHT umbrella, §0.3), not an ownership boun
   the Deck. Built + tested against the P2 mock server. — **Acceptance:** `node --test
   supertito/test/alerts` green (dedup window, ranking, never-drop). — **Evidence:** `supertito/` +
   `THE-DECK.md §Alerts`.
-- **[P6-W2-02]** `WO+PREP`([WO-07]) — **Harden the real cockpit (corrected — not a CRUZ build).**
-  The Deck's Monitor-1 cockpit is the real `clawdia-presence/app/plaios/freight/` surface (see
-  correction above), not a new CRUZ page. This item is: audit its panels against the founder's
-  actual dial-block protocol (20/block, 40/day tripwire, ≤60s disposition logging), close any gaps,
-  and wire `telegram-poll.ts` (currently an empty stub) if/when [WO-15]'s @supertitobot decision
-  extends to freight alerts specifically. — **Acceptance:** a panel-by-panel audit note committed
-  against the real repo; `telegram-poll.ts` either implemented or explicitly deferred with a named
-  reason. — **Prep-now:** the panel inventory above (this session) is the audit's starting point. —
-  **Evidence:** audit note in `clawdia-presence` (via [WO-07] admission) or this repo's evidence/.
+- **[P6-W2-02]** `WO+PREP`([WO-07]) ✅ **Falsifiable audit tool BUILT + GREEN this session** —
+  **Harden the real cockpit (corrected — not a CRUZ build).** The Deck's Monitor-1 cockpit is the real
+  `clawdia-presence/app/plaios/freight/` surface (see correction above), not a new CRUZ page. This item
+  is: audit its panels against the founder's actual dial-block protocol (20/block, 40/day tripwire,
+  ≤60s disposition logging), close any gaps, and wire `telegram-poll.ts` (currently an empty stub) if/
+  when [WO-15]'s @supertitobot decision extends to freight alerts specifically. **`scripts/
+  audit-deck.mjs` (zero-dep, matches the `canon-check.mjs` self-check pattern) makes this canon's own
+  Deck claims machine-falsifiable: it reads the real `clawdia-presence` tree and asserts (1) all 16
+  named panels exist as files, (2) `lib/freight-execution/contracts.ts` genuinely defines the
+  authority-gated multi-channel action types + reason codes, (3) the bilingual EN/ES script pattern is
+  genuinely present in the execution/panel layer (not a substring false-positive) — exits 1 if any
+  claim goes false. `node scripts/audit-deck.mjs` → PASS, all 4 claims hold; independently confirmed
+  with a negative-control run (panel deleted → 3/4 claims correctly flip to FAIL).** One honest gap:
+  it's a standalone script (matching `canon-check.mjs` precedent), not wrapped in `node:test`; and it
+  reads a live external reference tree, so its PASS is only as durable as that tree's current content
+  — both noted, neither hidden. `telegram-poll.ts` remains confirmed as an empty stub. — **Acceptance:**
+  `node scripts/audit-deck.mjs` exits 0; a panel-by-panel audit note committed against the real repo;
+  `telegram-poll.ts` either implemented or explicitly deferred with a named reason. — **Prep-now:** the
+  panel inventory above (this session) is the audit's starting point; `audit-deck.mjs` is now the
+  repeatable check for every future session. — **Evidence:** `scripts/audit-deck.mjs` + its PASS output
+  + audit note in `clawdia-presence` (via [WO-07] admission) or this repo's evidence/.
   *(The CRUZ Operator Cockpit `.dc.html` design mockup remains valid for **CRUZ's own** operator
   view — EVCO-scoped, one surface within FREIGHT, distinct from the freight-brokerage cockpit above
   but not separate from FREIGHT itself; see [P4-W4-01a].)*
@@ -936,6 +984,7 @@ every registered path exists. Exit 0/1.
 | 2026-07-30 | **Built + executed: SuperTito inbox ownership ([P2-W2-04]).** `supertito/src/inbox-triage.mjs` (classify/rank/toAlert, no send-capable export — denial test passing) + `supertito/test/inbox-triage.test.mjs` (8/8 green; full suite 24/24). Ran a **real triage pass** against `ai@renatozapata.com` via Gmail MCP (201 results, `newer_than:30d`): Ursula Banda confirmed the standout stale-hot-lead (draft already staged, §5.4 above); ~180/201 results are automated `soportetrafico@globalpc.net` Sistema-de-Tráfico noise (now labelled `SuperTito/Auto-Trafico`, label id `Label_2`, created this session); one Google security "new sign-in" alert on `ai@renatozapata.com` (2026-07-28) worth a founder glance; 2 spam/promo; real EVCO import-coordination threads correctly scored non-urgent. | executed |
 | 2026-07-30 | **Real-evidence gap found + logged as [WO-17]: the live `@supertitobot` has zero backend tool-wiring.** Founder-supplied screenshot of the actual Telegram thread ("SuperTito Group") shows: founder says *"Now you do brother... I'm saying I'm giving you your own email"*; the real bot honestly replies it **cannot** receive email or reach external systems — *"soy un modelo de lenguaje que vive aquí en este chat"* — and asks for pasted text instead. This is direct, first-party proof that this session's Gmail-MCP-backed triage capability ([P2-W2-04]) is real but **session-local**, not yet wired into the founder's actual phone bot. Logged **[WO-17]** (founder to supply Gmail/globalpc/Aduanet/econta credentials for the bot's own backend) and **[P2-W3-02]** (the founder's follow-on "Cortana" ruling, see next row), both `WO+PREP` with the `inbox-triage.mjs` shape as the ready receiving end. `[P2-W3-01]` (go-live) corrected: a token swap alone does not satisfy it — real tool-backed replies do. | found |
 | 2026-07-30 | **FOUNDER RULING (binding instantly, §0.1) — the Cortana law, [P2-W3-02]:** *"Not only should SuperTito be taking note of that but of all changes within globalpc to aduanet to econta to emails to everything he should be my fkn Cortana"* and *"I basically want it so he's copied on every thread doesn't answer but helps out the whole ecosystem."* Generalizes [P2-W2-04] (one mailbox) into a standing ecosystem-wide law: SuperTito is copied/subscribed as an **observer** on every real system (globalpc, Aduanet, econta, all email, and future systems) — observe → triage → surface → draft-if-warranted, **never answers, never sends, never acts** (§0.4-8 extended ecosystem-wide, no exception). Cross-system correlation is the added value ("helps out the whole ecosystem"), not new authority. v3.5: added [WO-17] + [P2-W3-02], corrected [P2-W3-01]'s acceptance bar, this review-log entry. canon-check green. | founder-override |
+| 2026-07-30 | **v3.6 — ultracode power-build round** (founder: *"make the most beautiful plan... using all context and everything... founder override on everything"*). Workflow `wf_69a1e554-8d9`: 5 parallel builders each implemented a real, tested artifact closing a named canon gap, each independently re-run by an adversarial verifier, then a final honesty/completeness critic over the whole batch (11 agents total, 0 fabrication found, 0 external-repo writes, 0 law violations — critic verdict: "clear to accept all 5... as truthfully reported"). Landed: (1) **`supertito/src/correlate.mjs`** + test (6/6) — the Cortana law's ([P2-W3-02]) cross-system correlation engine, real not aspirational; (2) **`supertito/src/system-adapters.mjs`** + test (9/9) — [WO-17]'s shape-conversion layer (globalpc/Aduanet/econta → canonical triage input), placeholder fields explicitly marked ASSUMED-PENDING-WO-17; (3) **`design/reference/adjunto-billing.mjs`** + test (10/10) — [P3-W2-01]'s billing law is now a real pure ledger implementation, drop-in-ready for the Adjunto repo port ([P3-W3-01]); (4) **`evidence/evco-cross-tenant-fix.patch`** + `evco-cross-tenant.test.ts` — [P4-W1-00]/[WO-16]'s SEV-1 fix is now a verified `git apply`-clean patch (confirmed against the real current file in a disposable scratch copy; `evco-portal` itself untouched — write access still required before applying); (5) **`scripts/audit-deck.mjs`** — [P6-W2-02]'s falsifiable self-check for the canon's own Deck/clawdia-presence claims (PASS, negative-control-verified). Independently re-verified by this session after the workflow returned: `node --test supertito/test/*.test.mjs` → 39/39; `node --test design/reference/adjunto-billing.test.mjs` → 10/10; `node scripts/audit-deck.mjs` → PASS; `npm run check` green; `evco-portal`/`clawdia-presence` confirmed untouched (`git status` clean in both). canon-check green (items/WOs below). No WO closed by this round — WO-16 and WO-17 remain explicitly open pending founder-side credentials/write-access, per the critic's own check against canon text. | executed |
 
 ### §5.5 v1.4 → canon coverage map (nothing silently dropped)
 
