@@ -50,6 +50,12 @@ function assertCanonicalShape(msg) {
   assert.equal(typeof msg.snippet, 'string');
 }
 
+test('adapters throw on a non-string, non-null optional free-text field instead of silently violating the snippet:string contract (v3.7 audit fix)', () => {
+  assert.throws(() => adaptGlobalpc({ ...SIM_GLOBALPC_RAW, detail: 0 }), TypeError);
+  assert.throws(() => adaptAduanet({ ...SIM_ADUANET_RAW, note: false }), TypeError);
+  assert.throws(() => adaptEconta({ ...SIM_ECONTA_RAW, reference: 12345 }), TypeError);
+});
+
 test('adaptGlobalpc: SIM fixture maps to the canonical shape', () => {
   const msg = adaptGlobalpc(SIM_GLOBALPC_RAW);
   assertCanonicalShape(msg);

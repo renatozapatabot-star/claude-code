@@ -113,6 +113,25 @@ test('case 8: idempotent replay of a team-charge key returns the original row, n
   assert.equal(state.customers.c1.net, 999, 'replay does not double-charge');
 });
 
+test('idempotencyKey reused for the same customer with a genuinely different amount throws, never silently replays the wrong cached rows (v3.7 audit fix)', () => {
+  let state = createLedger();
+  ({ state } = subscribe(state, { customerId: 'c1', idempotencyKey: 'sub-1' })); // net 499
+  ({ state } = upgrade(state, { customerId: 'c1', idempotencyKey: 'up-1' })); // net 999
+
+  // First refund call under key 'r-key' for the full net (999) — legal, succeeds, cached.
+  ({ state } = refund(state, { customerId: 'c1', amount: 999, idempotencyKey: 'r-key' }));
+  assert.equal(state.customers.c1.net, 0);
+
+  // A caller bug: same customerId + same idempotencyKey ('r-key'), but a different amount this
+  // time (0, a true no-op per the module's own rules) — the opKey collides exactly; pre-fix this
+  // would have silently replayed the original 999-refund's cached rows instead of erroring.
+  assert.throws(
+    () => refund(state, { customerId: 'c1', amount: 0, idempotencyKey: 'r-key' }),
+    InvalidTransitionError,
+    'reusing an idempotencyKey with a different real amount must throw, not replay the stale cached rows',
+  );
+});
+
 // Supplementary coverage beyond the 8 named cases: the invariant clause itself.
 test('amount-set invariant holds across a short randomized-shaped op sequence', () => {
   let state = createLedger();

@@ -64,10 +64,16 @@ export function resolveBrainAccess(user, doc) {
     return { allow: true, reason: `${user.role} — full access, no scope restriction` };
   }
 
+  // principalOnly applies to every non-principal role uniformly (v3.7 audit fix: this check
+  // previously lived only inside the employee branch below, so a principalOnly doc that also
+  // happened to carry a `tenant` field matching a client's own tenant slipped through the client
+  // branch untouched — a real founder-only-document leak to a client. Checked here, once, before
+  // any role-specific branch, so no future role addition can reintroduce the same gap.
+  if (doc.principalOnly) {
+    return { allow: false, reason: 'principal-only document — non-principal roles excluded regardless of scope' };
+  }
+
   if (user.role === 'employee') {
-    if (doc.principalOnly) {
-      return { allow: false, reason: 'principal-only document — employees excluded regardless of role scope' };
-    }
     if (!user.roleScope) {
       return { allow: false, reason: 'employee has no roleScope assigned — no grant, not full access' };
     }
@@ -84,7 +90,13 @@ export function resolveBrainAccess(user, doc) {
   if (doc.category === 'internal-notes') {
     return { allow: false, reason: "internal-notes category — never client-visible, regardless of tenant" };
   }
-  if (!user.tenant || doc.tenant !== user.tenant) {
+  // v3.7 audit fix: exact case-sensitive string equality could wrongly DENY a real client access to
+  // their own tenant's docs if two different intake paths (e.g. portal signup vs a Supabase import)
+  // populated the tenant string with different casing/whitespace — a normalization gap, same class
+  // as correlate.mjs's entity-matching fix. Denies fail-safe either way; this only widens what
+  // legitimately counts as a match, it never grants anything a strict match wouldn't have.
+  const normalizeTenant = (s) => (s ?? '').trim().toLowerCase();
+  if (!user.tenant || normalizeTenant(doc.tenant) !== normalizeTenant(user.tenant)) {
     return { allow: false, reason: 'tenant mismatch — cross-tenant access denied' };
   }
   return { allow: true, reason: `tenant match on '${user.tenant}'` };

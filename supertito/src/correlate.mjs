@@ -27,14 +27,20 @@
 export function correlate(observations, nowMs) {
   void nowMs;
 
+  // Group by a normalized key (v3.7 audit fix: exact-string grouping silently failed to
+  // correlate the same real client reported with different casing/whitespace by different
+  // systems — e.g. "MAFESA" from Aduanet vs "Mafesa" from econta — defeating the exact
+  // cross-system value the Cortana law exists to provide). The first-seen original-casing
+  // string is kept as the brief's displayed `entity`.
   const byEntity = new Map();
   for (const obs of observations) {
-    if (!byEntity.has(obs.entity)) byEntity.set(obs.entity, []);
-    byEntity.get(obs.entity).push(obs);
+    const key = obs.entity.trim().toLowerCase();
+    if (!byEntity.has(key)) byEntity.set(key, { entity: obs.entity, items: [] });
+    byEntity.get(key).items.push(obs);
   }
 
   const briefs = [];
-  for (const [entity, items] of byEntity) {
+  for (const { entity, items } of byEntity.values()) {
     const systems = [...new Set(items.map((i) => i.system))];
     if (systems.length < 2) continue; // not correlated — single-system, out of scope here
 

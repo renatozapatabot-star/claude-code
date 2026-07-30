@@ -60,6 +60,16 @@ function requireFiniteNumber(value, label) {
   return value;
 }
 
+// v3.7 audit fix: `raw.field ?? ''` only substitutes for null/undefined — a defined-but-non-string
+// falsy value (e.g. `detail: 0` or `detail: false`) passed straight into the canonical `snippet`
+// field, silently violating the documented `{ snippet: string }` shape contract every downstream
+// consumer (classifyThread, toAlert) assumes holds.
+function coerceOptionalString(value) {
+  if (value == null) return '';
+  if (typeof value === 'string') return value;
+  throw new TypeError(`optional free-text field must be a string or null/undefined, got ${typeof value}`);
+}
+
 /**
  * Adapts a placeholder globalpc (Sistema de Tráfico) raw record to the canonical thread-message shape.
  * @param {GlobalpcRaw} raw
@@ -75,7 +85,7 @@ export function adaptGlobalpc(raw) {
     dateMs,
     fromMe: Boolean(raw.originatedByBroker),
     subject: `[Tráfico ${raw.traficoId}] ${eventType}`,
-    snippet: raw.detail ?? '',
+    snippet: coerceOptionalString(raw.detail),
   };
 }
 
@@ -94,7 +104,7 @@ export function adaptAduanet(raw) {
     dateMs,
     fromMe: Boolean(raw.brokerInitiated),
     subject: `[Aduanet ${raw.pedimentoRef}] ${statusCode}`,
-    snippet: raw.note ?? '',
+    snippet: coerceOptionalString(raw.note),
   };
 }
 
@@ -113,6 +123,6 @@ export function adaptEconta(raw) {
     dateMs,
     fromMe: Boolean(raw.issuedByUs),
     subject: `[econta ${raw.invoiceId}] ${memo}`,
-    snippet: raw.reference ?? '',
+    snippet: coerceOptionalString(raw.reference),
   };
 }

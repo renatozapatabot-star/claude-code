@@ -5,7 +5,9 @@ import {
   digestFallbackFires,
   updateCircuit,
   canProbe,
+  beginProbe,
   nextBackoffDelayMs,
+  shouldProcessUpdate,
 } from '../src/fallback-limiter.mjs';
 
 const MIN = 60 * 1000;
@@ -97,6 +99,34 @@ test('canProbe: true when the circuit is not open at all', () => {
   assert.equal(canProbe({ status: 'closed', openedAtMs: null }, 0), true);
 });
 
+test('beginProbe: reproduces-then-fixes resilience4j #1432 — two concurrent callers after cooldown, only the first claims the probe', () => {
+  const openState = { status: 'open', consecutiveFailures: 3, openedAtMs: 0 };
+  const nowMs = 3 * 60 * 1000; // past the default 2-min cooldown
+  const first = beginProbe(openState, nowMs);
+  assert.equal(first.allowed, true);
+  assert.equal(first.nextState.status, 'half_open');
+  // caller persists first.nextState synchronously, *then* the second concurrent
+  // handler (e.g. a different chat's webhook, interleaved while the first await's
+  // LLM call is in flight) reads state and calls beginProbe again with the claimed state
+  const second = beginProbe(first.nextState, nowMs);
+  assert.equal(second.allowed, false, 'a second concurrent probe must not also be admitted');
+  assert.equal(second.nextState.status, 'half_open');
+});
+
+test('beginProbe: not yet allowed while the cooldown has not elapsed', () => {
+  const openState = { status: 'open', consecutiveFailures: 3, openedAtMs: 0 };
+  const { allowed, nextState } = beginProbe(openState, 60 * 1000); // 1 min, default cooldown is 2 min
+  assert.equal(allowed, false);
+  assert.equal(nextState.status, 'open'); // unchanged, still eligible once cooldown elapses
+});
+
+test('beginProbe: always allowed when the circuit is already closed', () => {
+  const closedState = { status: 'closed', consecutiveFailures: 0, openedAtMs: null };
+  const { allowed, nextState } = beginProbe(closedState, 0);
+  assert.equal(allowed, true);
+  assert.equal(nextState, closedState); // no transition needed
+});
+
 test('nextBackoffDelayMs: grows with attempt number and stays within the jittered bound (full-jitter formula)', () => {
   const fixedRandom = () => 0.999999; // pin jitter near its upper bound, deterministically
   const d0 = nextBackoffDelayMs(0, { baseMs: 1000, capMs: 30000, randomFn: fixedRandom });
@@ -109,6 +139,42 @@ test('nextBackoffDelayMs: grows with attempt number and stays within the jittere
 test('nextBackoffDelayMs: caps out and stops growing past the ceiling', () => {
   const d = nextBackoffDelayMs(20, { baseMs: 1000, capMs: 30000, randomFn: () => 0.999999 });
   assert.ok(d <= 30000);
+});
+
+test('nextBackoffDelayMs: an explicit retry-after (from a real 429 header) overrides the jittered guess exactly', () => {
+  const d = nextBackoffDelayMs(5, { baseMs: 1000, capMs: 30000, randomFn: () => 0.5, retryAfterMs: 12345 });
+  assert.equal(d, 12345);
+});
+
+test('shouldProcessUpdate: a fresh update_id is processed and remembered', () => {
+  const seen = new Map();
+  const t0 = Date.parse('2026-07-30T06:49:00Z');
+  assert.equal(shouldProcessUpdate(seen, 'upd-1', t0), true);
+  assert.equal(seen.get('upd-1'), t0);
+});
+
+test('shouldProcessUpdate: a Telegram redelivery of the same update_id within the TTL is skipped (openclaw #58611 pattern)', () => {
+  const seen = new Map();
+  const t0 = Date.parse('2026-07-30T06:49:00Z');
+  assert.equal(shouldProcessUpdate(seen, 'upd-1', t0), true);
+  // Telegram redelivers the identical update_id 3 times while the LLM call is stuck
+  assert.equal(shouldProcessUpdate(seen, 'upd-1', t0 + 5000), false);
+  assert.equal(shouldProcessUpdate(seen, 'upd-1', t0 + 30000), false);
+  assert.equal(shouldProcessUpdate(seen, 'upd-1', t0 + 55000), false);
+});
+
+test('shouldProcessUpdate: distinct update_ids never collide with each other', () => {
+  const seen = new Map();
+  const t0 = Date.parse('2026-07-30T06:49:00Z');
+  assert.equal(shouldProcessUpdate(seen, 'upd-1', t0), true);
+  assert.equal(shouldProcessUpdate(seen, 'upd-2', t0), true);
+});
+
+test('shouldProcessUpdate: the same update_id is processed again once past the TTL (not permanently blocked)', () => {
+  const seen = new Map();
+  const t0 = Date.parse('2026-07-30T06:49:00Z');
+  assert.equal(shouldProcessUpdate(seen, 'upd-1', t0), true);
+  assert.equal(shouldProcessUpdate(seen, 'upd-1', t0 + 6 * MIN), true); // default TTL is 5 min
 });
 
 test('denial: no send/dispatch/reply-capable export exists', async () => {

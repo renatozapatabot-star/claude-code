@@ -63,11 +63,23 @@ export function scoreLeadReadiness(lead) {
   const {
     hasProofArtifactSent = false,
     hasQuoteSent = false,
-    daysSinceLastTouch = 0,
+    daysSinceLastTouch: rawDaysSinceLastTouch = 0,
     repliedLast = false,
     complianceClean = false,
     priorClient = false,
   } = lead ?? {};
+
+  // v3.7 audit fix: a non-finite (NaN, from real upstream date-math on a missing timestamp) or
+  // negative (clock-skew/timezone bug) daysSinceLastTouch used to propagate unvalidated —  NaN
+  // silently corrupted readinessScore and broke rankLeads' numeric sort, and a negative value
+  // could drive the follow-up stage's freshnessPenalty negative, pushing its score above 95
+  // (onboard's legitimate ceiling) and inverting the intended stage ordering. Defaults to 0
+  // ("touched today") rather than throwing, matching this function's existing lenient-defaults
+  // style (unlike system-adapters.mjs's strict required-field validation, which guards a different
+  // kind of boundary — real external input, not an optional caller-supplied number).
+  const daysSinceLastTouch = Number.isFinite(rawDaysSinceLastTouch) && rawDaysSinceLastTouch >= 0
+    ? rawDaysSinceLastTouch
+    : 0;
 
   if (!repliedLast && daysSinceLastTouch >= STALE_DAYS_GROWTH) {
     const overdueDays = daysSinceLastTouch - STALE_DAYS_GROWTH;

@@ -51,13 +51,32 @@ function nextId(state) {
 // Every mutating op is keyed by a caller-supplied idempotencyKey. Replaying the same key returns the
 // exact rows the first call produced and leaves state untouched — this is what makes case 8 (the
 // team-charge replay) hold even though upgrade() posts two rows (refund + charge) per call.
-function runIdempotent(state, opKey, fn) {
+//
+// v3.7 audit fix: the cache used to be keyed ONLY by opKey, with no check that a replay's actual
+// call arguments (e.g. refund's `amount`) matched what produced the cached rows — a caller bug
+// that reused the same idempotencyKey with a genuinely different amount would silently replay the
+// FIRST call's (now wrong) cached rows instead of erroring, exactly the failure mode real payment
+// processors (Stripe's idempotency-key docs) explicitly guard against by requiring the replayed
+// request body to match. `fingerprint` is a plain-value snapshot of the meaningful call args;
+// mismatched fingerprints on a cache hit now throw instead of silently returning stale rows.
+function runIdempotent(state, opKey, fingerprint, fn) {
   if (opKey) {
     const cached = state.ops[opKey];
-    if (cached) return { state, rows: cached.rows };
+    if (cached) {
+      const currentFingerprint = JSON.stringify(fingerprint);
+      if (cached.fingerprint !== currentFingerprint) {
+        throw new InvalidTransitionError(
+          `idempotencyKey reused with different arguments (opKey=${opKey}) — original call's cached `
+          + 'result cannot be safely replayed for a different request',
+        );
+      }
+      return { state, rows: cached.rows };
+    }
   }
   const { state: nextState, rows } = fn(state);
-  const finalState = opKey ? { ...nextState, ops: { ...nextState.ops, [opKey]: { rows } } } : nextState;
+  const finalState = opKey
+    ? { ...nextState, ops: { ...nextState.ops, [opKey]: { rows, fingerprint: JSON.stringify(fingerprint) } } }
+    : nextState;
   return { state: finalState, rows };
 }
 
@@ -67,7 +86,7 @@ function runIdempotent(state, opKey, fn) {
  * @returns {{ state: object, rows: object[] }}
  */
 export function subscribe(state, { customerId, idempotencyKey } = {}) {
-  return runIdempotent(state, idempotencyKey && `subscribe:${customerId}:${idempotencyKey}`, (s) => {
+  return runIdempotent(state, idempotencyKey && `subscribe:${customerId}:${idempotencyKey}`, { customerId }, (s) => {
     const customer = getCustomer(s, customerId);
     if (customer.status !== 'none') {
       throw new InvalidTransitionError(`customer ${customerId} already has an active plan (${customer.status})`);
@@ -83,7 +102,7 @@ export function subscribe(state, { customerId, idempotencyKey } = {}) {
  * price. Only pro→team exists. Never a fractional/prorated amount, never a stacked charge.
  */
 export function upgrade(state, { customerId, idempotencyKey } = {}) {
-  return runIdempotent(state, idempotencyKey && `upgrade:${customerId}:${idempotencyKey}`, (s) => {
+  return runIdempotent(state, idempotencyKey && `upgrade:${customerId}:${idempotencyKey}`, { customerId }, (s) => {
     const customer = getCustomer(s, customerId);
     if (customer.status !== 'pro') {
       throw new InvalidTransitionError(
@@ -103,7 +122,7 @@ export function upgrade(state, { customerId, idempotencyKey } = {}) {
 
 /** Cancel refunds the standing current-plan charge in full and ends the subscription. */
 export function cancel(state, { customerId, idempotencyKey } = {}) {
-  return runIdempotent(state, idempotencyKey && `cancel:${customerId}:${idempotencyKey}`, (s) => {
+  return runIdempotent(state, idempotencyKey && `cancel:${customerId}:${idempotencyKey}`, { customerId }, (s) => {
     const customer = getCustomer(s, customerId);
     if (customer.status === 'none') {
       throw new InvalidTransitionError(`customer ${customerId} has no active subscription to cancel`);
@@ -129,7 +148,7 @@ export function cancel(state, { customerId, idempotencyKey } = {}) {
  * silently.
  */
 export function refund(state, { customerId, amount, idempotencyKey } = {}) {
-  return runIdempotent(state, idempotencyKey && `refund:${customerId}:${idempotencyKey}`, (s) => {
+  return runIdempotent(state, idempotencyKey && `refund:${customerId}:${idempotencyKey}`, { customerId, amount }, (s) => {
     if (!ALLOWED_AMOUNTS.has(amount)) {
       throw new InvalidPriceError(amount);
     }

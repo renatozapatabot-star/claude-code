@@ -26,6 +26,34 @@ test('classifies an urgent-client thread', () => {
   assert.equal(classifyThread(msgs, now).category, 'urgent-client');
 });
 
+test('a thread matching both a lead keyword and a compliance keyword, at borderline staleness where stale-hot-lead\'s urgency would be LOWER than compliance-deadline\'s, classifies compliance-deadline (max-urgency wins, v3.7 audit fix)', () => {
+  // At 3 days (just past STALE_DAYS), stale-hot-lead's urgency is 3+min(3/7,3)=~3.4 — lower than
+  // compliance-deadline's flat 5. Pre-fix, the fixed if/else-if order picked stale-hot-lead first
+  // regardless, silently deprioritizing the genuinely more urgent compliance signal.
+  const msgs = [
+    { id: '1', dateMs: now - 4 * DAY, fromMe: true, subject: 'Adjunto trial', snippet: 'prueba de acceso' },
+    { id: '2', dateMs: now - 3 * DAY, fromMe: false, subject: 'RE: Adjunto trial', snippet: 'gracias, pero antes falta la MVE VUCEM' },
+  ];
+  const c = classifyThread(msgs, now);
+  assert.equal(c.category, 'compliance-deadline');
+  assert.equal(c.urgency, 5);
+});
+
+test('"SAT" at the end of a sentence (no trailing space/word after it) still matches the compliance keyword (v3.7 audit fix)', () => {
+  const msgs = [{ id: '1', dateMs: now - DAY, fromMe: false, subject: 'Aviso', snippet: 'nos contactó el SAT.' }];
+  assert.equal(classifyThread(msgs, now).category, 'compliance-deadline');
+});
+
+test('an out-of-order messages array is classified by the true-latest message (max dateMs), not array position (v3.7 audit fix)', () => {
+  const msgs = [
+    { id: 'newer', dateMs: now - DAY, fromMe: false, subject: 'URGENTE', snippet: 'hoy mismo por favor' },
+    { id: 'older', dateMs: now - 5 * DAY, fromMe: true, subject: 'hola', snippet: 'como vas' },
+  ];
+  const c = classifyThread(msgs, now);
+  assert.equal(c.category, 'urgent-client');
+  assert.equal(c.awaitingReply, true);
+});
+
 test('a fresh, already-answered thread is routine, not urgent', () => {
   const msgs = [
     { id: '1', dateMs: now - DAY, fromMe: false, subject: 'hola', snippet: 'como vas' },

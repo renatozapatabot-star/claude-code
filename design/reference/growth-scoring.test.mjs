@@ -123,6 +123,23 @@ test('missing/undefined fields default safely (all falsy/zero) -> earliest stage
   assert.doesNotThrow(() => scoreLeadReadiness(null));
 });
 
+test('a NaN daysSinceLastTouch never corrupts readinessScore into NaN (v3.7 audit fix)', () => {
+  const r = scoreLeadReadiness({
+    hasProofArtifactSent: true, hasQuoteSent: true, complianceClean: true, repliedLast: false,
+    daysSinceLastTouch: NaN,
+  });
+  assert.equal(Number.isFinite(r.readinessScore), true);
+  assert.equal(r.stage, 'follow-up'); // treated as 0 days, not stale
+});
+
+test('a negative daysSinceLastTouch never pushes a follow-up lead\'s score above onboard\'s ceiling (v3.7 audit fix)', () => {
+  const r = scoreLeadReadiness({
+    hasProofArtifactSent: true, hasQuoteSent: true, complianceClean: true, repliedLast: false,
+    daysSinceLastTouch: -50,
+  });
+  assert.ok(r.readinessScore <= 95, `expected <= 95 (onboard's own ceiling), got ${r.readinessScore}`);
+});
+
 test('rankLeads: stale leads are boosted to the top of the queue regardless of raw readinessScore', () => {
   const onboardReady = { id: 'a', ...scoreLeadReadiness({
     hasProofArtifactSent: true, hasQuoteSent: true, daysSinceLastTouch: 1,

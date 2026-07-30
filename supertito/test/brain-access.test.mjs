@@ -106,6 +106,25 @@ test('client is blocked from internal-notes category even within their own tenan
   assert.match(result.reason, /internal-notes/);
 });
 
+test('a client is not wrongly denied their own tenant\'s doc when the tenant strings differ only by casing/whitespace (v3.7 audit fix)', () => {
+  const docDifferentCasing = { ...EVCO_SHIPMENT_DOC, tenant: ' evco ' };
+  const result = resolveBrainAccess(EVCO_CLIENT, docDifferentCasing);
+  assert.equal(result.allow, true);
+});
+
+test('client is blocked from a principal-only doc even when its tenant field matches their own (v3.7 audit fix — a real bug: this check previously lived only in the employee branch)', () => {
+  const principalOnlyButTenantTagged = {
+    id: 'aguila-brain:03-Clients/EVCO/founder-only-margin-notes.md',
+    category: 'strategy',
+    tenant: 'EVCO',
+    principalOnly: true,
+    snippet: 'Founder-only margin/negotiation notes about the EVCO account.',
+  };
+  const result = resolveBrainAccess(EVCO_CLIENT, principalOnlyButTenantTagged);
+  assert.equal(result.allow, false);
+  assert.match(result.reason, /principal-only/);
+});
+
 test('client with no tenant assigned gets no grant against any tenant-owned doc', () => {
   const result = resolveBrainAccess({ role: 'client' }, EVCO_SHIPMENT_DOC);
   assert.equal(result.allow, false);

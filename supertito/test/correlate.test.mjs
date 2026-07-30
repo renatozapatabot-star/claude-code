@@ -46,6 +46,34 @@ test('correlates the same entity across 3 distinct systems into one brief', () =
   assert.match(brief.text, /gmail/);
 });
 
+test('the same real client reported with different casing/whitespace across systems still correlates (v3.7 audit fix)', () => {
+  const observations = [
+    {
+      system: 'aduanet',
+      threadId: 'aduanet-mafesa-2',
+      entity: 'MAFESA',
+      classification: { category: 'compliance-deadline', urgency: 5, ageDays: 1, awaitingReply: true },
+    },
+    {
+      system: 'econta',
+      threadId: 'econta-mafesa-2',
+      entity: 'Mafesa',
+      classification: { category: 'stale-invoice', urgency: 3.5, ageDays: 12, awaitingReply: true },
+    },
+    {
+      system: 'gmail',
+      threadId: 'gmail-mafesa-2',
+      entity: ' MAFESA ',
+      classification: { category: 'urgent-client', urgency: 4, ageDays: 2, awaitingReply: true },
+    },
+  ];
+
+  const briefs = correlate(observations, now);
+  assert.equal(briefs.length, 1);
+  assert.equal(briefs[0].systems.length, 3);
+  assert.equal(briefs[0].entity, 'MAFESA'); // first-seen original casing is what's displayed
+});
+
 test('a single-system observation does not spuriously correlate', () => {
   const observations = [
     {

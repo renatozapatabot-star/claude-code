@@ -17,6 +17,26 @@ test('dedup: repeated alerts for the same thread within the window merge, never 
   assert.equal(deduped[0].suppressedCount, 2); // the other 2 are folded in, not discarded
 });
 
+test('dedup: sliding window keeps advancing even when an early high-urgency alert would otherwise freeze the anchor in the past (v3.7 audit fix)', () => {
+  const now = Date.parse('2026-07-30T12:00:00Z');
+  // A high-urgency alert fires first, then 3 more lower-urgency alerts each 50 min after the
+  // previous one (well within a 60-min window of their immediate predecessor, but the last one
+  // is 150 min after the very first — outside a 60-min window measured from the first alert).
+  // Pre-fix, the anchor froze at the first (winning, urgency=5) alert's timestamp, so the last
+  // alert would incorrectly split off as a "new occurrence" even though every consecutive gap
+  // was within the window.
+  const alerts = [
+    { thread_id: 't1', urgency: 5, emittedAtMs: now },
+    { thread_id: 't1', urgency: 1, emittedAtMs: now + 50 * 60 * 1000 },
+    { thread_id: 't1', urgency: 1, emittedAtMs: now + 100 * 60 * 1000 },
+    { thread_id: 't1', urgency: 1, emittedAtMs: now + 150 * 60 * 1000 },
+  ];
+  const deduped = dedupeAlerts(alerts, HOUR);
+  assert.equal(deduped.length, 1);
+  assert.equal(deduped[0].urgency, 5); // content still picks the highest-urgency instance
+  assert.equal(deduped[0].suppressedCount, 3); // all 3 later ones folded in, none dropped, none split off
+});
+
 test('dedup: alerts outside the window are kept as distinct occurrences (never-drop)', () => {
   const now = Date.parse('2026-07-30T12:00:00Z');
   const alerts = [

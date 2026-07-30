@@ -23,7 +23,18 @@ const KNOWN_ENTITIES = ['MAFESA', 'EVCO', 'Duratech', 'Milacron', 'Foam Supplies
 // templated subjects introduce (e.g. "TRF", "PED", "INV" inside tráfico/pedimento/invoice IDs) —
 // a known, documented limitation of a heuristic this simple, not a guarantee against every false
 // positive (a real 4+ letter ID prefix could still slip through).
-const CAPS_TOKEN_RE = /\b[A-ZÁÉÍÓÚÑ]{4,}\b/;
+const CAPS_TOKEN_RE = /\b[A-ZÁÉÍÓÚÑ]{4,}\b/g;
+
+// v3.7 audit fix: without a stoplist, the ALL-CAPS fallback happily adopted generic regulatory/
+// urgency vocabulary (VUCEM, MVE, URGENTE...) as a "client name" whenever no KNOWN_ENTITIES name
+// was present — silently merging two unrelated clients' observations into one false correlated
+// brief the moment both mentioned the same compliance term. Mirrors inbox-triage.mjs's own
+// COMPLIANCE_KEYWORDS/URGENT_KEYWORDS vocabulary (kept as a separate literal list here rather than
+// importing, since inbox-triage.mjs doesn't export those arrays and duplicating a half-dozen
+// uppercase words is cheaper than widening that module's public surface for this alone).
+const GENERIC_CAPS_STOPLIST = new Set([
+  'MVE', 'VUCEM', 'SAT', 'ASAP', 'URGENTE', 'MULTA', 'ADUANA', 'HELD', 'RELEASED', 'PENDING', 'E2',
+]);
 
 function textOf(subject, snippet) {
   return `${subject ?? ''} ${snippet ?? ''}`;
@@ -32,11 +43,22 @@ function textOf(subject, snippet) {
 /** @returns {string|null} a recognized entity name, or null if the heuristic found nothing */
 function extractEntity(text) {
   const lower = text.toLowerCase();
+  // Prefer the KNOWN_ENTITIES name that actually occurs earliest in the text (v3.7 audit fix: this
+  // used to return whichever known name came first in the static array, regardless of which one
+  // the text was actually about — a message mentioning two known clients in passing could
+  // misattribute the observation to the wrong one).
+  let best = null;
   for (const name of KNOWN_ENTITIES) {
-    if (lower.includes(name.toLowerCase())) return name;
+    const idx = lower.indexOf(name.toLowerCase());
+    if (idx !== -1 && (best === null || idx < best.idx)) best = { name, idx };
   }
-  const capsMatch = text.match(CAPS_TOKEN_RE);
-  return capsMatch ? capsMatch[0] : null;
+  if (best) return best.name;
+
+  // Fallback: any 4+ letter all-caps token NOT in the generic stoplist above.
+  for (const match of text.matchAll(CAPS_TOKEN_RE)) {
+    if (!GENERIC_CAPS_STOPLIST.has(match[0])) return match[0];
+  }
+  return null;
 }
 
 function observationFromGmailThread(thread, nowMs) {

@@ -6,17 +6,23 @@
      and exactly what commands to run to confirm nothing has drifted. -->
 
 **Read this first if you're picking this up cold.** The canonical law lives in
-`FREIGHT-OS-CANON.md` (currently **v3.7**, founder-override supremacy, 55 items / 18 WOs, machine-checked
+`FREIGHT-OS-CANON.md` (currently **v3.8**, founder-override supremacy, 55 items / 18 WOs, machine-checked
 by `node scripts/canon-check.mjs`). This document is a *status snapshot*, not the law — it exists so
 nothing is lost to a session cutoff or context compaction. Everything here is independently verifiable
 by running the commands in **§Verification Playbook** below.
 
-**v3.7 update — read this before trusting v3.6-era claims elsewhere:** a full adversarial audit (13
-agents) found the canon had accumulated real, checkable false statements (a Routine claimed "running"
-that produces zero output; a Gmail label claimed applied to ~180 threads that was never actually
-applied; a security patch claimed "ready to apply" that would have broken the build; a cited skill
-that doesn't exist). All are now fixed in the canon itself (§5.4's v3.7 entry has the full list) — this
-status doc below has been updated to match the corrected reality, not the original overclaims.
+**v3.7 update:** a full adversarial audit (13 agents) found the canon had accumulated real, checkable
+false statements (a Routine claimed "running" that produces zero output; a Gmail label claimed applied
+to ~180 threads that was never actually applied; a security patch claimed "ready to apply" that would
+have broken the build; a cited skill that doesn't exist). All fixed — §5.4's v3.7 entry has the full
+list.
+
+**v3.8 update:** a founder-requested loop-until-dry deep-research round (18 agents, 3 rounds, real
+WebSearch citations required per finding) found 8 real code bugs across every supertito/design-reference
+module — including a founder-only-document access leak in `brain-access.mjs` — each now fixed with a
+regression test. It also found that three independent research passes gave three different,
+contradictory MVE/E2 regulatory deadlines; rather than picking one, the compliance documents now carry
+an explicit "verify before citing to a real client" disclosure. §5.4's v3.8 entry has the full list.
 
 **Repo:** `renatozapatabot-star/claude-code` · **Branch:** `claude/freight-os-optimization-6gn2qz` ·
 **Latest commit as of writing:** pushed and live on `origin` — run `git log --oneline -3` for the exact
@@ -100,7 +106,7 @@ exists.
 | WO-15 | SuperTito bot name | **CLOSED** — `@supertitobot`, founder-ruled 2026-07-19 |
 | WO-16 | 🚨 SEV-1 MAFESA/EVCO cross-tenant fix, write access | **OPEN** — fix is a verified, COMPLETE, ready-to-apply patch (`evidence/evco-cross-tenant-fix.patch`, covers all 8 real call sites, `tsc`-clean, re-verified v3.7 after finding the v3.6 version was incomplete and would have broken the build); `evco-portal` untouched, awaiting founder write-access confirmation. A related, separate tenant-scoping gap in `opportunities.ts` was also found and logged, not yet fixed. |
 | WO-17 | Real credentials: Gmail-for-the-bot, globalpc, Aduanet, econta | **OPEN** — shape-adapters + correlation engine + unified pipeline (`cortana.mjs`) all built and tested; only credentials are missing |
-| WO-18 | 🔍 Real bot reliability bug: repeat-spam of an identical fallback message when the conversational layer fails | **OPEN** — new in v3.7, founder-supplied screenshot evidence; root cause not visible from this session's read-only `throne-stack` access, needs Throne-side log investigation |
+| WO-18 | 🔍 Real bot reliability bug: repeat-spam of an identical fallback message when the conversational layer fails | **OPEN, but the fix is fully built** — root cause not visible from this session's read-only `throne-stack` access (still needs Throne-side log investigation), but `supertito/src/fallback-limiter.mjs` (21/21 tests) is a complete, tested rate-limiter/circuit-breaker/inbound-dedup fix ready to wire in the moment Hermes/Throne access lands — see §5 |
 
 **Bottom line: nothing has been silently dropped. Every open WO has a named founder-ask AND real prep
 work already done in the meantime** (per the De-Deferral Law). This is enforced mechanically — `node
@@ -131,6 +137,7 @@ re-verified by this session after being built (not just trusted from an agent re
 | `supertito/src/system-adapters.mjs` + test | WO-17 shape-conversion (globalpc/Aduanet/econta → canonical input) | `node --test supertito/test/system-adapters.test.mjs` | 9/9 |
 | `supertito/src/cortana.mjs` + test | Unified Cortana pipeline (adapt+classify+correlate all 4 systems in one call) | `node --test supertito/test/cortana.test.mjs` | 10/10 |
 | `supertito/src/alerts.mjs` + test | Alert-rail dedup/never-drop/ranking (v3.7: fixed a false "built" claim with real code) | `node --test supertito/test/alerts.test.mjs` | 5/5 |
+| `supertito/src/fallback-limiter.mjs` + test | [WO-18] fix: per-chat fallback rate gate + Nygard circuit breaker (incl. `beginProbe` concurrent-HALF_OPEN-probe guard, resilience4j #1432 pattern) + AWS full-jitter backoff + inbound Telegram `update_id` dedup (openclaw/openclaw #58611 pattern) | `node --test supertito/test/fallback-limiter.test.mjs` | 21/21 |
 | `supertito/src/brain-access.mjs` + test | Second-brain role/tenant access-matrix enforcement + "not in the brain yet" honesty rule | `node --test supertito/test/brain-access.test.mjs` | 16/16 |
 | `design/reference/adjunto-billing.mjs` + test | Adjunto billing law, real pure ledger | `node --test design/reference/adjunto-billing.test.mjs` | 10/10 |
 | `design/reference/growth-scoring.mjs` + test | P7 Growth lead-readiness scoring/ranking | `node --test design/reference/growth-scoring.test.mjs` | 14/14 |
@@ -138,7 +145,7 @@ re-verified by this session after being built (not just trusted from an agent re
 | `scripts/audit-deck.mjs` | Falsifiable check of the canon's Deck claims against real `clawdia-presence` source | `node scripts/audit-deck.mjs` | PASS (4/4 claims), negative-control-verified |
 | `scripts/canon-check.mjs` | The canon's own structural/content law (v3.7: Prep-now citations now cross-referenced against real parsed items, not just shape) | `node scripts/canon-check.mjs` | PASS — 55 items, 18 WOs |
 | `DB-ATLAS.md` | Real DB atlas template (v3.7: previously claimed built but didn't exist — built for real) | n/a (template, filled once WO-01 lands) | exists, registered in CANON-PATHS |
-| **Whole supertito suite** | everything above + pre-existing core/ledger/escalation | `node --test supertito/test/*.test.mjs` | **70/70** |
+| **Whole supertito suite** | everything above + pre-existing core/ledger/escalation | `node --test supertito/test/*.test.mjs` | **101/101** (drifts upward — always re-run for the live count) |
 | **Repo code sanity** | `server.js` + `data/embarques.js` syntax | `npm run check` | green |
 
 ## 6. Verification playbook (run these to confirm nothing has drifted)
@@ -147,7 +154,7 @@ re-verified by this session after being built (not just trusted from an agent re
 cd /home/user/claude-code
 node scripts/canon-check.mjs                                    # expect PASS, 55 items, 18 WOs
 npm run check                                                   # repo code sanity — expect green
-node --test supertito/test/*.test.mjs                           # SuperTito full suite — expect 70/70
+node --test supertito/test/*.test.mjs                           # SuperTito full suite — expect 101/101 (or higher — this number drifts upward)
 node --test design/reference/adjunto-billing.test.mjs           # expect 10/10
 node --test design/reference/growth-scoring.test.mjs            # expect 14/14
 node scripts/audit-deck.mjs                                     # Deck claims vs real source — expect PASS

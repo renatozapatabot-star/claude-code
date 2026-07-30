@@ -85,6 +85,46 @@ const FULL_ESTATE = {
 
 // --- tests --------------------------------------------------------------------------------------
 
+test('runCortanaPass: two unrelated clients that only share a generic compliance term (VUCEM) never falsely correlate (v3.7 audit fix)', () => {
+  // Neither record names a KNOWN_ENTITIES client — both fall to the ALL-CAPS fallback, and both
+  // happen to mention "VUCEM". Pre-fix, that shared generic word became the "entity" key for both,
+  // merging two genuinely unrelated clients into one false correlated brief.
+  const unrelatedA = {
+    traficoId: 'TRF-X-01',
+    eventEpochMs: now - 1 * DAY,
+    originatedByBroker: false,
+    eventType: 'hold-flagged',
+    detail: 'contenedor detenido, falta tramite VUCEM',
+  };
+  const unrelatedB = {
+    pedimentoRef: 'PED-Y-01',
+    statusChangedAtMs: now - 1 * DAY,
+    brokerInitiated: false,
+    statusCode: 'mve-pending',
+    note: 'pedimento con tramite VUCEM pendiente',
+  };
+  const { correlatedBriefs } = runCortanaPass({ globalpc: [unrelatedA], aduanet: [unrelatedB] }, now);
+  assert.equal(correlatedBriefs.length, 0);
+});
+
+test('runCortanaPass: a message mentioning two known entities attributes to the one occurring first in the text, not array order (v3.7 audit fix)', () => {
+  // KNOWN_ENTITIES lists 'MAFESA' before 'EVCO', but this message is actually about EVCO —
+  // MAFESA is only mentioned in passing. Pre-fix, array order (MAFESA first) would win regardless.
+  const mentionsBothTextOrderEvcoFirst = {
+    traficoId: 'TRF-EVCO-02',
+    eventEpochMs: now - 1 * DAY,
+    originatedByBroker: false,
+    eventType: 'hold-flagged',
+    detail: 'EVCO detenido (referencia cruzada: comparar con caso MAFESA anterior)',
+  };
+  const { correlatedBriefs } = runCortanaPass(
+    { globalpc: [mentionsBothTextOrderEvcoFirst], gmail: [SIM_GMAIL_EVCO] },
+    now
+  );
+  const evcoBrief = correlatedBriefs.find((b) => b.entity === 'EVCO');
+  assert.ok(evcoBrief, 'expected an EVCO-attributed correlated brief, not a MAFESA one');
+});
+
 test('runCortanaPass: per-system alerts surface for every observation across all 4 systems', () => {
   const { perSystemAlerts } = runCortanaPass(FULL_ESTATE, now);
 

@@ -12,6 +12,18 @@
 // how long the underlying LLM call should back off before retrying. It does not call
 // Telegram, does not touch Hermes, and cannot patch the live bot from here.
 //
+// KNOWN LIMITATION (documented for whoever wires this in, not fixable from this repo):
+// all state here (lastEmittedAtMs, circuit state, seenUpdateIds) is caller-owned and
+// in-memory by design. That's correct if Hermes runs @supertitobot as a single process,
+// but if it is ever scaled to more than one instance/replica, each instance would keep
+// an independent circuit + dedup state — the exact known gap resilience4j documents for
+// its own (single-JVM) CircuitBreaker: "only the instance ... receiving the request will
+// update the state ... not the overall cluster" (github.com/resilience4j/resilience4j
+// issue #1756, "Managing Circuit Breaker State across multiple instances in a Cluster").
+// If/when Hermes's real topology is confirmed (WO-13/WO-18 founder-ask), and it turns out
+// to be multi-instance, this state needs to move to a shared store (e.g. Redis) — a
+// deployment decision, not a change to the pure functions below.
+//
 // Draws on three real, named reliability patterns (see FREIGHT-OS-CANON.md's WO-18
 // entry for citations):
 //   1. Circuit breaker (Michael Nygard, "Release It!", 2007) — stop hammering a
@@ -20,6 +32,14 @@
 //      cause fix: the screenshot shows the bot re-attempting (and re-failing, and
 //      re-announcing) the LLM call on every single incoming update with no memory of
 //      the prior failures — exactly what a circuit breaker exists to prevent.
+//      NOTE (added on review, same session): a time-only HALF_OPEN check (`canProbe`)
+//      is exactly the shape of a real, documented bug class — resilience4j issue #1432,
+//      "CircuitBreaker permits more calls then expected when switching from OPEN to
+//      HALF_OPEN state" (github.com/resilience4j/resilience4j/issues/1432) — where
+//      concurrent callers can all see the cooldown as elapsed and all probe the
+//      still-fragile dependency at once. `beginProbe` below is the check-and-claim fix
+//      (resilience4j's own answer is `permittedNumberOfCallsInHalfOpenState`, a counted
+//      admission gate; this is the pure-function equivalent for a single allowed probe).
 //   2. Exponential backoff with full jitter (AWS Builders' Library, "Exponential
 //      Backoff And Jitter"; mirrored by the Anthropic and OpenAI SDKs' own default
 //      retry behavior — max_retries=2, backoff computed with jitter, honoring a
@@ -31,6 +51,15 @@
 //      implements in supertito/src/alerts.mjs ([P6-W2-01]). Reused directly below:
 //      dedupeAlerts is imported unmodified and applied to a batch of fallback-firing
 //      events for the periodic "N repeats folded" digest.
+//   4. Inbound update-id deduplication (added on research review, same session) — a real,
+//      independently-documented instance of this exact bug class: "Telegram: Duplicate
+//      message storm during LLM API outages (missing message_id deduplication)",
+//      github.com/openclaw/openclaw issue #58611. That report root-causes the storm to
+//      the bot not deduplicating *inbound* Telegram updates by their stable update_id
+//      when the gateway is slow to ack, so Telegram redelivers the same update and the
+//      bot reprocesses it as new each time — a distinct, complementary cause from the
+//      outbound-message symptom the founder's screenshot shows. shouldProcessUpdate
+//      below is that fix, same TTL-cache shape as shouldEmitFallback.
 
 import { dedupeAlerts } from './alerts.mjs';
 
@@ -120,6 +149,13 @@ export function updateCircuit(state, outcome, nowMs, opts = {}) {
  * when status is already 'closed'); otherwise skip the call and go straight to the
  * gated fallback via shouldEmitFallback.
  *
+ * NOTE: read-only. Under concurrent callers (two chats' webhook handlers both racing
+ * the event loop around the same cooldown boundary) two calls can both observe `true`
+ * before either has persisted a state update, and both dispatch a probe call to the
+ * already-fragile dependency — see beginProbe below for the check-and-claim function
+ * that actually prevents that. Kept only for the still-valid read-only question "is a
+ * probe theoretically due", and for the tests already pinned to it.
+ *
  * @param {{status: string, openedAtMs: number|null}} state
  * @param {number} nowMs
  * @param {number} [cooldownMs]
@@ -130,18 +166,98 @@ export function canProbe(state, nowMs, cooldownMs = CIRCUIT_COOLDOWN_MS_DEFAULT)
 }
 
 /**
+ * Check-and-claim probe admission (fixes a real, documented circuit-breaker bug class:
+ * resilience4j issue #1432, "CircuitBreaker permits more calls then expected when
+ * switching from OPEN to HALF_OPEN state" — github.com/resilience4j/resilience4j/issues/1432;
+ * resilience4j's own fix for this exact race is `permittedNumberOfCallsInHalfOpenState`,
+ * a counted admission gate rather than a stateless time check). `canProbe` above is a
+ * pure read with no memory of a probe already being in flight, so two callers that both
+ * observe `canProbe() === true` before either persists a state update will both dispatch
+ * a probe call to the still-fragile dependency — the opposite of what a circuit breaker
+ * is for. `beginProbe` closes that gap the same way resilience4j does: transitioning to
+ * 'half_open' *is* the claim, done in the same synchronous call that answers the
+ * question, so the caller can persist the returned state before awaiting the LLM call
+ * and a second concurrent caller (JS is single-threaded per tick, but the LLM call
+ * itself is always awaited, and another chat's handler can run in the gap) sees
+ * `status: 'half_open'` already claimed and gets `allowed: false`.
+ *
+ * Contract: call this instead of `canProbe`, persist `nextState` synchronously (before
+ * any `await`), and only actually invoke the LLM when `allowed` is true.
+ *
+ * @param {{status: string, consecutiveFailures: number, openedAtMs: number|null}} state
+ * @param {number} nowMs
+ * @param {number} [cooldownMs]
+ * @returns {{allowed: boolean, nextState: object}}
+ */
+export function beginProbe(state, nowMs, cooldownMs = CIRCUIT_COOLDOWN_MS_DEFAULT) {
+  if (state.status === 'closed') return { allowed: true, nextState: state };
+  if (state.status === 'half_open') return { allowed: false, nextState: state }; // already claimed
+  // status === 'open'
+  if (state.openedAtMs === null || nowMs - state.openedAtMs <= cooldownMs) {
+    return { allowed: false, nextState: state }; // cooldown not elapsed yet
+  }
+  return {
+    allowed: true,
+    nextState: { status: 'half_open', consecutiveFailures: state.consecutiveFailures, openedAtMs: state.openedAtMs },
+  };
+}
+
+/**
  * Exponential backoff with full jitter (AWS Builders' Library formula:
  * sleep = random_between(0, min(cap, base * 2^attempt))) for spacing out retries of
  * the conversational-layer call itself, so a burst of incoming messages during an
  * outage doesn't turn into a burst of simultaneous retries.
  *
+ * If the failed call was a 429 that carried a `retry-after` header, honor it exactly
+ * instead of the jittered guess — this is what Anthropic's own API errors reference
+ * documents as the official SDKs' behavior ("automatically retry transient failures
+ * ... with exponential backoff, twice by default, honoring the retry-after header when
+ * present" — platform.claude.com/docs/en/api/errors). The server told us precisely how
+ * long to wait; a random jittered guess would be worse information, not better.
+ *
  * @param {number} attempt - 0-indexed retry attempt number
- * @param {{ baseMs?: number, capMs?: number, randomFn?: () => number }} [opts]
+ * @param {{ baseMs?: number, capMs?: number, randomFn?: () => number, retryAfterMs?: number }} [opts]
  */
 export function nextBackoffDelayMs(attempt, opts = {}) {
+  if (typeof opts.retryAfterMs === 'number' && opts.retryAfterMs >= 0) return opts.retryAfterMs;
   const baseMs = opts.baseMs ?? BACKOFF_BASE_MS_DEFAULT;
   const capMs = opts.capMs ?? BACKOFF_CAP_MS_DEFAULT;
   const randomFn = opts.randomFn ?? Math.random;
   const upperBound = Math.min(capMs, baseMs * 2 ** attempt);
   return Math.floor(randomFn() * upperBound);
+}
+
+const INBOUND_DEDUP_TTL_MS_DEFAULT = 5 * 60 * 1000; // 5 min: same window rationale as
+  // FALLBACK_DEDUP_WINDOW_MS_DEFAULT above.
+
+/**
+ * Inbound Telegram update dedup (complementary fix, added on research review — WO-18).
+ *
+ * The outbound gate above (shouldEmitFallback) stops the *symptom* the founder's
+ * screenshot shows: the bot re-announcing the same fallback text on every retry. It does
+ * NOT stop the *cause* one webhook-delivery pattern can produce: if the gateway process
+ * doesn't ack a Telegram update with 200 OK before the (slow/failing) LLM call finishes,
+ * Telegram redelivers the identical update — same `update_id` — repeatedly. Each
+ * redelivery is otherwise indistinguishable from a genuinely new message, so the
+ * conversational layer re-attempts the same doomed LLM call once per redelivery: wasted
+ * spend/latency even though the outbound gate now hides the visible spam. This is a
+ * real, documented instance of exactly this failure mode, independent of this codebase:
+ * "Telegram: Duplicate message storm during LLM API outages (missing message_id
+ * deduplication)" — github.com/openclaw/openclaw issue #58611 — root-caused there to the
+ * bot not deduplicating inbound updates by their stable Telegram-assigned id, with the
+ * fix being a short-lived (~5 min) seen-id cache. `sawUpdate` below is that cache as a
+ * pure function: caller owns the Set/Map of `{updateId: lastSeenAtMs}`, this function
+ * only decides membership + expiry, exactly like `shouldEmitFallback`'s ownership split.
+ *
+ * @param {Map<string|number, number>} seenUpdateIds - updateId -> last-seen ms, caller-owned
+ * @param {string|number} updateId - the Telegram update_id on the incoming webhook call
+ * @param {number} nowMs
+ * @param {number} [ttlMs]
+ * @returns {boolean} true if this update should be processed (not a seen-before redelivery)
+ */
+export function shouldProcessUpdate(seenUpdateIds, updateId, nowMs, ttlMs = INBOUND_DEDUP_TTL_MS_DEFAULT) {
+  const lastSeenAtMs = seenUpdateIds.get(updateId);
+  if (lastSeenAtMs !== undefined && nowMs - lastSeenAtMs <= ttlMs) return false; // redelivery, skip
+  seenUpdateIds.set(updateId, nowMs); // caller is responsible for evicting entries older than ttlMs
+  return true;
 }
