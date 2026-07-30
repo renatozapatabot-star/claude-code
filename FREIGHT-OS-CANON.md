@@ -1,10 +1,22 @@
-# FREIGHT (OS) — THE CANON · v2.4 · 2026-07-19
+# FREIGHT (OS) — THE STRATEGIC OVERLAY · v3.0 · 2026-07-19
 
-<!-- CANON-META version=2.4 status=proposed-awaiting-ratification-WO-02 supersedes=FREIGHTCOMPLETE100PLAN20260719.pdf(v1.4) -->
+<!-- CANON-META version=3.0 status=proposed-overlay-defers-to-control-plane supersedes=FREIGHTCOMPLETE100PLAN20260719.pdf(v1.4) authority=freightos-control-plane/canon/HANDOFF-MASTER.md -->
 
-**Canonical law of the FREIGHT ecosystem** — FREIGHT (OS) · CRUZ · SuperTito · Adjunto · the data layer.
-This document supersedes the Kimi Masterplan v1.4 (2026-07-19) entirely; v1.4 remains binding history
-(its laws, findings, and work orders are re-grounded here, never deleted — add-only lineage).
+> **v3.0 is a ground-truth correction.** A 6-agent sweep of the real `freightos-control-plane` (69
+> findings) showed the earlier drafts inherited the v1.4 PDF's fictions. Corrected here: the estate is
+> a **boundary-preserving federation** (not one umbrella); **Adjunto is the sole public brand**, FREIGHT
+> is the **private** freight-brokerage OS (goal = **Money Employment**), **CRUZ is EVCO-only**; the four
+> scores are **never combined**; the real proactive surface is **Clawdia** (Telegram is founder-directed
+> future); the real authority is **`HANDOFF-MASTER.md`**, to which this overlay **defers**.
+
+**Strategic ecosystem overlay** for the founder's estate — FREIGHT · Adjunto · CRUZ · Clawdia · the
+Throne · the second brain. **Authority note (corrected 2026-07-19 against the real control plane):**
+the canonical *operational* authority is `freightos-control-plane`'s `canon/HANDOFF-MASTER.md` +
+`docs/plans/FREIGHT-OS-10-10-FOUNDER-OVERRIDE-PLAN.md`, canonical only by registry exact-path + remote
+`main` + byte-identical materialization receipt — *never by proximity or frontmatter*. **This document
+does not self-declare authority over the ecosystem**; it is the strategy/growth/design/cross-pillar
+overlay that **defers to** that kernel on everything the kernel governs (§0.2a). It supersedes the Kimi
+Masterplan v1.4 as *planning*; v1.4 remains history (add-only lineage).
 This is a plan **and** a law. **Falsifiability scope:** every item names an acceptance command;
 structural and spec items are machine-gated by `npm run canon` (`scripts/canon-check.mjs`, which reads
 the spec files' content, not just their existence); items whose terminal evidence needs the founder or
@@ -47,15 +59,20 @@ act and log it (§5.4), don't wait.
 
 ### §0.2a Reconciliation with the control-plane canon
 
-The real repo `freightos-control-plane` already carries an **execution canon** (`canon/` +
-`check-canon.mjs` + `install-canon.mjs` + `verify:plan --require-remote` + admission manifests +
-kernel + b2-restore + heartbeat). **This document is the *strategic ecosystem canon*; that repo's
-`canon/` is the *execution kernel*.** Division of authority: this canon governs *what the ecosystem is,
-which pillars exist, and why* (strategy, scope, the founder laws); the control-plane `canon/` governs
-*how execution is admitted, evidenced, and verified* (receipts, kernel, backups, heartbeat). On any
-execution-law conflict, the control-plane canon wins for execution and this document is amended to cite
-it ([WO-07] admits it; the [P1] items run its real `npm` checks as their acceptance). Neither
-overrides the founder (§0.1).
+The real repo `freightos-control-plane` carries the **canonical operational authority**: a document is
+canon **only** when registered in `canon/registry.json` by exact path, its provenance commit is
+contained by advertised remote `refs/heads/main`, source and target are byte-identical, and a
+materialization receipt binds them — *"never by frontmatter or directory proximity alone."* The active
+router is `canon/HANDOFF-MASTER.md`; the execution plan of record is
+`docs/plans/FREIGHT-OS-10-10-FOUNDER-OVERRIDE-PLAN.md`.
+
+**Therefore this document has zero canonical standing under that rule — and does not claim any.** It is
+the **strategic/growth/design overlay**: it plans the cross-pillar strategy, growth, and design the
+kernel does not touch, and **defers to the kernel** (HANDOFF-MASTER + the founder-override plan) on
+everything the kernel governs — entity boundaries, scoring, admission, evidence, waves. On any conflict
+the kernel wins and this doc is amended to cite it. Only the founder (§0.1) outranks the kernel. To
+*become* canon, this overlay's durable parts must be admitted into the control plane by its own
+registry+receipt process ([WO-07]).
 
 ### §0.2 Amendment + conflict law
 
@@ -69,51 +86,49 @@ overrides the founder (§0.1).
   `DESIGN.md` / `scripts/cruz-loop.md` (the live design-law of the CRUZ pillar, incorporated by
   reference). Any conflict discovered is a defect, logged in §5.4 in the same commit that resolves it.
 
-### §0.3 Scope — FREIGHT is the ecosystem; everything lives inside it
+### §0.3 Scope — a boundary-preserving federation (NOT one umbrella)
 
-**Ground-truth entity model** (corrected 2026-07-19 from the real `freightos-control-plane` repo —
-`README.md`: *"Adjunto is the sole public company, brand, and product. F.R.E.I.G.H.T. is the private
-logistics execution OS whose physical operating body is the Throne Mac Studio."*):
+**Ground-truth entity model** (corrected 2026-07-19 from the real `freightos-control-plane`
+`README.md` / `AGENTS.md` / `canon/HANDOFF-MASTER.md`). The estate is a **federation of
+boundary-separate entities** — *"no shared raw data store or authority join between Adjunto, CRUZ/EVCO,
+FREIGHT, Clawdia."* There is **no single umbrella product and no combined score.**
 
-- **F.R.E.I.G.H.T.** = the **private** logistics **execution OS** (internal; not a public brand). Its
-  control plane is the real repo `renatozapatabot-star/freightos-control-plane` (which carries its own
-  `canon/`, kernel, admission manifests, evidence + backup contracts — the execution kernel this
-  strategic canon sits above; reconciliation in §0.2a).
-- **Adjunto** = the **sole public company, brand, and product** (`adjunto-integration-launch`) — the
-  public face and the lead-gen tip of the spear.
-- **The Throne Mac Studio** = FREIGHT's **physical operating body** — the runtime host (repo
-  `throne-stack`; [WO-13]).
-- **CRUZ** = the client-facing portal (`evco-portal` → portal.renatozapata.com; this repo is its
-  design source).
-- **The second brain** = `aguila-brain` (águila = eagle) — the founder's knowledge base, brought under
-  FREIGHT ([WO-14]).
+- **F.R.E.I.G.H.T.** = the **private, internal freight-brokerage execution OS** — *prepare-only*: it
+  researches, ranks, prepares, reconciles, monitors, recovers, and learns so the next **authorized**
+  action is ready; the human owns every irreversible/signed/licensed act, send, bill, and money move.
+  Its real goal is **"Money Employment"** (verified cold calls → booked-and-covered Norfleet loads →
+  bank-settled cash). It is **not** a public brand. Control plane: `freightos-control-plane`
+  (its own canon/kernel/admission/evidence — the execution kernel, §0.2a).
+- **Adjunto** = the **SOLE public company, brand, and product** (`adjunto-integration-launch`) — a
+  top-level entity **boundary-separate from FREIGHT**, with its **own mint/navy Seal-Tile design canon**
+  (it does **not** inherit CRUZ's white+red) and its own $0/$4.99/$9.99 contract. The only public
+  lead-gen surface.
+- **CRUZ** = the **EVCO portal ONLY** (`evco-portal` → portal.renatozapata.com; customs-clearance for
+  EVCO; a licensed human owns the final customs act). **Hard isolation law:** no CRUZ doctrine, data,
+  score, roadmap, or brand premise may cross into Adjunto or FREIGHT by proximity. CRUZ's white+red
+  canon governs **CRUZ only**. Public expansion is founder-gated/deferred. This repo is CRUZ's design source.
+- **Clawdia** = FREIGHT's real **proactive/briefing presence** (`clawdia-presence`; `freight_brief.py`,
+  `freight_proactive.py`) — the actual on-the-fly surface today. **@supertitobot / Telegram is the
+  founder's *directed future* rail** (his instruction — binding, §0.1), **aspirational, not yet built**,
+  to be grounded on the Clawdia pattern (P2). No Telegram exists in the real system yet — stated honestly.
+- **The Throne Mac Studio** = FREIGHT's **physical operating body** (`throne-stack`): release-pinned,
+  PM2 `freight-throne` on loopback + private Tailnet Serve, **public Funnel OFF**, `operating_state=
+  not_ready` (signed authority absent → telephony withheld). [WO-13].
+- **The second brain** = `aguila-brain` — the founder's knowledge base ([WO-14], P8).
+- **The Deck** = the founder's north-star operator surface: **Monitor 1 + Monitor 2 + phone** (P6).
 
-FREIGHT is the umbrella under which everything the founder operates runs, is designed, and is
-monitored. Inside it live:
+**Design mandate:** each entity is *beautifully and badassly designed* **in its own canon** — CRUZ in
+white+red (`DESIGN.md`), Adjunto in mint/navy Seal-Tile. Coherent **within** an entity; **isolated
+across** entities. Never one blended product.
 
-- **The businesses being sold:** Renato Zapata & Co (customs brokerage), Norfleet Logistics, and the
-  other services — the revenue everything else exists to run and sell.
-- **@supertitobot (SuperTito)** — the Telegram update rail (family/ops/clients). **POR ACTIVAR** —
-  token pending [WO-03]; the harness is SIM-HERE (P2). (`@cruz_rz_bot` is the CRUZ product alert leg;
-  the Deck unifies both — P6.)
-- **CRUZ** — the client-facing cross-border OS. Target deployment host **portal.renatozapata.com**
-  (deploy status **POR ACTIVAR** — not verifiable from this repo). This repo is CRUZ's design/build source.
-- **Adjunto** — the document/billing product.
-- **The Deck** — the north-star surface: **Monitor 1 + Monitor 2 + the founder's phone**, at the
-  highest possible level so nothing is ever a surprise (P6; spec `design/reference/THE-DECK.md`).
-- **The data layer** — the Supabase system of record the skills read and write.
-- **The growth engine** — Adjunto + CRUZ as *free lead-gen* (websites, emails, LinkedIn network) for
-  the FREIGHT services (P7; spec `FREIGHT-GROWTH.md`).
+**Never-combine law (from the real `AGENTS.md`):** Adjunto, FREIGHT, PLAIOS, and Money-Employment are
+**four independent measurement systems**; their scores are **never combined, averaged, or inferred from
+one another** (§4). A merged ecosystem score is a forbidden claim.
 
-**Design mandate:** everything under FREIGHT is held to one bar — *beautifully and badassly designed,
-coherent as one product*, in the white+red CRUZ canon (`DESIGN.md`).
-
-**Access reality (honesty law §0.4-7):** the founder has granted full access to bring everything under
-FREIGHT. This canon is authored from a sandboxed session whose *current verified reach* is: this repo,
-the Gmail/Calendar/GitHub MCPs, the skills runtime, Routines, and Artifacts. The live Supabase DB,
-Telegram bots, WhatsApp, and repos/hosts beyond that reach are **POR ACTIVAR** — admitted through the
-work orders in §2.1 (each with a Prep-now that starts now). The grant is the *authorization*; the WOs
-are the *mechanism*. Casa Zapata (personal) remains out of scope.
+**Access reality (§0.4-7):** the founder granted full access. Current verified reach: this repo + the
+now-admitted real repos (`freightos-control-plane` cloned, `evco-portal`, `aguila-brain`) + Gmail/
+Calendar/GitHub MCPs + skills + Routines + Artifacts. Remaining repos/hosts/DB are admitted via §2.1
+WOs. Casa Zapata (personal) is out of scope.
 
 ### §0.4 The inherited honesty laws (v1.4 H1–H10, kept in force)
 
@@ -134,6 +149,13 @@ are the *mechanism*. Casa Zapata (personal) remains out of scope.
 9. **Fresh evidence.** A claim about live state cites a run at the current HEAD; stale evidence is
    re-run by machine, never hand-patched.
 10. **Overrides are auditable.** Founder overrides and manual interventions are logged (§5.4), in place.
+11. **Provenance evidence chain** (from the real control plane): a measured score cites its immutable
+    rubric+scorecard commit, hashes, proof artifacts, and exact reproduction command — else it is stored
+    *unverified, no numeric numerator*.
+12. **No self-evidencing / no circular provenance.** A document cannot serve as its own evidence; canon
+    Markdown does not embed its own commit/hash.
+13. **Green CI ≠ authority.** Private CI passing is never merge/durability/canonical authority (only the
+    registry + remote-main + byte-identical receipt is — §0.2a).
 
 ---
 
@@ -214,9 +236,46 @@ The v1.4 "twin repos" were not fiction — they are the founder's **real** priva
 | `throne-stack` | The **Throne Mac Studio** runtime host | named ([WO-13]) |
 | `clawdia-presence` · `beatvig` · `ayudasolares` | Adjacent services under FREIGHT | inventoried ([WO-07]) |
 
-This de-defers the plan hard: the pillars now port against **real code**, not a twin. The [P1..P4]
-batteries run the control plane's own `npm` checks (`npm test`, `check:canon`, `verify:plan`,
-`check:kernel`, `check:b2-restore`, `check:heartbeat`).
+This de-defers the plan hard: the pillars port against **real code**, not a twin.
+
+### §1.6 Control-plane ground truth (what the real FREIGHT execution OS actually is)
+
+Extracted from `freightos-control-plane` (workflow `wf_6c83a7eb-f63`, 69 findings). The overlay defers
+to these:
+
+- **The goal — "Money Employment":** a freight-brokerage autonomy loop (kernel CLI `freight_execution.py`:
+  `start-attempt · disposition · reconcile-export · money-employment · practice · coaching`). 100 =
+  a `signed_authority.v2` receipt + 20 verified calls in shift 1 + 40/weekday avg + 200 unique verified
+  calls in 14 days + one booked-and-covered load + one linked positive **Norfleet settlement deposit**
+  + `operating_state=real_cash`. Today: **0 verified calls, 0 cash.** Real automation schemas:
+  `freight_load/rate/quote/proposal/carrier_score/dispatch_draft/guided_call/call_notes/cadence/
+  tai_autofill/tai_entry/doc_fields/email_intake/memory_fact/adjunto_leads`. (The customs skills —
+  mve/oca/pedimento/usmca/evco-audit — are **CRUZ/EVCO-only**, a *separate* business, not FREIGHT's.)
+- **The two-agent model:** **Claude Code = planner / judge / canon-keeper; Grok (grok-4.5) = executor**
+  of sealed handoff packets (one per session, SHA-pinned, isolated worktree) + adversarial
+  CONFIRMED/PLAUSIBLE second opinions. A **heartbeat** contract (`status:grok`, `check:heartbeat`,
+  ≤20 min, fail-closed `HEARTBEAT_STALE/MISSING`) governs liveness; directives are never dropped
+  (`blocked_on` instead).
+- **The real recurring engine — Wave-0 custody/truth loop** (`everyday-wave0-cycle.mjs`): custody →
+  durability → verification, driven by Grok sealed packets + heartbeat, over a **9-wave roadmap W0–W8**
+  (W0 custody/truth · W1 first value circuits · W2 first collected cash · W3 durability · W4 Adjunto
+  free-value · W5 complete private operator product · W6 corridor moat · W7 prepared-action agents ·
+  W8 gated integrations). RoadmapItemV1 durability tiers: `volatile | local_commit | remote_commit`.
+  (This is the real loop — distinct from the CRUZ 06:01 *design* loop, which is a CRUZ-only thing.)
+- **PLAIOS** — a major subsystem: snapshot 10/10 but `claimed_100=false` pending an independent
+  **elapsed-time** release receipt (12h soak + two post-cold boards 20h apart; time never simulated).
+- **Admission is one-way + fail-closed:** two mandatory stages, **no writes until the founder
+  physically approves** (`admission:dry-run` stdout-only → `admission:tranche-t1` review-only). Deny
+  model bars runtime/customer/OAuth/bank/quotes/exports/agreements segments + `.db/.log/.key/.pem`
+  etc. Committed content is gated by `staged-allowlist.json` (`check:staged` pre-commit,
+  `check:range -- <BASE>` whole-diff + binary reject) with **secret-scanning** (GitHub tokens, PEM,
+  Stripe live, `sb_secret_`, service_role JWTs).
+- **State + backups:** private state root outside the repo (dirs 0700, files 0600; `events.db`,
+  `privacy.db`; `state:init/check`); backup-promotion matrix + `check:b2-restore` (B2 offsite) +
+  recovery-set — the real custody obligations v1.4 only simulated.
+- **CI acceptance suite** (macOS-15, Node 22, Python 3.14, SQLite ≥3.51.3): `npm ci --ignore-scripts` →
+  `npm test` → `run-tests-receipt` → `verify-freight-os-10-10-plan` → `check:plan --require-local-commit`
+  → `pytest kernel/source/tests` → `check:range -- $BASE` → `git diff --check`.
 
 ## §2 — THE DE-DEFERRAL LAW (the founder's mandate, made law)
 
@@ -329,7 +388,12 @@ otherwise**. Item grammar: `[P<pillar>-W<wave>-<nn>]`.
 
 ### Pillar P1 — FREIGHT (OS): the operations core
 
-Spec: `FREIGHT-OS-PIPELINE.md` (authored this session). Skills = organs, Supabase = spine.
+**Corrected premise (§1.6):** FREIGHT's real core is the **Money-Employment freight-brokerage loop**
+(call → quote → dispatch → TAI → reconcile → Norfleet cash), owned by the control-plane kernel;
+this overlay's job is the *strategy/prep* layer around it. **`FREIGHT-OS-PIPELINE.md` documents the
+separate EVCO/CRUZ customs-clearance pipeline** (mve/oca/pedimento/usmca/evco-audit) — an EVCO-only
+business, isolated from FREIGHT by the §0.3 boundary law — retained here as the CRUZ/EVCO operational
+map, not as FREIGHT's core. The items below serve that EVCO/CRUZ pipeline + the FREIGHT prep layer.
 
 - **[P1-W1-01]** `EXEC-NOW` — **Ops pipeline map (DONE this session).** `FREIGHT-OS-PIPELINE.md`: the 8
   stages (intake→invoice) each naming skill + trigger + Supabase table, plus the USMCA-cert /
@@ -361,10 +425,15 @@ Spec: `FREIGHT-OS-PIPELINE.md` (authored this session). Skills = organs, Supabas
   traced intake→archive. — **Acceptance:** the DEMO run log committed now; the real run log on [WO-01]/
   [WO-07]. — **Evidence:** run logs.
 
-### Pillar P2 — SuperTito: the bot (harnesses built here under `supertito/`)
+### Pillar P2 — The proactive rail: Clawdia (real) + SuperTito/Telegram (founder-directed)
 
-v1.4's ST-1..ST-10 + RES-01/03/04/07/08/10/11 re-grounded to buildable harnesses. **`depends:` note —
-P2-W2 items build one shared package and are sequential (each owns a scoped test dir), not parallel.**
+**Corrected (§1.6):** the real proactive/briefing surface today is **Clawdia** (`clawdia-presence`,
+`freight_brief.py`, `freight_proactive.py`) — **no Telegram / no @supertitobot exists in the real
+system yet.** The founder has *directed* a Telegram @supertitobot rail (binding, §0.1) — it is
+**aspirational**, to be built on the Clawdia pattern + the mock harness below, and is honestly labeled
+SIM/not-yet-real until [WO-03]. The `supertito/` harnesses re-ground v1.4's ST-1..ST-10 +
+RES-01/03/04/07/08/10/11 so the real rail (whichever channel) is a thin swap. **`depends:` — P2-W2
+items build one shared package sequentially (scoped test dirs), not parallel.**
 
 - **[P2-W2-01]** `SIM-HERE` — **Core + mock rail + admission.** `supertito/` package: `bot.mjs` facade,
   `mock-telegram.mjs` chaos server (outage/slow/500/409 — v1.4 ST-2), sender-registry allowlist
@@ -568,25 +637,28 @@ proceeds immediately.
 
 ---
 
-## §4 — SCORING LAW
+## §4 — SCORING LAW (four independent systems, NEVER combined)
 
-Two-term shape from v1.4 §C-1, re-denominated over reality:
+The real `AGENTS.md` forbids a merged score. There are **four independent measurement systems**, each
+with its own rubric, denominator, and honest state; **they are never combined, averaged, or inferred
+from one another.** Plus CRUZ, which by law carries **no numeric score** (v1.4 H3 — binary/EVCO-only).
 
-```
-CANON-100  ⇔  CH_SCORE = 100%  ∧  FS_SCORE = 100%  ∧  the run is logged (§5.4) and founder-countersigned
-CH_SCORE   =  certifiable-here items green / all EXEC-NOW(*) + SIM-HERE items   (denominator: §3)
-FS_SCORE   =  founder-side items signed   / all WO+PREP items + §2.1 WOs        (denominator: §2.1 + §3)
-```
+| System | Rubric / gate | Honest state (2026-07-19, quoted from the control plane) |
+|---|---|---|
+| **Adjunto** | its own 100-rubric | ~92.2 / 100 (its own measurement; never merged) |
+| **F.R.E.I.G.H.T. — Money Employment** | verified calls + booked Norfleet loads + bank-settled cash + signed_authority.v2 | **Not achieved** — verified calls = 0, verified cash = 0, `operating_state ≠ real_cash` |
+| **PLAIOS** | snapshot + elapsed-time release receipt | snapshot 10/10 but `claimed_100=false`, `release_qualified=false` (pending a 12h soak + post-cold boards, elapsed-time receipt — time never simulated) |
+| **This strategic overlay** (plan quality) | the §5 fixpoint rubric (PQ-1..5 + RT lenses) | proposed; 2 fixpoint rounds run (2/42/11 → 1/26/17); not yet fixpoint-clean |
+| **CRUZ** | binary, EVCO-only | no numeric score, by law |
 
-- **Denominator freeze:** the item set of this version; added only by amendment (add-only §0.2).
-  Merging/removing items to inflate a score is a BLOCKER (v1.4 RT-4).
-- **Reporting:** always two terms + audit state; a bare "100/100" is illegal output (§0.4-3).
-- **Honest headline today (2026-07-19, W0 + partial W1):**
-  `CERTIFIABLE-HERE: W0 adopted + 3 W1 spec docs authored and content-checked (canon green) ·
-  remaining EXEC-NOW/SIM-HERE items enumerated, not yet run · FOUNDER-SIDE: 0/13 WOs signed (all 13
-  carry a live Prep-now) · declaration: NOT DECLARED (earliest = 7 days after [WO-10]).`
-  That is what a *true* 100/100 **plan** looks like on day zero: nothing inflated, every next command
-  named, nothing idle on anyone.
+**Provenance law (from the real repo):** a measured score must cite its immutable rubric+scorecard
+commit, hashes, proof artifacts, and exact reproduction command — else it is stored **unverified with
+no numeric numerator**. **A document cannot serve as its own evidence** (no circular provenance).
+**Green private CI ≠ authority/durability.** No self-declared 100 at any level (§0.4-1).
+
+**Honest headline today:** *This overlay is a proposed strategic plan, not a score. Adjunto ~92.2
+(its own system); Money Employment 0/not-achieved; PLAIOS snapshot-green-but-not-release-qualified;
+plan quality converging (2 rounds). Nothing combined. Nothing declared.*
 
 ---
 
@@ -628,7 +700,8 @@ every registered path exists. Exit 0/1.
 | 2026-07-19 | **v2.3 fix wave** — BLOCKER resolved (loop armed → floor running, [WO-10] ratify/disarm); critical path = MAX(7-day floor, grant chains) incl. [WO-13] (§3.9); resource law made machine-true (utility bucket + canon-check skill-ownership pass; dataviz/cruz-build-intelligence/operator-intel/rate-quote-generator wired); 2 Adjunto specs authored + registered + content-checked (de-defers P3-W2); CANON-META status→proposed-awaiting-ratification; deck guard strengthened (skill+table+liveness per row). Remaining round-2 MINORs + narrower MAJORs catalogued for the next maintenance pass per the diminishing-returns clause (§5.2). | amended |
 | 2026-07-19 | **REAL ECOSYSTEM DISCOVERED** — `list_repos` revealed the founder's actual private repos (not twins): `freightos-control-plane` (the private execution OS, carries its own canon/kernel/evidence — *"Adjunto is the sole public company; F.R.E.I.G.H.T. is the private execution OS; physical body = the Throne Mac Studio"*), `adjunto-integration-launch`, `evco-portal` (CRUZ), `aguila-brain` (second brain), `throne-stack` (Throne host), + clawdia-presence/beatvig/ayudasolares. Core repos **admitted this session** (`add_repo`); control plane cloned to `/workspace`. | discovery |
 | 2026-07-19 | **v2.4** — entity model corrected to ground truth (§0.3); §0.2a reconciliation with the control-plane execution canon; §1.5 real-repo table; [WO-07] concretized to named real repos; [WO-13] = the Throne; **[WO-14] + Pillar P8 Second Brain** added (`aguila-brain`, `SECOND-BRAIN.md` authored + access matrix); founder absolute-override + "everything I say is binding" + bias-to-action laws encoded (§0.1/§0.1a) | amended |
-| 2026-07-19 | Estate discovery + wide + control-plane-truth sweeps (workflows `wf_cca5041f-a6b`, `wf_8d4549f8-77c`, `wf_6c83a7eb-f63`) running — deeper findings fold into the next amendment | in-progress |
+| 2026-07-19 | **Control-plane truth sweep** (6 Opus readers, workflow `wf_6c83a7eb-f63`, 69 findings: 22 corrections, 31 additions, 16 reconciles) — evidence in the workflow journal | not clean |
+| 2026-07-19 | **v3.0 GROUND-TRUTH CORRECTION** — the earlier drafts inherited v1.4 fictions; corrected against the real `freightos-control-plane`: (1) entity model → boundary-preserving federation; Adjunto = sole public brand (own mint/navy canon), FREIGHT = private freight-brokerage OS (goal = Money Employment), CRUZ = EVCO-only + hard no-import boundary; (2) §4 → four independent never-combined scores (Adjunto ~92.2 · Money-Employment 0/not-achieved · PLAIOS snapshot-only · plan-quality); deleted the forbidden merged CANON-100; (3) §0.2a → this overlay has zero canonical standing, defers to `HANDOFF-MASTER.md` + the founder-override plan; (4) P2 → Clawdia is the real proactive surface, @supertitobot is founder-directed/aspirational; (5) added §1.6 (Money Employment, Grok two-agent model, heartbeat, Wave0–W8, PLAIOS, admission/allowlist/secret-scan, state-root 0700/0600, B2 backups, CI suite); (6) added provenance honesty laws §0.4-11..13 | amended |
 
 ### §5.5 v1.4 → canon coverage map (nothing silently dropped)
 
