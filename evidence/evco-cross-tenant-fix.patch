@@ -1,3 +1,412 @@
+diff --git a/src/__tests__/data-integrity-v2.test.ts b/src/__tests__/data-integrity-v2.test.ts
+index 7892981..33976c6 100644
+--- a/src/__tests__/data-integrity-v2.test.ts
++++ b/src/__tests__/data-integrity-v2.test.ts
+@@ -5,6 +5,13 @@
+  * and (b) the EVCO tenant filter on every v2-relevant table. Returned
+  * rows MUST satisfy both bounds.
+  *
++ * SEV-1 fix (2026-07-30 · WO-16 / P4-W1-00): resolveTenantColumn/
++ * scopedQuery now REQUIRE a companyId (see src/lib/supabase/scoped-query.ts).
++ * This suite has no portal session to read (it drives the live DB directly,
++ * not through a route) — its own explicit scenario IS the EVCO tenant, so
++ * it passes the literal known slug 'evco' rather than inventing a session
++ * mechanism that doesn't exist for a standalone integration test.
++ *
+  * Skipped at run-time when SUPABASE env vars aren't set (CI without
+  * service role; local dev without .env.local). Otherwise runs against
+  * the live DB.
+@@ -23,6 +30,10 @@ import {
+ const HAS_ENV = !!process.env.NEXT_PUBLIC_SUPABASE_URL && (!!process.env.SUPABASE_SERVICE_ROLE_KEY || !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+ const maybe = HAS_ENV ? describe : describe.skip
+ 
++// This suite's own scenario IS the EVCO tenant — no session to read here,
++// so the tenant is this literal known slug, not an invented mechanism.
++const EVCO_COMPANY_ID = 'evco'
++
+ maybe('v2 scopedQuery — window + tenant integrity', () => {
+   let client: ReturnType<typeof getSupabaseServerClient>
+   beforeAll(() => { client = getSupabaseServerClient() })
+@@ -30,10 +41,10 @@ maybe('v2 scopedQuery — window + tenant integrity', () => {
+   for (const table of Object.keys(TABLE_DATE_COLUMN)) {
+     const dateCol = TABLE_DATE_COLUMN[table]
+     it(`scopedQuery on ${table} returns only rows in [${WINDOW_START}, ${WINDOW_END}) for the resolved tenant`, async () => {
+-      const tenant = await resolveTenantColumn(client, table)
++      const tenant = await resolveTenantColumn(client, table, EVCO_COMPANY_ID)
+       // It's OK for tenant to be null (table may genuinely not have data for EVCO);
+       // the assertion is that scopedQuery returns rows that WOULD pass the window check.
+-      const q = await scopedQuery(client, table, dateCol)
++      const q = await scopedQuery(client, table, dateCol, EVCO_COMPANY_ID)
+       const { data, error } = await q.builder.limit(5)
+       // Allow soft-fail on tables that don't exist yet (newly authored migrations).
+       if (error && /relation .* does not exist|undefined column/i.test(error.message)) {
+diff --git a/src/app/api/agent/ask/route.ts b/src/app/api/agent/ask/route.ts
+index 6f85c60..1c779f0 100644
+--- a/src/app/api/agent/ask/route.ts
++++ b/src/app/api/agent/ask/route.ts
+@@ -1,12 +1,25 @@
+ import { NextRequest, NextResponse } from 'next/server'
+-import { getSupabaseServerClient, scopedQuery, scopedQueryNoDate, TABLE_DATE_COLUMN, WINDOW_START, WINDOW_END } from '@/lib/supabase/scoped-query'
++import { cookies } from 'next/headers'
++import { verifySession } from '@/lib/session'
++import { resolveTenantScope } from '@/lib/api/tenant-scope'
++import { getSupabaseServerClient, scopedQuery, scopedQueryNoDate, resolveTenantColumn, TABLE_DATE_COLUMN, WINDOW_START, WINDOW_END } from '@/lib/supabase/scoped-query'
+ 
+ /**
+  * EVCO Portal v2 — AI agent endpoint.
+  *
+  * Wraps Anthropic Claude Sonnet 5 with three tools, all hardcoded to call
+- * scopedQuery (window 2024-01-01 → 2027-01-01 + EVCO tenant). The model
+- * cannot override either constraint — they're literal in the executor.
++ * scopedQuery (window 2024-01-01 → 2027-01-01 + the CALLING SESSION's own
++ * tenant, per `session.companyId` via `resolveTenantScope`). The model
++ * cannot override any of that — the executor resolves companyId itself,
++ * server-side, before ever building a tool schema or call.
++ *
++ * SEV-1 fix (2026-07-30 · WO-16 / P4-W1-00): previously `execTool` called
++ * `scopedQuery`/`scopedQueryNoDate`/`resolveTenantColumn` with no
++ * `companyId` at all, so the (then-hardcoded) EVCO candidate list applied
++ * to every session regardless of tenant. Now the route resolves
++ * `session.companyId` once per request (same `verifySession` +
++ * `resolveTenantScope` pattern used by the other v2 API routes) and
++ * threads it through every query call.
+  *
+  * System prompt is bilingual; cites table names; refuses to invent numbers.
+  *
+@@ -77,7 +90,7 @@ interface ToolResult {
+   content: string
+ }
+ 
+-async function execTool(call: ToolCall): Promise<{ content: string; rows?: number; table?: string }> {
++async function execTool(call: ToolCall, companyId: string): Promise<{ content: string; rows?: number; table?: string }> {
+   const sb = getSupabaseServerClient()
+   try {
+     if (call.name === 'count_rows') {
+@@ -86,8 +99,7 @@ async function execTool(call: ToolCall): Promise<{ content: string; rows?: numbe
+       // Resolve the tenant filter once; build the count query from scratch
+       // (count needs `.select(cols, {count:'exact', head:true})` which can't
+       // re-run on a builder where `.select('*')` was already called).
+-      const { resolveTenantColumn } = await import('@/lib/supabase/scoped-query')
+-      const tenant = await resolveTenantColumn(sb, t)
++      const tenant = await resolveTenantColumn(sb, t, companyId)
+       let cq = sb.from(t).select('*', { count: 'exact', head: true })
+       if (dateCol) cq = cq.gte(dateCol, WINDOW_START).lt(dateCol, WINDOW_END)
+       if (tenant) cq = cq.eq(tenant.column, tenant.value)
+@@ -100,7 +112,7 @@ async function execTool(call: ToolCall): Promise<{ content: string; rows?: numbe
+       const t: string = call.input.table
+       const dateCol: string = call.input.date_column || TABLE_DATE_COLUMN[t]
+       const limit = Math.min(50, Number(call.input.limit) || 25)
+-      const q = dateCol ? await scopedQuery(sb, t, dateCol) : await scopedQueryNoDate(sb, t)
++      const q = dateCol ? await scopedQuery(sb, t, dateCol, companyId) : await scopedQueryNoDate(sb, t, companyId)
+       const { data, error } = await q.builder.limit(limit)
+       if (error) return { content: `Error: ${error.message}`, table: t, rows: 0 }
+       const rows = (data as any[]) ?? []
+@@ -112,7 +124,7 @@ async function execTool(call: ToolCall): Promise<{ content: string; rows?: numbe
+     }
+     if (call.name === 'get_pedimento_detail') {
+       const numero: string = String(call.input.numero || '').trim()
+-      const q = await scopedQuery(sb, 'pedimentos', TABLE_DATE_COLUMN.pedimentos)
++      const q = await scopedQuery(sb, 'pedimentos', TABLE_DATE_COLUMN.pedimentos, companyId)
+       const { data, error } = await q.builder.eq('numero_pedimento', numero).limit(1)
+       if (error) return { content: `Error: ${error.message}`, table: 'pedimentos', rows: 0 }
+       if (!data || data.length === 0) return { content: `No se encontró pedimento "${numero}" en la ventana 2024–2026.`, table: 'pedimentos', rows: 0 }
+@@ -126,6 +138,16 @@ async function execTool(call: ToolCall): Promise<{ content: string; rows?: numbe
+ 
+ export async function POST(req: NextRequest) {
+   try {
++    const token = (await cookies()).get('portal_session')?.value ?? ''
++    const session = await verifySession(token)
++    if (!session) {
++      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
++    }
++    const companyId = resolveTenantScope(session, req)
++    if (!companyId) {
++      return NextResponse.json({ error: 'No tenant scope' }, { status: 400 })
++    }
++
+     const { question, tabContext } = await req.json()
+     if (!question || typeof question !== 'string') {
+       return NextResponse.json({ error: 'Falta el campo "question".' }, { status: 400 })
+@@ -187,7 +209,7 @@ ${Object.entries(TABLE_DATE_COLUMN).map(([t, d]) => `  - ${t} (fecha: ${d})`).jo
+       messages = [...messages, { role: 'assistant', content }]
+       const toolResults: ToolResult[] = []
+       for (const tu of toolUses) {
+-        const r = await execTool(tu)
++        const r = await execTool(tu, companyId)
+         if (r.table) sourcesAccum.push({ table: r.table, rows: r.rows ?? 0 })
+         toolResults.push({ type: 'tool_result', tool_use_id: tu.id, content: r.content })
+       }
+diff --git a/src/app/v2/anexo24/page.tsx b/src/app/v2/anexo24/page.tsx
+index 160d724..42fda14 100644
+--- a/src/app/v2/anexo24/page.tsx
++++ b/src/app/v2/anexo24/page.tsx
+@@ -1,5 +1,7 @@
++import { cookies } from 'next/headers'
+ import { PageWrap } from '@/components/almanac/PageWrap'
+ import { AgentDock } from '@/components/almanac/AgentDock'
++import { verifySession } from '@/lib/session'
+ import { getSupabaseServerClient, scopedQuery } from '@/lib/supabase/scoped-query'
+ import { formatPedimento } from '@/lib/format/pedimento'
+ import { formatFraccion } from '@/lib/format/fraccion'
+@@ -7,6 +9,18 @@ import { formatMoneyMXN, formatMoneyMXNCompact, formatNumberMX } from '@/lib/for
+ 
+ export const dynamic = 'force-dynamic'
+ 
++/**
++ * SEV-1 fix (2026-07-30 · WO-16 / P4-W1-00) — see src/app/v2/traficos/page.tsx
++ * for the full rationale. This page did not read the portal session before;
++ * it now derives companyId from `portal_session` and refuses to query
++ * without one.
++ */
++async function getCompanyId(): Promise<string> {
++  const token = (await cookies()).get('portal_session')?.value ?? ''
++  const session = await verifySession(token)
++  return session?.companyId ?? ''
++}
++
+ interface PartidaRow {
+   id?: number | string
+   pedimento?: string | null
+@@ -41,10 +55,11 @@ interface PedimentoBucket {
+   partidas: PartidaRow[]
+ }
+ 
+-async function fetchPartidas(): Promise<PartidaRow[]> {
++async function fetchPartidas(companyId: string): Promise<PartidaRow[]> {
++  if (!companyId) return []
+   try {
+     const sb = getSupabaseServerClient()
+-    const q = await scopedQuery(sb, 'anexo24_partidas', 'fecha_pago')
++    const q = await scopedQuery(sb, 'anexo24_partidas', 'fecha_pago', companyId)
+     const { data, error } = await q.builder
+       .order('fecha_pago', { ascending: false, nullsFirst: false })
+       .limit(6000)
+@@ -102,7 +117,8 @@ function fmtDateShort(s: string | null | undefined): string {
+ }
+ 
+ export default async function Anexo24Page() {
+-  const partidas = await fetchPartidas()
++  const companyId = await getCompanyId()
++  const partidas = await fetchPartidas(companyId)
+   const buckets = groupByPedimento(partidas)
+   const totalValorAduana = buckets.reduce((s, b) => s + b.valor_aduana_mxn, 0)
+   const totalValorDolar = buckets.reduce((s, b) => s + b.valor_dolar_total, 0)
+diff --git a/src/app/v2/entrada-bodegas/page.tsx b/src/app/v2/entrada-bodegas/page.tsx
+index 1ed7f9a..0885353 100644
+--- a/src/app/v2/entrada-bodegas/page.tsx
++++ b/src/app/v2/entrada-bodegas/page.tsx
+@@ -1,9 +1,23 @@
++import { cookies } from 'next/headers'
+ import { PageWrap } from '@/components/almanac/PageWrap'
+ import { AgentDock } from '@/components/almanac/AgentDock'
++import { verifySession } from '@/lib/session'
+ import { getSupabaseServerClient, scopedQuery, TABLE_DATE_COLUMN } from '@/lib/supabase/scoped-query'
+ 
+ export const dynamic = 'force-dynamic'
+ 
++/**
++ * SEV-1 fix (2026-07-30 · WO-16 / P4-W1-00) — see src/app/v2/traficos/page.tsx
++ * for the full rationale. This page did not read the portal session before;
++ * it now derives companyId from `portal_session` and refuses to query
++ * without one.
++ */
++async function getCompanyId(): Promise<string> {
++  const token = (await cookies()).get('portal_session')?.value ?? ''
++  const session = await verifySession(token)
++  return session?.companyId ?? ''
++}
++
+ interface EntradaRow {
+   id?: number | string
+   cve_entrada?: string | null
+@@ -18,10 +32,11 @@ interface EntradaRow {
+   recibio_packing_list?: boolean | null
+ }
+ 
+-async function fetchEntradas(): Promise<EntradaRow[]> {
++async function fetchEntradas(companyId: string): Promise<EntradaRow[]> {
++  if (!companyId) return []
+   try {
+     const sb = getSupabaseServerClient()
+-    const q = await scopedQuery(sb, 'entradas', TABLE_DATE_COLUMN.entradas)
++    const q = await scopedQuery(sb, 'entradas', TABLE_DATE_COLUMN.entradas, companyId)
+     const { data, error } = await q.builder.order(TABLE_DATE_COLUMN.entradas, { ascending: false }).limit(200)
+     if (error) {
+       console.warn('[v2/entrada-bodegas] supabase error:', error.message)
+@@ -42,7 +57,8 @@ function fmtDate(s: string | null | undefined) {
+ }
+ 
+ export default async function EntradaBodegasPage() {
+-  const rows = await fetchEntradas()
++  const companyId = await getCompanyId()
++  const rows = await fetchEntradas(companyId)
+   const today = new Date().toISOString().slice(0, 10)
+   const hoy = rows.filter(r => (r.fecha_llegada_mercancia || '').slice(0, 10) === today).length
+   const lede = rows.length === 0
+diff --git a/src/app/v2/mercancia-bodega/page.tsx b/src/app/v2/mercancia-bodega/page.tsx
+index eb5816f..f5cc42e 100644
+--- a/src/app/v2/mercancia-bodega/page.tsx
++++ b/src/app/v2/mercancia-bodega/page.tsx
+@@ -1,10 +1,24 @@
++import { cookies } from 'next/headers'
+ import { PageWrap } from '@/components/almanac/PageWrap'
+ import { AgentDock } from '@/components/almanac/AgentDock'
++import { verifySession } from '@/lib/session'
+ import { getSupabaseServerClient, scopedQuery, TABLE_DATE_COLUMN } from '@/lib/supabase/scoped-query'
+ import { formatNumberMX } from '@/lib/format/money'
+ 
+ export const dynamic = 'force-dynamic'
+ 
++/**
++ * SEV-1 fix (2026-07-30 · WO-16 / P4-W1-00) — see src/app/v2/traficos/page.tsx
++ * for the full rationale. This page did not read the portal session before;
++ * it now derives companyId from `portal_session` and refuses to query
++ * without one.
++ */
++async function getCompanyId(): Promise<string> {
++  const token = (await cookies()).get('portal_session')?.value ?? ''
++  const session = await verifySession(token)
++  return session?.companyId ?? ''
++}
++
+ interface MercanciaRow {
+   id?: string
+   entrada_bodega_id?: string | null
+@@ -20,10 +34,11 @@ interface MercanciaRow {
+   talon_guia?: string | null
+ }
+ 
+-async function fetchMercancia(): Promise<MercanciaRow[]> {
++async function fetchMercancia(companyId: string): Promise<MercanciaRow[]> {
++  if (!companyId) return []
+   try {
+     const sb = getSupabaseServerClient()
+-    const q = await scopedQuery(sb, 'mercancia_bodega', TABLE_DATE_COLUMN.mercancia_bodega)
++    const q = await scopedQuery(sb, 'mercancia_bodega', TABLE_DATE_COLUMN.mercancia_bodega, companyId)
+     const { data, error } = await q.builder
+       .order('fecha_llegada', { ascending: false, nullsFirst: false })
+       .limit(500)
+@@ -54,7 +69,8 @@ function daysSince(s: string | null | undefined): number | null {
+ }
+ 
+ export default async function MercanciaBodegaPage() {
+-  const rows = await fetchMercancia()
++  const companyId = await getCompanyId()
++  const rows = await fetchMercancia(companyId)
+   const isEmpty = rows.length === 0
+ 
+   // Hero stats over the loaded inventory
+diff --git a/src/app/v2/pedimentos/page.tsx b/src/app/v2/pedimentos/page.tsx
+index 346cf96..d1983b1 100644
+--- a/src/app/v2/pedimentos/page.tsx
++++ b/src/app/v2/pedimentos/page.tsx
+@@ -1,11 +1,25 @@
++import { cookies } from 'next/headers'
+ import { PageWrap } from '@/components/almanac/PageWrap'
+ import { AgentDock } from '@/components/almanac/AgentDock'
++import { verifySession } from '@/lib/session'
+ import { getSupabaseServerClient, scopedQuery, TABLE_DATE_COLUMN } from '@/lib/supabase/scoped-query'
+ import { formatPedimento } from '@/lib/format/pedimento'
+ import { formatMoneyMXN, formatMoneyMXNCompact, formatNumberMX } from '@/lib/format/money'
+ 
+ export const dynamic = 'force-dynamic'
+ 
++/**
++ * SEV-1 fix (2026-07-30 · WO-16 / P4-W1-00) — see src/app/v2/traficos/page.tsx
++ * for the full rationale. This page did not read the portal session before;
++ * it now derives companyId from `portal_session` and refuses to query
++ * without one.
++ */
++async function getCompanyId(): Promise<string> {
++  const token = (await cookies()).get('portal_session')?.value ?? ''
++  const session = await verifySession(token)
++  return session?.companyId ?? ''
++}
++
+ interface PedimentoDetalleRow {
+   id?: number
+   trafico?: string | null
+@@ -30,10 +44,11 @@ interface PedimentoDetalleRow {
+   anexo24_pedimento_id?: string | null
+ }
+ 
+-async function fetchDetalle(): Promise<PedimentoDetalleRow[]> {
++async function fetchDetalle(companyId: string): Promise<PedimentoDetalleRow[]> {
++  if (!companyId) return []
+   try {
+     const sb = getSupabaseServerClient()
+-    const q = await scopedQuery(sb, 'pedimentos_detalle', TABLE_DATE_COLUMN.pedimentos_detalle)
++    const q = await scopedQuery(sb, 'pedimentos_detalle', TABLE_DATE_COLUMN.pedimentos_detalle, companyId)
+     const { data, error } = await q.builder
+       .order('fecha_pago', { ascending: false, nullsFirst: false })
+       .limit(300)
+@@ -62,7 +77,8 @@ function thisMonthCount(rows: PedimentoDetalleRow[]): number {
+ }
+ 
+ export default async function PedimentosPage() {
+-  const rows = await fetchDetalle()
++  const companyId = await getCompanyId()
++  const rows = await fetchDetalle(companyId)
+   const totalValor = rows.reduce((s, r) => s + (r.val_aduana_mn ?? 0), 0)
+   const totalDta = rows.reduce((s, r) => s + (r.dta ?? 0), 0)
+   const totalIgi = rows.reduce((s, r) => s + (r.igi ?? 0), 0)
+diff --git a/src/app/v2/traficos/page.tsx b/src/app/v2/traficos/page.tsx
+index e31f0c0..c4d6672 100644
+--- a/src/app/v2/traficos/page.tsx
++++ b/src/app/v2/traficos/page.tsx
+@@ -1,11 +1,28 @@
++import { cookies } from 'next/headers'
+ import { PageWrap } from '@/components/almanac/PageWrap'
+ import { AgentDock } from '@/components/almanac/AgentDock'
++import { verifySession } from '@/lib/session'
+ import { getSupabaseServerClient, scopedQuery, TABLE_DATE_COLUMN } from '@/lib/supabase/scoped-query'
+ import { formatPedimento } from '@/lib/format/pedimento'
+ import { formatMoneyMXN } from '@/lib/format/money'
+ 
+ export const dynamic = 'force-dynamic'
+ 
++/**
++ * SEV-1 fix (2026-07-30 · WO-16 / P4-W1-00): this page previously called
++ * `scopedQuery` with no `companyId` at all — it never read the portal
++ * session. Under the old hardcoded-EVCO_CANDIDATES sniffing that
++ * accidentally worked for EVCO; under any other tenant's session it would
++ * have returned EVCO's rows. Reads `portal_session` the same way the v2
++ * API routes do (`verifySession`, see src/lib/session.ts) and refuses to
++ * query at all when no valid tenant is present.
++ */
++async function getCompanyId(): Promise<string> {
++  const token = (await cookies()).get('portal_session')?.value ?? ''
++  const session = await verifySession(token)
++  return session?.companyId ?? ''
++}
++
+ interface TraficoRow {
+   id?: number
+   trafico?: string
+@@ -20,10 +37,11 @@ interface TraficoRow {
+   patente?: string | null
+ }
+ 
+-async function fetchTraficos(): Promise<TraficoRow[]> {
++async function fetchTraficos(companyId: string): Promise<TraficoRow[]> {
++  if (!companyId) return []
+   try {
+     const sb = getSupabaseServerClient()
+-    const q = await scopedQuery(sb, 'traficos', TABLE_DATE_COLUMN.traficos)
++    const q = await scopedQuery(sb, 'traficos', TABLE_DATE_COLUMN.traficos, companyId)
+     const { data, error } = await q.builder.order(TABLE_DATE_COLUMN.traficos, { ascending: false }).limit(200)
+     if (error) {
+       console.warn('[v2/traficos] supabase error:', error.message)
+@@ -49,7 +67,8 @@ function fmtMoney(n: number | null | undefined) {
+ }
+ 
+ export default async function TraficosPage() {
+-  const rows = await fetchTraficos()
++  const companyId = await getCompanyId()
++  const rows = await fetchTraficos(companyId)
+   const today = new Date().toISOString().slice(0, 10)
+   const cruzandoHoy = rows.filter(r => (r.fecha_cruce || '').slice(0, 10) === today).length
+   const lede = rows.length === 0
 diff --git a/src/lib/supabase/scoped-query.ts b/src/lib/supabase/scoped-query.ts
 index 990c15d..23ef9f1 100644
 --- a/src/lib/supabase/scoped-query.ts

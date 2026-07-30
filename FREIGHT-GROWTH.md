@@ -17,7 +17,7 @@ artifact-producing skill and a channel.
 | 2 | Quote | `rate-quote-generator` | PDF via Gmail draft | draft-only |
 | 3 | Cleared-doc proof | `usmca-certificate-generator` / CRUZ cleared-doc surface | portal.renatozapata.com | client-scoped |
 | 4 | Follow-up | `whisper-transcriber` → `client-communication-writer` | Gmail draft | draft-only |
-| 5 | Outreach | `client-communication-writer` + `deep-research` | Gmail draft (LinkedIn network) | draft-only, no spam |
+| 5 | Outreach | `client-communication-writer` + `WebSearch` | Gmail draft (LinkedIn network) | draft-only, no spam |
 | 6 | Onboard | `new-client-onboarding` | Spanish service-agreement draft | draft-only |
 
 ## §Proof — the shareable artifact (P7-W2-01)
@@ -34,7 +34,9 @@ an Artifact or PDF, ready for the founder to share. Template checklist:
 
 ## §Outreach — the LinkedIn/email kit (P7-W2-02, EXEC-NOW draft-only)
 
-`client-communication-writer` + Gmail drafts + `deep-research` produce personalized, founder-reviewed
-outreach drafts from the LinkedIn network. **Nothing sends without the founder's click.** [WO-09]
+`client-communication-writer` + Gmail drafts + `WebSearch` (a real built-in tool, not an installed
+skill — corrected v3.7 audit: `deep-research` does not exist in this account's enabled-skill list)
+produce personalized, founder-reviewed outreach drafts from the LinkedIn network. **Nothing sends
+without the founder's click.** [WO-09]
 (licensed-authority packet) gates only *consequential automated* sends — which §0.4-8 already keeps
 human — so the **drafts flow now**; the packet is not a blocker to staging them.

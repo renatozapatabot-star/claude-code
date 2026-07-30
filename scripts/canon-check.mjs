@@ -37,15 +37,19 @@ for (const { id } of blocks) {
 }
 
 // 4. Field law per class.
+const allIds = new Set(blocks.map(b => b.id));
 for (const { id, body } of blocks) {
   if (!body.includes('**Acceptance:**')) fail(`${id} missing Acceptance`);
   if (!body.includes('**Evidence:**')) fail(`${id} missing Evidence`);
   if (id.startsWith('WO-')) {
     if (!body.includes('**Founder:**')) fail(`${id} missing Founder action`);
     if (!body.includes('**Prep-now:**')) fail(`${id} missing Prep-now (§2)`);
-    // De-deferral: every WO's Prep-now must cite an executable §3 item home.
+    // De-deferral: every WO's Prep-now must cite an executable §3 item home that actually exists
+    // (shape-match alone isn't enough — v3.7 audit found this let a dangling/renamed id slip through).
     const prep = body.slice(body.indexOf('**Prep-now:**'));
-    if (!/\[(P\d-W\d-\d{2}[ab]?|W\d-\d{2})\]/.test(prep)) fail(`${id} Prep-now cites no [P#-W#-##] executable home (§2)`);
+    const prepIds = [...prep.matchAll(/\[(P\d-W\d-\d{2}[ab]?|W\d-\d{2})\]/g)].map(m => m[1]);
+    if (prepIds.length === 0) fail(`${id} Prep-now cites no [P#-W#-##] executable home (§2)`);
+    else if (!prepIds.some(pid => allIds.has(pid))) fail(`${id} Prep-now cites ${prepIds.join(',')} but none resolve to a real parsed item (§2)`);
   } else {
     if (!/`(EXEC-NOW\*?|SIM-HERE|WO\+PREP)`/.test(body)) fail(`${id} missing continuation state (§2)`);
     if (/`WO\+PREP`/.test(body) && !/\(\[WO-\d{2}\]/.test(body)) fail(`${id} WO+PREP without a named [WO-nn]`);
@@ -93,7 +97,7 @@ if (existsSync(deckPath)) {
     const live = (row.match(/EN VIVO/g) || []).length + (row.match(/POR ACTIVAR/g) || []).length;
     if (live !== 1) fail(`THE-DECK row lacks exactly one liveness label: "${row.trim().slice(0, 50)}"`);
     if (!/`[a-z-]+`|CRUZ|signature/.test(row.split('|').slice(2, 3).join(''))) { /* skill in col 2 */ }
-    if (!/`(traficos|documents|pedimentos|clients|accounting|inventory|locations|fracciones|expedientes)`/.test(row))
+    if (!/`(traficos|documents|pedimentos|clients|accounting|inventory|locations|fracciones|expedientes|entradas|quotes)`/.test(row))
       fail(`THE-DECK row names no Supabase table: "${row.trim().slice(0, 50)}"`);
   }
 }
@@ -104,7 +108,7 @@ const SKILLS = ['email-ingestion', 'document-checklist-validator', 'compliance-a
   'dispatch-coordinator', 'warehouse-tracker', 'anomaly-detector', 'demand-forecaster', 'cost-optimizer',
   'rate-quote-generator', 'financial-summary', 'new-client-onboarding', 'portal-builder', 'usmca-certificate-generator',
   'mve-compliance', 'oca-opinion', 'evco-audit-report', 'client-communication-writer', 'whisper-transcriber',
-  'cruz-build-intelligence', 'cruz-100-critic', 'cruz-complete-frontend', 'dataviz', 'deep-research', 'operator-intel', 'skill-creator'];
+  'cruz-build-intelligence', 'cruz-100-critic', 'cruz-complete-frontend', 'dataviz', 'operator-intel', 'skill-creator'];
 const specTexts = (pathsBlock ? pathsBlock[1].split('\n').map(s => s.trim()).filter(p => /\.md$/.test(p)) : [])
   .filter(p => existsSync(join(root, p))).map(p => readFileSync(join(root, p), 'utf8')).join('\n');
 const section3 = text.slice(text.indexOf('## §3'));

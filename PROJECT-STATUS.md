@@ -6,14 +6,21 @@
      and exactly what commands to run to confirm nothing has drifted. -->
 
 **Read this first if you're picking this up cold.** The canonical law lives in
-`FREIGHT-OS-CANON.md` (currently **v3.6**, founder-override supremacy, 53 items / 17 WOs, machine-checked
+`FREIGHT-OS-CANON.md` (currently **v3.7**, founder-override supremacy, 55 items / 18 WOs, machine-checked
 by `node scripts/canon-check.mjs`). This document is a *status snapshot*, not the law — it exists so
 nothing is lost to a session cutoff or context compaction. Everything here is independently verifiable
 by running the commands in **§Verification Playbook** below.
 
+**v3.7 update — read this before trusting v3.6-era claims elsewhere:** a full adversarial audit (13
+agents) found the canon had accumulated real, checkable false statements (a Routine claimed "running"
+that produces zero output; a Gmail label claimed applied to ~180 threads that was never actually
+applied; a security patch claimed "ready to apply" that would have broken the build; a cited skill
+that doesn't exist). All are now fixed in the canon itself (§5.4's v3.7 entry has the full list) — this
+status doc below has been updated to match the corrected reality, not the original overclaims.
+
 **Repo:** `renatozapatabot-star/claude-code` · **Branch:** `claude/freight-os-optimization-6gn2qz` ·
-**Latest commit as of writing:** `cac0199` ("v3.6: ultracode power-build — 5 real artifacts,
-adversarially verified") · pushed and live on `origin`.
+**Latest commit as of writing:** pushed and live on `origin` — run `git log --oneline -3` for the exact
+hash (this doc doesn't pin one, since it gets stale the moment a new commit lands after it).
 
 ---
 
@@ -82,17 +89,18 @@ exists.
 | WO-04 | Escalation/receipt-issuer policy values | **OPEN** |
 | WO-05 | Adjunto billing law adoption | **RESOLVED** (full-price-swap rule adopted; now *implemented* — see §5) |
 | WO-06 | ADJUNTO-100 rubric admission | **OPEN** |
-| WO-07 | Real-repo admission | **DONE** — all 9 real repos admitted + cloned to `/workspace` |
+| WO-07 | Real-repo admission | **CLOSED** — all 9 real repos admitted + cloned to `/workspace` (resolved ambiguous status in v3.7 audit) |
 | WO-08 | MVE/compliance cadence approval | **OPEN** |
 | WO-09 | Licensed-authority packet | **OPEN** |
-| WO-10 | The 7-day floor | **ARMED** — Routine `trig_01CschhiJHbCoZkHtpufkUJ1`, daily 06:01 UTC, running |
+| WO-10 | The 7-day floor | **ARMED BUT NOT PRODUCING OUTPUT — v3.7 correction.** Routine `trig_01CschhiJHbCoZkHtpufkUJ1` really fires (confirmed via `list_triggers`) but `DESIGN_LOG.md` has zero qualifying entries and neither target branch has a matching commit in 11 real days. Honest status: **0/7**, an open reliability defect, not a running clock. Needs Throne/environment-side debugging. |
 | WO-11 | Backup/custody of data layer | **OPEN** (blocked on WO-01) |
-| WO-12 | Calibration sitting (KPIs, rollout order) | **OPEN** |
+| WO-12 | Calibration sitting (KPIs, rollout order) | **OPEN** — now explicitly includes deciding where MAFESA (already-live tenant) slots into the rollout order |
 | WO-13 | The Throne (runtime host confirmation) | **OPEN** |
-| WO-14 | Second-brain admission (`aguila-brain`) | **DONE** — admitted, populated, pushed |
+| WO-14 | Second-brain admission (`aguila-brain`) | **DONE** — admitted, populated, pushed; access-matrix enforcement now real code (`supertito/src/brain-access.mjs`, 16/16 tests) |
 | WO-15 | SuperTito bot name | **CLOSED** — `@supertitobot`, founder-ruled 2026-07-19 |
-| WO-16 | 🚨 SEV-1 MAFESA/EVCO cross-tenant fix, write access | **OPEN** — fix is a verified, ready-to-apply patch (`evidence/evco-cross-tenant-fix.patch`); `evco-portal` untouched, awaiting founder write-access confirmation |
-| WO-17 | Real credentials: Gmail-for-the-bot, globalpc, Aduanet, econta | **OPEN** — shape-adapters + correlation engine built and tested; only credentials are missing |
+| WO-16 | 🚨 SEV-1 MAFESA/EVCO cross-tenant fix, write access | **OPEN** — fix is a verified, COMPLETE, ready-to-apply patch (`evidence/evco-cross-tenant-fix.patch`, covers all 8 real call sites, `tsc`-clean, re-verified v3.7 after finding the v3.6 version was incomplete and would have broken the build); `evco-portal` untouched, awaiting founder write-access confirmation. A related, separate tenant-scoping gap in `opportunities.ts` was also found and logged, not yet fixed. |
+| WO-17 | Real credentials: Gmail-for-the-bot, globalpc, Aduanet, econta | **OPEN** — shape-adapters + correlation engine + unified pipeline (`cortana.mjs`) all built and tested; only credentials are missing |
+| WO-18 | 🔍 Real bot reliability bug: repeat-spam of an identical fallback message when the conversational layer fails | **OPEN** — new in v3.7, founder-supplied screenshot evidence; root cause not visible from this session's read-only `throne-stack` access, needs Throne-side log investigation |
 
 **Bottom line: nothing has been silently dropped. Every open WO has a named founder-ask AND real prep
 work already done in the meantime** (per the De-Deferral Law). This is enforced mechanically — `node
@@ -108,7 +116,7 @@ scripts/canon-check.mjs` fails the build if any WO is missing a `Prep-now` citin
 | **P4** CRUZ | EVCO/MAFESA client-facing portal (`evco-portal`) | 🚨 SEV-1 cross-tenant bug found, diagnosed, and a verified patch staged (not applied — needs write access) |
 | **P5** Data layer | Supabase | Blocked entirely on WO-01 (no credentials yet) |
 | **P6** The Deck | Money-Employment cockpit, real code in `clawdia-presence/app/plaios/freight/` | Confirmed real (16 panels, authority-gated multi-channel contracts, bilingual EN/ES scripts). `scripts/audit-deck.mjs` makes this claim falsifiable/re-checkable forever — currently PASS |
-| **P7** Growth | Adjunto/FREIGHT growth mechanics | Spec authored (`FREIGHT-GROWTH.md`); not yet built out this round |
+| **P7** Growth | Adjunto/FREIGHT growth mechanics | Spec authored (`FREIGHT-GROWTH.md`); lead-readiness scoring now real code (`design/reference/growth-scoring.mjs`, 14/14 tests) |
 | **P8** Second brain | `aguila-brain` Obsidian vault | Admitted, was empty, now populated + pushed to its own `master` branch |
 
 ## 5. Everything built + tested this session (exact files, exact commands)
@@ -121,25 +129,37 @@ re-verified by this session after being built (not just trusted from an agent re
 | `supertito/src/inbox-triage.mjs` + test | Classify/rank/alert real Gmail threads (read+triage+draft only) | `node --test supertito/test/inbox-triage.test.mjs` | 8/8 |
 | `supertito/src/correlate.mjs` + test | Cortana law's cross-system correlation engine | `node --test supertito/test/correlate.test.mjs` | 6/6 |
 | `supertito/src/system-adapters.mjs` + test | WO-17 shape-conversion (globalpc/Aduanet/econta → canonical input) | `node --test supertito/test/system-adapters.test.mjs` | 9/9 |
+| `supertito/src/cortana.mjs` + test | Unified Cortana pipeline (adapt+classify+correlate all 4 systems in one call) | `node --test supertito/test/cortana.test.mjs` | 10/10 |
+| `supertito/src/alerts.mjs` + test | Alert-rail dedup/never-drop/ranking (v3.7: fixed a false "built" claim with real code) | `node --test supertito/test/alerts.test.mjs` | 5/5 |
+| `supertito/src/brain-access.mjs` + test | Second-brain role/tenant access-matrix enforcement + "not in the brain yet" honesty rule | `node --test supertito/test/brain-access.test.mjs` | 16/16 |
 | `design/reference/adjunto-billing.mjs` + test | Adjunto billing law, real pure ledger | `node --test design/reference/adjunto-billing.test.mjs` | 10/10 |
-| `evidence/evco-cross-tenant-fix.patch` + `.test.ts` | SEV-1 fix, staged as a verified git-apply-clean patch (NOT applied to evco-portal) | `git apply --check` against a scratch copy of the real file (verified 2026-07-30) | applies cleanly |
+| `design/reference/growth-scoring.mjs` + test | P7 Growth lead-readiness scoring/ranking | `node --test design/reference/growth-scoring.test.mjs` | 14/14 |
+| `evidence/evco-cross-tenant-fix.patch` + `.test.ts` | SEV-1 fix, staged as a verified git-apply-clean patch (NOT applied to evco-portal). v3.7: completed — the v3.6 version was found incomplete (8 real call sites, 5 with zero session check) and would have broken the build; now covers every call site, `tsc`-clean. | `git apply --check` against a scratch copy of the real file + `tsc --noEmit` | applies cleanly, 0 type errors |
 | `scripts/audit-deck.mjs` | Falsifiable check of the canon's Deck claims against real `clawdia-presence` source | `node scripts/audit-deck.mjs` | PASS (4/4 claims), negative-control-verified |
-| `scripts/canon-check.mjs` | The canon's own structural/content law | `node scripts/canon-check.mjs` | PASS — 53 items, 17 WOs |
-| **Whole supertito suite** | everything above + pre-existing core/ledger/escalation | `node --test supertito/test/*.test.mjs` | **39/39** |
+| `scripts/canon-check.mjs` | The canon's own structural/content law (v3.7: Prep-now citations now cross-referenced against real parsed items, not just shape) | `node scripts/canon-check.mjs` | PASS — 55 items, 18 WOs |
+| `DB-ATLAS.md` | Real DB atlas template (v3.7: previously claimed built but didn't exist — built for real) | n/a (template, filled once WO-01 lands) | exists, registered in CANON-PATHS |
+| **Whole supertito suite** | everything above + pre-existing core/ledger/escalation | `node --test supertito/test/*.test.mjs` | **70/70** |
 | **Repo code sanity** | `server.js` + `data/embarques.js` syntax | `npm run check` | green |
 
 ## 6. Verification playbook (run these to confirm nothing has drifted)
 
 ```bash
 cd /home/user/claude-code
-node scripts/canon-check.mjs                          # canon structural law — expect PASS, 53 items, 17 WOs
-npm run check                                          # repo code sanity — expect green
-node --test supertito/test/*.test.mjs                  # SuperTito full suite — expect 39/39
-node --test design/reference/adjunto-billing.test.mjs  # Adjunto billing law — expect 10/10
-node scripts/audit-deck.mjs                            # Deck claims vs real source — expect PASS
-git log --oneline -5                                   # confirm you're at or past cac0199
-git status --porcelain                                 # should be clean if nothing new is in flight
+node scripts/canon-check.mjs                                    # expect PASS, 55 items, 18 WOs
+npm run check                                                   # repo code sanity — expect green
+node --test supertito/test/*.test.mjs                           # SuperTito full suite — expect 70/70
+node --test design/reference/adjunto-billing.test.mjs           # expect 10/10
+node --test design/reference/growth-scoring.test.mjs            # expect 14/14
+node scripts/audit-deck.mjs                                     # Deck claims vs real source — expect PASS
+node scripts/verify.mjs                                         # browser check — expect VERIFY: CLEAN
+git checkout -- scripts/shots/ 2>/dev/null                      # verify.mjs regenerates screenshots; revert the noise
+git log --oneline -5                                            # see what's landed since this doc was written
+git status --porcelain                                          # should be clean if nothing new is in flight
 ```
+
+**Do NOT trust a frozen pass-count in this document or the canon over a live re-run** — the v3.7 audit's
+single biggest lesson is that a written "N/N green" claim can silently go stale or, worse, never have
+been true. If a number above disagrees with what you just ran, the live run is correct.
 
 If any of these fail, something has drifted from this snapshot — treat that as the first thing to
 investigate before trusting anything else in this document.

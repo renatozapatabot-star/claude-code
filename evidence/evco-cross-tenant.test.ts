@@ -5,13 +5,27 @@
  * ============================================================================
  * STATUS — READ BEFORE TRUSTING ANY "PASS" CLAIM ABOUT THIS FILE
  * ============================================================================
- * This file has NOT been executed. It cannot run inside claude-code (this
- * repo) — it imports from '../lib/supabase/scoped-query', a module that
- * only exists inside evco-portal's own src tree, and it needs evco-portal's
- * installed `vitest` + `@supabase/supabase-js` to even parse. It is a
- * staged, ready-to-drop-in spec, not a result.
+ * This file has NOT been executed with the real `vitest` runner. It cannot
+ * run inside claude-code (this repo) — it imports from
+ * '../lib/supabase/scoped-query', a module that only exists inside
+ * evco-portal's own src tree, and it needs evco-portal's installed `vitest`
+ * + `@supabase/supabase-js` to even parse. It is a staged, ready-to-drop-in
+ * spec, not a `vitest` result.
  *
- * To actually run it:
+ * What HAS been verified (2026-07-30, this session): the now-complete
+ * evco-cross-tenant-fix.patch — which touches scoped-query.ts AND every
+ * real call site (src/app/api/agent/ask/route.ts,
+ * src/__tests__/data-integrity-v2.test.ts, and five src/app/v2/*/page.tsx
+ * files that were calling scopedQuery directly, with no companyId, and no
+ * session read at all) — was applied to a disposable scratch copy of the
+ * real files and typechecked clean with `tsc --noEmit` (zero errors,
+ * against hand-written ambient stubs for @supabase/supabase-js, next/server,
+ * next/headers, vitest, and the unrelated format/component modules — no
+ * node_modules exist under evco-portal in this environment). That confirms
+ * the patch compiles; it does NOT confirm this vitest suite's assertions
+ * pass, because vitest itself was never run.
+ *
+ * To actually run this suite for real:
  *   1. Apply evidence/evco-cross-tenant-fix.patch inside evco-portal
  *      (git apply evco-cross-tenant-fix.patch from the evco-portal repo root).
  *   2. Copy this file to evco-portal/src/__tests__/evco-cross-tenant.test.ts.
