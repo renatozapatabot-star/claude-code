@@ -1,10 +1,12 @@
-# FREIGHT (OS) — THE STRATEGIC OVERLAY · v3.1 · 2026-07-19
+# FREIGHT (OS) — THE STRATEGIC OVERLAY · v3.2 · 2026-07-30
 
-<!-- CANON-META version=3.1 status=proposed-overlay-defers-to-control-plane supersedes=FREIGHTCOMPLETE100PLAN20260719.pdf(v1.4) authority=freightos-control-plane/canon/HANDOFF-MASTER.md -->
+<!-- CANON-META version=3.2 status=proposed-overlay-defers-to-control-plane supersedes=FREIGHTCOMPLETE100PLAN20260719.pdf(v1.4) authority=freightos-control-plane/canon/HANDOFF-MASTER.md -->
 
-> **v3.1:** cloned + read the real `throne-stack` (Clawdia/Throne) repo. Found a live, tested
-> Telegram bot (`@clawdyia_rz_bot`) and Throne's real two-vault architecture. **Founder ruled
-> instantly (§0.1): the bot is `@supertitobot`** — closed [WO-15], no ambiguity left.
+> **v3.2:** magnify-glass sweep — all 9 real repos + Gmail/Calendar pulled in. Found the
+> Money-Employment dial-block loop is **LIVE** (real cockpit, real calendar rhythm), Adjunto is
+> **live at adjunto.co**, an 18-day-stale hot lead (Ursula/EVCO) got a drafted (not sent) reply,
+> and — critically — **caught and fixed a real entity-boundary violation**: an item that would have
+> built a FREIGHT cockpit inside CRUZ. The real cockpit already exists in `clawdia-presence`.
 
 > **v3.0 is a ground-truth correction.** A 6-agent sweep of the real `freightos-control-plane` (69
 > findings) showed the earlier drafts inherited the v1.4 PDF's fictions. Corrected here: the estate is
@@ -238,8 +240,9 @@ The v1.4 "twin repos" were not fiction — they are the founder's **real** priva
 | `evco-portal` | **CRUZ** client portal (portal.renatozapata.com) — the REAL deployment | **admitted + cloned** `/workspace/evco-portal` |
 | `aguila-brain` | The **CRUZ-scoped project vault** (customs domain notes, client material — per Throne's own two-vault decision record) | **admitted + cloned + populated** `/workspace/aguila-brain` → pushed `master` (was a stock empty Obsidian install) |
 | `throne-stack` | **Clawdia / the Throne Mac Studio stack** — Docker+Tailscale+LiteLLM+Hermes runtime; carries its OWN separate ops vault at `throne-stack/vault/` (identity, decisions, playbooks — NOT client material) | **admitted + cloned** `/workspace/throne-stack` |
-| `clawdia-presence` | The private surface source for FREIGHT's automations (`freight_brief.py`, `freight_proactive.py`, per `freightos-control-plane`'s admission-policy.json) | **admitted + cloned** `/workspace/clawdia-presence` |
-| `beatvig` · `ayudasolares` | Adjacent repos on the account — relevance to FREIGHT not yet confirmed | **admitted + cloned**; scope confirmation pending ([WO-07]) |
+| `clawdia-presence` | Two things in one repo: (1) **Clawdia's own personal-AI project** (`CANON.md`/`GOAL.md`/`BECOMING.md` — a Grok-native "falsifiable emergent-self" experiment, rated by its own single-user rubric, out of FREIGHT's scope); (2) the **real FREIGHT operator cockpit** at `app/plaios/freight/` + `lib/freight-execution/` — this IS the Deck (P6, corrected above) | **admitted + cloned** `/workspace/clawdia-presence` |
+| `beatvig` | Confirmed **unrelated** — a sports-betting +EV tool (day-0 stage) | admitted + cloned; **out of FREIGHT scope** |
+| `ayudasolares` | Confirmed **unrelated** — an empty Next.js stub (solar-assistance concept, unbuilt) | admitted + cloned; **out of FREIGHT scope** |
 
 This de-defers the plan hard: the pillars port against **real code**, not a twin. **Correction
 (2026-07-19, after reading `throne-stack`):** `aguila-brain` is not a generic "everything" second
@@ -577,6 +580,24 @@ items are `EXEC-NOW*`** — one bootstrap `npm i -D playwright` makes `node scri
 
 Spec: `design/reference/THE-DECK.md` (authored this session). v1.4 G8 deck-check re-grounded.
 
+**MAJOR CORRECTION (2026-07-30, from reading `clawdia-presence` directly — the actual cockpit
+source):** the Deck is **not a from-scratch build.** It already exists, real and running, at
+`clawdia-presence/app/plaios/freight/` — the exact host named in the founder's live calendar events
+(`throne.tail5af2c9.ts.net:8443/plaios/freight`). Real panels on disk: `DialQueue`, `GuidedCallCard`,
+`LeadFeed`, `NextBestAction`, `Scoreboard`, `DeskPnl`, `CarrierBench`, `LanePricer`, `MetersPanel`,
+`CadenceSignals`, `CommandPalette`, `PhonePager`, `TVMode`, `EntityGraph`, `KeysStatus`, `TopTicker`,
+plus a `closer/` and `film/` mode. The backing library `lib/freight-execution/` (in the same repo)
+defines a real, richer action model than this canon assumed: actions `{call, email, linkedin,
+whatsapp}` (not just phone calls), `operating_state ∈ {not_ready, ready_to_prospect, revoked}`,
+authority-gated `reason_code`s (`authority_missing/invalid/not_effective/expired/revoked,
+scope_denied, runtime_unavailable`), a formal disposition taxonomy (`connected, voicemail, no_answer,
+wrong_number, not_interested, qualified, deferred`), and **bilingual (EN/ES) guided-call scripts**
+with rebuttal handling (`DeskScriptBlock`: the_ask, trial_close, rebuttals, go_off_script_cue) — CRUZ's
+bilingual law, independently reinvented here. `telegram-poll.ts` exists but is an **empty stub** — the
+Telegram leg of freight execution is not yet wired (honest, not overclaimed). **This corrects
+[P6-W2-02] below**, which as originally drafted would have built a FREIGHT cockpit *inside CRUZ* —
+a direct violation of the §0.3 entity boundary (CRUZ is EVCO-only). Fixed.
+
 - **[P6-W1-01]** `EXEC-NOW` — **Deck layout spec (DONE this session).** `THE-DECK.md`: Monitor 1
   (cockpit: decision queue, tráficos/semáforo, anomaly strip, warehouse), Monitor 2 (comms, financial,
   compliance calendar, `demand-forecaster` volume forecast), phone (ranked alerts, tap-to-approve),
@@ -592,10 +613,17 @@ Spec: `design/reference/THE-DECK.md` (authored this session). v1.4 G8 deck-check
   the Deck. Built + tested against the P2 mock server. — **Acceptance:** `node --test
   supertito/test/alerts` green (dedup window, ranking, never-drop). — **Evidence:** `supertito/` +
   `THE-DECK.md §Alerts`.
-- **[P6-W2-02]** `EXEC-NOW*`(loop) — **Cockpit surface in CRUZ.** Monitor-1 operator cockpit per
-  `design/reference/CRUZ Operator Cockpit.dc.html`, mined via `Skill({skill:'cruz-complete-frontend'})`,
-  verified desktop + 375px. — **Acceptance:** `verify.mjs` CLEAN with cockpit shots. — **Evidence:**
-  shots + log entry.
+- **[P6-W2-02]** `WO+PREP`([WO-07]) — **Harden the real cockpit (corrected — not a CRUZ build).**
+  The Deck's Monitor-1 cockpit is the real `clawdia-presence/app/plaios/freight/` surface (see
+  correction above), not a new CRUZ page. This item is: audit its panels against the founder's
+  actual dial-block protocol (20/block, 40/day tripwire, ≤60s disposition logging), close any gaps,
+  and wire `telegram-poll.ts` (currently an empty stub) if/when [WO-15]'s @supertitobot decision
+  extends to freight alerts specifically. — **Acceptance:** a panel-by-panel audit note committed
+  against the real repo; `telegram-poll.ts` either implemented or explicitly deferred with a named
+  reason. — **Prep-now:** the panel inventory above (this session) is the audit's starting point. —
+  **Evidence:** audit note in `clawdia-presence` (via [WO-07] admission) or this repo's evidence/.
+  *(The CRUZ Operator Cockpit `.dc.html` design mockup remains valid for **CRUZ's own** operator
+  view — EVCO-scoped, not FREIGHT's — and is unaffected; see [P4-W4-01a].)*
 - **[P6-W3-01]** `WO+PREP`([WO-03],[WO-10]) — **Red-day→phone latency proof.** With the real token,
   prove a boundary incident reaches the phone and a tap-approval lands a receipt; **measure** the
   latency (no fabricated <60s claim). — **Acceptance:** one real red-day drill logged with measured
@@ -747,6 +775,7 @@ every registered path exists. Exit 0/1.
 | 2026-07-19 | **Executed, not just planned:** `supertito/` built + green (16/16 tests, bench PASS, score 8/8); playwright bootstrapped → `verify.mjs` CLEAN (19 shots); MVE action list for Ursula Banda authored; real `aguila-brain` vault (was empty) populated + pushed to `master`; all committed/pushed to `claude/freight-os-optimization-6gn2qz` | executed |
 | 2026-07-19 | **Cloned + read `throne-stack`** (real Clawdia/Throne Mac Studio repo) — discovered a live, tested Telegram bot `@clawdyia_rz_bot` (Hermes gateway, principal-only, smoke-tested 2026-05-09) and Throne's own two-vault model (`aguila-brain` = CRUZ-scoped project vault; `throne-stack/vault/` = separate Clawdia ops vault) | discovery |
 | 2026-07-19 | **FOUNDER RULING (binding instantly, §0.1): "It's @supertitobot — everything else should be deleted."** [WO-15] closed: the bot is `@supertitobot` (renamed from `@clawdyia_rz_bot`); no other name. P2 pillar + `supertito/POLICY.md` updated to match. | founder-override |
+| 2026-07-30 | **Deep read of `clawdia-presence`** (the repo `admission-policy.json` names as the source for FREIGHT's automation surface) — found it holds TWO things: Clawdia's own personal-AI project (out of FREIGHT scope, its own rubric) AND the **real, already-built Deck cockpit** at `app/plaios/freight/` (16 real panels: DialQueue, GuidedCallCard, LeadFeed, NextBestAction, Scoreboard, DeskPnl, CarrierBench, etc.) + `lib/freight-execution/` (real contracts: multi-channel actions call/email/linkedin/whatsapp, authority-gated reason codes, bilingual EN/ES guided-call scripts). **Caught and fixed a real defect: [P6-W2-02] as originally drafted would have built a FREIGHT cockpit inside CRUZ — a direct §0.3 entity-boundary violation** (CRUZ is EVCO-only). Corrected P6 pillar to reflect the real cockpit and repointed the item at auditing/hardening it via `clawdia-presence`, not building inside CRUZ. `telegram-poll.ts` confirmed an empty stub — honestly noted, not overclaimed. `beatvig`/`ayudasolares` confirmed unrelated side projects (sports-betting tool; empty solar-assistance stub). | corrected |
 | 2026-07-30 | **Magnify-glass sweep** — all 9 real repos admitted + cloned (`freightos-control-plane`, `aguila-brain`, `evco-portal`, `throne-stack`, `adjunto-integration-launch`, `clawdia-presence`, `beatvig`, `ayudasolares`) + Gmail/Calendar pulled into scope per founder directive ("pull EVERYTHING that is my work computer... everything you have access to"). Findings: (1) **the Money-Employment dial-block loop is LIVE** — recurring calendar events name the real cockpit `throne.tail5af2c9.ts.net:8443/plaios/freight`, 06:30 brief email, 40-attempts/day floor with tripwire — corrects the control-plane's static 0/0 snapshot (§1.6 amended); (2) **Adjunto is live at `adjunto.co`** (verified 200 on `/`, `/builder`, `/proof`, `/pricing`; `/trial/:name` pilot pattern; `/api/health/version` 404 = stale deployed build, honestly noted); (3) **Ursula Banda (EVCO) had an 18-day-stale hot lead** — asked 2026-07-29 for trial access after the founder's 2026-07-11 pitch, unanswered. **Action taken:** drafted (never sent, §0.4-8) a reply with the real `adjunto.co/trial/ursula` link, using the founder's own Mode-A outreach language — draft id `r-4593963464206317792`, awaiting founder review/send. | executed |
 | 2026-07-19 | **v3.0 GROUND-TRUTH CORRECTION** — the earlier drafts inherited v1.4 fictions; corrected against the real `freightos-control-plane`: (1) entity model → boundary-preserving federation; Adjunto = sole public brand (own mint/navy canon), FREIGHT = private freight-brokerage OS (goal = Money Employment), CRUZ = EVCO-only + hard no-import boundary; (2) §4 → four independent never-combined scores (Adjunto ~92.2 · Money-Employment 0/not-achieved · PLAIOS snapshot-only · plan-quality); deleted the forbidden merged CANON-100; (3) §0.2a → this overlay has zero canonical standing, defers to `HANDOFF-MASTER.md` + the founder-override plan; (4) P2 → Clawdia is the real proactive surface, @supertitobot is founder-directed/aspirational; (5) added §1.6 (Money Employment, Grok two-agent model, heartbeat, Wave0–W8, PLAIOS, admission/allowlist/secret-scan, state-root 0700/0600, B2 backups, CI suite); (6) added provenance honesty laws §0.4-11..13 | amended |
 
