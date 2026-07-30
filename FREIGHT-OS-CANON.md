@@ -1,6 +1,11 @@
-# FREIGHT (OS) — THE STRATEGIC OVERLAY · v3.3 · 2026-07-30
+# FREIGHT (OS) — THE STRATEGIC OVERLAY · v3.4 · 2026-07-30
 
-<!-- CANON-META version=3.3 status=proposed-overlay-defers-to-control-plane supersedes=FREIGHTCOMPLETE100PLAN20260719.pdf(v1.4) authority=freightos-control-plane/canon/HANDOFF-MASTER.md -->
+<!-- CANON-META version=3.4 status=proposed-overlay-defers-to-control-plane supersedes=FREIGHTCOMPLETE100PLAN20260719.pdf(v1.4) authority=freightos-control-plane/canon/HANDOFF-MASTER.md -->
+
+> **v3.4:** 🚨 found a live SEV-1 cross-tenant data-isolation risk in the real `evco-portal` (EVCO +
+> MAFESA, ~$5.86M+ verified value exposed) — fully diagnosed, logged as [WO-16]/[P4-W1-00], awaiting
+> founder write-access confirmation to fix. Also corrected the client roster (added MAFESA) and
+> pipeline stage-1 status (real intake is already WORKING, not POR ACTIVAR).
 
 > **v3.3 — FOUNDER RULING, binding instantly, supersedes v3.0's framing below:** *"CRUZ is within
 > FREIGHT." "Everything exists within FREIGHT." "Including SuperTito and everything."* **FREIGHT is
@@ -235,9 +240,20 @@ resource law asserts every non-utility skill appears in ≥1 §3 item or spec do
 - **Telegram:** **@supertitobot** (SuperTito — POR ACTIVAR, [WO-03]) · **@cruz_rz_bot** (CRUZ alert leg
   used by `anomaly-detector` / `crossing-intelligence`). The Deck (P6) unifies both.
 - **Businesses under FREIGHT:** Renato Zapata & Co, Norfleet Logistics, other services.
-- **Clients:** EVCO (Ursula Banda — primary), Duratech, Milacron, Foam Supplies. **Ports:** Laredo/SOIA.
+- **Clients:** EVCO (Ursula Banda — primary; 6,917 tráficos, 97.8% with pedimento, real prod data),
+  **MAFESA** (confirmed live 2nd tenant in `evco-portal` — 775 tráficos 100% pedimento coverage,
+  98.3% docs, 100% suppliers, **$5.86M verified** — not previously in this canon's roster, added
+  2026-07-30), Duratech, Milacron, Foam Supplies. **Ports:** Laredo/SOIA.
   **Growth surface:** the founder's LinkedIn network + the Adjunto/CRUZ sites and emails (P7).
 - **Data layer:** the Supabase project the skills read/write (POR ACTIVAR from this session — [WO-01]).
+
+  🚨 **URGENT — live SEV-1 tenant-isolation risk (found 2026-07-30, `evco-portal/EVCO-DEMO-READY-
+  2026-05-15.md`):** the real portal's `scopedQuery` is **hardcoded to EVCO_CANDIDATES**; MAFESA's
+  portal access needs proper `session.companyId`-based scoping and does not yet have it. The repo's
+  own doc calls this a SEV-1 risk **"if a non-EVCO user logs in today."** Two real tenants, real
+  financial data (~$5.86M+ verified), are exposed to this cross-tenant risk **right now**, not
+  hypothetically. This is flagged here for the founder's immediate attention — it is not something
+  this session should silently patch in a production client-data repo without explicit direction.
 
 ### §1.4 The inherited artifact — Masterplan v1.4 (historical annex)
 
@@ -450,6 +466,17 @@ WO+PREP arms the clock, drills, and logging now so the days merely have to pass.
   [P2-W3-01] — the `supertito/` package is channel-agnostic, so pointing it at the real bot is a
   config change, not a rebuild. —
   **Evidence:** §5.4 row (this instruction, logged verbatim).
+- **[WO-16]** 🚨 **SEV-1 fix: MAFESA/EVCO cross-tenant scoping in `evco-portal`** — the real portal's
+  `scopedQuery` is hardcoded to EVCO_CANDIDATES; MAFESA needs `session.companyId`-based scoping (the
+  repo's own doc calls this SEV-1 "if a non-EVCO user logs in today" — real client data, ~$5.86M+
+  verified value, exposed now). — **Founder:** confirm scope to admit `evco-portal` for a write-fix
+  ([WO-07] already admits read access; this needs write/push authorization on that specific repo,
+  since it holds live client data). — **Acceptance:** `scopedQuery` derives tenant strictly from
+  `session.companyId` (never a hardcoded candidate list); a cross-tenant read/write test (EVCO
+  session querying MAFESA data and vice versa) is added and passes denied. — **Prep-now:**
+  [P4-W1-00] — this finding is fully diagnosed and located (`EVCO-DEMO-READY-2026-05-15.md` line
+  113); the fix is scoped and ready to implement the moment write access is confirmed — no further
+  investigation needed. — **Evidence:** commit in `evco-portal` + the cross-tenant test result.
 
 *(v1.4 WO-F rows with no live obligation here — the ConnectUC/Callicity CDR export tap — are retired
 with reason in §5.5, not silently dropped: no ConnectUC access exists in this estate; it re-enters as a
@@ -567,6 +594,14 @@ Design law `DESIGN.md`; engine the 06:01 loop; roadmap `design/reference/CRUZ-10
 items are `EXEC-NOW*`** — one bootstrap `npm i -D playwright` makes `node scripts/verify.mjs` runnable
 (it exits 1 until then; §1.1).
 
+- **[P4-W1-00]** `WO+PREP`([WO-16]) — 🚨 **SEV-1 cross-tenant fix (highest priority in this pillar).**
+  Fix `evco-portal`'s `scopedQuery` to derive tenant strictly from `session.companyId`, never a
+  hardcoded EVCO candidate list; add a cross-tenant denial test (EVCO session querying MAFESA data,
+  and reverse, both must be refused). — **Acceptance:** the cross-tenant test passes denied; no
+  hardcoded tenant list remains in `scopedQuery`. — **Prep-now:** the defect is fully diagnosed and
+  located (`EVCO-DEMO-READY-2026-05-15.md:113`) — this item IS the prep; only write access to
+  `evco-portal` ([WO-07]/[WO-16]) is needed to execute the fix already scoped. — **Evidence:** commit
+  in `evco-portal` + test result.
 - **[P4-W1-01]** `EXEC-NOW` — **Harden the loop's evidence trail.** `DESIGN_LOG.md` entries gain a
   machine-readable header `<!-- LOG date=… slice=… verify=CLEAN|ISSUES -->` **written only from
   verify.mjs's actual exit line**; `scripts/cruz-loop.md` step 9 updated; `canon-check` (or CI) diffs
@@ -820,6 +855,7 @@ every registered path exists. Exit 0/1.
 | 2026-07-19 | **Cloned + read `throne-stack`** (real Clawdia/Throne Mac Studio repo) — discovered a live, tested Telegram bot `@clawdyia_rz_bot` (Hermes gateway, principal-only, smoke-tested 2026-05-09) and Throne's own two-vault model (`aguila-brain` = CRUZ-scoped project vault; `throne-stack/vault/` = separate Clawdia ops vault) | discovery |
 | 2026-07-19 | **FOUNDER RULING (binding instantly, §0.1): "It's @supertitobot — everything else should be deleted."** [WO-15] closed: the bot is `@supertitobot` (renamed from `@clawdyia_rz_bot`); no other name. P2 pillar + `supertito/POLICY.md` updated to match. | founder-override |
 | 2026-07-30 | **Deep read of the real `evco-portal`** — a mature Next.js/Supabase/Anthropic-SDK/Vapi-voice product (not just a target host), tracking its own real 12-step clearance lifecycle in `PIPELINE.md`. Ground truth: **steps 1–3, 6–7 (Intake/Classify/Completeness+Sync/Review+Approval/Shadow-Intelligence) are already ✅ WORKING in production** — `email-intake.js` runs a real 15-min Sonnet-extraction cron on `ai@renatozapata.com` via Gmail OAuth. Steps 8–11 (Transmit/Crossing/Clearance/Invoice+Payment — the actual filing-to-cash chain) are the real gap, not intake. Corrected `FREIGHT-OS-PIPELINE.md`'s blanket "POR ACTIVAR" framing for stage 1 to reflect this. Named real operator **Tito** (`tito@renatozapata.com`, confirmed independently in real Gmail threads) and real license identity **Renato Zapata & Company · Patente 3596 · Aduana 240 · Est. 1941**. | corrected |
+| 2026-07-30 | 🚨 **SEV-1 SECURITY FINDING — MAFESA/EVCO cross-tenant risk.** `evco-portal`'s `scopedQuery` is hardcoded to EVCO_CANDIDATES; MAFESA lacks `session.companyId`-based scoping. The repo's own `EVCO-DEMO-READY-2026-05-15.md` calls this SEV-1 "if a non-EVCO user logs in today." Real client data, ~$5.86M+ verified value, exposed **now**, not hypothetically. Logged as **[WO-16]** + **[P4-W1-00]** (fully diagnosed, fix scoped, awaiting founder write-access confirmation on `evco-portal` — this session has read-only access and will not silently patch live client-data code without explicit direction). Added **MAFESA** to the client roster (§0.3) — a real, previously-uncounted tenant. canon-check green (50 items, 16 WOs). | found |
 | 2026-07-30 | **v3.3 FOUNDER RULING + ultracode unification enforcement.** Founder, in sequence, binding instantly: *"CRUZ is within FREIGHT"* → *"Everything exists within FREIGHT"* → *"Including SuperTito and everything."* Rewrote §0.3 as the reconciled entity model (FREIGHT = the one umbrella; CRUZ/Adjunto/SuperTito/Clawdia/Throne/second-brain/Deck all within it; the control-plane's "boundary-separate" language survives only as engineering discipline — independent scorecards, no shared DB — never as ownership separation). Ran a 4-lens parallel critic sweep (workflow, 11 contradictions found) hunting every remaining place in the document that still asserted separation; fixed all 11: the P1 pipeline intro, the §0.3 Clawdia bullet, the §1.5 clawdia-presence + adjunto-integration-launch rows, the P6 correction paragraph, §0.2a's kernel-deference list (entity/ownership model now explicitly carved out from kernel authority), §4's framing, and both affected §5.4 historical rows (superseded in place, add-only). `beatvig`/`ayudasolares` correctly remain "out of FREIGHT scope" — genuinely unrelated ventures, not covered by the ruling. canon-check green (48 items, 15 WOs). | founder-override |
 | 2026-07-30 | **Deep read of `clawdia-presence`** (the repo `admission-policy.json` names as the source for FREIGHT's automation surface) — found it holds TWO things: Clawdia's own personal-AI project (its own rubric) AND the **real, already-built Deck cockpit** at `app/plaios/freight/` (16 real panels: DialQueue, GuidedCallCard, LeadFeed, NextBestAction, Scoreboard, DeskPnl, CarrierBench, etc.) + `lib/freight-execution/` (real contracts: multi-channel actions call/email/linkedin/whatsapp, authority-gated reason codes, bilingual EN/ES guided-call scripts). **Caught and fixed a real defect:** [P6-W2-02] as originally drafted would have built a FREIGHT cockpit inside CRUZ's own codebase — a product-surface scoping mistake. Corrected P6 pillar to reflect the real cockpit and repointed the item at auditing/hardening it via `clawdia-presence`, not building inside CRUZ. `telegram-poll.ts` confirmed an empty stub — honestly noted, not overclaimed. `beatvig`/`ayudasolares` confirmed unrelated side projects (sports-betting tool; empty solar-assistance stub), genuinely outside FREIGHT, not part of the ruling below. — *this row's original "out of FREIGHT scope" (Clawdia) / "entity-boundary violation, CRUZ is EVCO-only" phrasing superseded 2026-07-30 by the founder's ruling (§0.3/v3.3): both are within FREIGHT; the real issue was a codebase-scoping mistake, not an ownership boundary* | corrected |
 | 2026-07-30 | **Magnify-glass sweep** — all 9 real repos admitted + cloned (`freightos-control-plane`, `aguila-brain`, `evco-portal`, `throne-stack`, `adjunto-integration-launch`, `clawdia-presence`, `beatvig`, `ayudasolares`) + Gmail/Calendar pulled into scope per founder directive ("pull EVERYTHING that is my work computer... everything you have access to"). Findings: (1) **the Money-Employment dial-block loop is LIVE** — recurring calendar events name the real cockpit `throne.tail5af2c9.ts.net:8443/plaios/freight`, 06:30 brief email, 40-attempts/day floor with tripwire — corrects the control-plane's static 0/0 snapshot (§1.6 amended); (2) **Adjunto is live at `adjunto.co`** (verified 200 on `/`, `/builder`, `/proof`, `/pricing`; `/trial/:name` pilot pattern; `/api/health/version` 404 = stale deployed build, honestly noted); (3) **Ursula Banda (EVCO) had an 18-day-stale hot lead** — asked 2026-07-29 for trial access after the founder's 2026-07-11 pitch, unanswered. **Action taken:** drafted (never sent, §0.4-8) a reply with the real `adjunto.co/trial/ursula` link, using the founder's own Mode-A outreach language — draft id `r-4593963464206317792`, awaiting founder review/send. | executed |
