@@ -1276,6 +1276,8 @@ supertito/src/alerts.mjs
 supertito/test/alerts.test.mjs
 supertito/src/brain-access.mjs
 supertito/test/brain-access.test.mjs
+supertito/src/fallback-limiter.mjs
+supertito/test/fallback-limiter.test.mjs
 design/reference/adjunto-billing.mjs
 design/reference/adjunto-billing.test.mjs
 design/reference/growth-scoring.mjs
