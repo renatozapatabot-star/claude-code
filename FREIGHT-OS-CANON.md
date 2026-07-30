@@ -1,6 +1,15 @@
-# FREIGHT (OS) — THE STRATEGIC OVERLAY · v3.2 · 2026-07-30
+# FREIGHT (OS) — THE STRATEGIC OVERLAY · v3.3 · 2026-07-30
 
-<!-- CANON-META version=3.2 status=proposed-overlay-defers-to-control-plane supersedes=FREIGHTCOMPLETE100PLAN20260719.pdf(v1.4) authority=freightos-control-plane/canon/HANDOFF-MASTER.md -->
+<!-- CANON-META version=3.3 status=proposed-overlay-defers-to-control-plane supersedes=FREIGHTCOMPLETE100PLAN20260719.pdf(v1.4) authority=freightos-control-plane/canon/HANDOFF-MASTER.md -->
+
+> **v3.3 — FOUNDER RULING, binding instantly, supersedes v3.0's framing below:** *"CRUZ is within
+> FREIGHT." "Everything exists within FREIGHT." "Including SuperTito and everything."* **FREIGHT is
+> the one true umbrella. CRUZ, Adjunto, SuperTito, Clawdia, the Throne, the second brain, the Deck —
+> all of it is within FREIGHT, one enterprise, one ownership.** The "federation"/"boundary-separate"
+> language the v3.0 note below drew from the control-plane repo is **reconciled, not deleted**: it
+> describes real engineering discipline (no shared database, no proximity-based data import,
+> independent *scorecards*) that operates **inside** the one FREIGHT umbrella — never again read as
+> evidence of separate ownership. See §0.3 for the full reconciliation.
 
 > **v3.2:** magnify-glass sweep — all 9 real repos + Gmail/Calendar pulled in. Found the
 > Money-Employment dial-block loop is **LIVE** (real cockpit, real calendar rhythm), Adjunto is
@@ -8,12 +17,14 @@
 > and — critically — **caught and fixed a real entity-boundary violation**: an item that would have
 > built a FREIGHT cockpit inside CRUZ. The real cockpit already exists in `clawdia-presence`.
 
-> **v3.0 is a ground-truth correction.** A 6-agent sweep of the real `freightos-control-plane` (69
-> findings) showed the earlier drafts inherited the v1.4 PDF's fictions. Corrected here: the estate is
-> a **boundary-preserving federation** (not one umbrella); **Adjunto is the sole public brand**, FREIGHT
-> is the **private** freight-brokerage OS (goal = **Money Employment**), **CRUZ is EVCO-only**; the four
-> scores are **never combined**; the real proactive surface is **Clawdia** (Telegram is founder-directed
-> future); the real authority is **`HANDOFF-MASTER.md`**, to which this overlay **defers**.
+> **v3.0 (historical — entity framing superseded by v3.3 above):** A 6-agent sweep of the real
+> `freightos-control-plane` (69 findings) showed the earlier drafts inherited the v1.4 PDF's fictions
+> about paths/SHAs/suite counts (that correction stands). Its entity-ownership framing — "boundary-
+> preserving federation, not one umbrella," "CRUZ is EVCO-only" as a *separation* claim — does **not**
+> stand; the founder ruled directly (v3.3). What still stands from v3.0: Adjunto's own mint/navy
+> canon; Money Employment as FREIGHT's execution-core goal; the four scorecards stay unaveraged; the
+> real authority is **`HANDOFF-MASTER.md`**, to which this overlay **defers** on execution matters —
+> but never on the entity/ownership model, which is the founder's alone to set (§0.1).
 
 **Strategic ecosystem overlay** for the founder's estate — FREIGHT · Adjunto · CRUZ · Clawdia · the
 Throne · the second brain. **Authority note (corrected 2026-07-19 against the real control plane):**
@@ -75,8 +86,9 @@ router is `canon/HANDOFF-MASTER.md`; the execution plan of record is
 **Therefore this document has zero canonical standing under that rule — and does not claim any.** It is
 the **strategic/growth/design overlay**: it plans the cross-pillar strategy, growth, and design the
 kernel does not touch, and **defers to the kernel** (HANDOFF-MASTER + the founder-override plan) on
-everything the kernel governs — entity boundaries, scoring, admission, evidence, waves. On any conflict
-the kernel wins and this doc is amended to cite it. Only the founder (§0.1) outranks the kernel. To
+everything the kernel governs — scoring, admission, evidence, waves (**never the entity/ownership
+model itself, which is the founder's alone to set, §0.1/§0.3**). On any conflict the kernel wins on
+execution matters and this doc is amended to cite it. Only the founder (§0.1) outranks the kernel. To
 *become* canon, this overlay's durable parts must be admitted into the control plane by its own
 registry+receipt process ([WO-07]).
 
@@ -92,49 +104,59 @@ registry+receipt process ([WO-07]).
   `DESIGN.md` / `scripts/cruz-loop.md` (the live design-law of the CRUZ pillar, incorporated by
   reference). Any conflict discovered is a defect, logged in §5.4 in the same commit that resolves it.
 
-### §0.3 Scope — a boundary-preserving federation (NOT one umbrella)
+### §0.3 Scope — FREIGHT is the one true umbrella; everything exists within it
 
-**Ground-truth entity model** (corrected 2026-07-19 from the real `freightos-control-plane`
-`README.md` / `AGENTS.md` / `canon/HANDOFF-MASTER.md`). The estate is a **federation of
-boundary-separate entities** — *"no shared raw data store or authority join between Adjunto, CRUZ/EVCO,
-FREIGHT, Clawdia."* There is **no single umbrella product and no combined score.**
+**FOUNDER RULING (binding instantly, §0.1, 2026-07-30): "CRUZ is within FREIGHT." / "Everything
+exists within FREIGHT."** This is the ownership/entity model, full stop, and it overrides the
+framing this canon drew from the control-plane repo's own internal language (which spoke of
+"boundary-separate" entities and "no umbrella"). That language is **reconciled, not deleted**: it
+describes real, valid **engineering discipline** (no shared raw database, no proximity-based data/
+doctrine import, independent scorecards per surface) that operates *inside* the one FREIGHT
+umbrella — it is not evidence of separate ownership, and it never again overrides the founder's
+statement above. Where the two seem to conflict, the founder's word is the entity model; the
+isolation rules are implementation hygiene underneath it.
 
-- **F.R.E.I.G.H.T.** = the **private, internal freight-brokerage execution OS** — *prepare-only*: it
-  researches, ranks, prepares, reconciles, monitors, recovers, and learns so the next **authorized**
-  action is ready; the human owns every irreversible/signed/licensed act, send, bill, and money move.
-  Its real goal is **"Money Employment"** (verified cold calls → booked-and-covered Norfleet loads →
-  bank-settled cash). It is **not** a public brand. Control plane: `freightos-control-plane`
-  (its own canon/kernel/admission/evidence — the execution kernel, §0.2a).
-- **Adjunto** = the **SOLE public company, brand, and product** (`adjunto-integration-launch`) — a
-  top-level entity **boundary-separate from FREIGHT**, with its **own mint/navy Seal-Tile design canon**
-  (it does **not** inherit CRUZ's white+red) and its own $0/$4.99/$9.99 contract. The only public
-  lead-gen surface.
-- **CRUZ** = the **EVCO portal ONLY** (`evco-portal` → portal.renatozapata.com; customs-clearance for
-  EVCO; a licensed human owns the final customs act). **Hard isolation law:** no CRUZ doctrine, data,
-  score, roadmap, or brand premise may cross into Adjunto or FREIGHT by proximity. CRUZ's white+red
-  canon governs **CRUZ only**. Public expansion is founder-gated/deferred. This repo is CRUZ's design source.
-- **Clawdia** = FREIGHT's real **proactive/briefing presence** (`clawdia-presence`; `freight_brief.py`,
-  `freight_proactive.py`) — the actual on-the-fly surface today. **@supertitobot / Telegram is the
-  founder's *directed future* rail** (his instruction — binding, §0.1), **aspirational, not yet built**,
-  to be grounded on the Clawdia pattern (P2). No Telegram exists in the real system yet — stated honestly.
-- **The Throne Mac Studio** = FREIGHT's **physical operating body** (`throne-stack`): release-pinned,
-  PM2 `freight-throne` on loopback + private Tailnet Serve, **public Funnel OFF**, `operating_state=
-  not_ready` (signed authority absent → telephony withheld). [WO-13].
-- **The second brain** = `aguila-brain` — the founder's knowledge base ([WO-14], P8).
-- **The Deck** = the founder's north-star operator surface: **Monitor 1 + Monitor 2 + phone** (P6).
+**Ground truth, reconciled:**
 
-**Design mandate:** each entity is *beautifully and badassly designed* **in its own canon** — CRUZ in
-white+red (`DESIGN.md`), Adjunto in mint/navy Seal-Tile. Coherent **within** an entity; **isolated
-across** entities. Never one blended product.
+- **F.R.E.I.G.H.T.** is the umbrella — the whole enterprise, its private freight-brokerage execution
+  core, and every product/surface within it. The execution core is *prepare-only*: it researches,
+  ranks, prepares, reconciles, monitors, recovers, and learns so the next **authorized** action is
+  ready; the human owns every irreversible/signed/licensed act, send, bill, and money move. Its
+  execution-core goal is **"Money Employment"** (verified cold calls → booked-and-covered Norfleet
+  loads → bank-settled cash). Control plane: `freightos-control-plane` (canon/kernel/admission/
+  evidence — the execution kernel, §0.2a).
+- **Adjunto** — within FREIGHT — is the **public-facing brand/product** (`adjunto-integration-launch`),
+  with its **own mint/navy Seal-Tile design canon** (does not inherit CRUZ's white+red) and its own
+  $0/$4.99/$9.99 contract. The public lead-gen surface.
+- **CRUZ** — within FREIGHT (founder ruling above) — is the EVCO customs-clearance portal
+  (`evco-portal` → portal.renatozapata.com; a licensed human owns the final customs act), in the
+  white+red canon (`DESIGN.md`). This repo is CRUZ's design source.
+- **Clawdia** — within FREIGHT — is the real proactive/briefing presence (`clawdia-presence`) and
+  also the operational cockpit for FREIGHT's execution core (`app/plaios/freight/`, §1.6/P6); the
+  same repo also hosts Clawdia's own personal-AI identity project — within FREIGHT, measured by its
+  own independent single-user rubric (never merged into FREIGHT's execution scoring, per the
+  independent-scorecards allowance below). **@supertitobot / Telegram** is the founder-ruled name for
+  the proactive rail ([WO-15] closed).
+- **The Throne Mac Studio** — within FREIGHT — is the physical operating body (`throne-stack`):
+  release-pinned, PM2 `freight-throne` on loopback + private Tailnet Serve, **public Funnel OFF**,
+  `operating_state=not_ready` (signed authority absent → telephony withheld). [WO-13].
+- **The second brain** (`aguila-brain`) and **the Deck** (Monitor 1 + Monitor 2 + phone, P6) are both
+  within FREIGHT — operator-facing surfaces over the same umbrella.
 
-**Never-combine law (from the real `AGENTS.md`):** Adjunto, FREIGHT, PLAIOS, and Money-Employment are
-**four independent measurement systems**; their scores are **never combined, averaged, or inferred from
-one another** (§4). A merged ecosystem score is a forbidden claim.
+**Design mandate:** everything within FREIGHT is *beautifully and badassly designed*; each surface
+may keep its own visual canon (CRUZ white+red, Adjunto mint/navy) for product-fit reasons, coherent
+within itself, all serving the one enterprise.
 
-**Access reality (§0.4-7):** the founder granted full access. Current verified reach: this repo + the
-now-admitted real repos (`freightos-control-plane` cloned, `evco-portal`, `aguila-brain`) + Gmail/
-Calendar/GitHub MCPs + skills + Routines + Artifacts. Remaining repos/hosts/DB are admitted via §2.1
-WOs. Casa Zapata (personal) is out of scope.
+**Independent scorecards (engineering discipline, kept):** Adjunto, the FREIGHT execution core
+(Money Employment), and PLAIOS are still measured and reported **independently** — not combined or
+averaged into one number (§4) — because that is honest measurement practice, not because they are
+separately owned. They are all FREIGHT's.
+
+**Access reality (§0.4-7):** the founder granted full access. Verified reach: this repo + all 9
+admitted real repos (`freightos-control-plane`, `evco-portal`, `aguila-brain`, `throne-stack`,
+`adjunto-integration-launch`, `clawdia-presence`, `beatvig`, `ayudasolares` — the last two confirmed
+unrelated side projects) + Gmail/Calendar/GitHub MCPs + skills + Routines + Artifacts. Casa Zapata
+(personal) remains out of scope only because the founder has not brought it in.
 
 ### §0.4 The inherited honesty laws (v1.4 H1–H10, kept in force)
 
@@ -236,11 +258,11 @@ The v1.4 "twin repos" were not fiction — they are the founder's **real** priva
 | Repo | Role in FREIGHT | State |
 |---|---|---|
 | `freightos-control-plane` | The private **execution OS** control plane (canon/kernel/admission/evidence) | **admitted + cloned** `/workspace/freightos-control-plane` |
-| `adjunto-integration-launch` | **Adjunto** — the sole public brand/product | **admitted + cloned** `/workspace/adjunto-integration-launch` |
+| `adjunto-integration-launch` | **Adjunto** — within FREIGHT, the public-facing brand/product | **admitted + cloned** `/workspace/adjunto-integration-launch` |
 | `evco-portal` | **CRUZ** client portal (portal.renatozapata.com) — the REAL deployment | **admitted + cloned** `/workspace/evco-portal` |
 | `aguila-brain` | The **CRUZ-scoped project vault** (customs domain notes, client material — per Throne's own two-vault decision record) | **admitted + cloned + populated** `/workspace/aguila-brain` → pushed `master` (was a stock empty Obsidian install) |
 | `throne-stack` | **Clawdia / the Throne Mac Studio stack** — Docker+Tailscale+LiteLLM+Hermes runtime; carries its OWN separate ops vault at `throne-stack/vault/` (identity, decisions, playbooks — NOT client material) | **admitted + cloned** `/workspace/throne-stack` |
-| `clawdia-presence` | Two things in one repo: (1) **Clawdia's own personal-AI project** (`CANON.md`/`GOAL.md`/`BECOMING.md` — a Grok-native "falsifiable emergent-self" experiment, rated by its own single-user rubric, out of FREIGHT's scope); (2) the **real FREIGHT operator cockpit** at `app/plaios/freight/` + `lib/freight-execution/` — this IS the Deck (P6, corrected above) | **admitted + cloned** `/workspace/clawdia-presence` |
+| `clawdia-presence` | Two things in one repo, both within FREIGHT: (1) **Clawdia's own personal-AI project** (`CANON.md`/`GOAL.md`/`BECOMING.md` — a Grok-native "falsifiable emergent-self" experiment, measured independently by its own single-user rubric, never merged into FREIGHT's other scorecards); (2) the **real FREIGHT operator cockpit** at `app/plaios/freight/` + `lib/freight-execution/` — this IS the Deck (P6, corrected above) | **admitted + cloned** `/workspace/clawdia-presence` |
 | `beatvig` | Confirmed **unrelated** — a sports-betting +EV tool (day-0 stage) | admitted + cloned; **out of FREIGHT scope** |
 | `ayudasolares` | Confirmed **unrelated** — an empty Next.js stub (solar-assistance concept, unbuilt) | admitted + cloned; **out of FREIGHT scope** |
 
@@ -267,7 +289,8 @@ to these:
   calls, 0 cash.** Real automation schemas: `freight_load/rate/quote/proposal/carrier_score/
   dispatch_draft/guided_call/call_notes/cadence/tai_autofill/tai_entry/doc_fields/email_intake/
   memory_fact/adjunto_leads`. (The customs skills — mve/oca/pedimento/usmca/evco-audit — are
-  **CRUZ/EVCO-only**, a *separate* business, not FREIGHT's.)
+  **CRUZ/EVCO-scoped**, a distinct workflow *within* FREIGHT §0.3 — not merged into the freight-
+  brokerage execution schemas above, but not a separate business either; both are FREIGHT's.)
 
   **Correction — the loop is LIVE (found in the founder's real Google Calendar, not a repo):** two
   recurring weekday **FREIGHT DIAL BLOCK** events run the Money-Employment loop operationally —
@@ -429,9 +452,10 @@ otherwise**. Item grammar: `[P<pillar>-W<wave>-<nn>]`.
 **Corrected premise (§1.6):** FREIGHT's real core is the **Money-Employment freight-brokerage loop**
 (call → quote → dispatch → TAI → reconcile → Norfleet cash), owned by the control-plane kernel;
 this overlay's job is the *strategy/prep* layer around it. **`FREIGHT-OS-PIPELINE.md` documents the
-separate EVCO/CRUZ customs-clearance pipeline** (mve/oca/pedimento/usmca/evco-audit) — an EVCO-only
-business, isolated from FREIGHT by the §0.3 boundary law — retained here as the CRUZ/EVCO operational
-map, not as FREIGHT's core. The items below serve that EVCO/CRUZ pipeline + the FREIGHT prep layer.
+EVCO/CRUZ customs-clearance pipeline** (mve/oca/pedimento/usmca/evco-audit) — a distinct workflow
+*within* FREIGHT (§0.3: CRUZ is within FREIGHT, not isolated from it), kept as its own operational
+map and measured on its own scorecard (§4), not folded into the Money-Employment core. The items
+below serve that EVCO/CRUZ pipeline + the FREIGHT prep layer.
 
 - **[P1-W1-01]** `EXEC-NOW` — **Ops pipeline map (DONE this session).** `FREIGHT-OS-PIPELINE.md`: the 8
   stages (intake→invoice) each naming skill + trigger + Supabase table, plus the USMCA-cert /
@@ -595,8 +619,9 @@ wrong_number, not_interested, qualified, deferred`), and **bilingual (EN/ES) gui
 with rebuttal handling (`DeskScriptBlock`: the_ask, trial_close, rebuttals, go_off_script_cue) — CRUZ's
 bilingual law, independently reinvented here. `telegram-poll.ts` exists but is an **empty stub** — the
 Telegram leg of freight execution is not yet wired (honest, not overclaimed). **This corrects
-[P6-W2-02] below**, which as originally drafted would have built a FREIGHT cockpit *inside CRUZ* —
-a direct violation of the §0.3 entity boundary (CRUZ is EVCO-only). Fixed.
+[P6-W2-02] below**, which as originally drafted would have built the freight-brokerage cockpit
+*inside CRUZ's own EVCO-portal codebase* — a product-surface scoping mistake (CRUZ and the Deck are
+distinct surfaces within the one FREIGHT umbrella, §0.3), not an ownership boundary. Fixed.
 
 - **[P6-W1-01]** `EXEC-NOW` — **Deck layout spec (DONE this session).** `THE-DECK.md`: Monitor 1
   (cockpit: decision queue, tráficos/semáforo, anomaly strip, warehouse), Monitor 2 (comms, financial,
@@ -623,7 +648,8 @@ a direct violation of the §0.3 entity boundary (CRUZ is EVCO-only). Fixed.
   reason. — **Prep-now:** the panel inventory above (this session) is the audit's starting point. —
   **Evidence:** audit note in `clawdia-presence` (via [WO-07] admission) or this repo's evidence/.
   *(The CRUZ Operator Cockpit `.dc.html` design mockup remains valid for **CRUZ's own** operator
-  view — EVCO-scoped, not FREIGHT's — and is unaffected; see [P4-W4-01a].)*
+  view — EVCO-scoped, one surface within FREIGHT, distinct from the freight-brokerage cockpit above
+  but not separate from FREIGHT itself; see [P4-W4-01a].)*
 - **[P6-W3-01]** `WO+PREP`([WO-03],[WO-10]) — **Red-day→phone latency proof.** With the real token,
   prove a boundary incident reaches the phone and a tap-approval lands a receipt; **measure** the
   latency (no fabricated <60s claim). — **Acceptance:** one real red-day drill logged with measured
@@ -708,11 +734,13 @@ proceeds immediately.
 
 ---
 
-## §4 — SCORING LAW (four independent systems, NEVER combined)
+## §4 — SCORING LAW (independent scorecards WITHIN FREIGHT, never combined)
 
-The real `AGENTS.md` forbids a merged score. There are **four independent measurement systems**, each
-with its own rubric, denominator, and honest state; **they are never combined, averaged, or inferred
-from one another.** Plus CRUZ, which by law carries **no numeric score** (v1.4 H3 — binary/EVCO-only).
+All of these are FREIGHT's (§0.3, founder ruling) — Adjunto, the execution core, PLAIOS, this
+overlay's plan quality. **They are still measured and reported as four independent scorecards**, each
+with its own rubric, denominator, and honest state, **never combined, averaged, or inferred from one
+another** — that is honest-measurement discipline (the real `AGENTS.md`'s rule), not evidence of
+separate ownership. Plus CRUZ, which by law carries **no numeric score** (v1.4 H3 — binary).
 
 | System | Rubric / gate | Honest state (2026-07-19, quoted from the control plane) |
 |---|---|---|
@@ -769,15 +797,16 @@ every registered path exists. Exit 0/1.
 | 2026-07-19 | **Fixpoint round 2** (7 Opus critics, evidence: workflow `wf_b92d0bda-97e`) — 1 BLOCKER · 26 MAJOR · 17 MINOR (down from 2/42/11) | not clean |
 | 2026-07-19 | **06:01 loop armed** — Routine `trig_01CschhiJHbCoZkHtpufkUJ1` (daily 06:01 UTC, fresh session per fire, founder push-notified); the [WO-10] 7-day floor is running. Founder may disarm anytime (§0.1). | event |
 | 2026-07-19 | **v2.3 fix wave** — BLOCKER resolved (loop armed → floor running, [WO-10] ratify/disarm); critical path = MAX(7-day floor, grant chains) incl. [WO-13] (§3.9); resource law made machine-true (utility bucket + canon-check skill-ownership pass; dataviz/cruz-build-intelligence/operator-intel/rate-quote-generator wired); 2 Adjunto specs authored + registered + content-checked (de-defers P3-W2); CANON-META status→proposed-awaiting-ratification; deck guard strengthened (skill+table+liveness per row). Remaining round-2 MINORs + narrower MAJORs catalogued for the next maintenance pass per the diminishing-returns clause (§5.2). | amended |
-| 2026-07-19 | **REAL ECOSYSTEM DISCOVERED** — `list_repos` revealed the founder's actual private repos (not twins): `freightos-control-plane` (the private execution OS, carries its own canon/kernel/evidence — *"Adjunto is the sole public company; F.R.E.I.G.H.T. is the private execution OS; physical body = the Throne Mac Studio"*), `adjunto-integration-launch`, `evco-portal` (CRUZ), `aguila-brain` (second brain), `throne-stack` (Throne host), + clawdia-presence/beatvig/ayudasolares. Core repos **admitted this session** (`add_repo`); control plane cloned to `/workspace`. | discovery |
+| 2026-07-19 | **REAL ECOSYSTEM DISCOVERED** — `list_repos` revealed the founder's actual private repos (not twins): `freightos-control-plane` (the private execution OS, carries its own canon/kernel/evidence — *"Adjunto is the sole public company; F.R.E.I.G.H.T. is the private execution OS; physical body = the Throne Mac Studio"*), `adjunto-integration-launch`, `evco-portal` (CRUZ), `aguila-brain` (second brain), `throne-stack` (Throne host), + clawdia-presence/beatvig/ayudasolares. Core repos **admitted this session** (`add_repo`); control plane cloned to `/workspace`. — *quoted description is discovery-time source language only; superseded 2026-07-30 — Adjunto is within FREIGHT, not a separate "company", per §0.3/v3.3 founder ruling* | discovery |
 | 2026-07-19 | **v2.4** — entity model corrected to ground truth (§0.3); §0.2a reconciliation with the control-plane execution canon; §1.5 real-repo table; [WO-07] concretized to named real repos; [WO-13] = the Throne; **[WO-14] + Pillar P8 Second Brain** added (`aguila-brain`, `SECOND-BRAIN.md` authored + access matrix); founder absolute-override + "everything I say is binding" + bias-to-action laws encoded (§0.1/§0.1a) | amended |
 | 2026-07-19 | **Control-plane truth sweep** (6 Opus readers, workflow `wf_6c83a7eb-f63`, 69 findings: 22 corrections, 31 additions, 16 reconciles) — evidence in the workflow journal | not clean |
 | 2026-07-19 | **Executed, not just planned:** `supertito/` built + green (16/16 tests, bench PASS, score 8/8); playwright bootstrapped → `verify.mjs` CLEAN (19 shots); MVE action list for Ursula Banda authored; real `aguila-brain` vault (was empty) populated + pushed to `master`; all committed/pushed to `claude/freight-os-optimization-6gn2qz` | executed |
 | 2026-07-19 | **Cloned + read `throne-stack`** (real Clawdia/Throne Mac Studio repo) — discovered a live, tested Telegram bot `@clawdyia_rz_bot` (Hermes gateway, principal-only, smoke-tested 2026-05-09) and Throne's own two-vault model (`aguila-brain` = CRUZ-scoped project vault; `throne-stack/vault/` = separate Clawdia ops vault) | discovery |
 | 2026-07-19 | **FOUNDER RULING (binding instantly, §0.1): "It's @supertitobot — everything else should be deleted."** [WO-15] closed: the bot is `@supertitobot` (renamed from `@clawdyia_rz_bot`); no other name. P2 pillar + `supertito/POLICY.md` updated to match. | founder-override |
-| 2026-07-30 | **Deep read of `clawdia-presence`** (the repo `admission-policy.json` names as the source for FREIGHT's automation surface) — found it holds TWO things: Clawdia's own personal-AI project (out of FREIGHT scope, its own rubric) AND the **real, already-built Deck cockpit** at `app/plaios/freight/` (16 real panels: DialQueue, GuidedCallCard, LeadFeed, NextBestAction, Scoreboard, DeskPnl, CarrierBench, etc.) + `lib/freight-execution/` (real contracts: multi-channel actions call/email/linkedin/whatsapp, authority-gated reason codes, bilingual EN/ES guided-call scripts). **Caught and fixed a real defect: [P6-W2-02] as originally drafted would have built a FREIGHT cockpit inside CRUZ — a direct §0.3 entity-boundary violation** (CRUZ is EVCO-only). Corrected P6 pillar to reflect the real cockpit and repointed the item at auditing/hardening it via `clawdia-presence`, not building inside CRUZ. `telegram-poll.ts` confirmed an empty stub — honestly noted, not overclaimed. `beatvig`/`ayudasolares` confirmed unrelated side projects (sports-betting tool; empty solar-assistance stub). | corrected |
+| 2026-07-30 | **v3.3 FOUNDER RULING + ultracode unification enforcement.** Founder, in sequence, binding instantly: *"CRUZ is within FREIGHT"* → *"Everything exists within FREIGHT"* → *"Including SuperTito and everything."* Rewrote §0.3 as the reconciled entity model (FREIGHT = the one umbrella; CRUZ/Adjunto/SuperTito/Clawdia/Throne/second-brain/Deck all within it; the control-plane's "boundary-separate" language survives only as engineering discipline — independent scorecards, no shared DB — never as ownership separation). Ran a 4-lens parallel critic sweep (workflow, 11 contradictions found) hunting every remaining place in the document that still asserted separation; fixed all 11: the P1 pipeline intro, the §0.3 Clawdia bullet, the §1.5 clawdia-presence + adjunto-integration-launch rows, the P6 correction paragraph, §0.2a's kernel-deference list (entity/ownership model now explicitly carved out from kernel authority), §4's framing, and both affected §5.4 historical rows (superseded in place, add-only). `beatvig`/`ayudasolares` correctly remain "out of FREIGHT scope" — genuinely unrelated ventures, not covered by the ruling. canon-check green (48 items, 15 WOs). | founder-override |
+| 2026-07-30 | **Deep read of `clawdia-presence`** (the repo `admission-policy.json` names as the source for FREIGHT's automation surface) — found it holds TWO things: Clawdia's own personal-AI project (its own rubric) AND the **real, already-built Deck cockpit** at `app/plaios/freight/` (16 real panels: DialQueue, GuidedCallCard, LeadFeed, NextBestAction, Scoreboard, DeskPnl, CarrierBench, etc.) + `lib/freight-execution/` (real contracts: multi-channel actions call/email/linkedin/whatsapp, authority-gated reason codes, bilingual EN/ES guided-call scripts). **Caught and fixed a real defect:** [P6-W2-02] as originally drafted would have built a FREIGHT cockpit inside CRUZ's own codebase — a product-surface scoping mistake. Corrected P6 pillar to reflect the real cockpit and repointed the item at auditing/hardening it via `clawdia-presence`, not building inside CRUZ. `telegram-poll.ts` confirmed an empty stub — honestly noted, not overclaimed. `beatvig`/`ayudasolares` confirmed unrelated side projects (sports-betting tool; empty solar-assistance stub), genuinely outside FREIGHT, not part of the ruling below. — *this row's original "out of FREIGHT scope" (Clawdia) / "entity-boundary violation, CRUZ is EVCO-only" phrasing superseded 2026-07-30 by the founder's ruling (§0.3/v3.3): both are within FREIGHT; the real issue was a codebase-scoping mistake, not an ownership boundary* | corrected |
 | 2026-07-30 | **Magnify-glass sweep** — all 9 real repos admitted + cloned (`freightos-control-plane`, `aguila-brain`, `evco-portal`, `throne-stack`, `adjunto-integration-launch`, `clawdia-presence`, `beatvig`, `ayudasolares`) + Gmail/Calendar pulled into scope per founder directive ("pull EVERYTHING that is my work computer... everything you have access to"). Findings: (1) **the Money-Employment dial-block loop is LIVE** — recurring calendar events name the real cockpit `throne.tail5af2c9.ts.net:8443/plaios/freight`, 06:30 brief email, 40-attempts/day floor with tripwire — corrects the control-plane's static 0/0 snapshot (§1.6 amended); (2) **Adjunto is live at `adjunto.co`** (verified 200 on `/`, `/builder`, `/proof`, `/pricing`; `/trial/:name` pilot pattern; `/api/health/version` 404 = stale deployed build, honestly noted); (3) **Ursula Banda (EVCO) had an 18-day-stale hot lead** — asked 2026-07-29 for trial access after the founder's 2026-07-11 pitch, unanswered. **Action taken:** drafted (never sent, §0.4-8) a reply with the real `adjunto.co/trial/ursula` link, using the founder's own Mode-A outreach language — draft id `r-4593963464206317792`, awaiting founder review/send. | executed |
-| 2026-07-19 | **v3.0 GROUND-TRUTH CORRECTION** — the earlier drafts inherited v1.4 fictions; corrected against the real `freightos-control-plane`: (1) entity model → boundary-preserving federation; Adjunto = sole public brand (own mint/navy canon), FREIGHT = private freight-brokerage OS (goal = Money Employment), CRUZ = EVCO-only + hard no-import boundary; (2) §4 → four independent never-combined scores (Adjunto ~92.2 · Money-Employment 0/not-achieved · PLAIOS snapshot-only · plan-quality); deleted the forbidden merged CANON-100; (3) §0.2a → this overlay has zero canonical standing, defers to `HANDOFF-MASTER.md` + the founder-override plan; (4) P2 → Clawdia is the real proactive surface, @supertitobot is founder-directed/aspirational; (5) added §1.6 (Money Employment, Grok two-agent model, heartbeat, Wave0–W8, PLAIOS, admission/allowlist/secret-scan, state-root 0700/0600, B2 backups, CI suite); (6) added provenance honesty laws §0.4-11..13 | amended |
+| 2026-07-19 | **v3.0 GROUND-TRUTH CORRECTION** — the earlier drafts inherited v1.4 fictions; corrected against the real `freightos-control-plane`: (1) entity model → boundary-preserving federation; Adjunto = sole public brand (own mint/navy canon), FREIGHT = private freight-brokerage OS (goal = Money Employment), CRUZ = EVCO-only + hard no-import boundary; (2) §4 → four independent never-combined scores (Adjunto ~92.2 · Money-Employment 0/not-achieved · PLAIOS snapshot-only · plan-quality); deleted the forbidden merged CANON-100; (3) §0.2a → this overlay has zero canonical standing, defers to `HANDOFF-MASTER.md` + the founder-override plan; (4) P2 → Clawdia is the real proactive surface, @supertitobot is founder-directed/aspirational; (5) added §1.6 (Money Employment, Grok two-agent model, heartbeat, Wave0–W8, PLAIOS, admission/allowlist/secret-scan, state-root 0700/0600, B2 backups, CI suite); (6) added provenance honesty laws §0.4-11..13 — **superseded 2026-07-30 by the founder's ruling (§0.3/v3.3): CRUZ, Adjunto, and everything listed here are within FREIGHT, one enterprise, one ownership; "federation"/"boundary-separate" survives only as retired engineering-discipline language, never as an ownership claim** | amended |
 
 ### §5.5 v1.4 → canon coverage map (nothing silently dropped)
 
