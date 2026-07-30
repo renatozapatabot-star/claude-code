@@ -589,16 +589,20 @@ Spec: `FREIGHT-GROWTH.md` (authored this session). Outreach is drafted, never au
 The founder: *"everything within the computer / the second brain lives under FREIGHT,"* surfaced on the
 fly to founder, father, employees, and clients via the Deck + @supertitobot. Repo admitted ([WO-14]).
 
-- **[P8-W1-01]** `EXEC-NOW` — **Second-brain ingestion + access spec (DONE this session).**
-  `SECOND-BRAIN.md`: what the knowledge base holds, how it is ingested/indexed, and the **access
-  matrix** (who sees what — founder/father full; employees role-scoped; clients tenant-scoped;
-  §0.4-8 + G7 tenant law), plus the surfacing rail (Deck panel + @supertitobot query). —
-  **Acceptance:** `npm run canon` confirms `SECOND-BRAIN.md` carries the access matrix + the four user
-  classes + the surfacing rail. — **Evidence:** `SECOND-BRAIN.md`.
-- **[P8-W2-01]** `WO+PREP`([WO-14],[WO-07]) — **Index the real brain.** Ingest `aguila-brain`'s real
-  content into a searchable index the Deck + bot query; RLS/role-scoped. — **Acceptance:** a query
-  against the real index returns a cited answer, role-scoped. — **Prep-now:** [P8-W1-01] + the P2 bot
-  query harness make the ingest a thin swap. — **Evidence:** index + query log.
+- **[P8-W1-01]** `EXEC-NOW` ✅ **BUILT this session.** — **Second-brain spec + real vault seed.**
+  `SECOND-BRAIN.md`: access matrix (founder/father full; employees role-scoped; clients
+  tenant-scoped; §0.4-8 + G7 tenant law) + surfacing rail. **The real `aguila-brain` vault (was an
+  empty default Obsidian install) was populated** with `01-AGUILA/{00-FREIGHT,01-Adjunto,02-CRUZ,
+  03-Clients,04-Canon,05-Daily}` — real content pulled from `freightos-control-plane`'s
+  `HANDOFF-MASTER.md`, committed + pushed to `aguila-brain@master`. — **Acceptance:** `npm run canon`
+  confirms `SECOND-BRAIN.md`'s access matrix + user classes + surfacing rail; vault push verified
+  (`git ls-remote` shows the commit on `master`). — **Evidence:** `SECOND-BRAIN.md` +
+  `aguila-brain@master` commit `7908cae`.
+- **[P8-W2-01]** `WO+PREP`([WO-14],[WO-07]) — **Index the real brain for query.** The vault now has
+  real content (P8-W1-01); this item builds the search/embed index the Deck + bot actually query
+  against — RLS/role-scoped. — **Acceptance:** a query against the real index returns a cited
+  answer, role-scoped. — **Prep-now:** the vault structure (P8-W1-01) + the P2 bot query harness
+  make the ingest a thin swap — only the embed/index layer remains. — **Evidence:** index + query log.
 
 ### Wave W0 (this session) — adoption
 

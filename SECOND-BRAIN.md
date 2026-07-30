@@ -13,12 +13,20 @@ class it shouldn't (§0.4-8 + the G7 tenant law).
 Notes, documents, prior work, decisions, contacts, and the accumulated context of the enterprise —
 everything ever done in the Throne studio. Ingested and indexed; never mutated by readers.
 
+**State as of 2026-07-19 (verified, not claimed):** the vault was an empty default Obsidian
+install (welcome note only) until this session. It is now seeded with real structure — `01-AGUILA/`
+with `00-FREIGHT`, `01-Adjunto`, `02-CRUZ`, `03-Clients`, `04-Canon`, `05-Daily` — populated from
+ground truth pulled out of `freightos-control-plane`'s `canon/HANDOFF-MASTER.md` (the entity
+boundary law, Money Employment state, PLAIOS state). Committed + pushed to `aguila-brain@master`.
+This is real content the founder can open in Obsidian today; it is not yet indexed for query (below).
+
 ## Ingestion + index
 
-- Source: `aguila-brain` (+ over time, Gmail threads, Drive/files, call transcripts via
-  `whisper-transcriber`) — ingest, chunk, embed/index into a searchable store.
+- Source: `aguila-brain` (now seeded — see above; + over time, Gmail threads, Drive/files, call
+  transcripts via `whisper-transcriber`) — ingest, chunk, embed/index into a searchable store.
 - The index is **read-only to surfaces**; writes happen only through the sanctioned ingest path.
-- Honest liveness: **POR ACTIVAR** until [P8-W2-01] indexes the real content ([WO-14]/[WO-07]).
+- Honest liveness: **POR ACTIVAR** — the vault has real content now, but the *query/index* layer
+  ([P8-W2-01]) that lets the Deck/bot search it is not yet built.
 
 ## The access matrix (who sees what)
 
