@@ -1,6 +1,6 @@
 # FREIGHT (OS) — THE STRATEGIC OVERLAY · v3.4 · 2026-07-30
 
-<!-- CANON-META version=3.4 status=proposed-overlay-defers-to-control-plane supersedes=FREIGHTCOMPLETE100PLAN20260719.pdf(v1.4) authority=freightos-control-plane/canon/HANDOFF-MASTER.md -->
+<!-- CANON-META version=3.5 status=proposed-overlay-defers-to-control-plane supersedes=FREIGHTCOMPLETE100PLAN20260719.pdf(v1.4) authority=freightos-control-plane/canon/HANDOFF-MASTER.md -->
 
 > **v3.4:** 🚨 found a live SEV-1 cross-tenant data-isolation risk in the real `evco-portal` (EVCO +
 > MAFESA, ~$5.86M+ verified value exposed) — fully diagnosed, logged as [WO-16]/[P4-W1-00], awaiting
@@ -478,6 +478,28 @@ WO+PREP arms the clock, drills, and logging now so the days merely have to pass.
   113); the fix is scoped and ready to implement the moment write access is confirmed — no further
   investigation needed. — **Evidence:** commit in `evco-portal` + the cross-tenant test result.
 
+- **[WO-17]** 🔍 **Real-bot integration gap, discovered by direct evidence (2026-07-30) —** a
+  screenshot of the live `@supertitobot` Telegram thread shows the founder saying *"Now you do
+  brother, I'm saying I'm giving you your own email"* and the real bot correctly, honestly replying:
+  *"técnicamente no puedo recibir correos ni interactuar con sistemas externos; soy un modelo de
+  lenguaje que vive aquí en este chat"* — confirming, from the live system itself, that the deployed
+  bot has **zero backend tool-wiring today**: no Gmail access, no globalpc/Aduanet/econta access,
+  nothing beyond a chat LLM in a Telegram thread. This is the real gap the Cortana ruling
+  ([P2-W3-02]) and the inbox-ownership ruling ([P2-W2-04]) both need closed — this session's
+  Gmail-MCP-backed triage is real but lives in *this Claude Code session*, not in the founder's actual
+  phone bot. — **Founder:** authorize + supply the credentials/API surface for the live bot's backend
+  to reach (a) Gmail API (service account or OAuth refresh token scoped to `ai@renatozapata.com`, so
+  the bot process itself — not just this session — can read/triage/draft), (b) globalpc /
+  `soportetrafico@globalpc.net` (Sistema de Tráfico access — read scope), (c) Aduanet (customs-crossing
+  status — read scope), (d) econta (accounting/invoicing — read scope). — **Acceptance:** each granted
+  system has a real credential wired into the bot's backend (not this session) and a live round-trip
+  proving it (bot cites a real fact only obtainable via that system); each ungranted system stays
+  named here, not silently dropped. — **Prep-now:** [P2-W2-04]'s `inbox-triage.mjs` + [P2-W3-02]'s
+  channel-agnostic classify/rank shape are the receiving end, already built and tested — the only
+  missing piece per system is the credential + a thin adapter translating that system's real
+  data into the same `{id, dateMs, fromMe, subject, snippet}`-shaped input. — **Evidence:** the
+  screenshot (logged §5.4) + wiring commits per system as they land.
+
 *(v1.4 WO-F rows with no live obligation here — the ConnectUC/Callicity CDR export tap — are retired
 with reason in §5.5, not silently dropped: no ConnectUC access exists in this estate; it re-enters as a
 WO only if the founder brings that system under FREIGHT.)*
@@ -539,7 +561,22 @@ principal-only allowlist, smoke-tested 2026-05-09. Per the founder's ruling, tha
 superseded/renamed to `@supertitobot`; [WO-15] is closed by this instruction, no longer an open
 question.) The `supertito/` harnesses below are channel-agnostic by construction, so pointing them at
 the real bot is a naming/config change, not a rebuild — re-grounding v1.4's ST-1..ST-10 +
-RES-01/03/04/07/08/10/11. **`depends:` — P2-W2 items build one shared package sequentially (scoped
+RES-01/03/04/07/08/10/11.
+
+**FOUNDER RULING (binding instantly, 2026-07-30, §0.1): "I want SuperTito in charge of
+`ai@renatozapata.com`."** This is a major scope grant: SuperTito becomes the **owner/operator of the
+real intake inbox** — the same `ai@renatozapata.com` mailbox that `email-intake.js` already polls
+every 15 minutes via Gmail OAuth (§1.6/P1, confirmed live). "In charge of" is read as: (1) **triage**
+— every inbound mail is read, classified, and ranked (reusing the existing Sonnet-extraction
+pipeline as the ingestion leg); (2) **surfacing** — urgent/actionable mail (a hot lead gone cold, a
+compliance deadline, a client asking for status) is pushed to @supertitobot on the founder's phone,
+ranked by the same value×urgency model as the Deck's alert rail (P6-W2-01); (3) **drafting** — a
+reply is staged as a Gmail draft (exactly the pattern already proven this session with the Ursula
+Banda thread) — **never sent** without the founder's GO (§0.4-8, unconditionally, no exception for
+this grant). SuperTito does not gain send authority; it gains **read + triage + draft** authority
+over the one mailbox. This is a new pillar item — see [P2-W2-04] below.
+
+**`depends:` — P2-W2 items build one shared package sequentially (scoped
 test dirs), not parallel.**
 
 - **[P2-W2-01]** `SIM-HERE` ✅ **BUILT + GREEN this session** (`supertito/`, `npm test` → 16/16;
@@ -566,11 +603,47 @@ test dirs), not parallel.**
   labels, residual list where **each residual names a WO-nn or §3 item id** — ST-9/ST-10). —
   **Acceptance:** `node --test supertito/test/escalation` green; scorer idempotent; residual entries
   each cite an id. — **Evidence:** `supertito/docs/st-score.json`.
-- **[P2-W3-01]** `WO+PREP`([WO-03],[WO-13]) — **Go live on the real rail.** Swap mock for the real
-  @supertitobot token (founder-held), roster = {Renato IV, Renato III, bot} exactly, real chat-ids
+- **[P2-W2-04]** `SIM-HERE` ✅ **BUILT + EXECUTED this session** — **Inbox ownership: SuperTito in
+  charge of `ai@renatozapata.com`** (founder ruling above). `supertito/src/inbox-triage.mjs`:
+  classifies inbound mail (stale-hot-lead / urgent-client / compliance-deadline / routine) and ranks
+  by the same value×urgency model as P6's alert rail; **read + triage + draft authority only — never
+  send** (§0.4-8, no exception). This session's Gmail MCP already proves read+draft access to this
+  mailbox (the Ursula Banda draft, `r-4593963464206317792`, is the existence proof). — **Acceptance:**
+  `node --test supertito/test/inbox` green; a real triage pass run this session against
+  `ai@renatozapata.com`, findings + any drafts logged in §5.4. — **Evidence:** `supertito/` +
+  §5.4 row(s).
+- **[P2-W3-01]** `WO+PREP`([WO-03],[WO-13],[WO-17]) — **Go live on the real rail.** Swap mock for the
+  real @supertitobot token (founder-held), roster = {Renato IV, Renato III, bot} exactly, real chat-ids
   bound; the suite still runs against the mock (token never enters CI); deploy check host-parameterized
-  per [WO-13]. — **Acceptance:** one real founder-initiated round-trip logged in the ledger; suite
-  green. — **Evidence:** ledger entry.
+  per [WO-13]. **Corrected by real evidence (2026-07-30, §5.4): "go live" is not just a token swap —
+  the live bot has zero backend tool-wiring today (see [WO-17]); this item's acceptance now requires
+  the [WO-17] wiring, not just a round-trip chat message.** — **Acceptance:** one real
+  founder-initiated round-trip logged in the ledger, where the reply is produced by real tool-backed
+  data (not the bare LLM's own words) at least once; suite green. — **Evidence:** ledger entry +
+  [WO-17] wiring commit.
+- **[P2-W3-02]** `WO+PREP`([WO-17]) — **The Cortana law — full-ecosystem observer, founder ruling
+  2026-07-30 (§0.1, binding instantly): *"Not only should SuperTito be taking note of that but of all
+  changes within globalpc to aduanet to econta to emails to everything he should be my fkn Cortana"*
+  and *"I basically want it so he's copied on every thread doesn't answer but helps out the whole
+  ecosystem."* This generalizes [P2-W2-04] (owner of one mailbox) into a standing law: SuperTito is
+  **copied/subscribed as an observer on every real system in the estate** —
+  `soportetrafico@globalpc.net` (Sistema de Tráfico automation), Aduanet (customs-crossing status),
+  econta (accounting/invoicing), `ai@renatozapata.com` (already [P2-W2-04]), and any future system the
+  founder brings in. Per-system rule, no exception: **observe → triage/classify → surface to the
+  founder → draft if a reply is warranted. Never answers, never acts, never sends** (§0.4-8 applies
+  ecosystem-wide, not just to the one mailbox — this is the strongest possible reading of "Cortana":
+  omnipresent visibility, zero autonomous action). "Helps out the whole ecosystem" = cross-system
+  correlation SuperTito alone can do (a compliance deadline in Aduanet + a stale invoice in econta +
+  a client email in Gmail, connected into one surfaced brief) — this is additive value, not new
+  authority. — **Acceptance:** a per-system access matrix recorded in §5.4 (what SuperTito can read,
+  where, as of what date); for each system with real access, `node --test supertito/test/inbox` (or
+  its per-system analogue) green and a real observed-and-surfaced pass logged; for each system without
+  access yet, an explicit [WO-17] sub-row naming the credential/API the founder must supply — no
+  system may sit in a bare "someday" state. — **Prep-now:** `inbox-triage.mjs`'s classify/rank/toAlert
+  functions are already channel-agnostic (message-shaped input in, alert-shaped output out); the
+  Gmail leg is done ([P2-W2-04]); the same shape is ready to receive globalpc/Aduanet/econta input the
+  moment [WO-17] lands real access. — **Evidence:** §5.4 access-matrix row + `supertito/` per-system
+  triage modules as they're wired.
 
 ### Pillar P3 — Adjunto
 
@@ -860,6 +933,9 @@ every registered path exists. Exit 0/1.
 | 2026-07-30 | **Deep read of `clawdia-presence`** (the repo `admission-policy.json` names as the source for FREIGHT's automation surface) — found it holds TWO things: Clawdia's own personal-AI project (its own rubric) AND the **real, already-built Deck cockpit** at `app/plaios/freight/` (16 real panels: DialQueue, GuidedCallCard, LeadFeed, NextBestAction, Scoreboard, DeskPnl, CarrierBench, etc.) + `lib/freight-execution/` (real contracts: multi-channel actions call/email/linkedin/whatsapp, authority-gated reason codes, bilingual EN/ES guided-call scripts). **Caught and fixed a real defect:** [P6-W2-02] as originally drafted would have built a FREIGHT cockpit inside CRUZ's own codebase — a product-surface scoping mistake. Corrected P6 pillar to reflect the real cockpit and repointed the item at auditing/hardening it via `clawdia-presence`, not building inside CRUZ. `telegram-poll.ts` confirmed an empty stub — honestly noted, not overclaimed. `beatvig`/`ayudasolares` confirmed unrelated side projects (sports-betting tool; empty solar-assistance stub), genuinely outside FREIGHT, not part of the ruling below. — *this row's original "out of FREIGHT scope" (Clawdia) / "entity-boundary violation, CRUZ is EVCO-only" phrasing superseded 2026-07-30 by the founder's ruling (§0.3/v3.3): both are within FREIGHT; the real issue was a codebase-scoping mistake, not an ownership boundary* | corrected |
 | 2026-07-30 | **Magnify-glass sweep** — all 9 real repos admitted + cloned (`freightos-control-plane`, `aguila-brain`, `evco-portal`, `throne-stack`, `adjunto-integration-launch`, `clawdia-presence`, `beatvig`, `ayudasolares`) + Gmail/Calendar pulled into scope per founder directive ("pull EVERYTHING that is my work computer... everything you have access to"). Findings: (1) **the Money-Employment dial-block loop is LIVE** — recurring calendar events name the real cockpit `throne.tail5af2c9.ts.net:8443/plaios/freight`, 06:30 brief email, 40-attempts/day floor with tripwire — corrects the control-plane's static 0/0 snapshot (§1.6 amended); (2) **Adjunto is live at `adjunto.co`** (verified 200 on `/`, `/builder`, `/proof`, `/pricing`; `/trial/:name` pilot pattern; `/api/health/version` 404 = stale deployed build, honestly noted); (3) **Ursula Banda (EVCO) had an 18-day-stale hot lead** — asked 2026-07-29 for trial access after the founder's 2026-07-11 pitch, unanswered. **Action taken:** drafted (never sent, §0.4-8) a reply with the real `adjunto.co/trial/ursula` link, using the founder's own Mode-A outreach language — draft id `r-4593963464206317792`, awaiting founder review/send. | executed |
 | 2026-07-19 | **v3.0 GROUND-TRUTH CORRECTION** — the earlier drafts inherited v1.4 fictions; corrected against the real `freightos-control-plane`: (1) entity model → boundary-preserving federation; Adjunto = sole public brand (own mint/navy canon), FREIGHT = private freight-brokerage OS (goal = Money Employment), CRUZ = EVCO-only + hard no-import boundary; (2) §4 → four independent never-combined scores (Adjunto ~92.2 · Money-Employment 0/not-achieved · PLAIOS snapshot-only · plan-quality); deleted the forbidden merged CANON-100; (3) §0.2a → this overlay has zero canonical standing, defers to `HANDOFF-MASTER.md` + the founder-override plan; (4) P2 → Clawdia is the real proactive surface, @supertitobot is founder-directed/aspirational; (5) added §1.6 (Money Employment, Grok two-agent model, heartbeat, Wave0–W8, PLAIOS, admission/allowlist/secret-scan, state-root 0700/0600, B2 backups, CI suite); (6) added provenance honesty laws §0.4-11..13 — **superseded 2026-07-30 by the founder's ruling (§0.3/v3.3): CRUZ, Adjunto, and everything listed here are within FREIGHT, one enterprise, one ownership; "federation"/"boundary-separate" survives only as retired engineering-discipline language, never as an ownership claim** | amended |
+| 2026-07-30 | **Built + executed: SuperTito inbox ownership ([P2-W2-04]).** `supertito/src/inbox-triage.mjs` (classify/rank/toAlert, no send-capable export — denial test passing) + `supertito/test/inbox-triage.test.mjs` (8/8 green; full suite 24/24). Ran a **real triage pass** against `ai@renatozapata.com` via Gmail MCP (201 results, `newer_than:30d`): Ursula Banda confirmed the standout stale-hot-lead (draft already staged, §5.4 above); ~180/201 results are automated `soportetrafico@globalpc.net` Sistema-de-Tráfico noise (now labelled `SuperTito/Auto-Trafico`, label id `Label_2`, created this session); one Google security "new sign-in" alert on `ai@renatozapata.com` (2026-07-28) worth a founder glance; 2 spam/promo; real EVCO import-coordination threads correctly scored non-urgent. | executed |
+| 2026-07-30 | **Real-evidence gap found + logged as [WO-17]: the live `@supertitobot` has zero backend tool-wiring.** Founder-supplied screenshot of the actual Telegram thread ("SuperTito Group") shows: founder says *"Now you do brother... I'm saying I'm giving you your own email"*; the real bot honestly replies it **cannot** receive email or reach external systems — *"soy un modelo de lenguaje que vive aquí en este chat"* — and asks for pasted text instead. This is direct, first-party proof that this session's Gmail-MCP-backed triage capability ([P2-W2-04]) is real but **session-local**, not yet wired into the founder's actual phone bot. Logged **[WO-17]** (founder to supply Gmail/globalpc/Aduanet/econta credentials for the bot's own backend) and **[P2-W3-02]** (the founder's follow-on "Cortana" ruling, see next row), both `WO+PREP` with the `inbox-triage.mjs` shape as the ready receiving end. `[P2-W3-01]` (go-live) corrected: a token swap alone does not satisfy it — real tool-backed replies do. | found |
+| 2026-07-30 | **FOUNDER RULING (binding instantly, §0.1) — the Cortana law, [P2-W3-02]:** *"Not only should SuperTito be taking note of that but of all changes within globalpc to aduanet to econta to emails to everything he should be my fkn Cortana"* and *"I basically want it so he's copied on every thread doesn't answer but helps out the whole ecosystem."* Generalizes [P2-W2-04] (one mailbox) into a standing ecosystem-wide law: SuperTito is copied/subscribed as an **observer** on every real system (globalpc, Aduanet, econta, all email, and future systems) — observe → triage → surface → draft-if-warranted, **never answers, never sends, never acts** (§0.4-8 extended ecosystem-wide, no exception). Cross-system correlation is the added value ("helps out the whole ecosystem"), not new authority. v3.5: added [WO-17] + [P2-W3-02], corrected [P2-W3-01]'s acceptance bar, this review-log entry. canon-check green. | founder-override |
 
 ### §5.5 v1.4 → canon coverage map (nothing silently dropped)
 
