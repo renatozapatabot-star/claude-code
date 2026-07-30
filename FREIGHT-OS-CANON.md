@@ -304,6 +304,22 @@ to these:
   the 0/0 figure is a point-in-time cutover reading, not evidence the loop is idle — the operational
   rhythm is real and running. The true verified-calls/cash count is only knowable from the live
   cockpit (out of this sandbox's reach) or the founder's own report.
+
+  **The real invocation chain (read directly from `clawdia-presence/lib/freight-execution/`,
+  2026-07-30):** the Next.js cockpit's API routes never touch business logic directly — every
+  action (`active-ticket`, `queue`, `start-attempt`, `disposition`, `void-attempt`, `events`,
+  `practice`) spawns `python3 <kernel-script> --db <path> --authority-dir <path> --queue <path>
+  <command>` (12s timeout, 1MB stdout cap, stderr never surfaced to the browser — customer data
+  never risks reflection), reads exactly one JSON line back, and parses it against a strict
+  `freight.execution-response.v1` envelope schema — anything else (multi-line, malformed, timeout)
+  fails closed as `runtime_unavailable`. Paths resolve from `PLAIOS_ROOT` (default `~/plaios` on the
+  Throne) — **this chain only runs on the real Throne machine; it cannot be exercised from this
+  sandbox.** Runtime health is version-bound: `evaluateFreightRuntimeHealth` requires the release git
+  SHA, expected build id, and actual build id to all match (40-hex `FULL_GIT_SHA` regex) before it
+  reports `ok`, with auth boundary `tailnet_identity_plus_signed_session`. **Conclusion for "fastest
+  path to first verified call": the mechanism is already built and running (the dial-block calendar
+  rhythm above) — the fastest lever is not more engineering, it's the founder (or whoever holds the
+  dial-block shift) actually working the queue** `lib/freight-execution` already serves.
 - **The two-agent model:** **Claude Code = planner / judge / canon-keeper; Grok (grok-4.5) = executor**
   of sealed handoff packets (one per session, SHA-pinned, isolated worktree) + adversarial
   CONFIRMED/PLAUSIBLE second opinions. A **heartbeat** contract (`status:grok`, `check:heartbeat`,
