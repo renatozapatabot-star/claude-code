@@ -435,7 +435,9 @@ SIM/not-yet-real until [WO-03]. The `supertito/` harnesses re-ground v1.4's ST-1
 RES-01/03/04/07/08/10/11 so the real rail (whichever channel) is a thin swap. **`depends:` — P2-W2
 items build one shared package sequentially (scoped test dirs), not parallel.**
 
-- **[P2-W2-01]** `SIM-HERE` — **Core + mock rail + admission.** `supertito/` package: `bot.mjs` facade,
+- **[P2-W2-01]** `SIM-HERE` ✅ **BUILT + GREEN this session** (`supertito/`, `npm test` → 16/16;
+  `npm run score` → 8/8; `npm run bench` → PASS ratio 1.02). — **Core + mock rail + admission.**
+  `supertito/` package: `bot.mjs` facade,
   `mock-telegram.mjs` chaos server (outage/slow/500/409 — v1.4 ST-2), sender-registry allowlist
   enforced before any answer/capture (ST-3/X3: byte-exact ids, spoof-resistant, oracle-free denial),
   never-drop alert queue (ST-2), and a **TTL boot-token with a TOCTOU-safe check-then-use** admission
@@ -737,6 +739,12 @@ design/reference/CRUZ-MASTERPLAN-10.md
 design/reference/CRUZ.dc.html
 .claude/workflows/cruz-100-critic.js
 .claude/workflows/cruz-complete-frontend.js
+supertito/src/ledger.mjs
+supertito/src/receipt-store.mjs
+supertito/src/sender-registry.mjs
+supertito/src/bot.mjs
+supertito/test/supertito.test.mjs
+supertito/POLICY.md
 -->
 
 <!-- CANON-CONTENT

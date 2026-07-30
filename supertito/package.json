@@ -1,0 +1,13 @@
+{
+  "name": "supertito",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "SuperTito / Clawdia proactive rail — channel-agnostic, HMAC-ledgered, spoof-resistant. SIM-CERTIFIED harness (ST-1..ST-10).",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "bench": "node scripts/bench-append.mjs --n 10000",
+    "score": "node st-score.mjs"
+  },
+  "engines": { "node": ">=20" }
+}
