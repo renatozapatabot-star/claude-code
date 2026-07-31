@@ -287,6 +287,14 @@ overlaps with the real 06:30 brief email found in the Magnify-glass sweep, not y
 `casa-zapata-project-manager` [personal/household scope, genuinely outside FREIGHT]) is utility, not
 pillar-owned — **this line was corrected in the v3.7 audit to match `canon-check.mjs`'s own `UTILITY`
 set, which had silently grown to include the last two entries without this prose ever being updated.**
+(The `morning`/06:30-brief overlap flagged above is now partly reconciled: `supertito/src/
+founder-brief.mjs` composes Cortana's alerts/correlated briefs, `growth-scoring.mjs`'s lead funnel,
+the WO register [via the new `supertito/src/wo-register.mjs` table parser], and caller-supplied
+compliance deadlines into one ranked, cited 0-100 priority list — the actual content-merging logic
+the 06:30 email/[P6-W1-01]'s Monitor-2 panel needs, as real tested code (`supertito/test/
+founder-brief.test.mjs`, 12/12; `supertito/test/wo-register.test.mjs`, 8/8) rather than just a named
+calendar cadence. Still not done: nothing calls this from an actual scheduled send — it is a pure
+composition function today, not a wired daily email.)
 `canon-check`'s resource law asserts every non-utility skill appears in ≥1 §3 item or spec doc:
 
 - **FREIGHT (OS) ops (P1/P6):** `email-ingestion`, `document-checklist-validator`,
@@ -1188,14 +1196,29 @@ fly to founder, father, employees, and clients via the Deck + @supertitobot. Rep
   matchedDocs, user)` — which filters through `resolveBrainAccess` and returns `{answer: 'not in the
   brain yet', cited: []}` whenever the allowed set is empty, **never fabricating an answer from a
   denied or absent match** (§0.4-1, enforced by code, not just stated in prose).
-  `supertito/test/brain-access.test.mjs` (16/16) proves founder-full-access, employee-denied-on-
+  `supertito/test/brain-access.test.mjs` (18/18) proves founder-full-access, employee-denied-on-
   principal-only, client-denied-on-other-tenant, client-denied-on-internal-notes, and the
-  no-match-honesty case. — **Acceptance:** a query against the real index returns a cited answer,
-  role-scoped (the enforcement layer is done; only the real embed/index — the actual search over
-  vault content — remains). — **Prep-now:** the vault structure (P8-W1-01) + `brain-access.mjs`'s
-  access-control layer (built + tested this round) make the remaining work purely the embed/index
-  step — access control is no longer part of what's left. — **Evidence:** `supertito/src/
-  brain-access.mjs` + `supertito/test/brain-access.test.mjs` + (once built) index + query log.
+  no-match-honesty case. **The remaining "actual search over vault content" piece this item flagged
+  is now also built:** `supertito/src/brain-index.mjs` reads the real vault at
+  `/workspace/aguila-brain` (read-only, never mutated), classifies each real note into
+  `SECOND-BRAIN.md`'s category/tenant/principalOnly shape by its real folder layout (verified
+  against the vault's actual current 7 real notes, not an assumed shape), and ranks a query with a
+  small in-memory BM25 index — its output is the exact `BrainDoc[]` shape `resolveBrainAccess`/
+  `answerFromBrain` already consume, so access enforcement composes with zero adapter code between
+  them. `supertito/test/brain-index.test.mjs` (27/27, including a live integration pass against the
+  real vault and an end-to-end check that a client role is denied the vault's one principal-only
+  Daily note through the full index→access pipeline) proves this. **What is still not done: this is
+  an in-memory index built fresh per call, not a persisted/embedded index the Deck or bot hold open
+  across calls — "the Deck + bot actually query against" (this item's own acceptance line) still
+  needs that wiring, which is a real but smaller remaining step than building the search layer from
+  scratch was.** — **Acceptance:** a query against the real index returns a cited answer,
+  role-scoped (the search layer + the enforcement layer are both done and composed; only wiring one
+  persistent instance into the Deck/bot's actual call paths remains). — **Prep-now:** the vault
+  structure (P8-W1-01) + `brain-access.mjs`'s access-control layer + `brain-index.mjs`'s search
+  layer (all built + tested) make the remaining work purely the Deck/bot wiring step — neither
+  access control nor search-over-content is part of what's left anymore. — **Evidence:**
+  `supertito/src/brain-access.mjs` + `supertito/src/brain-index.mjs` + both test files + a real run
+  against `/workspace/aguila-brain`.
 
 ### Wave W0 (this session) — adoption
 

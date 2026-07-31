@@ -146,11 +146,13 @@ re-verified by this session after being built (not just trusted from an agent re
 | `evidence/evco-cross-tenant-fix.patch` + `.test.ts` | SEV-1 fix, staged as a verified git-apply-clean patch (NOT applied to evco-portal). Covers every real call site, `tsc`-clean. | `git apply --check` against a scratch copy of the real file + `tsc --noEmit` | applies cleanly, 0 type errors |
 | `evidence/evco-opportunities-tenant-fix.patch` + `.test.ts` | A second, separate fail-open tenant-scoping bug found in `opportunities.ts` (same bug class as WO-16, different file) — `companyId` made required, fail-closed on missing value | `git apply --check` against a scratch copy + `tsc --noEmit` | applies cleanly, 0 type errors |
 | `supertito/src/normalize.mjs` + test | Shared `normalizeKey` helper, extracted from three independent hand-rolled case/whitespace-normalization fixes (`correlate.mjs`, `brain-access.mjs`, `cortana.mjs`) into one module | `node --test supertito/test/normalize.test.mjs` | 8/8 |
+| `supertito/src/brain-index.mjs` + test | [P8-W2-01] the real second-brain search layer: reads the real `aguila-brain` vault (read-only), classifies notes by real folder shape, ranks queries via an in-memory BM25 index; output feeds `brain-access.mjs` directly | `node --test supertito/test/brain-index.test.mjs` | 27/27 |
+| `supertito/src/founder-brief.mjs` + `wo-register.mjs` + tests | Composition layer for the Deck's Monitor-2 06:30-brief panel: merges Cortana alerts, growth-scoring leads, the WO register, and compliance deadlines into one ranked, cited 0-100 priority list | `node --test supertito/test/founder-brief.test.mjs supertito/test/wo-register.test.mjs` | 12/12 + 8/8 |
 | `supertito/test/stress-concurrency.test.mjs` + `design/reference/stress-concurrency.test.mjs` | Fuzz/stress/adversarial-input coverage across the whole package (10k-scale interleaved access checks, huge/negative/NaN numeric edges, zero-width-space normalization edge cases, 20k-lead sort performance) | `node --test supertito/test/stress-concurrency.test.mjs design/reference/stress-concurrency.test.mjs` | all green |
 | `scripts/audit-deck.mjs` | Falsifiable check of the canon's Deck claims against real `clawdia-presence` source | `node scripts/audit-deck.mjs` | PASS (4/4 claims), negative-control-verified |
 | `scripts/canon-check.mjs` | The canon's own structural/content law — now also verifies every `POLICY.md` row's cited constant actually matches the source file's real value, and that every "audit fix" comment has a real, non-empty sibling test file | `node scripts/canon-check.mjs` | PASS — 57 items, 20 WOs |
 | `DB-ATLAS.md` | Real DB atlas template | n/a (template, filled once WO-01 lands) | exists, registered in CANON-PATHS |
-| **Whole supertito suite** | everything above + pre-existing core/ledger/escalation | `node --test supertito/test/*.test.mjs` | **130/130** (drifts upward — always re-run for the live count) |
+| **Whole supertito suite** | everything above + pre-existing core/ledger/escalation | `node --test supertito/test/*.test.mjs` | **177/177** (drifts upward — always re-run for the live count) |
 | **Whole design/reference suite** | Adjunto billing + growth-scoring + stress/fuzz | `node --test design/reference/*.test.mjs` | **40/40** |
 | **Repo code sanity** | `server.js` + `data/embarques.js` syntax | `npm run check` | green |
 
@@ -160,7 +162,7 @@ re-verified by this session after being built (not just trusted from an agent re
 cd /home/user/claude-code
 node scripts/canon-check.mjs                                    # expect PASS, 57 items, 20 WOs
 npm run check                                                   # repo code sanity — expect green
-node --test supertito/test/*.test.mjs                           # SuperTito full suite — expect 130/130 (or higher — this number drifts upward)
+node --test supertito/test/*.test.mjs                           # SuperTito full suite — expect 177/177 (or higher — this number drifts upward)
 node --test design/reference/*.test.mjs                         # design/reference full suite — expect 40/40
 node scripts/audit-deck.mjs                                     # Deck claims vs real source — expect PASS
 node scripts/verify.mjs                                         # browser check — expect VERIFY: CLEAN
