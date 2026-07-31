@@ -6,6 +6,8 @@
 // merging that into one surfaced brief. Never answers, never acts, never sends (§0.4-8, ecosystem-
 // wide per [P2-W3-02]) — this is a pure function over already-classified observations.
 
+import { normalizeKey } from './normalize.mjs';
+
 /**
  * @typedef {{ category: string, urgency: number, ageDays: number, awaitingReply: boolean }} Classification
  * @typedef {{ system: string, threadId: string, entity: string, classification: Classification }} Observation
@@ -34,7 +36,7 @@ export function correlate(observations, nowMs) {
   // string is kept as the brief's displayed `entity`.
   const byEntity = new Map();
   for (const obs of observations) {
-    const key = obs.entity.trim().toLowerCase();
+    const key = normalizeKey(obs.entity);
     if (!byEntity.has(key)) byEntity.set(key, { entity: obs.entity, items: [] });
     byEntity.get(key).items.push(obs);
   }

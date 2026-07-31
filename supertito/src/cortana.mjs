@@ -2,13 +2,16 @@
 // doesn't answer but helps out the whole ecosystem") and [WO-17] (globalpc/Aduanet/econta/Gmail
 // estate-wide observation). This module wires together three already-independently-tested pieces —
 // system-adapters.mjs (shape conversion), inbox-triage.mjs (classify/rank/alert), correlate.mjs
-// (cross-system entity grouping) — into one pure pass over a snapshot of raw observations from every
-// system. It reads and classifies; it never answers, acts, or sends (§0.4-8, ecosystem-wide per
-// [P2-W3-02]) — there is exactly one export, and it is not send-capable.
+// (cross-system entity grouping), escalation.mjs (batch-cap/mirrored-deferral flood guard) — into
+// one pure pass over a snapshot of raw observations from every system. It reads and classifies; it
+// never answers, acts, or sends (§0.4-8, ecosystem-wide per [P2-W3-02]) — there is exactly one
+// export, and it is not send-capable.
 
 import { classifyThread, toAlert } from './inbox-triage.mjs';
 import { adaptGlobalpc, adaptAduanet, adaptEconta } from './system-adapters.mjs';
 import { correlate } from './correlate.mjs';
+import { normalizeKey } from './normalize.mjs';
+import { createEscalator, DEFAULT_BATCH_CAP } from './escalation.mjs';
 
 // ENTITY EXTRACTION IS A HONEST HEURISTIC, NOT NLP/NER: this is a plain substring match against a
 // short, hand-maintained list of known counterparties (drawn from the canon's own client roster),
@@ -42,14 +45,17 @@ function textOf(subject, snippet) {
 
 /** @returns {string|null} a recognized entity name, or null if the heuristic found nothing */
 function extractEntity(text) {
-  const lower = text.toLowerCase();
+  const lower = normalizeKey(text);
   // Prefer the KNOWN_ENTITIES name that actually occurs earliest in the text (v3.8 audit fix: this
   // used to return whichever known name came first in the static array, regardless of which one
   // the text was actually about — a message mentioning two known clients in passing could
-  // misattribute the observation to the wrong one).
+  // misattribute the observation to the wrong one). The extra trim() normalizeKey applies over the
+  // original bare toLowerCase() only shifts index positions uniformly, and `idx` here is only ever
+  // compared against another `idx` from this same normalized string, never used to slice the
+  // original `text` — so the trim is a no-op for this function's actual behavior.
   let best = null;
   for (const name of KNOWN_ENTITIES) {
-    const idx = lower.indexOf(name.toLowerCase());
+    const idx = lower.indexOf(normalizeKey(name));
     if (idx !== -1 && (best === null || idx < best.idx)) best = { name, idx };
   }
   if (best) return best.name;
@@ -78,6 +84,32 @@ function observationFromAdaptedRaw(system, adapt, raw, nowMs) {
   return { system, threadId: msg.id, entity, classification };
 }
 
+// [WO-17] flood guard: a real-credential connection to globalpc/Aduanet/econta/Gmail can surface
+// far more observations in one pass than a founder's phone can usefully absorb. escalation.mjs's
+// batch-cap/mirrored-deferral pattern already solves exactly this (built and tested against
+// [P6-W2-01]'s ledger-escalation flow) but had never been imported by anything until now. Reused
+// as-is here rather than re-implemented: same cap semantics, same "nothing silently vanishes, it's
+// deferred with a visible trail" guarantee.
+//
+// The escalator's own contract is "oldest-due-first"; there is no real due-time for an alert or a
+// correlated brief, so urgency is remapped onto it inversely (dueMs = -urgency) so "oldest due"
+// becomes "highest urgency fires first" — the founder always sees the most urgent items, and lower-
+// urgency items are the ones that defer. A fresh escalator is created per call: runCortanaPass is
+// documented as a pure one-shot pass over one snapshot, so there is no cross-call carry-over state
+// to persist here (a future scheduled/looping caller that wants oldest-first fairness *across*
+// ticks would hold one escalator instance across calls instead — this function's job is only to
+// stop a single pass's output from being unbounded).
+function applyEscalationCap(items, idOf, urgencyOf, cap, channel) {
+  if (items.length === 0) return { kept: [], mirrors: [] };
+  const mirrors = [];
+  const escalator = createEscalator({ cap, onMirror: (m) => mirrors.push({ ...m, channel }) });
+  const wrapped = items.map((item, index) => ({ id: idOf(item, index), dueMs: -urgencyOf(item), item }));
+  const { fired } = escalator.scan(wrapped);
+  const byId = new Map(wrapped.map((w) => [w.id, w.item]));
+  const kept = fired.map((id) => byId.get(id));
+  return { kept, mirrors };
+}
+
 /**
  * Runs one Cortana pass over a snapshot of raw observations from every wired system. Pure and
  * read-only: adapts, classifies, and correlates already-collected data — it never fetches, sends,
@@ -89,9 +121,15 @@ function observationFromAdaptedRaw(system, adapt, raw, nowMs) {
  *   aduanet?: import('./system-adapters.mjs').AduanetRaw[],
  *   econta?: import('./system-adapters.mjs').EcontaRaw[] }} rawObservationsBySystem
  * @param {number} nowMs
- * @returns {{ perSystemAlerts: object[], correlatedBriefs: object[] }}
+ * @param {{ cap?: number }} [opts] - batch cap applied independently to perSystemAlerts and
+ *   correlatedBriefs (each channel gets its own budget); defaults to escalation.mjs's own
+ *   DEFAULT_BATCH_CAP (25) so the two ratify to the same [WO-04] value unless the founder sets one.
+ * @returns {{ perSystemAlerts: object[], correlatedBriefs: object[], deferrals: object[] }}
+ *   deferrals is escalation.mjs's mirrored trail — empty unless a channel actually exceeded cap;
+ *   never a silent drop, always visible evidence of what got deferred and why.
  */
-export function runCortanaPass(rawObservationsBySystem, nowMs) {
+export function runCortanaPass(rawObservationsBySystem, nowMs, opts = {}) {
+  const cap = opts.cap ?? DEFAULT_BATCH_CAP;
   const bySystem = rawObservationsBySystem ?? {};
   const observations = [];
 
@@ -108,11 +146,22 @@ export function runCortanaPass(rawObservationsBySystem, nowMs) {
     observations.push(observationFromAdaptedRaw('econta', adaptEconta, raw, nowMs));
   }
 
-  const perSystemAlerts = observations
+  const rawPerSystemAlerts = observations
     .map((obs) => toAlert(obs.threadId, obs.classification))
     .filter((alert) => alert !== null);
 
-  const correlatedBriefs = correlate(observations, nowMs);
+  const rawCorrelatedBriefs = correlate(observations, nowMs);
 
-  return { perSystemAlerts, correlatedBriefs };
+  const alertCap = applyEscalationCap(
+    rawPerSystemAlerts, (a) => a.thread_id, (a) => a.urgency, cap, 'perSystemAlerts',
+  );
+  const briefCap = applyEscalationCap(
+    rawCorrelatedBriefs, (b) => b.entity, (b) => b.maxUrgency, cap, 'correlatedBriefs',
+  );
+
+  return {
+    perSystemAlerts: alertCap.kept,
+    correlatedBriefs: briefCap.kept,
+    deferrals: [...alertCap.mirrors, ...briefCap.mirrors],
+  };
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // canon-check — structural + content law of FREIGHT-OS-CANON.md (§5.3). Zero-dep. Exit 0/1.
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -117,9 +117,111 @@ for (const sk of SKILLS) {
   if (!section3.includes(sk) && !specTexts.includes(sk)) fail(`resource law: skill "${sk}" is wired to no §3 item or spec doc`);
 }
 
+// 10. POLICY law: a POLICY.md row citing a named CONST in a source file must have its ratified
+// value actually present in that file — not just the file existing (a prior research round found
+// nothing checked this; a POLICY.md row can drift from the code it claims to pin).
+// Kept deliberately pragmatic: literal-match first, then a tiny safe arithmetic evaluator (no
+// eval/Function) for the common `N * M * K` ms-constant shape, converted to human duration forms
+// (Ns / Nmin / Nh) since that's how POLICY.md actually states most of them.
+function safeEvalArithmetic(expr) {
+  const cleaned = expr.replace(/_/g, '').trim();
+  if (!/^[\d\s+\-*/().]+$/.test(cleaned)) return null;
+  const tokens = cleaned.match(/\d+(?:\.\d+)?|[+\-*/()]/g);
+  if (!tokens) return null;
+  let pos = 0;
+  const parseFactor = () => {
+    if (tokens[pos] === '(') { pos++; const v = parseExpr(); pos++; return v; }
+    const t = tokens[pos++];
+    return t === undefined ? NaN : Number(t);
+  };
+  const parseTerm = () => {
+    let v = parseFactor();
+    while (tokens[pos] === '*' || tokens[pos] === '/') { const op = tokens[pos++]; const rhs = parseFactor(); v = op === '*' ? v * rhs : v / rhs; }
+    return v;
+  };
+  const parseExpr = () => {
+    let v = parseTerm();
+    while (tokens[pos] === '+' || tokens[pos] === '-') { const op = tokens[pos++]; const rhs = parseTerm(); v = op === '+' ? v + rhs : v - rhs; }
+    return v;
+  };
+  const result = parseExpr();
+  return (pos === tokens.length && Number.isFinite(result)) ? result : null;
+}
+function msHumanForms(n) {
+  const forms = new Set([String(n), String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '_')]);
+  if (n % 1000 === 0) forms.add(`${n / 1000}s`);
+  if (n % 60000 === 0) { forms.add(`${n / 60000}min`); forms.add(`${n / 60000} min`); }
+  if (n % 3600000 === 0) forms.add(`${n / 3600000}h`);
+  return [...forms];
+}
+const policyPaths = (pathsBlock ? pathsBlock[1].split('\n').map(s => s.trim()).filter(Boolean) : [])
+  .filter(p => /POLICY\.md$/i.test(p));
+for (const pPath of policyPaths) {
+  const pFull = join(root, pPath);
+  if (!existsSync(pFull)) continue; // already caught by check 7
+  const pDir = dirname(pFull);
+  const rows = readFileSync(pFull, 'utf8').split('\n')
+    .filter(l => /^\|/.test(l) && !/^\|\s*-+\s*\|/.test(l) && !/^\|\s*Policy\s*\|/i.test(l));
+  for (const row of rows) {
+    let cells = row.split('|').map(c => c.trim());
+    if (cells[0] === '') cells = cells.slice(1);
+    if (cells[cells.length - 1] === '') cells = cells.slice(0, -1);
+    if (cells.length < 3) continue;
+    const [policyName, defaultCell, sourceCell] = cells;
+    const pathMatch = sourceCell.match(/`([^`]+)`/);
+    if (!pathMatch) continue; // row cites no source file (e.g. "alert rail") — not this check's job
+    const relSrc = pathMatch[1];
+    const remainder = sourceCell.slice(sourceCell.indexOf(pathMatch[0]) + pathMatch[0].length);
+    const constNames = [...remainder.matchAll(/\b([A-Z][A-Z0-9_]{2,})\b/g)].map(m => m[1]);
+    if (constNames.length === 0) continue; // row names no constant (e.g. textual policy) — not this check's job
+    const srcFull = join(pDir, relSrc);
+    if (!existsSync(srcFull)) { fail(`POLICY row "${policyName}": source file missing ${relSrc}`); continue; }
+    const srcBody = readFileSync(srcFull, 'utf8');
+    for (const cn of constNames) {
+      if (!new RegExp(`\\b${cn}\\b`).test(srcBody)) { fail(`POLICY row "${policyName}": constant ${cn} not found in ${relSrc}`); continue; }
+      const declMatch = srcBody.match(new RegExp(`\\b${cn}\\s*=\\s*([^;\\n]+)`));
+      if (!declMatch) { fail(`POLICY row "${policyName}": no declaration found for ${cn} in ${relSrc}`); continue; }
+      const rhs = declMatch[1].trim();
+      const quoted = [...rhs.matchAll(/'([^']+)'|"([^"]+)"/g)].map(m => m[1] ?? m[2]);
+      if (quoted.length > 0) {
+        for (const q of quoted) if (!defaultCell.includes(q)) fail(`POLICY row "${policyName}": ${cn} value "${q}" (from ${relSrc}) not reflected in POLICY.md's stated default "${defaultCell}"`);
+        continue;
+      }
+      const num = safeEvalArithmetic(rhs);
+      if (num === null) { fail(`POLICY row "${policyName}": ${cn}'s value (${rhs}) in ${relSrc} could not be verified against POLICY.md's stated default — neither a literal nor a simple arithmetic match`); continue; }
+      const forms = msHumanForms(num);
+      const lowerDefault = defaultCell.toLowerCase();
+      if (!forms.some(f => lowerDefault.includes(f.toLowerCase()))) fail(`POLICY row "${policyName}": ${cn} = ${rhs} (${num}) in ${relSrc} does not match POLICY.md's stated default "${defaultCell}"`);
+    }
+  }
+}
+
+// 11. "audit fix" comment law: a source file citing an inline "vX.Y audit fix" comment must have a
+// sibling test file that exists and actually has tests — a prior research round found nothing
+// verified this, so a comment claiming a fix landed could sit next to a stale/empty test file.
+function siblingTestPath(relPath) {
+  if (relPath.includes('/src/')) return relPath.replace('/src/', '/test/').replace(/\.mjs$/, '.test.mjs');
+  return relPath.replace(/\.mjs$/, '.test.mjs');
+}
+for (const dir of ['supertito/src', 'design/reference']) {
+  const dirFull = join(root, dir);
+  if (!existsSync(dirFull)) continue;
+  for (const entry of readdirSync(dirFull)) {
+    if (!entry.endsWith('.mjs') || entry.endsWith('.test.mjs')) continue;
+    const relPath = `${dir}/${entry}`;
+    const body = readFileSync(join(root, relPath), 'utf8');
+    if (!/audit fix/i.test(body)) continue;
+    const testRel = siblingTestPath(relPath);
+    const testFull = join(root, testRel);
+    if (!existsSync(testFull)) { fail(`"${relPath}" has an audit-fix comment but its sibling test file ${testRel} does not exist`); continue; }
+    const testCount = (readFileSync(testFull, 'utf8').match(/\btest\(/g) || []).length;
+    if (testCount === 0) fail(`"${relPath}" has an audit-fix comment but its sibling test file ${testRel} has zero tests`);
+  }
+}
+
 if (failures.length) {
   console.error(`CANON-CHECK: FAIL — ${failures.length} violation(s)`);
   for (const f of failures) console.error('  - ' + f);
   process.exit(1);
 }
-console.log(`CANON-CHECK: PASS — ${blocks.length} items (${[...seen].filter(i => i.startsWith('WO-')).length} WOs), content-checked, founder-override present, all paths real`);
+console.log(`CANON-CHECK: PASS — ${blocks.length} items (${[...seen].filter(i => i.startsWith('WO-')).length} WOs), content-checked, founder-override present, all paths real, POLICY.md constants verified, audit-fix comments test-backed`);

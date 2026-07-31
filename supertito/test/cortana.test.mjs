@@ -194,11 +194,99 @@ test('runCortanaPass: only a non-gmail system present (aduanet only) does not th
 });
 
 test('runCortanaPass: completely empty input does not throw', () => {
-  assert.deepEqual(runCortanaPass({}, now), { perSystemAlerts: [], correlatedBriefs: [] });
+  assert.deepEqual(runCortanaPass({}, now), { perSystemAlerts: [], correlatedBriefs: [], deferrals: [] });
 });
 
 test('runCortanaPass: malformed raw record in a present system still throws (adapter validation is not bypassed)', () => {
   assert.throws(() => runCortanaPass({ globalpc: [{ eventType: 'x' }] }, now), TypeError);
+});
+
+// --- [WO-17] flood guard: escalation.mjs's batch-cap/mirrored-deferral pattern wired in ----------
+
+// 100 synthetic all-caps-letter tokens (no digits — CAPS_TOKEN_RE requires \b[A-Z]{4,}\b, and a
+// digit inside the token would break the word boundary the regex relies on), each reported by both
+// globalpc and Aduanet so every one of them is genuinely correlation-worthy (2+ distinct systems).
+// This is SIM/fixture data, not real client records, same as every other fixture in this file.
+function floodTokens(n) {
+  const tokens = [];
+  for (let i = 0; i < n; i++) {
+    const c1 = String.fromCharCode(65 + Math.floor(i / 26));
+    const c2 = String.fromCharCode(65 + (i % 26));
+    tokens.push(`ZZ${c1}${c2}`);
+  }
+  return tokens;
+}
+
+test('runCortanaPass: 100 correlated-brief-worthy entities in, capped output + a deferral trail out (default cap)', () => {
+  const tokens = floodTokens(100);
+  const globalpcRaws = tokens.map((token, i) => ({
+    traficoId: `TRF-${token}`,
+    eventEpochMs: now - (i + 1) * DAY,
+    originatedByBroker: false,
+    eventType: 'hold-flagged',
+    detail: `contenedor ${token} detenido, falta MVE VUCEM E2`,
+  }));
+  const aduanetRaws = tokens.map((token, i) => ({
+    pedimentoRef: `PED-${token}`,
+    statusChangedAtMs: now - (i + 1) * DAY,
+    brokerInitiated: false,
+    statusCode: 'mve-pending',
+    note: `${token} pedimento con MVE pendiente de liberacion`,
+  }));
+
+  const { perSystemAlerts, correlatedBriefs, deferrals } = runCortanaPass(
+    { globalpc: globalpcRaws, aduanet: aduanetRaws },
+    now,
+  );
+
+  // 100 entities correlated across exactly 2 systems each -> 100 correlated-brief candidates;
+  // 200 raw observations (100 globalpc + 100 aduanet) -> 200 per-system-alert candidates. Neither
+  // channel is allowed to exceed escalation.mjs's DEFAULT_BATCH_CAP (25) in one pass.
+  assert.equal(correlatedBriefs.length, 25);
+  assert.equal(perSystemAlerts.length, 25);
+
+  const briefDeferral = deferrals.find((d) => d.channel === 'correlatedBriefs');
+  assert.ok(briefDeferral, 'expected a mirrored deferral-trail entry for correlatedBriefs');
+  assert.equal(briefDeferral.kind, 'escalation-batch');
+  assert.equal(briefDeferral.fired, 25);
+  assert.equal(briefDeferral.deferred, 75);
+  assert.equal(briefDeferral.cap, 25);
+
+  const alertDeferral = deferrals.find((d) => d.channel === 'perSystemAlerts');
+  assert.ok(alertDeferral, 'expected a mirrored deferral-trail entry for perSystemAlerts');
+  assert.equal(alertDeferral.fired, 25);
+  assert.equal(alertDeferral.deferred, 175);
+});
+
+test('runCortanaPass: a custom cap is honored instead of the default, and nothing is deferred once every item fits', () => {
+  const tokens = floodTokens(10);
+  const globalpcRaws = tokens.map((token, i) => ({
+    traficoId: `TRF-${token}`,
+    eventEpochMs: now - (i + 1) * DAY,
+    originatedByBroker: false,
+    eventType: 'hold-flagged',
+    detail: `contenedor ${token} detenido, falta MVE VUCEM E2`,
+  }));
+  const aduanetRaws = tokens.map((token, i) => ({
+    pedimentoRef: `PED-${token}`,
+    statusChangedAtMs: now - (i + 1) * DAY,
+    brokerInitiated: false,
+    statusCode: 'mve-pending',
+    note: `${token} pedimento con MVE pendiente de liberacion`,
+  }));
+
+  // Cap of 5: below the 10 correlated briefs -> deferral trail present.
+  const capped = runCortanaPass({ globalpc: globalpcRaws, aduanet: aduanetRaws }, now, { cap: 5 });
+  assert.equal(capped.correlatedBriefs.length, 5);
+  assert.ok(capped.deferrals.some((d) => d.channel === 'correlatedBriefs' && d.deferred === 5));
+
+  // Cap of 1000: comfortably above every candidate -> everything fires, nothing deferred (the
+  // mirror still records the batch per escalation.mjs's own contract — "fired || deferred" —
+  // it just reports deferred: 0 for both channels rather than omitting the trail entirely).
+  const uncapped = runCortanaPass({ globalpc: globalpcRaws, aduanet: aduanetRaws }, now, { cap: 1000 });
+  assert.equal(uncapped.correlatedBriefs.length, 10);
+  assert.equal(uncapped.perSystemAlerts.length, 20);
+  assert.ok(uncapped.deferrals.every((d) => d.deferred === 0));
 });
 
 test('denial: never produces a send/dispatch/reply action — module has no such export', async () => {

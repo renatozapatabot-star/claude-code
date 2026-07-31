@@ -31,6 +31,8 @@
  * @property {string} [snippet] - short indexed excerpt; the actual cited text in an answer.
  */
 
+import { normalizeKey } from './normalize.mjs';
+
 const PRINCIPAL_ROLES = new Set(['founder', 'co-principal']);
 const KNOWN_ROLES = new Set(['founder', 'co-principal', 'employee', 'client']);
 
@@ -95,8 +97,7 @@ export function resolveBrainAccess(user, doc) {
   // populated the tenant string with different casing/whitespace — a normalization gap, same class
   // as correlate.mjs's entity-matching fix. Denies fail-safe either way; this only widens what
   // legitimately counts as a match, it never grants anything a strict match wouldn't have.
-  const normalizeTenant = (s) => (s ?? '').trim().toLowerCase();
-  if (!user.tenant || normalizeTenant(doc.tenant) !== normalizeTenant(user.tenant)) {
+  if (!user.tenant || normalizeKey(doc.tenant) !== normalizeKey(user.tenant)) {
     return { allow: false, reason: 'tenant mismatch — cross-tenant access denied' };
   }
   return { allow: true, reason: `tenant match on '${user.tenant}'` };

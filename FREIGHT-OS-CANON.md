@@ -591,12 +591,20 @@ WO+PREP arms the clock, drills, and logging now so the days merely have to pass.
 - **[WO-16]** 🚨 **SEV-1 fix: MAFESA/EVCO cross-tenant scoping in `evco-portal`** — the real portal's
   `scopedQuery` is hardcoded to EVCO_CANDIDATES; MAFESA needs `session.companyId`-based scoping (the
   repo's own doc calls this SEV-1 "if a non-EVCO user logs in today" — real client data, ~$5.86M+
-  verified value, exposed now). **CORRECTION (see [WO-19]): this patch was built against a single
-  stale clone of `main` — the real repo has 176 branches, and an unmerged one from the day before
-  this session (`codex/cruz-authz-convergence-20260729`) touches this exact file and does NOT fix the
-  root cause (renames the candidate list, still runtime-sniffs instead of deriving from
-  session.companyId). Do not apply this patch in isolation — reconcile with [WO-19] first.** —
-  **Founder:** confirm scope to admit `evco-portal` for a write-fix
+  verified value, exposed now). **CORRECTED TWICE (see [WO-19] and [WO-20]) — read both before acting:**
+  a first correction flagged this patch as built against a stale snapshot and said "reconcile before
+  applying." **A deeper recon (2026-07-31) reversed that:** `origin/main`'s actual current tip was
+  read directly — the bug is real and STILL LIVE on production today. Three separate unmerged fix
+  attempts already exist in the real repo (`codex/cruz-authz-convergence-20260729` — cosmetic only,
+  doesn't fix it; `codex/cruz-safety-gate0-20260728`/`codex/mve-convergence-20260729` — a real,
+  working fix, session-derived `companyId` required; `codex/engine-depth-10` feeding draft PR #88 —
+  the most sophisticated fix, dynamic per-tenant resolution, CI-proven against real 2-tenant Postgres),
+  but **none has an open PR against `main`, and `main` has not merged anything at all in 28 days** —
+  there is no active coordination process to wait for. **Verdict: apply this session's own WO-16 patch
+  (or, if the founder prefers, ask him to greenlight merging one of the two real existing fixes already
+  sitting in his own repo) as an emergency stopgap NOW — "hold for coordination" was the wrong call
+  when there is no counterparty actually coordinating.** — **Founder:** confirm scope to admit
+  `evco-portal` for a write-fix
   ([WO-07] already admits read access; this needs write/push authorization on that specific repo,
   since it holds live client data). — **Acceptance:** `scopedQuery` derives tenant strictly from
   `session.companyId` (never a hardcoded candidate list); a cross-tenant read/write test (EVCO
@@ -704,27 +712,56 @@ WO+PREP arms the clock, drills, and logging now so the days merely have to pass.
   list, never derived from `session.companyId` — the same SEV-1 pattern [WO-16] diagnoses, just
   relocated. **This means real, recent, active engineering effort exists on this exact bug that
   [WO-16]'s patch was built in total isolation from — the two should be reconciled before either is
-  applied, not treated as if [WO-16] is the only real fix in flight.** — **Founder:** (a) **rotate the
-  7 operator passwords out of band immediately — this cannot wait on any code fix, since the
-  credentials themselves are already compromised the moment they exist in git history**, regardless
-  of whatever line eventually replaces them; (b) confirm who is driving `codex/cruz-authz-
-  convergence-20260729` and `codex/mve-convergence-20260729` (Codex? A separate session? Automated?)
-  so this canon can reconcile with that work instead of duplicating or conflicting with it; (c) grant
-  explicit write-access direction for `evco-portal` covering both the password fix and a coordinated
-  tenant-scoping fix, informed by whichever of [WO-16]'s patch or the codex branch's approach is
-  actually further along once (b) is answered. — **Acceptance:** all 7 passwords rotated to
-  non-guessable, non-committed values (hashed, env-sourced, or DB-stored with proper hashing); every
-  real `/api/*` route confirmed to call `verifySession` (or an equivalent explicit auth check) before
-  any DB access; the hardcoded Supabase JWT fallback removed; [WO-16] and the codex branches
-  reconciled into one fix, not two competing ones. — **Prep-now:** [P4-W1-00] is the same executable
-  home [WO-16] already uses — the diagnosis above is complete and independently verified, this WO
-  IS the prep, and P4-W1-00's acceptance now implicitly depends on this WO's reconciliation question
-  being answered first; no further investigation is needed before the founder's three answers above
-  unlock the fix. — **Evidence:** direct reads of
-  `evco-portal/src/app/api/auth/route.ts`, `evco-portal/src/middleware.ts`,
-  `git ls-remote --heads origin` (176 branches) and `git diff main FETCH_HEAD -- src/lib/supabase/
-  scoped-query.ts` against `codex/cruz-authz-convergence-20260729`, all run and read this session,
-  2026-07-30.
+  applied, not treated as if [WO-16] is the only real fix in flight. **CORRECTED (2026-07-31 deep
+  recon, see [WO-20]): "reconcile before applying" was too cautious — there is no active coordination
+  in progress to reconcile with (main hasn't merged anything in 28 days), so this now recommends
+  applying [WO-16] as an emergency stopgap immediately rather than waiting.** — **Founder:** (a)
+  **rotate the 7 operator passwords out of band immediately — this cannot wait on any code fix**,
+  regardless of whatever line eventually replaces them; (b) **decide which tenant-isolation fix to
+  ship to `main`: this session's [WO-16] patch (fast, narrow, ready now), or greenlight merging one of
+  the two real fixes already sitting unmerged in your own repo** (`codex/cruz-safety-gate0-20260728`'s
+  session-derived fix, or `codex/engine-depth-10`'s more sophisticated companies-table-driven
+  resolution behind draft PR #88, CI-proven against a real 2-tenant Postgres isolation test) —
+  either way, ship SOMETHING to `main` now rather than continuing to leave it hardcoded; (c) see
+  [WO-20] for the deeper, higher-order problem this investigation surfaced. — **Acceptance:** all 7
+  passwords rotated to non-guessable, non-committed values; every real `/api/*` route confirmed to
+  call `verifySession`; the hardcoded Supabase JWT fallback removed; **some** real tenant-isolation
+  fix (this session's or one of the two already in the repo) lands on `main`, not left in permanent
+  limbo. — **Prep-now:** [P4-W1-00] is the same executable home [WO-16] already uses — the diagnosis
+  is complete; no further investigation is needed before the founder picks (b). — **Evidence:** direct
+  reads of `evco-portal/src/app/api/auth/route.ts`, `evco-portal/src/middleware.ts`,
+  `git ls-remote --heads origin` (176 branches), `git diff main FETCH_HEAD -- src/lib/supabase/
+  scoped-query.ts` against `codex/cruz-authz-convergence-20260729`, and the full [WO-20] recon
+  workflow (`wf_292072f9-251`) confirming `origin/main`'s live current state + all PR/branch metadata,
+  2026-07-30/31.
+- **[WO-20]** 🚨 **Governance/process finding, not a code bug — the deeper problem [WO-19]'s recon
+  surfaced (2026-07-31).** Direct investigation of `evco-portal`'s real GitHub state (177 branches, 85
+  PRs, all commit authorship checked) found: every single commit and PR across the entire repo is
+  authored under one identity — `Renato Zapata IV <renatozapatabot@gmail.com>` / GitHub account
+  `renatozapatabot-star` (the repo owner) — with strong circumstantial evidence (branch names like
+  `codex/*`, PR bodies with literal "🤖 Generated with Claude Code" footers, a commit co-authored by
+  "Claude Opus 4.7") that **multiple AI agent sessions, likely more than one tool, are producing the
+  large majority of this code under the founder's own account, with essentially no human review gate**
+  — every PR checked (including #88, #64, #43, and three routine weekly-sweep PRs) shows zero human
+  review comments, only automated bot/CI comments. `main` has not merged anything in 28 days despite
+  multiple ready, tested PRs sitting open. At least three separate agent-driven branches independently
+  rewrote the exact same vulnerable function (`scoped-query.ts`) within days of each other, none aware
+  of the others. **This is the real root cause behind why [WO-16]'s bug is still live**: fixes are
+  being written faster than anything is merging them, and nobody is consolidating the divergent
+  branches — the fixes exist, but there is no working path from "written" to "deployed." — **Founder:**
+  this is a decision only you can make: either (a) put a real human-gated merge cadence in place for
+  `evco-portal` (someone reviews and merges to `main` on a regular schedule, no exceptions), or (b)
+  explicitly designate one AI session/tool as the sole driver with authority to merge to `main` after
+  its own tests pass, so work stops forking across `codex/*`/other lineages with no reconciliation
+  path. Either is workable; leaving it as-is (agents writing code nobody merges) is not. — **Acceptance:**
+  a real merge lands on `main` within 7 days of this WO being read, and a named process (human cadence
+  or designated-agent authority) exists for the next one. — **Prep-now:** [WO-19]/[P4-W1-00] is the
+  concrete case this governance gap already cost — that item's own acceptance (some real
+  tenant-isolation fix shipping to `main`) is the first real test of whether this gets resolved. —
+  **Evidence:** workflow
+  `wf_292072f9-251` (6-agent recon + synthesis, 2026-07-30/31) — PR #88/#64/#43 metadata, commit
+  authorship across 60+ days of history, `main`'s merge history (last merge 2026-07-03), and the
+  3-way-divergent `scoped-query.ts` comparison.
 
 *(v1.4 WO-F rows with no live obligation here — the ConnectUC/Callicity CDR export tap — are retired
 with reason in §5.5, not silently dropped: no ConnectUC access exists in this estate; it re-enters as a
